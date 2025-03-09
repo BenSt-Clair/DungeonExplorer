@@ -93,7 +93,8 @@ namespace DungeonCrawler
             List<Item> inRosewoodChest = new List<Item> { };
             List<Item> onSkeleton = new List<Item> { healPotion, magnifyingGlass};
             Feature skeleton = new Feature("skeleton", "Its empty sockets fasten you with a stern gaze. It's been bound by chains to the wall, making it difficult to move. Something shiny is trapped out of reach behind it.", false, "unshattered", onSkeleton);
-            Feature brazier = new Feature("brazier", "If these braziers do indeed burn it is not with any normal fire. Upon closer inspection, their dim flickering glow seemingly cannot be expunged. They barely keep the looming shadows at bay.", true, "lit", null);
+            Feature leftbrazier = new Feature("left brazier", "If these braziers do indeed burn it is not with any normal fire. Upon closer inspection, their dim flickering glow seemingly cannot be expunged. They barely keep the looming shadows at bay.", true, "lit", null);
+            Feature rightbrazier = new Feature("right brazier", "If these braziers do indeed burn it is not with any normal fire. Upon closer inspection, their dim flickering glow seemingly cannot be expunged. They barely keep the looming shadows at bay.", true, "lit", null);
             Feature rosewoodDoor = new Feature("rosewood door", "It's a curiously ornate door with smooth well-polished panels. The wood's warmth is somewhat diminished by the heavy iron hinges holding it in place.");
             Feature rosewoodChest = new Feature("rosewood chest", "Its smooth, burnished surface matches the grain and style of the door and like the door its elegance is jarred by the heavy steel lock sealing it. It makes you wonder if this room hadn't always been a dank cell.", true, "locked", inRosewoodChest);
             List<Item> inBookcase = new List<Item> { note };
@@ -101,7 +102,7 @@ namespace DungeonCrawler
             Feature holeInCeiling = new Feature("hole in the ceiling", "You gaze from the heap of debris that has buried the creature alive to the hole through the ceiling above. You bet you could climb the heap and enter the room above yours.");
             
             // I instantiate a room with a list of items and features inside it and a description and room name
-            List<Feature> cellfeatures = new List<Feature> {rosewoodDoor, rosewoodChest, bookCase, skeleton, brazier, brazier };
+            List<Feature> cellfeatures = new List<Feature> {rosewoodDoor, rosewoodChest, bookCase, skeleton, leftbrazier, rightbrazier };
             Room room = new Room("dank cell", "The foreboding cell is bathed in the earthy glow of lit braziers, barely lighting cold stony walls, a heavy rosewood door studded with iron hinges, and only the sparsest of furnishings.\nThe door is set within the north wall, two flickering braziers casting orbs of low light either side of it so as to look like great fiery eyes watching you from the murk.\t\nTo the west wall there is a large chest, mingled with a cascade of rusted and disused iron shackles.\t\nTo the south wall is a small bookcase and some garments haphazardly strewn about you.\t\nTo the east wall is the last occupant; a skeleton with a permanent grin that  almost seems to watch you from dark wells where once there were its eyes. It holds something in its bony fist.\t\t", cellInventory, cellfeatures);
             
             ///
@@ -659,7 +660,29 @@ namespace DungeonCrawler
             //
 
             
-            
+            void fungShui(string itemName)
+            {
+                int fungShui = 0;
+                foreach (Item x in room.ItemList)
+                {
+                    if (x.Name == itemName)
+                    {
+                        fungShui++;
+                    }
+                }
+                if (fungShui > 1)
+                {
+
+                    for (int i = room.ItemList.Count - 1;i>=0; i-- )
+                    {
+                        if (room.ItemList[i].Name == itemName && fungShui > 1)
+                        {
+                            room.ItemList.Remove(room.ItemList[i]);
+                            fungShui--;
+                        }
+                    }
+                }
+            }
             //
             
             //
@@ -742,6 +765,10 @@ namespace DungeonCrawler
             bool fieryEscape = false;
             while (!escapedRoom1)
             {
+                for (int i = room.ItemList.Count - 1; i>=0; i--)
+                {
+                    fungShui(room.ItemList[i].Name);
+                }
                 string reply = Console.ReadLine().Trim().ToLower();
                 ///If player answers by typing number in list...
                 try
@@ -761,26 +788,8 @@ namespace DungeonCrawler
                     else if (reply1 == 2) 
                     {
                         ///when player discards rusty chains they may appear more than once. 
-                        ///This system is present to preempt that and prevent duplicates.
-                        int fungShui = 0;
-                        foreach(Item x in room.ItemList)
-                        {
-                            if(x.Name == "rusty chains")
-                            {
-                                fungShui++;
-                            }
-                        }
-                        if (fungShui > 1)
-                        {
-                                                       
-                            foreach (Item x in room.ItemList)
-                            {
-                                if(x.Name == "rusty chains" && fungShui > 1)
-                                {
-                                    room.ItemList.Remove(x);
-                                }
-                            }
-                        }
+                        ///fungshui() is present to preempt that and prevent duplicates.
+                        
                         room.investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains); 
                         b++;
                     }
@@ -1048,6 +1057,7 @@ namespace DungeonCrawler
                     continue; 
                 }
                 
+
 
             }
             ///Past this point is the next room 
