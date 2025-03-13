@@ -478,7 +478,7 @@ namespace DungeonCrawler
                 }
                 else if (item.Name=="rusty chain-flail" && feature.Name == "rosewood door" && !feature.Description.Contains("dent") )
                 {
-                    feature.Description = feature.Description + " You can see the dent left the last time you hammered against this door.";
+                    
                     Dialogue goblin_RustyChains = new Dialogue(player, monster, battle, room);
                     string description = $"You bang your {item.Name} incessantly against the {feature.Name}, clamouring for the guard's attention. Eventually, you hear footsteps pound up to your door...";
                     string parlance = $"Oi! Wot you playin' at, meatbag? You wants to be chosen next, that it?' the owner's raspy, crude dialect berates you through the door. They let loose a sardonic chuckle. 'Coz if youse don't stop interrupting my game, well there's no end to the trouble your in for...";
@@ -519,6 +519,14 @@ namespace DungeonCrawler
                             responses.Remove(responses[2]);
                             responses.Remove(responses[1]);
                             responses.Remove(responses[0]);
+                            if (player.Traits.ContainsKey("sadist"))
+                            {
+                                responses.Add("You drop your voice an octave as you recount what you had done to all the other fools who dared cross you...");
+                            }
+                            if (player.Traits.ContainsKey("hale, hot and hearty"))
+                            {
+                                responses.Add("You tense your powerful muscles and furiously slam your fist into the door");
+                            }
                             speech = goblin_RustyChains.Parle(description, parlance, responses);
                             switch (speech)
                             {
@@ -558,6 +566,20 @@ namespace DungeonCrawler
                                 case 4:
                                     Console.WriteLine("'Who? Me?' The jailor responds obtusely. 'Why nothin' at all. Not unless you try to escape - or play that damnable infernal tune the last meatbag played!' the creature snarls, momentarily breaking their flippant facade. 'I still can't get that screech out of my head! Damned fleshbag died before revealing where he stashed the thing-.' the jailor catches himself. 'Not that it matters none to you, maggotfeed. It won't be long now 'til the master comes for you.'");
                                     Console.WriteLine($"With that, the jailor stalks away, leaving you pondering just what they'd meant by that 'tune.' You eye the skeleton in the room, the previous 'fleshbag' who'd resided and died here. You wonder what secrets it holds...");
+                                    break;
+                                case 5:
+                                    if (player.Traits.ContainsKey("sadist"))
+                                    {
+                                        Console.WriteLine("Even from beyond the door you can sense the jailor's pallor turn as white as a sheet at your ghastly utterances, spoken as softly as a lullaby and with all the assurance of the most deadly sincere covenant.\n'Blimey heck,' the jailor remarks, his voice suddenly tremulous, 'I reckon we missed a trick imprisoning you. We should 'ave hired you instead!' You hear the jailor's boots pace warily backwards from the door. You imagine him wiping cold sweat from his brow. 'I ain't gonna be the one who kills you, that's fer sure - I ain't goin' anywhere near you. But I sure as hell ain't lettin' an animal like you out of 'ere...'\nWith that he stalks away, his pace quickening...");
+                                        break;
+                                    }
+                                    else if (player.Traits.ContainsKey("hale, hot and hearty"))
+                                    {
+                                        Console.WriteLine("The rosewood door, despite its size and heaviness, jolts within its frame. The iron hinges holding it in place tremble, and a small cascade of stony dust breaks from the masonry of the doorway, cascading to your feet.\nThere's a yelp of surprise from the other side. You sense the jailor has nervously darted back from the door, before he recovers his composure. \n\t'You think you're tough, eh?' The jailor truculently retorts, doing his best to conceal his fright, 'well we'll just see how tough you are soon enough!'\nWith that the mysterious jailor stalks away back down what sounds like a long corridor.\nIn private, you nurse your hand. You won't be trying to break through *this* door again in a hurry...");
+                                    }
+                                    break;
+                                case 6:
+                                    Console.WriteLine("The rosewood door, despite its size and heaviness, jolts within its frame. The iron hinges holding it in place tremble, and a small cascade of stony dust breaks from the masonry of the doorway, cascading to your feet.\nThere's a yelp of surprise from the other side. You sense the jailor has nervously darted back from the door, before he recovers his composure. \n\t'You think you're tough, eh?' The jailor truculently retorts, doing his best to conceal his fright, 'well we'll just see how tough you are soon enough!'\nWith that the mysterious jailor stalks away back down what sounds like a long corridor.\nIn private, you nurse your hand. You won't be trying to break through *this* door again in a hurry...");
                                     break;
                                 default:
                                     Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");

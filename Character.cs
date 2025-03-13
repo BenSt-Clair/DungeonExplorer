@@ -494,7 +494,7 @@ namespace DungeonCrawler
                                         Console.WriteLine($"You rack your brains trying to come up with an escape from your prison. With a tincture of desperation you conclude the only way is to start a fire. Maybe, just maybe, you can ambush the guard when they try to put it out...\nIf they come to put it out.\nWith not a small number of misgivings winching around your tight chest, you feverishly begin trying to light the {chosenItem.Name} on fire with the brazier. However, the low flickering flame seems to burn with an unnatural frostiness. This is no ordinary flame but something magical, casting only chilly light into the room and sharing none of the heat you'd otherwise expect. The {chosenItem.Name} refuses to burn.\nIf you truly believe arson is your only means to escape, then you'll have to deploy some greater ingenuity, and do so before your time runs out...");
                                     }
                                     else if (chosenItem.Name == "magnifying glass") { }
-                                    else if (chosenItem.Name == "rusty chain-flail" && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "rosewood door") { }
+                                    else if (chosenItem.Name == "rusty chain-flail" && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "rosewood door" && !room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Description.Contains("dent")) { room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Description = room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Description + " You can see the dent left the last time you hammered against this door."; }
                                     else
                                     {
                                         Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
@@ -538,7 +538,7 @@ namespace DungeonCrawler
                                     
 
                                 }
-                                else if (chosenItem.Name == "rusty chain-flail" && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "rosewood door" ) { }
+                                else if (chosenItem.Name == "rusty chain-flail" && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "rosewood door" && !room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Description.Contains("dent")) { room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Description = room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Description + " You can see the dent left the last time you hammered against this door."; }
                                 else
                                 {
                                     Console.WriteLine($"You try using the {chosenItem.Name} on the {room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");

@@ -781,6 +781,25 @@ namespace DungeonCrawler
                             escapedRoom1 = true;
                             continue;
                         }
+                        
+                        if (!success[0] && success[1])
+                        {
+                            return;
+                        }
+                        
+                        else if (success[1])
+                        {
+                            Console.WriteLine("With the whole cell blazing around you, you flee through the door. A fiery haze billows in your wake as you throw yourself into a corridor and slam the rosewood door shut behind you.");
+                            if (player1.Inventory.Contains(bowlFragments)) { Console.WriteLine($"It's a moment before you realise your backpack is still smoking!\nOpening it up you scramble to save the contents, fishing out the {bowlFragments.Name} before they can burn everything, but it's too late. \nEverything inside your pack is burned and unusable!"); player1.Inventory.Clear(); Console.ReadKey(true); }
+
+                            escapedRoom1 = true;
+                            escapedThroughDoor = true;
+                            fieryEscape = true;
+                            foreach (Item x in player1.Inventory) { while (x.Name.Contains("blazing") || x.Name.Contains("fiery") || x.Name.Contains("burning") || x.Name.Contains("smouldering") || x.Name.Contains("smoking")) { x.Name = x.Name.Substring(x.Name.IndexOf(" ")).Trim(); } }
+                            foreach (Weapon x in player1.WeaponInventory) { while (x.Name.Contains("blazing") || x.Name.Contains("fiery") || x.Name.Contains("burning") || x.Name.Contains("smouldering") || x.Name.Contains("smoking")) { x.Name = x.Name.Substring(x.Name.IndexOf(" ")).Trim(); } }
+                            continue;
+                        }
+                        
                         try
                         {
                             if (player1.WeaponInventory[0].Equipped)
@@ -801,24 +820,8 @@ namespace DungeonCrawler
                             }
                         }
                         catch { }
-                        if (!success[0] && success[1])
-                        {
-                            return;
-                        }
                         
-                        else if (success[1])
-                        {
-                            Console.WriteLine("With the whole cell blazing around you, you flee through the door. A fiery haze billows in your wake as you throw yourself into a corridor and slam the rosewood door shut behind you.");
-                            if (player1.Inventory.Contains(bowlFragments)) { Console.WriteLine($"It's a moment before you realise your backpack is still smoking!\nOpening it up you scramble to save the contents, fishing out the {bowlFragments.Name} before they can burn everything, but it's too late. \nEverything inside your pack is burned and unusable!"); player1.Inventory.Clear(); Console.ReadKey(true); }
-
-                            escapedRoom1 = true;
-                            escapedThroughDoor = true;
-                            fieryEscape = true;
-                            foreach (Item x in player1.Inventory) { while (x.Name.Contains("blazing") || x.Name.Contains("fiery") || x.Name.Contains("burning") || x.Name.Contains("smouldering") || x.Name.Contains("smoking")) { x.Name = x.Name.Substring(x.Name.IndexOf(" ")).Trim(); } }
-                            foreach (Weapon x in player1.WeaponInventory) { while (x.Name.Contains("blazing") || x.Name.Contains("fiery") || x.Name.Contains("burning") || x.Name.Contains("smouldering") || x.Name.Contains("smoking")) { x.Name = x.Name.Substring(x.Name.IndexOf(" ")).Trim(); } }
-                            continue;
-                        }
-                        else if (room.FeatureList.Contains(holeInCeiling))
+                        if (room.FeatureList.Contains(holeInCeiling))
                         {
                             Console.WriteLine("Without further delay, you scramble up the mound of debris left by the hole and up into the next room.");
                             Console.ReadKey(true);
