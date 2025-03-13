@@ -303,10 +303,14 @@ namespace DungeonCrawler
         /// <param name="trialBattle"></param>
         /// <returns></returns>
 
-        public List<bool> UseItemOutsideCombat(Room room, Item musicBox, Item binkySkull, Item steelKey, Item note, Feature rosewoodChest, Feature holeInCeiling, Dictionary<Item, List<Player>> usesDictionaryItemChar, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Combat trialBattle = null)
+        public List<bool> UseItemOutsideCombat(Room room, Item musicBox, Item binkySkull, Item steelKey, Item note, Item jailorKeys, Feature rosewoodChest, Feature holeInCeiling, Dictionary<Item, List<Player>> usesDictionaryItemChar, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Monster monster, Combat battle = null)
         {
 
             List<bool> success = new List<bool> { false, false }; //{successful use of item, fire}
+            ///{false, false} = item used unsuccessfully
+            ///{true, false} = item used successfully
+            ///{true, true} = item used successfully to cause a fire and won fight.
+            ///{false, true} = caused fire but died in battle
             if (Inventory.Count > 0)
             {
                 Console.WriteLine("Which item in your pack do you wish to use?");
@@ -452,15 +456,26 @@ namespace DungeonCrawler
                             {
                                 if (chosenItem.Name == "rusty chain-flail")
                                 {
-                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, steelKey);
+                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, steelKey, null, null, jailorKeys);
+                                    List<Weapon> _weapons = new List<Weapon>();
+                                    List<Item> _weaponItem = new List<Item> { chosenItem};
+                                    _weapons = _weaponItem.Cast<Weapon>().ToList();
+                                    if (Inventory.Contains(jailorKeys))
+                                    {
+                                        return success;
+                                    }
+                                    else if (_weapons[0].Equipped)
+                                    {
+                                        return success;
+                                    }
                                 }
                                 else if (chosenItem.Name == "healing potion"|| chosenItem.Name=="Felix Felicis"|| chosenItem.Name=="elixir of feline guile")
                                 {
-                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, binkySkull, musicBox, note);
+                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, binkySkull, musicBox, note);
                                 }
                                 else
                                 {
-                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, null, musicBox, note);
+                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, null, musicBox, note);
                                 }
                                 if (!success[0])
                                 {
@@ -479,6 +494,7 @@ namespace DungeonCrawler
                                         Console.WriteLine($"You rack your brains trying to come up with an escape from your prison. With a tincture of desperation you conclude the only way is to start a fire. Maybe, just maybe, you can ambush the guard when they try to put it out...\nIf they come to put it out.\nWith not a small number of misgivings winching around your tight chest, you feverishly begin trying to light the {chosenItem.Name} on fire with the brazier. However, the low flickering flame seems to burn with an unnatural frostiness. This is no ordinary flame but something magical, casting only chilly light into the room and sharing none of the heat you'd otherwise expect. The {chosenItem.Name} refuses to burn.\nIf you truly believe arson is your only means to escape, then you'll have to deploy some greater ingenuity, and do so before your time runs out...");
                                     }
                                     else if (chosenItem.Name == "magnifying glass") { }
+                                    else if (chosenItem.Name == "rusty chain-flail" && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "rosewood door") { }
                                     else
                                     {
                                         Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
@@ -522,6 +538,7 @@ namespace DungeonCrawler
                                     
 
                                 }
+                                else if (chosenItem.Name == "rusty chain-flail" && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "rosewood door" ) { }
                                 else
                                 {
                                     Console.WriteLine($"You try using the {chosenItem.Name} on the {room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
@@ -538,7 +555,7 @@ namespace DungeonCrawler
                             }
                             try
                             {
-                                success = chosenItem.UseItem(chosenItem, Inventory[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, trialBattle);
+                                success = chosenItem.UseItem(chosenItem, Inventory[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, battle);
                                 if (!success[0] && success[1])
                                 {
                                     return success;
@@ -559,7 +576,7 @@ namespace DungeonCrawler
                         {
                             try
                             {
-                                success = chosenItem.UseItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, trialBattle);
+                                success = chosenItem.UseItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, battle);
                                 if (!success[0] && success[1])
                                 {
                                     return success;
@@ -664,6 +681,11 @@ namespace DungeonCrawler
                         continueSearch = false;
                         break;
                     }
+                }
+                if (!continueSearch)
+                {
+                    Console.WriteLine($"You finish rummaging through the {Name}'s effects.");
+                    continue;
                 }
                 alreadyStashed = false;
                 foreach (Item z in inventory)

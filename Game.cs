@@ -550,6 +550,7 @@ namespace DungeonCrawler
             Item FelixFelicis = new Item("Felix Felicis", "It bubbles, roils and froths within its bottle. You almost sense a quiver through the glass, like the crystalline liquid inside is trying to escape. The label on the side is illegible; someone has written over it with a shaky cursive, 'Don't drink it! Whatever you do, don't drink it! For the love of all that is holy, if you care for anyone around you keep the stopper on!!! ~ Yours sincerely, Merigold.'", true, "unshattered", 10, "Luck: Drink and accomplish your wildest dreams..."); // access to 'jinxed' critmisses for 1 battle only
             Item magnifyingGlass = new Item("magnifying glass", "Peering through its slightly misted lens objects appear at least three times their size. You wonder why the skeleton had hold of it...");
             Item bowlFragments = new Item("bowl fragments", "They're sharp. You best avoid stepping on them.", false, "shattered");
+            Item jailorKeys = new Item("jailor keys", "Such cast iron, heavy-duty keys and the ring they're found on seem typical of any prison worthy of the name - not that you'd know, of course.");
             List<Item> cellInventory = new List<Item> { rustyChains, halfOfCrackedBowl, otherHalfOfCrackedBowl, bowlFragments, garment };
 
             // Features of the room, some with items hidden upon or within them. Both
@@ -566,7 +567,7 @@ namespace DungeonCrawler
             List<Item> inBookcase = new List<Item> { note };
             Feature bookCase = new Feature("bookcase", "The ostensibly empty bookcase is a little worse for wear. One of it's shelves is lopsided. Another at the bottom has collapsed. Cobwebs span its dusty corners.", true, "searched", inBookcase);
             Feature holeInCeiling = new Feature("hole in the ceiling", "You gaze from the heap of debris that has buried the creature alive to the hole through the ceiling above. You bet you could climb the heap and enter the room above yours.");
-
+            List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys };
             // I instantiate a room with a list of items and features inside it and a description and room name
             List<Feature> cellfeatures = new List<Feature> { rosewoodDoor, rosewoodChest, bookCase, skeleton, leftbrazier, rightbrazier };
             Room room = new Room("dank cell", "The foreboding cell is bathed in the earthy glow of lit braziers, barely lighting cold stony walls, a heavy rosewood door studded with iron hinges, and only the sparsest of furnishings.\nThe door is set within the north wall, two flickering braziers casting orbs of low light either side of it so as to look like great fiery eyes watching you from the murk.\t\nTo the west wall there is a large chest, mingled with a cascade of rusted and disused iron shackles.\t\nTo the south wall is a small bookcase and some garments haphazardly strewn about you.\t\nTo the east wall is the last occupant; a skeleton with a permanent grin, bound fast to the wall by many interlocking heavy chains. It almost seems to watch you from dark wells where once there were its eyes. It holds something in its bony fist and something else glimmers from a place out of reach behind it.\t\t", cellInventory, cellfeatures);
@@ -740,89 +741,28 @@ namespace DungeonCrawler
                     else if (reply1 == 3)
                     {
                         c++;
-                        if (player1.Traits.ContainsKey("thespian"))
+                        
+                        
+                        if (c == 1 && player1.Traits.ContainsKey("friends with fairies") && !player1.Traits.ContainsKey("thespian"))
                         {
-                            Console.WriteLine("~~ Insert dialogue choices here that may lead to freedom or a fight ~~");
-                            
-                            test3.RunForCombat();
-                            if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling))
-                            {
-                                trialBattle.WonFight();
-                                if (room.FeatureList.Contains(holeInCeiling))
-                                {
-                                    while (true)
-                                    {
-                                        Console.WriteLine("You now have a choice! Will you... \n[1] Escape the room through the door your goblin jailor left unlocked?\n[2] Or will you instead escape through the hole left in the ceiling? ");
-                                        string answ3r = Console.ReadLine().Trim().ToLower();
-                                        if (string.IsNullOrWhiteSpace
-                                            (answ3r))
-                                        {
-                                            continue;
-                                        }
-                                        try
-                                        {
-                                            int answ3r1 = int.Parse(answ3r);
-                                            if (answ3r1 < 1 || answ3r1 > 2)
-                                            {
-                                                Console.WriteLine("Please enter either 1 or 2");
-                                                continue;
-                                            }
-                                            else if (answ3r1 == 1)
-                                            {
-                                                Console.WriteLine("You rush through the door to escape!");
-                                                Console.ReadKey(true);
-                                                escapedRoom1 = true;
-                                                break;
+                            Console.WriteLine("You march up to the door, put on your serious face, and set about yelling for succour. You bang on the door. You bang so hard you think eventually you might just bang your way through it. Then your jailor would be mourning the loss of this rosewood door... \nPfft... mourning...<titter>...wood. You roll on the floor in a fit of giggles. Your fairy friends nod their heads with approval.\n");
+                            Console.WriteLine("You waste precious minutes!");
+                            e++;
 
-                                            }
-                                            else if (answ3r1 == 2)
-                                            {
-                                                Console.WriteLine("You clamber up through the hole to escape!");
-                                                Console.ReadKey(true);
-                                                escapedRoom1 = true;
-                                                escapedThroughDoor = false;
-                                                break;
-                                            }
-                                        }
-                                        catch
-                                        {
-                                            Console.WriteLine("Please enter 1 or 2");
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("You rush through the door to escape!");
-                                    Console.ReadKey(true);
-                                    escapedRoom1 = true;
-                                    break;
-                                }
-
-                            }
-                            else { return; }
+                        }
+                        else if (player1.Traits.ContainsKey("friends with fairies") && !player1.Traits.ContainsKey("thespian"))
+                        {
+                            Console.WriteLine("You almost can't look at the door without a ripple of mirth shuddering through you. No... you must focus! You tug your own face into a grumpy frown, fighting the laughter.");
+                        }
+                        if (c == 1)
+                        {
+                            Console.WriteLine($"Somewhere not too far from beyond the confines of the {room.Name} a bestial guffaw can be heard. It seems whoever, or whatever, guards your cell cares little for your predicament.");
                         }
                         else
                         {
-                            if (c == 1 && player1.Traits.ContainsKey("friends with fairies") && !player1.Traits.ContainsKey("thespian"))
-                            {
-                                Console.WriteLine("You march up to the door, put on your serious face, and set about yelling for succour. You bang on the door. You bang so hard you think eventually you might just bang your way through it. Then your jailor would be mourning the loss of this rosewood door... \nPfft... mourning...<titter>...wood. You roll on the floor in a fit of giggles. Your fairy friends nod their heads with approval.\n");
-                                Console.WriteLine("You waste precious minutes!");
-                                e++;
-
-                            }
-                            else if (player1.Traits.ContainsKey("friends with fairies") && !player1.Traits.ContainsKey("thespian"))
-                            {
-                                Console.WriteLine("You almost can't look at the door without a ripple of mirth shuddering through you. No... you must focus! You tug your own face into a grumpy frown, fighting the laughter.");
-                            }
-                            if (c == 1)
-                            {
-                                Console.WriteLine($"Somewhere not too far from beyond the confines of the {room.Name} a bestial guffaw can be heard. It seems whoever, or whatever, guards your cell cares little for your predicament.");
-                            }
-                            else
-                            {
-                                Console.WriteLine($"Whatever creature lurks beyond the rosewood door does not respond or stir to your clamouring. They remain unconcerned.");
-                            }
+                            Console.WriteLine($"Whatever creature lurks beyond the rosewood door does not respond or stir to your clamouring. They remain unconcerned.");
                         }
+                        
                         Console.ReadKey(true);
 
                     }
@@ -834,7 +774,33 @@ namespace DungeonCrawler
                         e++;
                         List<bool> success = new List<bool>();
                         test3.RunForCombat();
-                        success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, note, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, trialBattle);
+                        success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                        if (player1.Inventory.Contains(jailorKeys))
+                        {
+                            escapedThroughDoor = true;
+                            escapedRoom1 = true;
+                            continue;
+                        }
+                        try
+                        {
+                            if (player1.WeaponInventory[0].Equipped)
+                            {
+                                if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, false, false))
+                                {
+                                    trialBattle.WonFight();
+                                    escapedThroughDoor = true;
+                                    escapedRoom1 = true;
+                                    player1.Unequip(player1.WeaponInventory);
+                                    continue;
+                                }
+                                else
+                                {
+                                    Console.ReadKey(true);
+                                    return;
+                                }
+                            }
+                        }
+                        catch { }
                         if (!success[0] && success[1])
                         {
                             return;
@@ -1015,11 +981,13 @@ namespace DungeonCrawler
                 if (fieryEscape)
                 {
                     Console.WriteLine("Looking back, the door will only hold for so long against the flames and time is not your friend. What will you do?");
+                    Console.ReadKey(true);
                     return;
                 }
                 else
                 {
                     Console.WriteLine("With the way ahead clear, what will you do?");
+                    Console.ReadKey(true);
                     return;
                 }
 
@@ -1027,6 +995,7 @@ namespace DungeonCrawler
             else
             {
                 Console.WriteLine("Finding yourself in a new room and on a new level of this perplexing (tower?), what will you decide to do next?");
+                Console.ReadKey(true);
                 return;
             }
 

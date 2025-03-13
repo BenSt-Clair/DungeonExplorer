@@ -288,7 +288,7 @@ namespace DungeonCrawler
         /// <param name="weaponInventory"></param>
         /// <param name="binkySkull"></param>
         /// <returns></returns>
-        public bool UseItem1(Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Item binkySkull = null, Item musicBox = null, Item note = null)
+        public bool UseItem1(Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Monster monster, Combat battle, Item binkySkull = null, Item musicBox = null, Item note = null, Item jailorKeys = null)
         {
             if (usesDictionary[item].Contains(feature))
             {
@@ -474,6 +474,805 @@ namespace DungeonCrawler
 
 
                     return true;
+
+                }
+                else if (item.Name=="rusty chain-flail" && feature.Name == "rosewood door" && !feature.Description.Contains("dent") )
+                {
+                    feature.Description = feature.Description + " You can see the dent left the last time you hammered against this door.";
+                    Dialogue goblin_RustyChains = new Dialogue(player, monster, battle, room);
+                    string description = $"You bang your {item.Name} incessantly against the {feature.Name}, clamouring for the guard's attention. Eventually, you hear footsteps pound up to your door...";
+                    string parlance = $"Oi! Wot you playin' at, meatbag? You wants to be chosen next, that it?' the owner's raspy, crude dialect berates you through the door. They let loose a sardonic chuckle. 'Coz if youse don't stop interrupting my game, well there's no end to the trouble your in for...";
+                    List<string> responses = new List<string> 
+                    { 
+                        "You demand to be released at once, or else you inform your jailor that they'll be sorry",
+                        "You tell your jailor that surely they can work something out, you're a bit strapped of cash at the moment but...",
+                        "You tell the jailor that there's been some sort of mistake - you're not who they're looking for...",
+                        "You interrogate the jailor as to the identity of this Curse-Breaker that the innkeep mentioned...",
+                        "You interrogate the jailor as to where you're being held",
+                        "You interrogate the jailor as to how you got here",
+                        "You interrogate the jailor as to what they're going to do to you"
+                        
+                    };
+                    if (player.Traits.ContainsKey("thespian"))
+                    {
+                        responses.Add("A game? With a winning smile you gallantly inquire what game the loveable, whimsical and not-at-all-brutish creature might be partaking in.");
+                    }
+                    if (player.Traits.ContainsKey("jinxed"))
+                    {
+                        responses.Add("You plead with the jailor that unless they let you out, you fear terrible, indescribable bad fortune will befall them all, and they'll be cursed with calamity after calamity because of your jinxed nature. It's in their own best interests really...");
+                    }
+                    int speech = goblin_RustyChains.Parle(description, parlance, responses);
+                    switch (speech) 
+                    {
+                        case 1:
+                            description = $"You hear a snort of derisive laughter through the {feature.Name}.";
+                            parlance = $"Oho! That's a good one, worgmeat! You got me all's aquiver! Bwa ha ha ha!";
+                            if (player.Traits.ContainsKey("jinxed"))
+                            {
+                                try { responses.Remove(responses[8]); }
+                                catch { responses.Remove(responses[7]); }
+                            }
+                            if (player.Traits.ContainsKey("thespian"))
+                            {
+                                responses.Remove(responses[7]);
+                            }
+                            responses.Remove(responses[2]);
+                            responses.Remove(responses[1]);
+                            responses.Remove(responses[0]);
+                            speech = goblin_RustyChains.Parle(description, parlance, responses);
+                            switch (speech)
+                            {
+                                case 1:
+                                    description = "";
+                                    Console.WriteLine($"'Pfft,' the jailor responds, 'I wouldn't worry none about it, Bootspittle. The master will be around soon enough to collect you. Once he does, you'll wish you woz back 'ere...'");
+                                    Console.WriteLine("You make to reply but before you can get another word in the jailor has already stalked away...");
+                                    break;
+                                case 2:
+                                    description = "The beastly jailor hesitates for just the slightest of moments.";
+                                    parlance = "None of your damn concern, Hoo-man.' he responds coolly. 'As far as your concerned the whole world exists right in your room - you ain't ever seein' nowhere else...";
+                                    responses.Remove(responses[1]);
+                                    speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                    switch (speech)
+                                    {
+                                        case 1:
+                                            Console.WriteLine($"'Pfft,' the jailor responds, 'I wouldn't worry none about it, Bootspittle. The master will be around soon enough to collect you. Once he does, you'll wish you woz back 'ere...'");
+                                            Console.WriteLine("You make to reply but before you can get another word in the jailor has already stalked away...");
+                                            break;
+                                        case 2:
+                                            Console.WriteLine("'You flew 'ere, sunshine,' the jailor chuckles, 'on a magic carpet with all the other princes and princesses, whisked away to meet prince charming.' the jailor's chuckle rolls into barks of caustic laughter, 'Oh, he's goin' to have his way with you, and that's for sure! Bwa ha ha ha...");
+                                            Console.WriteLine("You challenge him as to what that's supposed to mean, but the jailor has already stalked away from the door and out of earshot. You're left with as few answers as you arrived with...");
+                                            break;
+                                        case 3:
+                                            Console.WriteLine("'Who? Me?' The jailor responds obtusely. 'Why nothin' at all. Not unless you try to escape - or play that damnable infernal tune the last meatbag played!' the creature snarls, momentarily breaking their flippant facade. 'I still can't get that screech out of my head! Damned fleshbag died before revealing where he stashed the thing-.' the jailor catches himself. 'Not that it matters none to you, maggotfeed. It won't be long now 'til the master comes for you.'");
+                                            Console.WriteLine($"With that, the jailor stalks away, leaving you pondering just what they'd meant by that 'tune.' You eye the skeleton in the room, the previous 'fleshbag' who'd resided and died here. You wonder what secrets it holds...");
+                                            break;
+                                        default:
+                                            Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                            break;
+                                    }
+                                    break;
+                                case 3:
+                                    Console.WriteLine("'You flew 'ere, sunshine,' the jailor chuckles, 'on a magic carpet with all the other princes and princesses, whisked away to meet prince charming.' the jailor's chuckle rolls into barks of caustic laughter, 'Oh, he's goin' to have his way with you, and that's for sure! Bwa ha ha ha...");
+                                    Console.WriteLine("You challenge him as to what that's supposed to mean, but the jailor has already stalked away from the door and out of earshot. You're left with as few answers as you arrived with...");
+                                    break;
+                                case 4:
+                                    Console.WriteLine("'Who? Me?' The jailor responds obtusely. 'Why nothin' at all. Not unless you try to escape - or play that damnable infernal tune the last meatbag played!' the creature snarls, momentarily breaking their flippant facade. 'I still can't get that screech out of my head! Damned fleshbag died before revealing where he stashed the thing-.' the jailor catches himself. 'Not that it matters none to you, maggotfeed. It won't be long now 'til the master comes for you.'");
+                                    Console.WriteLine($"With that, the jailor stalks away, leaving you pondering just what they'd meant by that 'tune.' You eye the skeleton in the room, the previous 'fleshbag' who'd resided and died here. You wonder what secrets it holds...");
+                                    break;
+                                default:
+                                    Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                    break;
+
+                            }
+                            break;
+                        case 2:
+                            description = $"The end of your sentence is left hanging with an expectant pause...";
+                            parlance = $"Yeah?' the beastly jailor retorts at last, 'but wot?";
+                            if (player.Traits.ContainsKey("jinxed"))
+                            {
+                                try { responses.Remove(responses[8]); }
+                                catch { responses.Remove(responses[7]); }
+                            }
+                            if (player.Traits.ContainsKey("thespian"))
+                            {
+                                responses.Remove(responses[7]);
+                            }
+                            responses.Remove(responses[2]);
+                            responses.Remove(responses[1]);
+                            responses.Remove(responses[0]);
+                            responses.Insert(0, "Uh, come to think of it you weren't sure how you were going to finish that sentence...");
+                            speech = goblin_RustyChains.Parle(description, parlance, responses);
+                            switch (speech)
+                            {
+                                case 1:
+                                    Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                    break;
+                                case 2:
+                                    description = "";
+                                    Console.WriteLine($"'Pfft,' the jailor responds, 'I wouldn't worry none about it, Bootspittle. The master will be around soon enough to collect you. Once he does, you'll wish you woz back 'ere...'");
+                                    Console.WriteLine("You make to reply but before you can get another word in the jailor has already stalked away...");
+                                    break;
+                                case 3:
+                                    description = "The beastly jailor hesitates for just the slightest of moments.";
+                                    parlance = "None of your damn concern, Hoo-man.' he responds coolly. 'As far as your concerned the whole world exists right in your room - you ain't ever seein' nowhere else...";
+                                    responses.Remove(responses[1]);
+                                    responses.Remove(responses[0]);
+                                    speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                    switch (speech)
+                                    {
+                                        case 1:
+                                            Console.WriteLine($"'Pfft,' the jailor responds, 'I wouldn't worry none about it, Bootspittle. The master will be around soon enough to collect you. Once he does, you'll wish you woz back 'ere...'");
+                                            Console.WriteLine("You make to reply but before you can get another word in the jailor has already stalked away...");
+                                            break;
+                                        case 2:
+                                            Console.WriteLine("'You flew 'ere, sunshine,' the jailor chuckles, 'on a magic carpet with all the other princes and princesses, whisked away to meet prince charming.' the jailor's chuckle rolls into barks of caustic laughter, 'Oh, he's goin' to have his way with you, and that's for sure! Bwa ha ha ha...");
+                                            Console.WriteLine("You challenge him as to what that's supposed to mean, but the jailor has already stalked away from the door and out of earshot. You're left with as few answers as you arrived with...");
+                                            break;
+                                        case 3:
+                                            Console.WriteLine("'Who? Me?' The jailor responds obtusely. 'Why nothin' at all. Not unless you try to escape - or play that damnable infernal tune the last meatbag played!' the creature snarls, momentarily breaking their flippant facade. 'I still can't get that screech out of my head! Damned fleshbag died before revealing where he stashed the thing-.' the jailor catches himself. 'Not that it matters none to you, maggotfeed. It won't be long now 'til the master comes for you.'");
+                                            Console.WriteLine($"With that, the jailor stalks away, leaving you pondering just what they'd meant by that 'tune.' You eye the skeleton in the room, the previous 'fleshbag' who'd resided and died here. You wonder what secrets it holds...");
+                                            break;
+                                        default:
+                                            Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                            break;
+                                    }
+                                    break;
+                                case 4:
+                                    Console.WriteLine("'You flew 'ere, sunshine,' the jailor chuckles, 'on a magic carpet with all the other princes and princesses, whisked away to meet prince charming.' the jailor's chuckle rolls into barks of caustic laughter, 'Oh, he's goin' to have his way with you, and that's for sure! Bwa ha ha ha...");
+                                    Console.WriteLine("You challenge him as to what that's supposed to mean, but the jailor has already stalked away from the door and out of earshot. You're left with as few answers as you arrived with...");
+                                    break;
+                                case 5:
+                                    Console.WriteLine("'Who? Me?' The jailor responds obtusely. 'Why nothin' at all. Not unless you try to escape - or play that damnable infernal tune the last meatbag played!' the creature snarls, momentarily breaking their flippant facade. 'I still can't get that screech out of my head! Damned fleshbag died before revealing where he stashed the thing-.' the jailor catches himself. 'Not that it matters none to you, maggotfeed. It won't be long now 'til the master comes for you.'");
+                                    Console.WriteLine($"With that, the jailor stalks away, leaving you pondering just what they'd meant by that 'tune.' You eye the skeleton in the room, the previous 'fleshbag' who'd resided and died here. You wonder what secrets it holds...");
+                                    break;
+                                default:
+                                    Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                    break;
+
+                            }
+                            break;
+                        case 3:
+                            description = $"You hear a snort of derisive laughter through the {feature.Name}.";
+                            parlance = $"But of course you don't belong here, Footwart.' the jailor's voice takes on a glib, mocking tone. He seems distracted by something as he speaks, as though fishing his nose for bogeys. 'Didn't you hear? We got the wrong end of the stick on every one of youse prisoners in here.' He hawks and spits. 'We're shipping you all back come Too-sday, so don' you go worrying your pretty head about it...";
+                            if (player.Traits.ContainsKey("thespian"))
+                            {
+                                responses.Remove(responses[7]);
+                            }
+                            responses.Remove(responses[2]);
+                            responses.Remove(responses[1]);
+                            responses.Remove(responses[0]);
+                            speech = goblin_RustyChains.Parle(description, parlance, responses);
+                            switch (speech)
+                            {
+                                case 1:
+                                    description = "";
+                                    Console.WriteLine($"'Pfft,' the jailor responds, 'I wouldn't worry none about it, Bootspittle. The master will be around soon enough to collect you. Once he does, you'll wish you woz back 'ere...'");
+                                    Console.WriteLine("You make to reply but before you can get another word in the jailor has already stalked away...");
+                                    break;
+                                case 2:
+                                    description = "The beastly jailor hesitates for just the slightest of moments.";
+                                    parlance = "None of your damn concern, Hoo-man.' he responds coolly. 'As far as your concerned the whole world exists right in your room - you ain't ever seein' nowhere else...";
+                                    responses.Remove(responses[1]);
+                                    speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                    switch (speech)
+                                    {
+                                        case 1:
+                                            Console.WriteLine($"'Pfft,' the jailor responds, 'I wouldn't worry none about it, Bootspittle. The master will be around soon enough to collect you. Once he does, you'll wish you woz back 'ere...'");
+                                            Console.WriteLine("You make to reply but before you can get another word in the jailor has already stalked away...");
+                                            break;
+                                        case 2:
+                                            Console.WriteLine("'You flew 'ere, sunshine,' the jailor chuckles, 'on a magic carpet with all the other princes and princesses, whisked away to meet prince charming.' the jailor's chuckle rolls into barks of caustic laughter, 'Oh, he's goin' to have his way with you, and that's for sure! Bwa ha ha ha...");
+                                            Console.WriteLine("You challenge him as to what that's supposed to mean, but the jailor has already stalked away from the door and out of earshot. You're left with as few answers as you arrived with...");
+                                            break;
+                                        case 3:
+                                            Console.WriteLine("'Who? Me?' The jailor responds obtusely. 'Why nothin' at all. Not unless you try to escape - or play that damnable infernal tune the last meatbag played!' the creature snarls, momentarily breaking their flippant facade. 'I still can't get that screech out of my head! Damned fleshbag died before revealing where he stashed the thing-.' the jailor catches himself. 'Not that it matters none to you, maggotfeed. It won't be long now 'til the master comes for you.'");
+                                            Console.WriteLine($"With that, the jailor stalks away, leaving you pondering just what they'd meant by that 'tune.' You eye the skeleton in the room, the previous 'fleshbag' who'd resided and died here. You wonder what secrets it holds...");
+                                            break;
+                                        default:
+                                            Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                            break;
+                                    }
+                                    break;
+                                case 3:
+                                    Console.WriteLine("'You flew 'ere, sunshine,' the jailor chuckles, 'on a magic carpet with all the other princes and princesses, whisked away to meet prince charming.' the jailor's chuckle rolls into barks of caustic laughter, 'Oh, he's goin' to have his way with you, and that's for sure! Bwa ha ha ha...");
+                                    Console.WriteLine("You challenge him as to what that's supposed to mean, but the jailor has already stalked away from the door and out of earshot. You're left with as few answers as you arrived with...");
+                                    break;
+                                case 4:
+                                    Console.WriteLine("'Who? Me?' The jailor responds obtusely. 'Why nothin' at all. Not unless you try to escape - or play that damnable infernal tune the last meatbag played!' the creature snarls, momentarily breaking their flippant facade. 'I still can't get that screech out of my head! Damned fleshbag died before revealing where he stashed the thing-.' the jailor catches himself. 'Not that it matters none to you, maggotfeed. It won't be long now 'til the master comes for you.'");
+                                    Console.WriteLine($"With that, the jailor stalks away, leaving you pondering just what they'd meant by that 'tune.' You eye the skeleton in the room, the previous 'fleshbag' who'd resided and died here. You wonder what secrets it holds...");
+                                    break;
+                                case 5:
+                                    description = "Your statement is so self-assured in the sheer magnitude of your own bad luck that the jailor pauses for a doubtful moment. \nIt's a doubt that they wish they could expunge with more familiar incredulity, if only it weren't for how your words seem unshakable. Perhaps the jailor is of the superstitious type...";
+                                    parlance = "Yeah?' a mote of caution laced through their words, 'Jinxed how?";
+                                    responses = new List<string>
+                                    {
+                                        "You recount the time you mixed drinks at a party and the whole brewery exploded like a firework display...",
+                                        "You reminisce when a humble bridgekeeper asked you what the air speed velocity of an unladen swallow was, and he was suddenly launched twenty feet into the air...",
+                                        "You remember your first battle when you were... *ahem* ...preoccupied behind some bushes. Some bugger tried to steal your horse so you snuck up and beheaded them, only to discover it was your own king...",
+                                        "You ruminate on the time you couldn't stop snickering at the name of your commander's fiend, Biggus Dicus. He had everyone executed for insubordinate giggling just after you excused yourself..."
+                                    };
+                                    speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                    switch (speech)
+                                    {
+                                        case 1:
+                                            Console.WriteLine("The jailor sniffs.'Yeah, well, don't worry. I won't be handing you my wineskin anytime soon, so I think we'll be safe...'");
+                                            Console.WriteLine("You make to reply but before you can get another word in the jailor has already stalked away...");
+                                            break;
+                                        case 2:
+                                            Console.WriteLine("'That makes no sense...' the jailor responds, 'do you mean an African swallow or a European swallow?'");
+                                            Console.WriteLine("You respond that the bridgekeeper didn't know that either...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("'So..?' you say.");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("'Wot?' is the jailor's distracted reply.");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("'Can I go,' you ask. 'You know how it is' you say. You tell him you've got places to go people to see...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("'Yeah, well, I tell's you wot,' the goblin replies, 'if I go hurtlin' through the air, maybe catapulted by one of these loose floorboards the damn carpenter should've blahdy well fixed by now, you'll be free to go. Until then...'");
+                                            
+                                            Console.WriteLine("Without further ado, you hear the jailor stalk away somewhere well beyond the door\nDamn! You thought you had him for a second...");
+                                            Console.ReadKey(true);
+                                            break;
+                                        case 3:
+                                            Console.WriteLine("'A regicide, eh?' the jailor remarks, 'sounds like you would fit in with half the blokes in our mercenary company...");
+                                            Console.WriteLine("Without further ado, you hear the jailor stalk away somewhere well beyond the door");
+                                            break;
+                                        case 4:
+                                            Console.WriteLine("For a moment you wonder if the jailor has tip-toed away, then you hear a stifled snicker. Soon the snicker bubbles into a muffled titter of delight. This in turn rolls into a gushing babble of laughs, before the jailor starts wheezing, clearly out of breath as his lungs ache for air amidst barks of raucous mirth.");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("'Biggus...' he wheezes, collapsing to the floor just outside your cell, '...oh god...Diccus, Bwa Ha ~ can't breathe... ha!'");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("The jailor dies.");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("You look down and find the jailor's keys are just peeping through the gap under the door. With a happy-go-lucky shrug, you manage to purloin them from your captor and open the door to escape! \nYou find the dead goblin just by the foot of your door, it's face frozen in a rictus of half way between terror and hilarity.");
+                                            battle.WonFight();
+                                            inventory.Add(jailorKeys);
+                                            return false;
+                                        default:
+                                            Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                            break;
+                                    }
+                                    break;
+                                default:
+                                    Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                    break;
+
+                            }
+                            break;
+                        case 4:
+                            Console.WriteLine($"'Pfft,' the jailor responds, 'I wouldn't worry none about it, Bootspittle. The master will be around soon enough to collect you. Once he does, you'll wish you woz back 'ere...'");
+                            Console.WriteLine("You make to reply but before you can get another word in the jailor has already stalked away...");
+                            break;
+                        case 5:
+                            description = "The beastly jailor hesitates for just the slightest of moments.";
+                            parlance = "None of your damn concern, Hoo-man.' he responds coolly. 'As far as your concerned the whole world exists right in your room - you ain't ever seein' nowhere else...";
+                            if (player.Traits.ContainsKey("jinxed"))
+                            {
+                                try { responses.Remove(responses[8]); }
+                                catch { responses.Remove(responses[7]); }
+                            }
+                            if (player.Traits.ContainsKey("thespian"))
+                            {
+                                responses.Remove(responses[7]);
+                            }
+                            responses.Remove(responses[2]);
+                            responses.Remove(responses[1]);
+                            responses.Remove(responses[0]);
+                            responses.Remove(responses[1]);
+                            speech = goblin_RustyChains.Parle(description, parlance, responses);
+                            switch (speech)
+                            {
+                                case 1:
+                                    Console.WriteLine($"'Pfft,' the jailor responds, 'I wouldn't worry none about it, Bootspittle. The master will be around soon enough to collect you. Once he does, you'll wish you woz back 'ere...'");
+                                    Console.WriteLine("You make to reply but before you can get another word in the jailor has already stalked away...");
+                                    break;
+                                case 2:
+                                    Console.WriteLine("'You flew 'ere, sunshine,' the jailor chuckles, 'on a magic carpet with all the other princes and princesses, whisked away to meet prince charming.' the jailor's chuckle rolls into barks of caustic laughter, 'Oh, he's goin' to have his way with you, and that's for sure! Bwa ha ha ha...");
+                                    Console.WriteLine("You challenge him as to what that's supposed to mean, but the jailor has already stalked away from the door and out of earshot. You're left with as few answers as you arrived with...");
+                                    break;
+                                case 3:
+                                    Console.WriteLine("'Who? Me?' The jailor responds obtusely. 'Why nothin' at all. Not unless you try to escape - or play that damnable infernal tune the last meatbag played!' the creature snarls, momentarily breaking their flippant facade. 'I still can't get that screech out of my head! Damned fleshbag died before revealing where he stashed the thing-.' the jailor catches himself. 'Not that it matters none to you, maggotfeed. It won't be long now 'til the master comes for you.'");
+                                    Console.WriteLine($"With that, the jailor stalks away, leaving you pondering just what they'd meant by that 'tune.' You eye the skeleton in the room, the previous 'fleshbag' who'd resided and died here. You wonder what secrets it holds...");
+                                    break;
+                                default:
+                                    Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                    break;
+                            }
+                            break;
+                        case 6:
+                            Console.WriteLine("'You flew 'ere, sunshine,' the jailor chuckles, 'on a magic carpet with all the other princes and princesses, whisked away to meet prince charming.' the jailor's chuckle rolls into barks of caustic laughter, 'Oh, he's goin' to have his way with you, and that's for sure! Bwa ha ha ha...");
+                            Console.WriteLine("You challenge him as to what that's supposed to mean, but the jailor has already stalked away from the door and out of earshot. You're left with as few answers as you arrived with...");
+                            break;
+                        case 7:
+                            Console.WriteLine("'Who? Me?' The jailor responds obtusely. 'Why nothin' at all. Not unless you try to escape - or play that damnable infernal tune the last meatbag played!' the creature snarls, momentarily breaking their flippant facade. 'I still can't get that screech out of my head! Damned fleshbag died before revealing where he stashed the thing-.' the jailor catches himself. 'Not that it matters none to you, maggotfeed. It won't be long now 'til the master comes for you.'");
+                            Console.WriteLine($"With that, the jailor stalks away, leaving you pondering just what they'd meant by that 'tune.' You eye the skeleton in the room, the previous 'fleshbag' who'd resided and died here. You wonder what secrets it holds...");
+                            break;
+                        case 8:
+                            if (player.Traits.ContainsKey("thespian"))
+                            {
+                                description = $"The jailor seems taken aback by your flattery. You can imagine them preening themselves on the other side of the rosewood door.";
+                                parlance = $"Coin flipping,' the jailor sniffs. 'Lads and me are 'aving a game of it through in the armoury...";
+                                responses.Clear();
+                                responses.Add("Coin flipping? You scoff. You ask why they don't play with cards...");
+                                responses.Add("You ponder openly about the armoury and the existence of weapons close by...");
+                                responses.Add("You amiably ask if they're having any luck with it...");
+                                responses.Add("Lads? Plural? You wonder aloud how many others are outside this room guarding your cell...");
+                                speech = goblin_RustyChains.Parle(description , parlance, responses);
+                                switch(speech)
+                                {
+                                    case 1:
+                                        Console.WriteLine("The goblin's tone becomes icy. \n\t'Obviously we don't 'ave cards, do we, Worgmeat! You think we're some sorta fancy gentleman's club 'round 'ere?' the jailor hawks and spits. 'Why don' you go back to waiting 'til we skin yer hide. I've a feeling the master will come round for you shortly...'");
+                                        Console.WriteLine("Before you can say another word, the jailor stalks away...");
+                                        Console.ReadKey(true);
+                                        break;
+                                    case 2:
+                                        description = "You imagine the rather uncouth jailor narrowing its eyes shrewdly just beyond the door.";
+                                        parlance = "Oh sure!' the goblin remarks craftily, 'We've got ourselves an hooge arsenal up the stairs from 'ere. Want to see?";
+                                        responses.Clear();
+                                        responses.Add("You tell the wonderful jailor that his suggestion is in no uncertain terms a capital idea that you'd be sure would be mutually beneficial to all... Oh wait, he's not serious, is he?");
+                                        responses.Add("You make a tentative inquiry; the jailor wouldn't be pulling your leg, would they?");
+                                        speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                        switch (speech)
+                                        {
+                                            case 1:
+                                                description = "The jailor bursts out laughing.";
+                                                parlance = "Had you goin' there didn't I, Maggotfeed! Bwa ha ha ha!' then the jailor's tone drops like lead. 'Nah. I like youse. But it ain't my job's worth to go around fave-or-a-tizin' none of my prisoners.";
+                                                responses.Clear();
+                                                responses.Add("You interrogate the jailor as to the identity of this Curse-Breaker that the innkeep mentioned...");
+                                                responses.Add("You interrogate the jailor as to where you're being held");
+                                                responses.Add("You interrogate the jailor as to how you got here");
+                                                responses.Add("You interrogate the jailor as to what they're going to do to you");
+                                                speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                                switch (speech)
+                                                {
+                                                    case 1:
+                                                        Console.WriteLine($"'Pfft,' the jailor responds, 'I wouldn't worry none about it, Bootspittle. The master will be around soon enough to collect you. Once he does, you'll wish you woz back 'ere...'");
+                                                        Console.WriteLine("You make to reply but before you can get another word in the jailor has already stalked away...");
+                                                        break;
+                                                    case 2:
+                                                        description = "The beastly jailor hesitates for just the slightest of moments.";
+                                                        parlance = "None of your damn concern, Hoo-man.' he responds coolly. 'As far as your concerned the whole world exists right in your room - you ain't ever seein' nowhere else...";
+                                                        responses.Remove(responses[1]);
+                                                        speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                                        switch (speech)
+                                                        {
+                                                            case 1:
+                                                                Console.WriteLine($"'Pfft,' the jailor responds, 'I wouldn't worry none about it, Bootspittle. The master will be around soon enough to collect you. Once he does, you'll wish you woz back 'ere...'");
+                                                                Console.WriteLine("You make to reply but before you can get another word in the jailor has already stalked away...");
+                                                                break;
+                                                            case 2:
+                                                                Console.WriteLine("'You flew 'ere, sunshine,' the jailor chuckles, 'on a magic carpet with all the other princes and princesses, whisked away to meet prince charming.' the jailor's chuckle rolls into barks of caustic laughter, 'Oh, he's goin' to have his way with you, and that's for sure! Bwa ha ha ha...");
+                                                                Console.WriteLine("You challenge him as to what that's supposed to mean, but the jailor has already stalked away from the door and out of earshot. You're left with as few answers as you arrived with...");
+                                                                break;
+                                                            case 3:
+                                                                Console.WriteLine("'Who? Me?' The jailor responds obtusely. 'Why nothin' at all. Not unless you try to escape - or play that damnable infernal tune the last meatbag played!' the creature snarls, momentarily breaking their flippant facade. 'I still can't get that screech out of my head! Damned fleshbag died before revealing where he stashed the thing-.' the jailor catches himself. 'Not that it matters none to you, maggotfeed. It won't be long now 'til the master comes for you.'");
+                                                                Console.WriteLine($"With that, the jailor stalks away, leaving you pondering just what they'd meant by that 'tune.' You eye the skeleton in the room, the previous 'fleshbag' who'd resided and died here. You wonder what secrets it holds...");
+                                                                break;
+                                                            default:
+                                                                Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                                                break;
+                                                        }
+                                                        break;
+                                                    case 3:
+                                                        Console.WriteLine("'You flew 'ere, sunshine,' the jailor chuckles, 'on a magic carpet with all the other princes and princesses, whisked away to meet prince charming.' the jailor's chuckle rolls into barks of caustic laughter, 'Oh, he's goin' to have his way with you, and that's for sure! Bwa ha ha ha...");
+                                                        Console.WriteLine("You challenge him as to what that's supposed to mean, but the jailor has already stalked away from the door and out of earshot. You're left with as few answers as you arrived with...");
+                                                        break;
+                                                    case 4:
+                                                        Console.WriteLine("'Who? Me?' The jailor responds obtusely. 'Why nothin' at all. Not unless you try to escape - or play that damnable infernal tune the last meatbag played!' the creature snarls, momentarily breaking their flippant facade. 'I still can't get that screech out of my head! Damned fleshbag died before revealing where he stashed the thing-.' the jailor catches himself. 'Not that it matters none to you, maggotfeed. It won't be long now 'til the master comes for you.'");
+                                                        Console.WriteLine($"With that, the jailor stalks away, leaving you pondering just what they'd meant by that 'tune.' You eye the skeleton in the room, the previous 'fleshbag' who'd resided and died here. You wonder what secrets it holds...");
+                                                        break;
+                                                    default:
+                                                        Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                                        break;
+                                                }
+                                                break;
+                                            default:
+                                                Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                                break;
+                                        }
+                                        break;
+                                    case 3:
+                                        description = "The jailor perks up.";
+                                        parlance = "Winnin' big I am, you betcha,' he remarks gaily. 'Wouldn' mind either way to be honest, o' course. Just so longs as I gets that music box's tune out of my head...' \nThe jailor's tone descends into an irascible grumble from which you discern only snippets of meaning, 'Damn prisoner...in that room...stashed away somewhere...when I find it I'll...SMASH! SMASH!...";
+                                        responses.Clear();
+                                        responses.Add("You bluff that you found this music box in question, you think the tune's delightful...");
+                                        responses.Add("You claim you know the whereabouts of this music box. For a price, you'll tell him where it is... ");
+                                        responses.Add("You state that you could help him look for the music box in the room, you might already have found some clues as to where it's hidden...");
+                                        responses.Add("You choose to keep the strange jailor sweet and ask him how much exactly he's won so far...");
+                                        speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                        switch (speech)
+                                        {
+                                            case 1:
+                                                Console.WriteLine("The jailor chortles. \n\t'Trust me, Bootspittle, had you found that music box and played it, I'd 'ave already heard it, barged into that cosy cell of yours and run you through with my scimitar. Nice try though...' \nBefore you can get another word in, he's already strode away laughing... ");
+                                                break;
+                                            case 2:
+                                                description = "The jailor shrewdly weighs your words, but they cannot detect a lie in them.";
+                                                parlance = "Oh yeah?' they reply cautiously, 'and what might this price be?";
+                                                responses.Clear();
+                                                responses.Add("You tell the jailor that you want to fight him. If he doesn't co-operate you'll play the music box's tune until they capitulate...");
+                                                responses.Add("You say you want out of this cell and you don't want any alarms raised afterwards...");
+                                                responses.Add("You tell them you want to play one game; a coin flip for your freedom from this cell and the goblin's freedom from the music box's tune...");
+                                                speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                                switch (speech)
+                                                {
+                                                    case 1:
+                                                        Console.WriteLine("The goblin balks. \n\t'No! Don't play that tune! Urghh, that sentimental ditty makes my ears bleed! You play that tune and your dead, Worgmeat!'");
+                                                        Console.ReadKey(true);
+                                                        Console.WriteLine("You ask him if that means you both have a deal. You claim you're moments away from opening the music box...");
+                                                        Console.ReadKey(true);
+                                                        Console.WriteLine("\t'Yes! You have a deal,' the jailor snarls. 'I hope you know what you're in for, Footwart, 'cause youse about to get it!'");
+                                                        Console.ReadKey(true);
+                                                        Console.WriteLine("You take a step away from the door, look to you not-so-trusty chain-flail and feel a tincture of dread as you brace yourself for the fight for your freedom. As the tumblers jostle and a boot kicks the door open, you know your very life hinges on being the warrior you'd hitherto only pretended to be...");
+                                                        Console.ReadKey(true);
+                                                        List<Item> weaponItems = new List<Item>();
+                                                        List<Weapon> weapons = new List<Weapon>();
+                                                        weaponItems.Add(item);
+                                                        weapons = weaponItems.Cast<Weapon>().ToList();
+                                                        player.Equip(weapons[0], player.WeaponInventory, player);
+                                                        return false;
+                                                    case 2:
+                                                        Console.WriteLine("'Wot? You think I'm gonna let you walk out of 'ere? Just like that?' the jailor's tone suddenly becomes deadly and foreboding. 'Here's wot's goin' to happen, Worgmeat, you're goin' to sit in that cell nice and quiet-like, or else I'm gonna run you through with this 'ere sword. Got it? The moment I hear that tune, yer dead!'\nAnd with that the jailor stalks away and out of earshot...");
+                                                        Console.ReadKey(true);
+                                                        break;
+                                                    case 3:
+                                                        description = "The jailor is intrigued.";
+                                                        parlance = "And just how do I know you're not goin' to mug me the moment I pass through that door?";
+                                                        responses.Clear();
+                                                        responses.Add("You answer that the jailor doesn't have to. You trust them to flip the coin themselves and call it honestly, after all you haven't any coins on you...");
+                                                        responses.Add("You appeal to your jailor to be reasonable, after all, you're unarmed...");
+                                                        responses.Add("You ask whether the jailor really thinks you'd attack him. Where's the trust?");
+                                                        speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                                        switch (speech)
+                                                        {
+                                                            case 1:
+                                                                Console.WriteLine("\t'Alright then, Turnip-breath, youse gots yourself a deal,' the pleased jailor says. You can hear him slyly rubbing his hands with glee. 'Wot will it be? Heads or Tails?'");
+                                                                Console.ReadKey(true);
+                                                                Console.WriteLine("You casually respond that if he flips heads you'll win and if he flips tails he'll lose. Fair?");
+                                                                Console.WriteLine("\t'Heh heh. Golden,' the greedy jailor replies, flipping the coin. You hear it sonorously twirl through the air before clattering upon the floor...");
+                                                                Console.ReadKey(true);
+                                                                Console.WriteLine("You calmly inquire how it landed as you inspect your fingernails.");
+                                                                Console.ReadKey(true);
+                                                                Console.WriteLine("\t'TAILS!' the jailor roars with triumph. Before he has a chance to give you any commiserations you quickly remind him, 'tails he loses.'");
+                                                                Console.ReadKey(true);
+                                                                Console.WriteLine("\t'Eh? But... wot?' Then the jailor suddenly clamours, 'no, no, i mean heads, i mean... Ah, damnit all!'\nYou hear the tumblers of the rosewood door clinking as the jailor - a rather hideous goblin - opens your door.\n\t'Here, get out of my hair, before I change my mind! Blahdy coins!'");
+                                                                Console.ReadKey(true);
+                                                                Console.WriteLine("You decide not to wait for the goblin to figure out your trick, nor that you managed to purloin his jail keys from right under his nose, as he stomps moodily out of sight. Now you're free, you need to get out of here. Fast...");
+                                                                Console.ReadKey(true);
+                                                                player.Inventory.Add(jailorKeys);
+                                                                return false;
+                                                            case 2:
+                                                                Console.WriteLine("The mysterious jailor only guffaws as he leaves you to your dank cell\n\t'You think I wos born yesterday?' he calls behind him...");
+                                                                break;
+                                                            case 3:
+                                                                Console.WriteLine("The mysterious jailor only guffaws as he leaves you to your dank cell\n\t'In your dreams, Maggotfeed,' he calls as he stomps away...");
+                                                                break;
+                                                            default:
+                                                                Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                                                break;
+                                                        }
+                                                        break;
+                                                    default:
+                                                        Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                                        break;
+
+                                                }
+                                                break;
+
+                                            case 3:
+                                                Console.WriteLine("'Pfft,' the jailor scoffs. 'I've looked in that room for days before your ugly mug showed up there. If I can't find it, Wormfood, then what chance have you?'\nThe goblin strides away cackling before you can utter another word.");
+                                                break;
+                                            case 4:
+                                                Console.WriteLine("You and the alternatively-cultivated jailor embark on a lengthy palaver, delighting in each other's company. When the jailor at last leaves, it is with a spring in his step and a song in his heart. You hear him croaking tunelessly, 'I'm in the money, i'm in the money, spend it, lend it, send it, rollin' along...' as he descends down a lengthy corridor. \nYou get a lovely warm feeling of satisfaction from cheering up your homicidal captor.");
+                                                break;
+                                            default:
+                                                Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                                break;
+                                        }
+                                        break;
+                                    case 4:
+                                        description = "The somewhat inelegant but surprisingly loquacious jailor continues absent-mindedly running their mouth.";
+                                        parlance = "Yeah,' he remarks, 'They're all up the stairs, a ways from 'ere. Makes for bad company most of 'em but even with the gnoll slavering over the coins, its still better than playing with that todger, Meri-.'\nThe jailor abruptly catches themselves.\n'Oi, wots your game? None of this will help you none. Your deadmeat, trollbreath!";
+                                        responses.Remove(responses[3]);
+                                        responses.Remove(responses[2]);
+                                        responses.Add("You deftly change topic, amiably asking if they've had any luck in their game against these characters...");
+                                        speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                        switch (speech)
+                                        {
+                                            case 1:
+                                                Console.WriteLine("The goblin's tone becomes icy. \n\t'Obviously we don't 'ave cards, do we, Worgmeat! You think we're some sorta fancy gentleman's club 'round 'ere?' the jailor hawks and spits. 'Why don' you go back to waiting 'til we skin yer hide. I've a feeling the master will come round for you shortly...'");
+                                                Console.WriteLine("Before you can say another word, the jailor stalks away...");
+                                                Console.ReadKey(true);
+                                                break;
+                                            case 2:
+                                                description = "You imagine the rather uncouth jailor narrowing its eyes shrewdly just beyond the door.";
+                                                parlance = "Oh sure!' the goblin remarks craftily, 'We've got ourselves an hooge arsenal up the stairs from 'ere. Want to see?";
+                                                responses.Clear();
+                                                responses.Add("You tell the wonderful jailor that his suggestion is in no uncertain terms a capital idea that you'd be sure would be mutually beneficial to all... Oh wait, he's not serious, is he?");
+                                                responses.Add("You make a tentative inquiry; the jailor wouldn't be pulling your leg, would they?");
+                                                speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                                switch (speech)
+                                                {
+                                                    case 1:
+                                                        description = "The jailor bursts out laughing.";
+                                                        parlance = "Had you goin' there didn't I, Maggotfeed! Bwa ha ha ha!' then the jailor's tone drops like lead. 'Nah. I like youse. But it ain't my job's worth to go around fave-or-a-tizin' none of my prisoners.";
+                                                        responses.Clear();
+                                                        responses.Add("You interrogate the jailor as to the identity of this Curse-Breaker that the innkeep mentioned...");
+                                                        responses.Add("You interrogate the jailor as to where you're being held");
+                                                        responses.Add("You interrogate the jailor as to how you got here");
+                                                        responses.Add("You interrogate the jailor as to what they're going to do to you");
+                                                        speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                                        switch (speech)
+                                                        {
+                                                            case 1:
+                                                                Console.WriteLine($"'Pfft,' the jailor responds, 'I wouldn't worry none about it, Bootspittle. The master will be around soon enough to collect you. Once he does, you'll wish you woz back 'ere...'");
+                                                                Console.WriteLine("You make to reply but before you can get another word in the jailor has already stalked away...");
+                                                                break;
+                                                            case 2:
+                                                                description = "The beastly jailor hesitates for just the slightest of moments.";
+                                                                parlance = "None of your damn concern, Hoo-man.' he responds coolly. 'As far as your concerned the whole world exists right in your room - you ain't ever seein' nowhere else...";
+                                                                responses.Remove(responses[1]);
+                                                                speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                                                switch (speech)
+                                                                {
+                                                                    case 1:
+                                                                        Console.WriteLine($"'Pfft,' the jailor responds, 'I wouldn't worry none about it, Bootspittle. The master will be around soon enough to collect you. Once he does, you'll wish you woz back 'ere...'");
+                                                                        Console.WriteLine("You make to reply but before you can get another word in the jailor has already stalked away...");
+                                                                        break;
+                                                                    case 2:
+                                                                        Console.WriteLine("'You flew 'ere, sunshine,' the jailor chuckles, 'on a magic carpet with all the other princes and princesses, whisked away to meet prince charming.' the jailor's chuckle rolls into barks of caustic laughter, 'Oh, he's goin' to have his way with you, and that's for sure! Bwa ha ha ha...");
+                                                                        Console.WriteLine("You challenge him as to what that's supposed to mean, but the jailor has already stalked away from the door and out of earshot. You're left with as few answers as you arrived with...");
+                                                                        break;
+                                                                    case 3:
+                                                                        Console.WriteLine("'Who? Me?' The jailor responds obtusely. 'Why nothin' at all. Not unless you try to escape - or play that damnable infernal tune the last meatbag played!' the creature snarls, momentarily breaking their flippant facade. 'I still can't get that screech out of my head! Damned fleshbag died before revealing where he stashed the thing-.' the jailor catches himself. 'Not that it matters none to you, maggotfeed. It won't be long now 'til the master comes for you.'");
+                                                                        Console.WriteLine($"With that, the jailor stalks away, leaving you pondering just what they'd meant by that 'tune.' You eye the skeleton in the room, the previous 'fleshbag' who'd resided and died here. You wonder what secrets it holds...");
+                                                                        break;
+                                                                    default:
+                                                                        Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                                                        break;
+                                                                }
+                                                                break;
+                                                            case 3:
+                                                                Console.WriteLine("'You flew 'ere, sunshine,' the jailor chuckles, 'on a magic carpet with all the other princes and princesses, whisked away to meet prince charming.' the jailor's chuckle rolls into barks of caustic laughter, 'Oh, he's goin' to have his way with you, and that's for sure! Bwa ha ha ha...");
+                                                                Console.WriteLine("You challenge him as to what that's supposed to mean, but the jailor has already stalked away from the door and out of earshot. You're left with as few answers as you arrived with...");
+                                                                break;
+                                                            case 4:
+                                                                Console.WriteLine("'Who? Me?' The jailor responds obtusely. 'Why nothin' at all. Not unless you try to escape - or play that damnable infernal tune the last meatbag played!' the creature snarls, momentarily breaking their flippant facade. 'I still can't get that screech out of my head! Damned fleshbag died before revealing where he stashed the thing-.' the jailor catches himself. 'Not that it matters none to you, maggotfeed. It won't be long now 'til the master comes for you.'");
+                                                                Console.WriteLine($"With that, the jailor stalks away, leaving you pondering just what they'd meant by that 'tune.' You eye the skeleton in the room, the previous 'fleshbag' who'd resided and died here. You wonder what secrets it holds...");
+                                                                break;
+                                                            default:
+                                                                Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                                                break;
+                                                        }
+                                                        break;
+                                                    default:
+                                                        Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                                        break;
+                                                }
+                                                break;
+                                            case 3:
+                                                description = "The jailor perks up.";
+                                                parlance = "Winnin' big I am, you betcha,' he remarks gaily. 'Wouldn' mind either way to be honest, o' course. Just so longs as I gets that music box's tune out of my head...' \nThe jailor's tone descends into an irascible grumble from which you discern only snippets of meaning, 'Damn prisoner...in that room...stashed away somewhere...when I find it I'll...SMASH! SMASH!...";
+                                                responses.Clear();
+                                                responses.Add("You bluff that you found this music box in question, you think the tune's delightful...");
+                                                responses.Add("You claim you know the whereabouts of this music box. For a price, you'll tell him where it is... ");
+                                                responses.Add("You state that you could help him look for the music box in the room, you might already have found some clues as to where it's hidden...");
+                                                responses.Add("You choose to keep the strange jailor sweet and ask him how much exactly he's won so far...");
+                                                speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                                switch (speech)
+                                                {
+                                                    case 1:
+                                                        Console.WriteLine("The jailor chortles. \n\t'Trust me, Bootspittle, had you found that music box and played it, I'd 'ave already heard it, barged into that cosy cell of yours and run you through with my scimitar. Nice try though...' \nBefore you can get another word in, he's already strode away laughing... ");
+                                                        break;
+                                                    case 2:
+                                                        description = "The jailor shrewdly weighs your words, but they cannot detect a lie in them.";
+                                                        parlance = "Oh yeah?' they reply cautiously, 'and what might this price be?";
+                                                        responses.Clear();
+                                                        responses.Add("You tell the jailor that you want to fight him. If he doesn't co-operate you'll play the music box's tune until they capitulate...");
+                                                        responses.Add("You say you want out of this cell and you don't want any alarms raised afterwards...");
+                                                        responses.Add("You tell them you want to play one game; a coin flip for your freedom from this cell and the goblin's freedom from the music box's tune...");
+                                                        speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                                        switch (speech)
+                                                        {
+                                                            case 1:
+                                                                Console.WriteLine("The goblin balks. \n\t'No! Don't play that tune! Urghh, that sentimental ditty makes my ears bleed! You play that tune and your dead, Worgmeat!'");
+                                                                Console.ReadKey(true);
+                                                                Console.WriteLine("You ask him if that means you both have a deal. You claim you're moments away from opening the music box...");
+                                                                Console.ReadKey(true);
+                                                                Console.WriteLine("\t'Yes! You have a deal,' the jailor snarls. 'I hope you know what you're in for, Footwart, 'cause youse about to get it!'");
+                                                                Console.ReadKey(true);
+                                                                Console.WriteLine("You take a step away from the door, look to you not-so-trusty chain-flail and feel a tincture of dread as you brace yourself for the fight for your freedom. As the tumblers jostle and a boot kicks the door open, you know your very life hinges on being the warrior you'd hitherto only pretended to be...");
+                                                                Console.ReadKey(true);
+                                                                List<Item> weaponItems = new List<Item>();
+                                                                List<Weapon> weapons = new List<Weapon>();
+                                                                weaponItems.Add(item);
+                                                                weapons = weaponItems.Cast<Weapon>().ToList();
+                                                                player.Equip(weapons[0], player.WeaponInventory, player);
+                                                                return false;
+                                                            case 2:
+                                                                Console.WriteLine("'Wot? You think I'm gonna let you walk out of 'ere? Just like that?' the jailor's tone suddenly becomes deadly and foreboding. 'Here's wot's goin' to happen, Worgmeat, you're goin' to sit in that cell nice and quiet-like, or else I'm gonna run you through with this 'ere sword. Got it? The moment I hear that tune, yer dead!'\nAnd with that the jailor stalks away and out of earshot...");
+                                                                Console.ReadKey(true);
+                                                                break;
+                                                            case 3:
+                                                                description = "The jailor is intrigued.";
+                                                                parlance = "And just how do I know you're not goin' to mug me the moment I pass through that door?";
+                                                                responses.Clear();
+                                                                responses.Add("You answer that the jailor doesn't have to. You trust them to flip the coin themselves and call it honestly, after all you haven't any coins on you...");
+                                                                responses.Add("You appeal to your jailor to be reasonable, after all, you're unarmed...");
+                                                                responses.Add("You ask whether the jailor really thinks you'd attack him. Where's the trust?");
+                                                                speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                                                switch (speech)
+                                                                {
+                                                                    case 1:
+                                                                        Console.WriteLine("\t'Alright then, Turnip-breath, youse gots yourself a deal,' the pleased jailor says. You can hear him slyly rubbing his hands with glee. 'Wot will it be? Heads or Tails?'");
+                                                                        Console.ReadKey(true);
+                                                                        Console.WriteLine("You casually respond that if he flips heads you'll win and if he flips tails he'll lose. Fair?");
+                                                                        Console.WriteLine("\t'Heh heh. Golden,' the greedy jailor replies, flipping the coin. You hear it sonorously twirl through the air before clattering upon the floor...");
+                                                                        Console.ReadKey(true);
+                                                                        Console.WriteLine("You calmly inquire how it landed as you inspect your fingernails.");
+                                                                        Console.ReadKey(true);
+                                                                        Console.WriteLine("\t'TAILS!' the jailor roars with triumph. Before he has a chance to give you any commiserations you quickly remind him, 'tails he loses.'");
+                                                                        Console.ReadKey(true);
+                                                                        Console.WriteLine("\t'Eh? But... wot?' Then the jailor suddenly clamours, 'no, no, i mean heads, i mean... Ah, damnit all!'\nYou hear the tumblers of the rosewood door clinking as the jailor - a rather hideous goblin - opens your door.\n\t'Here, get out of my hair, before I change my mind! Blahdy coins!'");
+                                                                        Console.ReadKey(true);
+                                                                        Console.WriteLine("You decide not to wait for the goblin to figure out your trick, nor that you managed to purloin his jail keys from right under his nose, as he stomps moodily out of sight. Now you're free, you need to get out of here. Fast...");
+                                                                        Console.ReadKey(true);
+                                                                        player.Inventory.Add(jailorKeys);
+                                                                        return false;
+                                                                    case 2:
+                                                                        Console.WriteLine("The mysterious jailor only guffaws as he leaves you to your dank cell\n\t'You think I wos born yesterday?' he calls behind him...");
+                                                                        break;
+                                                                    case 3:
+                                                                        Console.WriteLine("The mysterious jailor only guffaws as he leaves you to your dank cell\n\t'In your dreams, Maggotfeed,' he calls as he stomps away...");
+                                                                        break;
+                                                                    default:
+                                                                        Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                                                        break;
+                                                                }
+                                                                break;
+                                                            default:
+                                                                Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                                                break;
+
+                                                        }
+                                                        break;
+
+                                                    case 3:
+                                                        Console.WriteLine("'Pfft,' the jailor scoffs. 'I've looked in that room for days before your ugly mug showed up there. If I can't find it, Wormfood, then what chance have you?'\nThe goblin strides away cackling before you can utter another word.");
+                                                        break;
+                                                    case 4:
+                                                        Console.WriteLine("You and the alternatively-cultivated jailor embark on a lengthy palaver, delighting in each other's company. When the jailor at last leaves, it is with a spring in his step and a song in his heart. You hear him croaking tunelessly, 'I'm in the money, i'm in the money, spend it, lend it, send it, rollin' along...' as he descends down a lengthy corridor. \nYou get a lovely warm feeling of satisfaction from cheering up your homicidal captor.");
+                                                        break;
+                                                    default:
+                                                        Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                                        break;
+                                                }
+                                                break;
+                                            default:
+                                                Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                                break;
+                                        }
+                                        break;
+                                    default:
+                                        Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                        break;
+                                }
+                                break;
+                            }
+                            else
+                            {
+                                description = "Your statement is so self-assured in the sheer magnitude of your own bad luck that the jailor pauses for a doubtful moment. \nIt's a doubt that they wish they could expunge with a more familiar small-minded incredulity, if only it weren't for how your words seem unshakable. Perhaps the jailor is of the superstitious type...";
+                                parlance = "Yeah?' a mote of caution laced through their words, 'Jinxed how?";
+                                responses = new List<string> 
+                                { 
+                                    "You recount the time you mixed drinks at a party and the whole brewery exploded like a firework display...",
+                                    "You reminisce when a humble bridgekeeper asked you what the air speed velocity of an unladen swallow was, and he was suddenly launched twenty feet into the air...",
+                                    "You remember your first battle when you were... *ahem* ...preoccupied behind some bushes. Some bugger tried to steal your horse so you snuck up and beheaded them, only to discover it was your own king...",
+                                    "You ruminate on the time you couldn't stop snickering at the name of your commander's fiend, Biggus Dicus. He had everyone executed for insubordinate giggling just after you excused yourself..."
+                                };
+                                speech = goblin_RustyChains.Parle(description, parlance, responses);
+                                switch (speech)
+                                {
+                                    case 1:
+                                        Console.WriteLine("The jailor sniffs.'Yeah, well, don't worry. I won't be handing you my wineskin anytime soon, so I think we'll be safe...'");
+                                        Console.WriteLine("You make to reply but before you can get another word in the jailor has already stalked away...");
+                                        break;
+                                    case 2:
+                                        Console.WriteLine("'That makes no sense...' the jailor responds, 'do you mean an African swallow or a European swallow?'");
+                                        Console.WriteLine("You respond that the bridgekeeper didn't know that either...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("'So..?' you say.");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("'Wot?' is the jailor's distracted reply.");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("'Can I go,' you ask. 'You know how it is' you say. You tell him you've got places to go people to see...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("'Yeah, well, I tell's you wot,' the goblin replies, 'if I go hurtlin' through the air, maybe catapulted by one of these loose floorboards the damn carpenter should've blahdy well fixed by now, you'll be free to go. Until then...'");
+                                        Console.WriteLine("Without further ado, you hear the jailor stalk away somewhere well beyond the door\nDamn! For a moment you thought you'd had him...");
+                                        Console.ReadKey(true);
+                                        break;
+                                    case 3:
+                                        Console.WriteLine("'A regicide, eh?' the jailor remarks, 'sounds like you would fit in with half the blokes in our mercenary company...");
+                                        Console.WriteLine("Without further ado, you hear the jailor stalk away somewhere well beyond the door");
+                                        break;
+                                    case 4:
+                                        Console.WriteLine("For a moment you wonder if the jailor has tip-toed away, then you hear a stifled snicker. Soon the snicker bubbles into a muffled titter of delight. This in turn rolls into a gushing babble of laughs, before the jailor starts wheezing, clearly out of breath as his lungs ache for air amidst barks of raucous mirth.");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("'Biggus...' he wheezes, collapsing to the floor just outside your cell, '...oh god...Diccus, Bwa Ha ~ can't breathe... ha!'");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("The jailor dies.");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("You look down and find the jailor's keys are just peeping through the gap under the door. With a happy-go-lucky shrug, you manage to purloin them from your captor and open the door to escape! \nYou find the dead goblin just by the foot of your door, it's face frozen in a rictus of half way between terror and hilarity.");
+                                        battle.WonFight();
+                                        inventory.Add(jailorKeys);
+                                        return false;
+                                    default:
+                                        Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                        break;
+                                }
+                            }
+                            break;
+                        case 9://jinxed
+                            description = "Your statement is so self-assured in the sheer magnitude of your own bad luck that the jailor pauses for a doubtful moment. \nIt's a doubt that they wish they could expunge with more familiar incredulity, if only it weren't for how your words seem unshakable. Perhaps the jailor is of the superstitious type...";
+                            parlance = "Yeah?' a mote of caution laced through their words, 'Jinxed how?";
+                            responses = new List<string>
+                                {
+                                    "You recount the time you mixed drinks at a party and the whole brewery exploded like a firework display...",
+                                    "You reminisce when a humble bridgekeeper asked you what the air speed velocity of an unladen swallow was, and he was suddenly launched twenty feet into the air...",
+                                    "You remember your first battle when you were... *ahem* ...preoccupied behind some bushes. Some bugger tried to steal your horse so you snuck up and beheaded them, only to discover it was your own king...",
+                                    "You ruminate on the time you couldn't stop snickering at the name of your commander's fiend, Biggus Dicus. He had everyone executed for insubordinate giggling just after you excused yourself..."
+                                };
+                            speech = goblin_RustyChains.Parle(description, parlance, responses);
+                            switch (speech)
+                            {
+                                case 1:
+                                    Console.WriteLine("The jailor sniffs.'Yeah, well, don't worry. I won't be handing you my wineskin anytime soon, so I think we'll be safe...'");
+                                    Console.WriteLine("You make to reply but before you can get another word in the jailor has already stalked away...");
+                                    break;
+                                case 2:
+                                    Console.WriteLine("'That makes no sense...' the jailor responds, 'do you mean an African swallow or a European swallow?'");
+                                    Console.WriteLine("You respond that the bridgekeeper didn't know that either...");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("...");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("'So..?' you say.");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("'Wot?' is the jailor's distracted reply.");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("'Can I go,' you ask. 'You know how it is' you say. You tell him you've got places to go people to see...");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("'Yeah, well, I tell's you wot,' the goblin replies, 'if I go hurtlin' through the air, maybe catapulted by one of these loose floorboards the damn carpenter should've blahdy well fixed by now, you'll be free to go. Until then...");
+                                    Console.WriteLine("Without further ado, you hear the jailor stalk away somewhere well beyond the door");
+                                    break;
+                                case 3:
+                                    Console.WriteLine("'A regicide, eh?' the jailor remarks, 'sounds like you would fit in with half the blokes in our mercenary company...");
+                                    Console.WriteLine("Without further ado, you hear the jailor stalk away somewhere well beyond the door");
+                                    break;
+                                case 4:
+                                    Console.WriteLine("For a moment you wonder if the jailor has tip-toed away, then you hear a stifled snicker. Soon the snicker bubbles into a muffled titter of delight. This in turn rolls into a gushing babble of laughs, before the jailor starts wheezing, clearly out of breath as his lungs ache for air amidst barks of raucous mirth.");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("'Biggus...' he wheezes, collapsing to the floor just outside your cell, '...oh god...Diccus, Bwa Ha ~ can't breathe... ha!'");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("The jailor dies.");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("You look down and find the jailor's keys are just peeping through the gap under the door. With a happy-go-lucky shrug, you manage to purloin them from your captor and open the door to escape! \nYou find the dead goblin just by the foot of your door, it's face frozen in a rictus of half way between terror and hilarity.");
+                                    battle.WonFight();
+                                    inventory.Add(jailorKeys);                             
+                                    return false;
+                                default:
+                                    Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                                    break;
+                            }
+                            break;
+                        default:
+                            Console.WriteLine("The mysterious jailor only guffaws as it leaves you to your dank cell...");
+                            break;
+                    }
+
+
 
                 }
                 return false; 
@@ -749,6 +1548,7 @@ namespace DungeonCrawler
         public int Attack(int skill, int opponentSkill, int enemyStamina, bool commentary, Monster monsterName, Player player, string another, Room room, Feature holeInCeiling, bool start = false)
         {
             Dice D18 = new Dice(18);
+            Dice D16 = new Dice(16);
             Dice D3 = new Dice(3);
             Dice D4 = new Dice(4);
             
@@ -1115,7 +1915,7 @@ namespace DungeonCrawler
                             }
                             else if (rollmiss > 18)
                             {
-                                Console.WriteLine(jinxedMisses[(rollmiss - D18.Roll(D18) - 1) / 2]);
+                                Console.WriteLine(jinxedMisses[(rollmiss - D16.Roll(D16) - 2) / 2]);
                             }
                             else if (rollmiss > 16)
                             {
@@ -1184,7 +1984,7 @@ namespace DungeonCrawler
                             }
                             else if (rollmiss > 18)
                             {
-                                Console.WriteLine(jinxedMisses[(rollmiss - D18.Roll(D18) - 1) / 2]);
+                                Console.WriteLine(jinxedMisses[(rollmiss - D16.Roll(D16) - 2) / 2]);
                             }
                             else if (rollmiss > 16)
                             {

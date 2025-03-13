@@ -73,7 +73,7 @@ namespace DungeonCrawler
         /// <param name="usesDictionaryItemChar"></param>
         /// <param name="holeInCeiling"></param>
         /// <returns>boolean: true or false</returns>
-        public bool Fight(Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, bool fire = false)
+        public bool Fight(Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, bool fire = false, bool _initiative = false)
         {
             player = Player;
             Dice D2 = new Dice(2);
@@ -261,7 +261,7 @@ namespace DungeonCrawler
             }
             Dice D20 = new Dice(20);
             bool initiative = false;
-            if (Player.Skill + D20.Roll(D20) >= Monster.Skill + D20.Roll(D20) && !fire)
+            if ((Player.Skill + D20.Roll(D20) >= Monster.Skill + D20.Roll(D20) && !fire)||_initiative)
             {
                 Console.WriteLine($"The {Monster.Name} is caught off guard. You take the initiative!");
                 initiative = true;
@@ -717,7 +717,7 @@ namespace DungeonCrawler
                                             {
                                                 try
                                                 {
-                                                    success = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count], usesDictionaryItemFeature, player.Inventory, player.WeaponInventory, room, player);
+                                                    success = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count], usesDictionaryItemFeature, player.Inventory, player.WeaponInventory, room, player, Monster, this);
                                                     break;
                                                 }
                                                 catch { Console.WriteLine($"You try using the {chosenItem.Name} on the {room.FeatureList[effectedItemNum - 1-room.ItemList.Count-Monster.Items.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");break; }
