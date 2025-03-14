@@ -617,7 +617,7 @@ namespace DungeonCrawler
                                 case 3:
                                     description = "The beastly jailor hesitates for just the slightest of moments.";
                                     parlance = "None of your damn concern, Hoo-man.' he responds coolly. 'As far as your concerned the whole world exists right in your room - you ain't ever seein' nowhere else...";
-                                    responses.Remove(responses[1]);
+                                    responses.Remove(responses[2]);
                                     responses.Remove(responses[0]);
                                     speech = goblin_RustyChains.Parle(description, parlance, responses);
                                     switch (speech)
@@ -831,7 +831,7 @@ namespace DungeonCrawler
                                         break;
                                     case 2:
                                         description = "You imagine the rather uncouth jailor narrowing its eyes shrewdly just beyond the door.";
-                                        parlance = "Oh sure!' the goblin remarks craftily, 'We've got ourselves an hooge arsenal up the stairs from 'ere. Want to see?";
+                                        parlance = "Oh sure!' he remarks craftily, 'We've got ourselves an hooge arsenal up the stairs from 'ere. Want to see?";
                                         responses.Clear();
                                         responses.Add("You tell the wonderful jailor that his suggestion is in no uncertain terms a capital idea that you'd be sure would be mutually beneficial to all... Oh wait, he's not serious, is he?");
                                         responses.Add("You make a tentative inquiry; the jailor wouldn't be pulling your leg, would they?");
@@ -1009,7 +1009,7 @@ namespace DungeonCrawler
                                                 break;
                                             case 2:
                                                 description = "You imagine the rather uncouth jailor narrowing its eyes shrewdly just beyond the door.";
-                                                parlance = "Oh sure!' the goblin remarks craftily, 'We've got ourselves an hooge arsenal up the stairs from 'ere. Want to see?";
+                                                parlance = "Oh sure!' he remarks craftily, 'We've got ourselves an hooge arsenal up the stairs from 'ere. Want to see?";
                                                 responses.Clear();
                                                 responses.Add("You tell the wonderful jailor that his suggestion is in no uncertain terms a capital idea that you'd be sure would be mutually beneficial to all... Oh wait, he's not serious, is he?");
                                                 responses.Add("You make a tentative inquiry; the jailor wouldn't be pulling your leg, would they?");
