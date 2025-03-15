@@ -21,15 +21,280 @@ namespace DungeonCrawler
             ItemList = itemList;
             FeatureList = featureList;
         }
+        public List<bool> WhichRoom(List<bool> roomList)
+        {
+            if (Name == "dank cell")
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                { 
+                    roomList[i] = true;
+                    if (i == 0)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+                    
+                return roomList;
+
+            }
+            else if (Name == "long corridor")
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 1)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "oubliette") // occult runes holding Demon Lord of the Fey
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 2)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "antechamber")
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 3)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "eerie cell")
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 4)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "armoury")
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 5)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "mess hall") // red herring?
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 6)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "circular landing")
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 7)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "empty cell")
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 8)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if(Name == "magical manufactory")// Merigold's chambers
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 9)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "broom closet")
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 10)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "highest parapet")//final boss fight
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 11)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "secret chamber")  // through hole in ceiling
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 16)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "prehistoric jungle")// friends with fairies
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 17)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "astral planes")// friends with fairies
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 18)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "ocean bottom")//friends with fairies 
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 19)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "huge barracks")// killed by army
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 12)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "desert island") // make friends with coconut called wilson
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 13)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "bank vault") // trapped with mounds of treasure
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 14)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "dragon's lair") // fight skill 10 boon 10 stamina 999, or else dialogue answer riddle and magicked back
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 15)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            return roomList;
+        }
         /// <summary>
-        /// Involves picking up room items, searching room features and a broad
+        /// Involves picking up room items, searching room features, using doors and a broad
         /// description of the room and where things are placed.
         /// </summary>
         /// <param name="inventory"></param>
         /// <param name="weaponInventory"></param>
         /// <param name="b"></param>
         /// <param name="player"></param>
-        public void Investigate(List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains)
+        public Room Investigate(List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains)
         {
             Dice D20 = new Dice(20);
             Dice D6 = new Dice(6);
@@ -241,7 +506,11 @@ namespace DungeonCrawler
                             }
                             Console.ReadKey(true);
                             FeatureList[answer1].investigateFeature();
-                            FeatureList[answer1].Search(inventory, weaponInventory);
+                            Room newRoom = FeatureList[answer1].Search(inventory, weaponInventory, this);
+                            if ( newRoom.Name != this.Name)
+                            {
+                                return newRoom;
+                            }
                             Console.ReadKey(true);
                             Console.WriteLine(options);
                             continue;
@@ -305,7 +574,7 @@ namespace DungeonCrawler
                         }
                         else //if player wants to return to main options...
                         {
-                            return;
+                            return this;
                         }
                     }
                     catch (Exception e) { Console.WriteLine("Please enter the number corresponding to your choice of action."); }

@@ -25,7 +25,7 @@ namespace DungeonCrawler
         public bool Attribute { get; set; }
         public string SpecificAttribute { get; set; }
         public List<Item> ItemList { get; set; }
-        public Feature(string name, string description = "Nothing of note meets the eye.", bool attribute = true, string specificAttribute = "locked", List<Item> itemList = null)
+        public Feature(string name = "", string description = "Nothing of note meets the eye.", bool attribute = true, string specificAttribute = "locked", List<Item> itemList = null)
         {
 
             Name = name;
@@ -33,6 +33,13 @@ namespace DungeonCrawler
             Attribute = attribute;
             SpecificAttribute = specificAttribute;
             ItemList = itemList;
+        }
+        public Door CastDoor()
+        {
+            List<Door> door = new List<Door>();
+            List<Feature> tobedoor = new List<Feature> { this };
+            door = tobedoor.Cast<Door>().ToList();
+            return door[0];
         }
         /// <summary>
         /// investigate feature prints its description to the console.
@@ -55,7 +62,7 @@ namespace DungeonCrawler
         /// </summary>
         /// <param name="inventory"></param>
         /// <param name="weaponInventory"></param>
-        public void Search(List<Item> inventory, List<Weapon> weaponInventory)
+        public Room Search(List<Item> inventory, List<Weapon> weaponInventory, Room room)
         {
             Console.WriteLine($"Rummaging about the {Name}, you find the following;");
             int r = 1;
@@ -64,7 +71,7 @@ namespace DungeonCrawler
             {
                 message += "Your keen eye notices a lone page just underneath the collapsed shelf, snagged at the back.\n";
             }
-            if (Name == "rosewood chest" && Attribute == false) 
+            if (Name == "rosewood chest" && Attribute == false)
             {
                 message += "You prise open the chest's lid. It yields to your firm grip with an ominous creak.\n";
             }
@@ -74,7 +81,7 @@ namespace DungeonCrawler
             }
             /// I create a copy of ItemList for reference so that removed items do not trigger an 
             /// out of bounds exception.
-            List<Item> itemList = new List<Item>(); 
+            List<Item> itemList = new List<Item>();
             if (ItemList != null)
             {
                 if (ItemList.Count != 0)
@@ -98,7 +105,7 @@ namespace DungeonCrawler
                             r++;
                         }
 
-                        
+
 
 
 
@@ -110,7 +117,7 @@ namespace DungeonCrawler
                         while (continueLoop)
                         {
                             Console.WriteLine(message);
-                            
+
                             if (a > 0) { Console.WriteLine("Select another item from the list above or enter 'no'."); }
                             else { Console.WriteLine("\nWould you like to take a closer look at any of these items?"); }
                             string reply = Console.ReadLine().Trim().ToLower();
@@ -119,7 +126,7 @@ namespace DungeonCrawler
 
 
 
-                                return;
+                                return room;
 
 
                             }
@@ -229,14 +236,14 @@ namespace DungeonCrawler
                                         catch
                                         {
                                             Console.WriteLine($"You've stashed the item in your pack.");
-                                            return;
+                                            return room;
                                         }
                                     }
 
                                 }
                                 Console.WriteLine(message);
                                 Console.WriteLine($"Would you like to peruse another item from the {Name}?");
-                                
+
                                 while (true)
                                 {
                                     string answer = Console.ReadLine().Trim().ToLower();
@@ -274,7 +281,7 @@ namespace DungeonCrawler
                             Console.WriteLine($"{Description} \nTry as hard as you might, you find no more items hidden about the {Name}. It has been thoroughly {SpecificAttribute}.");
 
                         }
-                        else if ( Name == "rosewood chest" && !Attribute)
+                        else if (Name == "rosewood chest" && !Attribute)
                         {
                             Console.WriteLine($"{Description} \nTry as hard as you might, you find no more items hidden within or around the {Name}. Even though it's been {SpecificAttribute} it still yields none of its secrets... if it has any.");
                         }
@@ -282,7 +289,7 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine($"{Description} \nTry as hard as you might, you find no items hidden about the {Name}. It remains {SpecificAttribute}.");
                         }
-                        return;
+                        return room;
                     }
                 }
                 else if (ItemList.Count != 0) // in every other non-specific case, the same or similar code replies
@@ -293,26 +300,26 @@ namespace DungeonCrawler
                         r++;
                     }
 
-                    
+
 
 
 
                     bool continueLoop = true;
                     int a = 0;
-                    
+
                     while (continueLoop)
                     {
                         Console.WriteLine(message);
                         if (a > 0) { Console.WriteLine("Select another item from the list above or enter 'no'."); }
                         else { Console.WriteLine("\nWould you like to take a closer look at any of these items?"); }
-                        
+
                         string reply = Console.ReadLine().Trim().ToLower();
                         if (reply == "no" || reply == "n")
                         {
 
 
 
-                            return;
+                            return room;
 
 
                         }
@@ -417,18 +424,18 @@ namespace DungeonCrawler
                                     catch
                                     {
                                         Console.WriteLine($"You've stashed the item in your pack.");
-                                        return;
+                                        return room;
                                     }
                                 }
 
                             }
 
-                            
+
                             while (true)
                             {
                                 Console.WriteLine(message);
                                 Console.WriteLine($"Would you like to peruse another item from the {Name}?");
-                                
+
                                 string answer = Console.ReadLine().Trim().ToLower();
                                 try
                                 {
@@ -528,7 +535,7 @@ namespace DungeonCrawler
                                         catch
                                         {
                                             Console.WriteLine($"You've stashed the item in your pack.");
-                                            return;
+                                            return room;
                                         }
                                     }
 
@@ -573,7 +580,7 @@ namespace DungeonCrawler
                     {
                         Console.WriteLine($"{Description} \nTry as hard as you might, you find no items hidden about the {Name}. It remains {SpecificAttribute}.");
                     }
-                    return;
+                    return room;
                 }
             }
             // In the case of features with no itemlist
@@ -588,11 +595,73 @@ namespace DungeonCrawler
                 {
                     Console.WriteLine($"{Description} \nTry as hard as you might, you find no items hidden about the {Name}. It remains {SpecificAttribute}.");
                 }
-                return;
+                if (Name.Contains("door") && SpecificAttribute == "unlocked" && !Description.Contains("smouldering"))
+                {
+                    Console.WriteLine($"Would you like to go through this {Name}?");
+                    while (true)
+                    {
+                        string reply = Console.ReadLine().Trim().ToLower();
+                        if (string.IsNullOrEmpty(reply))
+                        {
+                            continue;
+                        }
+                        else if (reply == "n" || reply == "no")
+                        {
+                            return room;
+                        }
+                        else if (reply == "y" || reply == "yes")
+                        {
+                            Room newRoom = this.CastDoor().Passage(room);
+                            
+                            return newRoom;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter 'yes' or 'no'.");
+                            continue;
+                        }
+                    }
+                    
+                }
+                return room;
             }
-            
+            return room;
+
         }
-    }
 
     }
+    public class Door : Feature
+    {
+        public List<Room> Portal { get; set; }
+        public string Passing { get; set; }
+        public Door(string name = "door", string description = "It's a pretty ordinary door", bool attribute = true, string specificAttribute = "locked", List<Item> itemList = null, List<Room> portal = null, string passing = "You pass through the door and into the next room...")
+        {
+            Name = name;
+            Description = description;
+            Attribute = attribute;
+            SpecificAttribute = specificAttribute;
+            ItemList = itemList;
+            Portal = portal;
+            Passing = passing;
+        }
+        public Room Passage(Room room)
+        {
+            if (Portal[0].Name == room.Name)
+            {
+                Console.WriteLine($"{Passing}");
+                return Portal[1];
+            }
+            else if (Portal[1].Name == room.Name)
+            {
+                Console.WriteLine($"{Passing}");
+                return Portal[0];
+            }
+            else
+            {
+                Console.WriteLine("Door.Passage() has failed. Check Portal list.");
+                return room;
+            }
+        }
 
+    }
+}

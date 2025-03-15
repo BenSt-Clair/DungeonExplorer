@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -553,6 +555,9 @@ namespace DungeonCrawler
             Item jailorKeys = new Item("jailor keys", "Such cast iron, heavy-duty keys and the ring they're found on seem typical of any prison worthy of the name - not that you'd know, of course.");
             List<Item> cellInventory = new List<Item> { rustyChains, halfOfCrackedBowl, otherHalfOfCrackedBowl, bowlFragments, garment };
 
+            Item bowl = new Item("unbroken bowl", "It's similar to the one you saw in your dank cell, had yours not been shattered in two.");
+            Item shatteredPlanks = new Item("splintered planks", "They scatter the floor nearby a hole that prevents escape only thanks to thick wooden beams crisscrossing the room beneath the floorboards.", true, "unburned");
+            List<Item> cell2Inventory = new List<Item> { bowl, shatteredPlanks, garment};
             // Features of the room, some with items hidden upon or within them. Both
             // Items and features can be interacted with but only items can be picked up
             // and features remain in place unless shattered or unlocked or burned depending on
@@ -562,15 +567,55 @@ namespace DungeonCrawler
             Feature skeleton = new Feature("skeleton", "Its empty sockets fasten you with a stern gaze. It's been bound by chains to the wall, making it difficult to move. Something shiny is trapped out of reach behind it.", false, "unshattered", onSkeleton);
             Feature leftbrazier = new Feature("left brazier", "If these braziers do indeed burn it is not with any normal fire. Upon closer inspection, their dim flickering glow seemingly cannot be expunged. They barely keep the looming shadows at bay.", true, "lit", null);
             Feature rightbrazier = new Feature("right brazier", "If these braziers do indeed burn it is not with any normal fire. Upon closer inspection, their dim flickering glow seemingly cannot be expunged. They barely keep the looming shadows at bay.", true, "lit", null);
-            Feature rosewoodDoor = new Feature("rosewood door", "It's a curiously ornate door with smooth well-polished panels. The wood's warmth is somewhat diminished by the heavy iron hinges holding it in place.");
+            Feature anotherBrazier = new Feature("brazier", "If these braziers do indeed burn it is not with any normal fire. Upon closer inspection, their dim flickering glow seemingly cannot be expunged. They barely keep the looming shadows at bay.", true, "lit", null);
+            Door rosewoodDoor = new Door("rosewood door", "It's a curiously ornate door with smooth well-polished panels. The wood's warmth is somewhat diminished by the heavy iron hinges holding it in place.");
             Feature rosewoodChest = new Feature("rosewood chest", "Its smooth, burnished surface matches the grain and style of the door and like the door its elegance is jarred by the heavy steel lock sealing it. It makes you wonder if this room hadn't always been a dank cell.", true, "locked", inRosewoodChest);
             List<Item> inBookcase = new List<Item> { note };
             Feature bookCase = new Feature("bookcase", "The ostensibly empty bookcase is a little worse for wear. One of it's shelves is lopsided. Another at the bottom has collapsed. Cobwebs span its dusty corners.", true, "searched", inBookcase);
             Feature holeInCeiling = new Feature("hole in the ceiling", "You gaze from the heap of debris that has buried the creature alive to the hole through the ceiling above. You bet you could climb the heap and enter the room above yours.");
+            Door stairwayToLower = new Door("dark stairwell", "The steep stone steps descend beyond the light of the braziers and into the unknown murk lurking below", true, "blocked", null, null, "Feeling a knot of dread tighten about your stomach, you make the descent into a shifting web of shadows and silhouettes...");
+            Door stairwayToUpper = new Door("lit stairway", "The wide flight of stone steps slowly curves around, leading to somewhere unseen but well-lit.", false, "unblocked", null, null, "You embark up the stairs two at a time.");
+            Door otherRosewoodDoor = new Door("near door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in.", false, "unlocked", null, null, "The door creaks ominously as you furtively pace into the next room.");
+            Door armouryDoor = new Door();
+            Door circleDoor = new Door();
+            Door emptyCellDoor = new Door("far door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in. You notice the lock has scratches made from the inside. You surmise someone has attempted picking the lock, but unless they had something more than just a bobby pin, it's doubtful they succeeded.", false, "unlocked", null, null);
+
+            Feature brokenRightBrazier = new Feature("right broken brazier", "It's been tampered with by magic. It seems the last occupant here knew their arcana. Looking to the scratches on the door you sense with a tot of foreboding that it didn't do them any good...", false, "unlit", null);
+            Feature brokenLeftBrazier = new Feature("left broken brazier", "It's been tampered with by magic. It seems the last occupant here knew their arcana. Looking to the scratches on the door you sense with a tot of foreboding that it didn't do them any good...", false, "unlit", null);
+            Feature trunk = new Feature("weathered old trunk", "The leather of its sides is faded and worn. Unlike the rosewood chest in your room it hasn't been looked after and there's no hidden compartment.", false, "unlocked");
+            List<Feature> cell2features = new List<Feature> { trunk, otherRosewoodDoor, brokenLeftBrazier, brokenRightBrazier};
+
+            Feature mosaic = new Feature("peculiar mosaic", "You glance the mosaic's way before discovering its lustrous tiles are constantly flipping and shuffling like cards in the dextrous hands of some invisible dealer. The magical image they form is ever shifting. They seem to react to your presence.", false, "unstudied", null);
+            Feature pillar = new Feature("grand pillar", "Its fluted elegance extends to the ceiling high above, flowering in stunning and intricate statuettes. Your fingers absently trace veins within the marble, admiring its opulence.", false, "unshattered");
+            Feature plaque = new Feature("scorched bronze plaque", "Its engraved letters have been made illegible by the fire damage of some spell. Scribbled clumsily in the soot you can make out the scrawl, 'RMorRee'", false, "unstudied");
+
             List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys };
             // I instantiate a room with a list of items and features inside it and a description and room name
             List<Feature> cellfeatures = new List<Feature> { rosewoodDoor, rosewoodChest, bookCase, skeleton, leftbrazier, rightbrazier };
+            List<Item> corridorItems = new List<Item> { bowlFragments, bowlFragments, bowlFragments };
+            List<Feature> corridorFeatures = new List<Feature> { stairwayToLower, leftbrazier, rosewoodDoor, otherRosewoodDoor, rightbrazier, emptyCellDoor, anotherBrazier, stairwayToUpper };
+            List<Feature> antechamberFeatures = new List<Feature> { pillar, plaque, armouryDoor, pillar, mosaic, circleDoor};
+            List<Item> antechamberItems = new List<Item>();
+            List<Item> emptyCellItems = new List<Item>();
+            List<Feature> emptyCellFeatures = new List<Feature> { emptyCellDoor};
+
             Room room = new Room("dank cell", "The foreboding cell is bathed in the earthy glow of lit braziers, barely lighting cold stony walls, a heavy rosewood door studded with iron hinges, and only the sparsest of furnishings.\nThe door is set within the north wall, two flickering braziers casting orbs of low light either side of it so as to look like great fiery eyes watching you from the murk.\t\nTo the west wall there is a large chest, mingled with a cascade of rusted and disused iron shackles.\t\nTo the south wall is a small bookcase and some garments haphazardly strewn about you.\t\nTo the east wall is the last occupant; a skeleton with a permanent grin, bound fast to the wall by many interlocking heavy chains. It almost seems to watch you from dark wells where once there were its eyes. It holds something in its bony fist and something else glimmers from a place out of reach behind it.\t\t", cellInventory, cellfeatures);
+            Room corridor = new Room("long corridor", "More of those strange braziers cast pools of frosty light within the dark corridor. Here and there they alleviate the murk within the passage of grim stone walls and rickety floorboards. It extends to the left into darkness and to the right towards a wide flight of stone stairs. \nTo the north you face another door similar to the ornate rosewood door behind you.\t\nTurning your gaze west down the shadowy passage you see the flickering braziers leading you down towards a dark stairwell, descending beyond the inky blackness to unknown depths.\t\nTurning your head south the ornate rosewood door to your own former cell meets your gaze.\t\nTo the east the passageway leads past more doors up to a flight of stairs, ascending to the next level of whatever building or (tower?) you find yourself in.\t\t", corridorItems, corridorFeatures);
+            Room cellOpposite = new Room("eerie cell", "There are scratch marks on the inside of the rosewood door leading into this cell. Whoever was here was dragged out and taken Lord only knows where. \nAhead of you is a bare stone wall, a bowl left close by. A kind of nest has been formed out of the strewn garments - clearly where the last occupant had rested. They're still warm...\t\nYou find little of note save for a clumsy attempt to craft crude levers out of the wooden planks of the floor. You guess they were used to slip under the gap in the door and lever it out of its iron pin hinges. Judging by the snapped and splintered planks of wood around you, the attempt failed.\t\nTurning your gaze southwards you see the door through which you entered. Like your room there are braziers either side of it, but they've been bent out of shape, their unnatural frosty flames extinguished.\t\nLooking to the east wall you find a trunk made of coarse leather hide and a wooden frame.\t\t", cell2Inventory, cell2features);
+            Room antechamber = new Room("antechamber", "The prodigious antechamber is an architectural marvel of sweeping stone arches and a vaulted ceiling.\nGazing northwards you see a heavyset door studded with steel bolts, Above it a bronze plaque has been blackened as though blasted by some spell or fireball. \t\nTo the west you see the brightly illuminated stairway you just ascended.\t\nTurning your gaze to the south wall you find bare patches where once were probably opulent oil-paintings and portraits. Their absence adds to the ominous sense of some recent tragedy befalling this place.\t\nTo the east is another door leading out of the antechamber - this one a far more inviting set of oak-panelled double doors framed by fluted pillars and a grand enclosing some strange mosaic.\t\t", antechamberItems, antechamberFeatures);
+            Room oubliette = new Room("oubliette", "~demon pit~", cellInventory, cellfeatures);
+            Room emptyCell = new Room("empty cell", "Upon entering this cell you find scratch marks around the lock. The enchanted braziers cast everything in a shimmering ethereal glow, as though the light were reaching this room through some alien ocean or the underside of a glacier\nAhead of you are more garments strewn haphazardly about. Some of them have been piled against the wall, almost as though to form something to sit on.\n\tTurning your gaze left you espy more rusty chains, along with a bookcase that - like the one in your old cell - looks like its seen better days.\n\tFacing the rosewood door you came through you notice bobby pins litter the floor. They must've been something the previous occupant had brought here with them. It looks like they were used to try and unlock the door.\n\tTo the east you find nothing of note.\t\t", emptyCellItems, emptyCellFeatures);
+
+            List<Room> yourCellDoor = new List<Room> {room, corridor };
+            List<Room> otherCellDoor = new List<Room> { corridor, cellOpposite };
+            List<Room> stairwayUp = new List<Room> { corridor, antechamber};
+            List<Room> stairwellDown = new List<Room> {corridor, oubliette };
+            List<Room> emptyCellPassage = new List<Room> { corridor, emptyCell };
+            rosewoodDoor.CastDoor().Portal = yourCellDoor;            
+            otherRosewoodDoor.CastDoor().Portal = otherCellDoor;            
+            stairwayToLower.CastDoor().Portal = stairwellDown;
+            stairwayToUpper.CastDoor().Portal = stairwayUp;
+            emptyCellDoor.CastDoor().Portal = emptyCellPassage;
             Test test1 = new Test(room);
             test1.RunForRoom();
             ///
@@ -585,6 +630,7 @@ namespace DungeonCrawler
 
             string pk; // not important, it's just for the console.readline at the end of the program.
 
+            
 
             Player player1 = CharacterCreation();
             Test test2 = new Test(player1, room);
@@ -680,7 +726,25 @@ namespace DungeonCrawler
                 
             }
 
-
+            List<string> parlances = new List<string> { "This is the first parlance", "second parlance string"};
+            List<List<string>> playerChoices = new List<List<string>> { new List<string> { "This is the first player choice", "This is the second player choice: exit?", "this is the third one"}, new List<string> {"this is choice 4: start LoopParle", "this is choice 5" } };
+            string description1 = "hullabaloo!";
+            Dictionary<string, string> choice_CustomResponse = new Dictionary<string, string> 
+            { 
+                { "This is the first player choice", "1st custom response" }, 
+                { "This is the second player choice: exit?", "2nd custom response" }, 
+                { "this is the third one", "number 3 go!" },
+                { "this is choice 4: start LoopParle", "custom response '4'?" },
+                { "this is choice 5", "5 ~ the custom response of second line"}
+            };
+            /*
+            Dialogue tester = new Dialogue(player1, goblin, trialBattle, room);
+            if (tester.LinearParle(choice_CustomResponse, parlances, playerChoices, description1) == 0) 
+            {
+                tester.LoopParle(choice_CustomResponse, playerChoices[0], description1, parlances[0], 1);
+            }
+            */
+            
             usesDictionaryItemItem[magnifyingGlass].Add(garment);
 
             Dictionary<Item, List<Player>> usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 } };
@@ -978,29 +1042,1361 @@ namespace DungeonCrawler
 
             }
             ///Past this point is the next room 
-
-            if (escapedThroughDoor)
-            {
-                if (fieryEscape)
-                {
-                    Console.WriteLine("Looking back, the door will only hold for so long against the flames and time is not your friend. What will you do?");
-                    Console.ReadKey(true);
-                    return;
-                }
-                else
-                {
-                    Console.WriteLine("With the way ahead clear, what will you do?");
-                    Console.ReadKey(true);
-                    return;
-                }
-
-            }
-            else
+            
+            if (!escapedThroughDoor)
             {
                 Console.WriteLine("Finding yourself in a new room and on a new level of this perplexing (tower?), what will you decide to do next?");
                 Console.ReadKey(true);
                 return;
             }
+            else if (escapedThroughDoor)
+            {
+                if (!rosewoodDoor.Description.Contains("dent")) 
+                {
+                    rosewoodDoor.Description += " You notice a dent on the other side of the door.";
+                }
+                rosewoodDoor.SpecificAttribute = "unlocked";
+                rosewoodDoor.Attribute = false;
+                int fireProgress = 0;
+                if (fieryEscape)
+                {
+                    Console.WriteLine("Looking back, the door will only hold for so long against the flames and time is not your friend. What will you do?");
+                    corridor.FeatureList[2].Description = "The smouldering rosewood door radiates intense heat as a fiery glow ominously flickers through the gap underneath. Tendrils of smoke cascade upwards and the cast iron hinges are scolding to the touch.\nYou best get away from here post haste!";                    
+                    corridor.FeatureList[2].CastDoor().Portal = null;
+                    fireProgress = 1;
+                    Console.ReadKey(true);
+                    
+                }
+                else
+                {
+                    Console.WriteLine("With the way ahead clear, what will you do?");                    
+                    Console.ReadKey(true);
+                    
+                }
+                
+                
+                bool FireProgress(int fireProgress, Player player1, Room corridor) // returns (still alive?)
+                {
+                    if (fireProgress > 0) 
+                    {
+                        fireProgress++;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                    switch (fireProgress)
+                    {
+                        case 1:
+                            return true;
+                        case 2:
+                            Console.WriteLine("The smouldering door of your cell begins to blaze, crumbling into glowing charcoal as the flames roar behind it. Tendrils of smoke swell and stream from beneath the door, filling the corridor with an acrid haze. You begin to splutter and stagger. \nLose 3 stamina points!");
+                            player1.Stamina -= 3;
+                            if (player1.Stamina < 1)
+                            {
+                                Console.ReadKey(true);
+                                Console.WriteLine("On your last legs, bleeding profusely from your battle, the smoke proves to be too much for you. \nYou pass out. Soon enough the fire will consume you.");
+                                Console.ReadKey(true);
+                                Console.WriteLine("\nYour adventure ends here...");
+                                return false;
+                            }
+                            return true;
+                        case 3:
+                            return true;
+                        case 4:
+                            return true;
+                        case 5:
+                            Console.WriteLine("The smouldering door of your cell collapses, a blizzard of flames suddenly blasting into the corridor. You get thrown back by the fiery gust. \nLose 10 stamina points!");
+                            player1.Stamina -= 10;
+                            if (player1.Stamina < 1)
+                            {
+                                Console.ReadKey(true);
+                                Console.WriteLine("On your last legs, severe burns covering your body, the fire at last proves to be too much for you. \nYou pass out. Soon enough the fire will consume you.");
+                                Console.ReadKey(true);
+                                Console.WriteLine("\nYour adventure ends here...");
+                                return false;
+                            }
+                            return true;
+                        case 6:
+                            return true;
+                        case 7:
+                            Console.WriteLine("The fire rages into an inferno! Flames lick at the doors and the flames in the braziers no longer cast their frosty light - their low flames become overrun by the roaring fire rapidly devouring the entire corridor, transforming it into a hellish portal. The heat threatens to torch you alive! \nLose 12 stamina points!");
+                            player1.Stamina -= 12;
+                            if (player1.Stamina < 1)
+                            {
+                                Console.ReadKey(true);
+                                Console.WriteLine("On your last legs, severe burns covering your body, the fire at last proves to be too much for you. \nYou pass out. Soon enough the fire will consume your body.");
+                                Console.ReadKey(true);
+                                Console.WriteLine("\nYour adventure ends here...");
+                                return false;
+                            }
+                            Console.WriteLine("You have only one way forward - the stairwell down and the doors to the east are cut off by the flames, you must press on ever higher up the stairs to the east!");
+                            foreach (Item item in corridor.ItemList)
+                            {
+                                item.Name = "blazing " + item.Name;
+                            }
+                            corridor.FeatureList.RemoveRange(0, 5);
+                            
+                            return true;                        
+                        default:
+                            return true;
+                    }
+                }
+                List<bool> leftWhichRooms = new List<bool> {true, false, true, true, true, true, 
+                true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+                Room newRoom1 = corridor;
+                bool victorious = false;
+                while (!victorious)
+                {
+                    Console.WriteLine("With a tincture of apprehension you enter the next room...");
+                    Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
+                          
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[1])//corridor
+                    {
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a==0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine("[2] Investigate the corridor?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b<1 && (reply1 < 1 || reply1 > 2)) || reply1<1 || reply1>3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(corridor.ItemList);
+                                a++;
+                                FireProgress(fireProgress, player1, corridor);
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = corridor.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != corridor.Name)
+                                {
+
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    break;
+                                }
+                                else
+                                {
+                                    FireProgress(fireProgress, player1, corridor);
+                                }
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(corridor, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[0]) // your cell
+                    {
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(room.ItemList);
+                                a++;
+                                
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = room.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != room.Name)
+                                {
+
+                                    leftWhichRooms = room.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+                                
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[2])//oubliette
+                    {
+                        ///might want to add treacherous passage here test skill fall down steps
+                        
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(oubliette.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = oubliette.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != oubliette.Name)
+                                {
+
+                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[3])//antechamber
+                    {
+
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(antechamber.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = antechamber.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != antechamber.Name)
+                                {
+
+                                    leftWhichRooms = antechamber.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(antechamber, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[4])//eerie cell
+                    {
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(cellOpposite.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = cellOpposite.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != cellOpposite.Name)
+                                {
+
+                                    leftWhichRooms = cellOpposite.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(cellOpposite, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[5])//armoury 
+                    {
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(oubliette.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = oubliette.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != oubliette.Name)
+                                {
+
+                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[6])//mess hall
+                    {
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(oubliette.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = oubliette.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != oubliette.Name)
+                                {
+
+                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[7])//circular landing
+                    {
+                        ///special room with minotaur patrolling, use of Task and time
+                        ///might have to split into 4 rooms, one for each passage
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(oubliette.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = oubliette.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != oubliette.Name)
+                                {
+
+                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[8])//empty cell
+                    {
+
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(oubliette.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = oubliette.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != oubliette.Name)
+                                {
+
+                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[9])//magical manufactory
+                    {
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(oubliette.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = oubliette.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != oubliette.Name)
+                                {
+
+                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[10])//broom closet
+                    {
+
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(oubliette.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = oubliette.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != oubliette.Name)
+                                {
+
+                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[11])//highest parapet
+                    {
+
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(oubliette.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = oubliette.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != oubliette.Name)
+                                {
+
+                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[12])//huge barracks
+                    {
+
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(oubliette.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = oubliette.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != oubliette.Name)
+                                {
+
+                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[13])// desert island
+                    {
+
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(oubliette.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = oubliette.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != oubliette.Name)
+                                {
+
+                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[14])//bank vault
+                    {
+
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(oubliette.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = oubliette.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != oubliette.Name)
+                                {
+
+                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[15])//dragon's lair
+                    {
+
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(oubliette.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = oubliette.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != oubliette.Name)
+                                {
+
+                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[16])//secret chamber
+                    {
+
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(oubliette.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = oubliette.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != oubliette.Name)
+                                {
+
+                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[17])//prehistoric jungle
+                    {
+
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine("[2] Investigate the corridor?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(oubliette.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = oubliette.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != oubliette.Name)
+                                {
+
+                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[18])//astral planes
+                    {
+
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine("[2] Investigate the corridor?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(oubliette.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = oubliette.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != oubliette.Name)
+                                {
+
+                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[19])//ocean bottom
+                    {
+
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine("[2] Investigate the corridor?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(oubliette.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = oubliette.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains);
+                                if (newRoom.Name != oubliette.Name)
+                                {
+
+                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    
+
+
+                }
+
+            }
+            
 
 
             if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling))

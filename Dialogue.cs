@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -71,6 +72,368 @@ namespace DungeonCrawler
                     i++;
                 }
             }
+        }
+        public int LinearParle(Dictionary<string, string> choice_CustomResponse, List<string>parlances, List<List<string>> playerChoices, string description)
+        {
+            int node = 0;
+            int answer1 = 0;
+            Console.WriteLine($"{description}\n\t{parlances[0]}\nHow will you respond?");
+            while(node < playerChoices.Count -1)
+            {
+                if (node > 0)
+                {
+                    Console.WriteLine("How will you respond?");
+                }
+                int option = 0;
+                string message = "";
+                while (option < playerChoices[node].Count)
+                {
+                    message += $"[{option + 1}]. {playerChoices[node][option]}\n";
+                    option++;
+                }
+                Console.WriteLine(message);
+                int i = 0;
+                while (true)
+                {
+                    if (i > 0)
+                    {
+                        Console.WriteLine($"How will you respond?\n{message}");
+                        i--;
+                    }
+                    string answer = Console.ReadLine().ToLower().Trim();
+                    try
+                    {
+                        answer1 = int.Parse(answer) -1;
+                        if (answer1 < 0 || answer1 > playerChoices[node].Count -1)
+                        {
+                            Console.WriteLine($"Please enter a number between 1 and {option}");
+                            continue;
+                        }
+                        Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]] + " " + parlances[node + 1]);
+                        break;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Please enter the number corresponding to your choice of action.");
+                        i++;
+                    }
+
+                }
+                node++;
+            }
+            if (!(parlances.Count == 1))
+            {
+                Console.WriteLine("How will you respond?");
+            }
+            int option1 = 0;
+            string message1 = "";
+            while (option1 < playerChoices[node].Count)
+            {
+                message1 += $"[{option1 + 1}]. {playerChoices[node][option1]}\n";
+                option1++;
+            }
+            Console.WriteLine(message1);
+            int j = 0;  
+            while (true)
+            {
+                string answer = Console.ReadLine().ToLower().Trim();
+                try
+                {
+                    answer1 = int.Parse(answer) - 1;
+                    if (answer1 < 0 || answer1 > playerChoices[node].Count - 1)
+                    {
+                        Console.WriteLine($"Please enter a number between 1 and {option1}");
+                        continue;
+                    }
+                    return answer1;
+                }
+                catch
+                {
+                    Console.WriteLine("Please enter the number corresponding to your choice of action.");
+                    j++;
+                }
+            }
+        }
+        public int LoopParle(Dictionary<string, string> choice_answer, List<string> choices1, string description, string parlance, int y1)
+        {
+            Console.WriteLine($"{description}\n\t{parlance}\nHow will you respond?");
+
+            int y = y1;
+            int i = 0;
+            List<string> choices = choices1;
+            while (true) 
+            {
+                string message = "";
+                int option = 0;
+                while (option < choices.Count)
+                {
+                    message += $"[{option + 1}]. {choices[option]}\n";
+                    option++;
+                }
+
+
+                if (i > 0)
+                {
+                    Console.WriteLine($"How will you respond?\n{message}");
+                    i--;
+                }
+                else
+                {
+                    Console.WriteLine(message);
+                }
+
+                string answer = Console.ReadLine().ToLower().Trim();
+                try
+                {
+                    int answer1 = int.Parse(answer) - 1;
+                    if (answer1 < 0 || answer1 > choices.Count - 1)
+                    {
+                        Console.WriteLine($"Please enter a number between 1 and {option}");
+                        continue;
+                    }
+                    else if (answer1 == y)
+                    {
+                        Console.WriteLine(choice_answer[choices[y]]);
+                        break;
+                    }
+                    else if (answer1 < y)
+                    {
+                        y--;
+                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        choices.Remove(choices[answer1]);
+                        i++;
+                        continue;
+                    }
+                    else
+                    {
+                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        choices.Remove(choices[answer1]);
+                        i++;
+                        continue;
+                    }
+
+                }
+                catch
+                {
+                    Console.WriteLine("Please enter the number corresponding to your choice of action.");
+                    i++;
+                }
+            }
+            return y;
+        }
+        public int LoopParle(Dictionary<string, string> choice_answer, List<string> choices, string description, string parlance, int y1, int x1)
+        {
+            Console.WriteLine($"{description}\n\t{parlance}\nHow will you respond?");
+            int x = x1;
+            int y = y1;
+            int i = 0;
+            while (true)
+            {
+                string message = "";
+                int option = 0;
+                while (option < choices.Count)
+                {
+                    message += $"[{option + 1}]. {choices[option]}\n";
+                    option++;
+                }
+
+
+                if (i > 0)
+                {
+                    Console.WriteLine($"How will you respond?\n{message}");
+                    i--;
+                }
+                else
+                {
+                    Console.WriteLine(message);
+                }
+
+                string answer = Console.ReadLine().ToLower().Trim();
+                try
+                {
+                    int answer1 = int.Parse(answer) - 1;
+                    if (answer1 < 0 || answer1 > choices.Count - 1)
+                    {
+                        Console.WriteLine($"Please enter a number between 1 and {option}");
+                        continue;
+                    }
+                    else if (answer1 == y)
+                    {
+                        Console.WriteLine(choice_answer[choices[y]]);
+                        return y;
+                    }
+                    else if (answer1 == x)
+                    {
+                        Console.WriteLine(choice_answer[choices[x]]);
+                        return x;
+                    }
+                    else if (answer1 < x && answer1 < y)
+                    {
+                        y--;
+                        x--;
+                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        choices.Remove(choices[answer1]);
+                        i++;
+                        continue;
+                    }
+                    else if (answer1 < y)
+                    {
+                        y--;
+                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        choices.Remove(choices[answer1]);
+                        i++;
+                        continue;
+                    }
+                    else if (answer1 < x)
+                    {
+                        x--;
+                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        choices.Remove(choices[answer1]);
+                        i++;
+                        continue;
+                    }
+                    else
+                    {
+                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        choices.Remove(choices[answer1]);
+                        i++;
+                        continue;
+                    }
+
+                }
+                catch
+                {
+                    Console.WriteLine("Please enter the number corresponding to your choice of action.");
+                    i++;
+                }
+            }
+            
+        }
+        public int LoopParle(Dictionary<string, string> choice_answer, List<string> choices, string description, string parlance, int y1, int x1, int z1)
+        {
+            Console.WriteLine($"{description}\n\t{parlance}\nHow will you respond?");
+            int x = x1;
+            int y = y1;
+            int z = z1;
+            int i = 0;
+            while (true)
+            {
+                string message = "";
+                int option = 0;
+                while (option < choices.Count)
+                {
+                    message += $"[{option + 1}]. {choices[option]}\n";
+                    option++;
+                }
+
+
+                if (i > 0)
+                {
+                    Console.WriteLine($"How will you respond?\n{message}");
+                    i--;
+                }
+                else
+                {
+                    Console.WriteLine(message);
+                }
+
+                string answer = Console.ReadLine().ToLower().Trim();
+                try
+                {
+                    int answer1 = int.Parse(answer) - 1;
+                    if (answer1 < 0 || answer1 > choices.Count - 1)
+                    {
+                        Console.WriteLine($"Please enter a number between 1 and {option}");
+                        continue;
+                    }
+                    else if (answer1 == y)
+                    {
+                        Console.WriteLine(choice_answer[choices[y]]);
+                        return y;
+                    }
+                    else if (answer1 == x)
+                    {
+                        Console.WriteLine(choice_answer[choices[x]]);
+                        return x;
+                    }
+                    else if (answer1 == z)
+                    {
+                        Console.WriteLine(choice_answer[choices[x]]);
+                        return z;
+                    }
+                    else if (answer1 < x && answer1 < y && answer1 < z)
+                    {
+                        x-- ; y -- ; z -- ;
+                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        choices.Remove(choices[answer1]);
+                        i++;
+                        continue;
+                    }
+                    else if (answer1 < x && answer1 < y)
+                    {
+                        y--;
+                        x--;
+                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        choices.Remove(choices[answer1]);
+                        i++;
+                        continue;
+                    }
+                    else if (answer1 < x && answer1 < z)
+                    {
+                        x--; z--;
+                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        choices.Remove(choices[answer1]);
+                        i++;
+                        continue;
+                    }
+                    else if (answer1 < y && answer1 < z)
+                    {
+                        y--; z--;
+                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        choices.Remove(choices[answer1]);
+                        i++;
+                        continue;
+                    }
+                    else if (answer1 < y)
+                    {
+                        y--;
+                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        choices.Remove(choices[answer1]);
+                        i++;
+                        continue;
+                    }
+                    else if (answer1 < x)
+                    {
+                        x--;
+                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        choices.Remove(choices[answer1]);
+                        i++;
+                        continue;
+                    }
+                    else if (answer1 < z)
+                    {
+                        z--;
+                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        choices.Remove(choices[answer1]);
+                        i++;
+                        continue;
+                    }
+                    else
+                    {
+                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        choices.Remove(choices[answer1]);
+                        i++;
+                        continue;
+                    }
+
+                }
+                catch
+                {
+                    Console.WriteLine("Please enter the number corresponding to your choice of action.");
+                    i++;
+                }
+            }
+
         }
         /// <summary>
         /// outcomes

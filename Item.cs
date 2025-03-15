@@ -310,7 +310,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(inventory, weaponInventory);
+                                feature.Search(inventory, weaponInventory, room);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -367,7 +367,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(inventory, weaponInventory);
+                                feature.Search(inventory, weaponInventory, room);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -422,7 +422,7 @@ namespace DungeonCrawler
                                     }
                                     else if (answer == "yes" || answer == "y")
                                     {
-                                        feature.Search(inventory, weaponInventory);
+                                        feature.Search(inventory, weaponInventory, room);
                                         break;
                                     }
                                     else if (answer == "no" || answer == "n")
