@@ -1567,7 +1567,7 @@ namespace DungeonCrawler
         /// <param name="holeInCeiling"></param>
         /// <param name="start"></param>
         /// <returns></returns>
-        public int Attack(int skill, int opponentSkill, int enemyStamina, bool commentary, Monster monsterName, Player player, string another, Room room, Feature holeInCeiling, bool start = false)
+        public int Attack(int skill, int opponentSkill, int enemyStamina, bool commentary, Monster monsterName, Player player, string another, Room room, Feature holeInCeiling, bool start = false, bool attackedMonster2 = false)
         {
             Dice D18 = new Dice(18);
             Dice D16 = new Dice(16);
@@ -1635,7 +1635,7 @@ namespace DungeonCrawler
                 }
                 else
                 {
-                    if (!start)
+                    if (!start && !attackedMonster2)
                     {
                         List<string> enemyCounters = new List<string>
                             {

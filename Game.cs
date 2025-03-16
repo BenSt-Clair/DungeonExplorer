@@ -745,11 +745,15 @@ namespace DungeonCrawler
             }
             */
             
+
             usesDictionaryItemItem[magnifyingGlass].Add(garment);
 
             Dictionary<Item, List<Player>> usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 } };
             List<Feature> features = new List<Feature>();
-
+            /*
+            Combat tester = new Combat(goblin, gnoll, player1, null);
+            tester.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, true, holeInCeiling, false, false);
+            */
             Console.WriteLine($"You rouse yourself from your self-reflection. " +
                 $"Who knows who, or what, this dubious curse-breaker is? Who knows what they have in store for you - or how their twisted designs might alleviate whatever Myrovia's curse is?");
             if (player1.Traits.ContainsKey("thespian"))
