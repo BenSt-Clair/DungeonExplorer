@@ -554,7 +554,20 @@ namespace DungeonCrawler
             Item bowlFragments = new Item("bowl fragments", "They're sharp. You best avoid stepping on them.", false, "shattered");
             Item jailorKeys = new Item("jailor keys", "Such cast iron, heavy-duty keys and the ring they're found on seem typical of any prison worthy of the name - not that you'd know, of course.");
             List<Item> cellInventory = new List<Item> { rustyChains, halfOfCrackedBowl, otherHalfOfCrackedBowl, bowlFragments, garment };
+            Item bobbyPins = new Item("bobby pin", "This is one of the few bobby pins that haven't been bent out of shape through frantic heavy-handedness.", true, "unbent");
 
+            Item journal = new Item("worn journal", "Opening it up you find detailed accounts of various escape attempts, but only one entry in particular catches your eye;\n\n" +
+                "'\tDay 6:\nI managed to purloin some artefact from one of the mercenaries when they dished out my gruel. I know it must be Merigold's because its embossed with his seal (an 'M' enveloped within a cursive capital 'G') - that means it'll be enchanted somehow. Still only an apprentice cleric, so i had to work hard to get the " +
+                "damn thing to do something. Eventually I used it to cast fireballs at the two braziers. Didn't work on the door though. \nI know what this Curse-Breaker is using them for. They won't subdue me with eldritch Fey enchantments. If they" +
+                "want me, they'll have to fight me! \n For now I'll keep the Merigold's ring hidden somewhere. Perhaps if I escape I'll be able to find him. \n\tFree him.\nThen we can put a stop to the evil that has befallen this place. The tragedy that is the cursebreaker " +
+                "must be brought to an end. How he might be defeated though... Merigold will know the answer. If he's still alive...' \n[ink splotches the parchment here, as though a pen had been hovering above the page, waiting]\n\t'Patrol just passed my cell, they seized the poor bugger next to mine. Dear god. \n If I don't make it out of here, and you're reading this, maybe you're this cell's next occupant, or maybe - God, I hope - you've" +
+                " already accomplished what has so eluded me; you've escaped. Either way, don't give up! There is more at stake than you can imagine. Even with my meagre training in the arcane, I've sensed for days now something not right within these walls - something terrible. Something with powers beyond the pale. This curse-Breaker, as he chooses to be known, MUST NOT be permitted dominion over it.\n" +
+                "You have before you a crusade of inestimable import. To truly escape not just this tower but the future this evil man weaves, he must be vanquished. I can impart upon you here my own experiences, that you might learn what you're up against. But I also choose to bestow upon you these words:\n" +
+                "The enemy may be mighty. But they are not invincible. The enemy may be many. But they are far fewer than all those whose hopes march with you. The eyes of the world fall upon you. You may be the best hope of securing our freedom. More importantly, of delivering us from the Curse-Breaker's designs. Know that even should these words be all that's left of me, I have full confidence, even now, in your final victory. \n" +
+                "So good luck, god speed, And god bless you on this almighty undertaking. May the wardens of fate guide your hand true. Find Merigold. Find the source of the Curse-Breaker's power. Save us all...'", false, "unburned");
+            Item merigoldRing = new Item("ring embossed 'MG'", "It is such an innocuous thing, so unassuming that it probably wouldn't sell at a village flea market. However, there's a certain - not sheen, but... a shimmer to it, that enchants the eye. You sense the ring has powers beyond the reach of hands untrained in the arcane such as yours.");
+            List<Item> trunkItems = new List<Item> { journal};
+            Item redThread = new Item("ball of red thread", "Turning it over in your hands, you surmise that its been knotted together out of strand upon strand of the threads within the surrounding garments. It's been wound tight.", true, "spooled");
             Item bowl = new Item("unbroken bowl", "It's similar to the one you saw in your dank cell, had yours not been shattered in two.");
             Item shatteredPlanks = new Item("splintered planks", "They scatter the floor nearby a hole that prevents escape only thanks to thick wooden beams crisscrossing the room beneath the floorboards.", true, "unburned");
             List<Item> cell2Inventory = new List<Item> { bowl, shatteredPlanks, garment};
@@ -580,15 +593,32 @@ namespace DungeonCrawler
             Door circleDoor = new Door();
             Door emptyCellDoor = new Door("far door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in. You notice the lock has scratches made from the inside. You surmise someone has attempted picking the lock, but unless they had something more than just a bobby pin, it's doubtful they succeeded.", false, "unlocked", null, null);
 
-            Feature brokenRightBrazier = new Feature("right broken brazier", "It's been tampered with by magic. It seems the last occupant here knew their arcana. Looking to the scratches on the door you sense with a tot of foreboding that it didn't do them any good...", false, "unlit", null);
+            List<Item> rightbrazierItems = new List<Item> { merigoldRing};
+            Feature brokenRightBrazier = new Feature("right broken brazier", "It's been tampered with by magic. It seems the last occupant here knew their arcana. Looking to the scratches on the door you sense with a tot of foreboding that it didn't do them any good.\nProbing further you find a ring has been stashed inside the well where used to flicker a blue flame.", false, "unlit", rightbrazierItems);
             Feature brokenLeftBrazier = new Feature("left broken brazier", "It's been tampered with by magic. It seems the last occupant here knew their arcana. Looking to the scratches on the door you sense with a tot of foreboding that it didn't do them any good...", false, "unlit", null);
-            Feature trunk = new Feature("weathered old trunk", "The leather of its sides is faded and worn. Unlike the rosewood chest in your room it hasn't been looked after and there's no hidden compartment.", false, "unlocked");
+            Feature trunk = new Feature("weathered old trunk", "The leather of its sides is faded and worn. Unlike the rosewood chest in your room it hasn't been looked after and there's no hidden compartment.", false, "unlocked", trunkItems);
             List<Feature> cell2features = new List<Feature> { trunk, otherRosewoodDoor, brokenLeftBrazier, brokenRightBrazier};
-
+            ///
+            ///antechamber features
             Feature mosaic = new Feature("peculiar mosaic", "You glance the mosaic's way before discovering its lustrous tiles are constantly flipping and shuffling like cards in the dextrous hands of some invisible dealer. The magical image they form is ever shifting. They seem to react to your presence.", false, "unstudied", null);
             Feature pillar = new Feature("grand pillar", "Its fluted elegance extends to the ceiling high above, flowering in stunning and intricate statuettes. Your fingers absently trace veins within the marble, admiring its opulence.", false, "unshattered");
             Feature plaque = new Feature("scorched bronze plaque", "Its engraved letters have been made illegible by the fire damage of some spell. Scribbled clumsily in the soot you can make out the scrawl, 'RMorRee'", false, "unstudied");
-
+            ///
+            /// otherBookcaseItems
+            Item bookEC3 = new Item("love letter", "tear-stained, it was made out of the torn page from a book. It reads as follows in shaky script...\n\t'Dearest Willow,\n\nI find myself confronting the increasingly unshakeable certainty that my death, or something far worse," +
+                "draws near. While my end looms large in these few precious minutes I have left to remember you, know that my happiness for what time we have spent together dwarfs it by a magnitude so great, that even now" +
+                ", in these last moments, I feel a bitter-sweet joy basking in your memory.\nYou always told me I should hang up the adventuring life. I'm sorry that you won't get the chance to tell me once more. For I write " +
+                "this in the forlorn knowledge my words might never find you, and I can only pray that if they do not that the sentiment and undying affection I bear for you and our child will prove too strong, and " +
+                "altogether too large, to be bound by such a physical form as ink and paper. If I should not make it, I know it will be hard for you, but though you may wish to give up, you cannot falter. Left to you is the greatest charge of all," +
+                 "that of the raising of our child. \nThat she may know love and joy without my being there fills me with a dread eclipsing that of all other terrors I've faced or have yet to face, but I steel myself in the certainty, as implacable as the sunrise and the moonfall," +
+                 "that you will rise to the task in my absence and teach her the same gentleness of spirit that has always soothed and drawn forth the best in me. \nKnow that I, with all my heart and soul, will always love you, \n\n\tSandy'", false, "unburned");
+            Item bookEC2 = new Item("dusty tome", "Judging by the weight of the manuscript, this literary brick is crammed with useless information. Flicking through its pages though you notice someone has torn out a page...", false, "unburned");
+            Item bookEC1 = new Item("leatherbound journal", "Its contents aren't very interesting except for the scrawl that inhabits the margins of several pages, penned with a feverish hand. Squinting, these passages written over the main text seem to compose a diary of the previous occupants internment.", false, "unburned");
+            List<Item> otherBookcaseItems = new List<Item> { bookEC1, bookEC2, bookEC3};
+            /// 
+            ///emptyCell features
+            Feature otherBookcase = new Feature("bookcase", "Unlike the bookcase in your former cell, this one is replete with a few leather-bound books and journals and its shelves are mostly intact.", false, "unshattered", otherBookcaseItems);
+            List<Item> stickyItems = new List<Item> { bowlFragments, garment, bobbyPins};
             List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys };
             // I instantiate a room with a list of items and features inside it and a description and room name
             List<Feature> cellfeatures = new List<Feature> { rosewoodDoor, rosewoodChest, bookCase, skeleton, leftbrazier, rightbrazier };
@@ -596,15 +626,15 @@ namespace DungeonCrawler
             List<Feature> corridorFeatures = new List<Feature> { stairwayToLower, leftbrazier, rosewoodDoor, otherRosewoodDoor, rightbrazier, emptyCellDoor, anotherBrazier, stairwayToUpper };
             List<Feature> antechamberFeatures = new List<Feature> { pillar, plaque, armouryDoor, pillar, mosaic, circleDoor};
             List<Item> antechamberItems = new List<Item>();
-            List<Item> emptyCellItems = new List<Item>();
-            List<Feature> emptyCellFeatures = new List<Feature> { emptyCellDoor};
+            List<Item> emptyCellItems = new List<Item> { garment, rustyChains, bobbyPins, redThread};
+            List<Feature> emptyCellFeatures = new List<Feature> { leftbrazier, emptyCellDoor, rightbrazier, otherBookcase};
 
             Room room = new Room("dank cell", "The foreboding cell is bathed in the earthy glow of lit braziers, barely lighting cold stony walls, a heavy rosewood door studded with iron hinges, and only the sparsest of furnishings.\nThe door is set within the north wall, two flickering braziers casting orbs of low light either side of it so as to look like great fiery eyes watching you from the murk.\t\nTo the west wall there is a large chest, mingled with a cascade of rusted and disused iron shackles.\t\nTo the south wall is a small bookcase and some garments haphazardly strewn about you.\t\nTo the east wall is the last occupant; a skeleton with a permanent grin, bound fast to the wall by many interlocking heavy chains. It almost seems to watch you from dark wells where once there were its eyes. It holds something in its bony fist and something else glimmers from a place out of reach behind it.\t\t", cellInventory, cellfeatures);
             Room corridor = new Room("long corridor", "More of those strange braziers cast pools of frosty light within the dark corridor. Here and there they alleviate the murk within the passage of grim stone walls and rickety floorboards. It extends to the left into darkness and to the right towards a wide flight of stone stairs. \nTo the north you face another door similar to the ornate rosewood door behind you.\t\nTurning your gaze west down the shadowy passage you see the flickering braziers leading you down towards a dark stairwell, descending beyond the inky blackness to unknown depths.\t\nTurning your head south the ornate rosewood door to your own former cell meets your gaze.\t\nTo the east the passageway leads past more doors up to a flight of stairs, ascending to the next level of whatever building or (tower?) you find yourself in.\t\t", corridorItems, corridorFeatures);
             Room cellOpposite = new Room("eerie cell", "There are scratch marks on the inside of the rosewood door leading into this cell. Whoever was here was dragged out and taken Lord only knows where. \nAhead of you is a bare stone wall, a bowl left close by. A kind of nest has been formed out of the strewn garments - clearly where the last occupant had rested. They're still warm...\t\nYou find little of note save for a clumsy attempt to craft crude levers out of the wooden planks of the floor. You guess they were used to slip under the gap in the door and lever it out of its iron pin hinges. Judging by the snapped and splintered planks of wood around you, the attempt failed.\t\nTurning your gaze southwards you see the door through which you entered. Like your room there are braziers either side of it, but they've been bent out of shape, their unnatural frosty flames extinguished.\t\nLooking to the east wall you find a trunk made of coarse leather hide and a wooden frame.\t\t", cell2Inventory, cell2features);
             Room antechamber = new Room("antechamber", "The prodigious antechamber is an architectural marvel of sweeping stone arches and a vaulted ceiling.\nGazing northwards you see a heavyset door studded with steel bolts, Above it a bronze plaque has been blackened as though blasted by some spell or fireball. \t\nTo the west you see the brightly illuminated stairway you just ascended.\t\nTurning your gaze to the south wall you find bare patches where once were probably opulent oil-paintings and portraits. Their absence adds to the ominous sense of some recent tragedy befalling this place.\t\nTo the east is another door leading out of the antechamber - this one a far more inviting set of oak-panelled double doors framed by fluted pillars and a grand enclosing some strange mosaic.\t\t", antechamberItems, antechamberFeatures);
             Room oubliette = new Room("oubliette", "~demon pit~", cellInventory, cellfeatures);
-            Room emptyCell = new Room("empty cell", "Upon entering this cell you find scratch marks around the lock. The enchanted braziers cast everything in a shimmering ethereal glow, as though the light were reaching this room through some alien ocean or the underside of a glacier\nAhead of you are more garments strewn haphazardly about. Some of them have been piled against the wall, almost as though to form something to sit on.\n\tTurning your gaze left you espy more rusty chains, along with a bookcase that - like the one in your old cell - looks like its seen better days.\n\tFacing the rosewood door you came through you notice bobby pins litter the floor. They must've been something the previous occupant had brought here with them. It looks like they were used to try and unlock the door.\n\tTo the east you find nothing of note.\t\t", emptyCellItems, emptyCellFeatures);
+            Room emptyCell = new Room("empty cell", "Upon entering this cell you find scratch marks around the lock. The enchanted braziers cast everything in a shimmering ethereal glow, as though the light were reaching this room through some alien ocean or the underside of a glacier\nAhead of you are more garments strewn haphazardly about. Some of them have been piled against the wall, almost as though to form something to sit on.\n\tTurning your gaze left you espy more rusty chains, along with a bookcase that - like the one in your old cell - looks like its seen better days.\n\tFacing the rosewood door you came through you notice bobby pins litter the floor. They must've been something the previous occupant had brought here with them. It looks like they were used to try and unlock the door.\n\tTo the east, just peeping from under the garments, you notice a ball of red thread. It seems to have been collected by the last occupant but you've no idea what for.\t\t", emptyCellItems, emptyCellFeatures);
 
             List<Room> yourCellDoor = new List<Room> {room, corridor };
             List<Room> otherCellDoor = new List<Room> { corridor, cellOpposite };
@@ -1263,7 +1293,7 @@ namespace DungeonCrawler
                                 if (newRoom.Name != room.Name)
                                 {
 
-                                    leftWhichRooms = room.WhichRoom(leftWhichRooms);
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
                                     newRoom1 = newRoom;
                                     continue;
                                 }
@@ -1326,7 +1356,7 @@ namespace DungeonCrawler
                                 if (newRoom.Name != oubliette.Name)
                                 {
 
-                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
                                     newRoom1 = newRoom;
                                     continue;
                                 }
@@ -1388,7 +1418,7 @@ namespace DungeonCrawler
                                 if (newRoom.Name != antechamber.Name)
                                 {
 
-                                    leftWhichRooms = antechamber.WhichRoom(leftWhichRooms);
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
                                     newRoom1 = newRoom;
                                     continue;
                                 }
@@ -1449,7 +1479,7 @@ namespace DungeonCrawler
                                 if (newRoom.Name != cellOpposite.Name)
                                 {
 
-                                    leftWhichRooms = cellOpposite.WhichRoom(leftWhichRooms);
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
                                     newRoom1 = newRoom;
                                     continue;
                                 }
@@ -1510,7 +1540,7 @@ namespace DungeonCrawler
                                 if (newRoom.Name != oubliette.Name)
                                 {
 
-                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
                                     newRoom1 = newRoom;
                                     continue;
                                 }
@@ -1571,7 +1601,7 @@ namespace DungeonCrawler
                                 if (newRoom.Name != oubliette.Name)
                                 {
 
-                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
                                     newRoom1 = newRoom;
                                     continue;
                                 }
@@ -1634,7 +1664,7 @@ namespace DungeonCrawler
                                 if (newRoom.Name != oubliette.Name)
                                 {
 
-                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
                                     newRoom1 = newRoom;
                                     continue;
                                 }
@@ -1683,7 +1713,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(oubliette.ItemList);
+                                player1.SearchPack(emptyCell.ItemList);
                                 a++;
 
                             }
@@ -1696,7 +1726,7 @@ namespace DungeonCrawler
                                 if (newRoom.Name != oubliette.Name)
                                 {
 
-                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
                                     newRoom1 = newRoom;
                                     continue;
                                 }
@@ -1757,7 +1787,7 @@ namespace DungeonCrawler
                                 if (newRoom.Name != oubliette.Name)
                                 {
 
-                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
                                     newRoom1 = newRoom;
                                     continue;
                                 }
@@ -1819,7 +1849,7 @@ namespace DungeonCrawler
                                 if (newRoom.Name != oubliette.Name)
                                 {
 
-                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
                                     newRoom1 = newRoom;
                                     continue;
                                 }
@@ -1881,7 +1911,7 @@ namespace DungeonCrawler
                                 if (newRoom.Name != oubliette.Name)
                                 {
 
-                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
                                     newRoom1 = newRoom;
                                     continue;
                                 }
@@ -2191,7 +2221,7 @@ namespace DungeonCrawler
                                 if (newRoom.Name != oubliette.Name)
                                 {
 
-                                    leftWhichRooms = oubliette.WhichRoom(leftWhichRooms);
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
                                     newRoom1 = newRoom;
                                     continue;
                                 }
