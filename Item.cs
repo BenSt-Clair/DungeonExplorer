@@ -59,7 +59,7 @@ namespace DungeonCrawler
         /// <param name="weapon"></param>
         /// <param name="featureItems"></param>
         /// <param name="roomItems"></param>
-        public void PickUpItem(List<Item> inventory, List<Weapon> weaponInventory,  int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null, Weapon yourRustyChains = null)
+        public void PickUpItem(List<Item> inventory, List<Weapon> weaponInventory,  int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null, Weapon yourRustyChains = null, List<Item> stickyItems = null)
         {
             //the following are customised messages for when an item is picked up. 
             List<string> messages = new List<string> { $"The {Name} now rests in your hands.", $"You reach over and pick up the {Name}.", $"You grasp the {Name} in your hands.", $"The {Name} is now clasped firmly in your hands.", $"With some trepidation, your clammy hand grips the {Name}.", $"You prise the {Name} from it's resting place", $"You slide the {Name} into your hands.", $"The {Name} is now nestled in your hands." };
@@ -192,7 +192,7 @@ namespace DungeonCrawler
                             else
                             {
                                 StashItem(item, inventory);
-                                if (item.Name != "bowl fragments" && item.Name != "rusty chains" && item.Name != "garment")
+                                if (item.Name != "bowl fragments" && item.Name != "rusty chains" && item.Name != "garment" && !stickyItems.Contains(item))
                                 {
                                     roomItems.Remove(item);
                                 }

@@ -294,7 +294,7 @@ namespace DungeonCrawler
         /// <param name="weaponInventory"></param>
         /// <param name="b"></param>
         /// <param name="player"></param>
-        public Room Investigate(List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains)
+        public Room Investigate(List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains, List<Item> stickyItems)
         {
             Dice D20 = new Dice(20);
             Dice D6 = new Dice(6);
@@ -567,7 +567,7 @@ namespace DungeonCrawler
                                     }
                                 }
                                 if (freshLoop) { continue; }
-                                itemList[answer1 - FeatureList.Count].PickUpItem(inventory, weaponInventory, 4, 0, itemList[answer1 - FeatureList.Count], null, null, ItemList); 
+                                itemList[answer1 - FeatureList.Count].PickUpItem(inventory, weaponInventory, 4, 0, itemList[answer1 - FeatureList.Count], null, null, ItemList, null, stickyItems); 
                                     
                                 
                             }
