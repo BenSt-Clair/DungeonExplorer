@@ -82,7 +82,7 @@ namespace DungeonCrawler
         /// <param name="usesDictionaryItemChar"></param>
         /// <param name="holeInCeiling"></param>
         /// <returns>boolean: true or false</returns>
-        public bool Fight(Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, bool fire = false, bool _initiative = false)
+        public bool Fight(Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, List<Item> specialItems, bool fire = false, bool _initiative = false, bool masked = false)
         {
             player = Player;
             Dice D2 = new Dice(2);
@@ -266,7 +266,9 @@ namespace DungeonCrawler
             Console.WriteLine(Monster.Description);
             if (fire)
             {
+                Console.ReadKey(true);
                 Console.WriteLine("The goblin doesn't recoil from the heat. A veteran of many pillages and raids, the goblin is undaunted by fire and immune to the choking smoke...\nBut you aren't!\nYou'll suffer damage for each turn this fight lasts!");
+                Console.ReadKey(true);
             }
             Dice D20 = new Dice(20);
             bool initiative = false;
@@ -684,7 +686,7 @@ namespace DungeonCrawler
                                                     {
                                                         if (w.Equipped)
                                                         {
-                                                            success = w.UseItem(chosenItem, w, usesDictionaryItemItem)[0];
+                                                            success = w.UseItem(chosenItem, w, usesDictionaryItemItem, specialItems)[0];
                                                             Console.WriteLine($"You coat your {playerWeapon} in the {chosenItem}");
                                                             player.Inventory.Remove(chosenItem);
                                                             break;
@@ -699,7 +701,7 @@ namespace DungeonCrawler
                                             {
                                                 try
                                                 {
-                                                    success = chosenItem.UseItem3(chosenItem, player, usesDictionaryItemChar);
+                                                    success = chosenItem.UseItem3(chosenItem, player, usesDictionaryItemChar, masked);
                                                     
                                                     if (chosenItem.Name.Trim().ToLower() == "healing potion") {
                                                         Console.WriteLine("Liquid rejuvenation trickles down your parched throat. A warm feeling swells from your heart as you feel your wounds salved and your flesh knitting itself back together.");
@@ -735,7 +737,7 @@ namespace DungeonCrawler
                                             {
                                                 try
                                                 {
-                                                    success = chosenItem.UseItem(chosenItem, Monster.Items[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, null, null, room, player, holeInCeiling)[0];
+                                                    success = chosenItem.UseItem(chosenItem, Monster.Items[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling)[0];
                                                     if (room.FeatureList.Contains(holeInCeiling)) 
                                                     {
                                                         Console.WriteLine(jinxedMisses[9]);
@@ -749,7 +751,7 @@ namespace DungeonCrawler
                                             {
                                                 try
                                                 {
-                                                    success = chosenItem.UseItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, null, null, room, player, holeInCeiling)[0];
+                                                    success = chosenItem.UseItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling)[0];
                                                     if (room.FeatureList.Contains(holeInCeiling))
                                                     {
                                                         Console.WriteLine(jinxedMisses[9]);
@@ -822,7 +824,7 @@ namespace DungeonCrawler
                 return false;
             }
         }
-        public bool Fight(Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, bool dualBattle, Feature holeInCeiling, bool fire = false, bool _initiative = false)
+        public bool Fight(Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, bool dualBattle, Feature holeInCeiling, List<Item> specialItems, bool fire = false, bool _initiative = false, bool masked = false)
         {
             player = Player;
             Dice D2 = new Dice(2);
@@ -1332,7 +1334,7 @@ namespace DungeonCrawler
                         stopwatch.Start();
                         if (Monster.Stamina > 0 && Monster2.Stamina > 0)
                         {
-                            Console.WriteLine($"Do you attack... \n[1] the {Monster.Name}\n[2] or the {Monster2.Name}?\n[You've only 2 seconds to decide and give your answer the moment you press any key]");
+                            Console.WriteLine($"Do you attack... \n[1] the {Monster.Name}\n[2] or the {Monster2.Name}?\n[You've only 5 seconds to decide and give your answer the moment you press any key]");
                             Console.ReadKey();
 
                             while (true)
@@ -1355,7 +1357,7 @@ namespace DungeonCrawler
                                     {
                                         stopwatch.Stop();
                                         timeLapsed = stopwatch.ElapsedMilliseconds;
-                                        if (timeLapsed < 2000)
+                                        if (timeLapsed < 5000)
                                         {
                                             pugilism = new List<Dice>();
                                             i = 0;
@@ -1451,7 +1453,7 @@ namespace DungeonCrawler
                                     {
                                         stopwatch.Stop();
                                         timeLapsed = stopwatch.ElapsedMilliseconds;
-                                        if (timeLapsed < 2000)
+                                        if (timeLapsed < 5000)
                                         {
                                             pugilism = new List<Dice>();
                                             i = 0;
@@ -1928,7 +1930,7 @@ namespace DungeonCrawler
                                                     {
                                                         if (w.Equipped)
                                                         {
-                                                            success = w.UseItem(chosenItem, w, usesDictionaryItemItem)[0];
+                                                            success = w.UseItem(chosenItem, w, usesDictionaryItemItem, specialItems)[0];
                                                             Console.WriteLine($"You coat your {playerWeapon} in the {chosenItem}");
                                                             player.Inventory.Remove(chosenItem);
                                                             break;
@@ -1943,7 +1945,7 @@ namespace DungeonCrawler
                                             {
                                                 try
                                                 {
-                                                    success = chosenItem.UseItem3(chosenItem, player, usesDictionaryItemChar);
+                                                    success = chosenItem.UseItem3(chosenItem, player, usesDictionaryItemChar, masked);
 
                                                     if (chosenItem.Name.Trim().ToLower() == "healing potion")
                                                     {
@@ -1980,7 +1982,7 @@ namespace DungeonCrawler
                                             {
                                                 try
                                                 {
-                                                    success = chosenItem.UseItem(chosenItem, Monster2.Items[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, null, null, room, player, holeInCeiling)[0];
+                                                    success = chosenItem.UseItem(chosenItem, Monster2.Items[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling)[0];
                                                     if (room.FeatureList.Contains(holeInCeiling))
                                                     {
                                                         Console.WriteLine(jinxedMisses[9]);
@@ -1994,7 +1996,7 @@ namespace DungeonCrawler
                                             {
                                                 try
                                                 {
-                                                    success = chosenItem.UseItem(chosenItem, Monster.Items[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, null, null, room, player, holeInCeiling)[0];
+                                                    success = chosenItem.UseItem(chosenItem, Monster.Items[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling)[0];
                                                     if (room.FeatureList.Contains(holeInCeiling))
                                                     {
                                                         Console.WriteLine(jinxedMisses[9]);
@@ -2008,7 +2010,7 @@ namespace DungeonCrawler
                                             {
                                                 try
                                                 {
-                                                    success = chosenItem.UseItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, null, null, room, player, holeInCeiling)[0];
+                                                    success = chosenItem.UseItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling)[0];
                                                     if (room.FeatureList.Contains(holeInCeiling))
                                                     {
                                                         Console.WriteLine(jinxedMisses[9]);
@@ -2110,6 +2112,7 @@ namespace DungeonCrawler
             else if (Monster.Stamina > 0 || Monster2.Stamina > 0)
             {
                 Console.WriteLine($"The last strike you suffered proves fatal. You collapse in shameful defeat, a trickle of blood running from your mouth as your limp body drops to its knees. This battle has proven too much for you. Your adventure ends here...");
+                Console.ReadKey(true);
                 return false;
             }
             else

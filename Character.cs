@@ -303,7 +303,7 @@ namespace DungeonCrawler
         /// <param name="trialBattle"></param>
         /// <returns></returns>
 
-        public List<bool> UseItemOutsideCombat(Room room, Item musicBox, Item binkySkull, Item steelKey, Item note, Item jailorKeys, Feature rosewoodChest, Feature holeInCeiling, Dictionary<Item, List<Player>> usesDictionaryItemChar, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Monster monster, Combat battle = null)
+        public List<bool> UseItemOutsideCombat(Room room, Item musicBox, Item binkySkull, Item steelKey, Item note, Item jailorKeys, List<Item> specialItems, Feature rosewoodChest, Feature holeInCeiling, Dictionary<Item, List<Player>> usesDictionaryItemChar, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, bool masked, Monster monster, Combat battle = null)
         {
 
             List<bool> success = new List<bool> { false, false }; //{successful use of item, fire}
@@ -427,7 +427,7 @@ namespace DungeonCrawler
                         {
                             try
                             {
-                                success[0] = chosenItem.UseItem3(chosenItem, this, usesDictionaryItemChar);
+                                success[0] = chosenItem.UseItem3(chosenItem, this, usesDictionaryItemChar, masked);
 
                                 if (chosenItem.Name.Trim().ToLower() == "healing potion")
                                 {
@@ -440,6 +440,10 @@ namespace DungeonCrawler
                                 else if (chosenItem.Name.Trim().ToLower() == "felix felicis") // luck potion grants boon to all weapons.
                                 {
                                     Console.WriteLine("The sweet liquid tastes like nirvana. It's effervescent body dances on your tongue and delights the senses. Suddenly you feel like anything is possible...");
+                                }
+                                else if (chosenItem.Name == "soot")
+                                {
+
                                 }
                                 else
                                 {
@@ -555,7 +559,7 @@ namespace DungeonCrawler
                             }
                             try
                             {
-                                success = chosenItem.UseItem(chosenItem, Inventory[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, battle);
+                                success = chosenItem.UseItem(chosenItem, Inventory[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, specialItems, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, battle);
                                 if (!success[0] && success[1])
                                 {
                                     return success;
@@ -576,7 +580,7 @@ namespace DungeonCrawler
                         {
                             try
                             {
-                                success = chosenItem.UseItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, battle);
+                                success = chosenItem.UseItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, specialItems, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, battle);
                                 if (!success[0] && success[1])
                                 {
                                     return success;

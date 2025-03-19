@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime;
@@ -37,6 +38,11 @@ namespace DungeonCrawler
         }
         public string StudyItem(Item item)
         {
+            if (item.Name.Contains("newsletter"))
+            {
+                item.Attribute = true;
+                item.SpecifyAttribute = "read";
+            }
             return item.Description;
         }
         /// <summary>
@@ -296,7 +302,13 @@ namespace DungeonCrawler
                 if (feature.Attribute == false)
                 {
                     feature.SpecificAttribute = "un" + feature.SpecificAttribute;
-                    if (item.Name == "steel key" && feature.Name == "rosewood chest")
+                    if (item.Name == "jailor keys" && (feature.Name == "far door" || feature.Name == "near door"))
+                    {
+                        Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door unlock.");
+                        Console.ReadKey(true);
+                        return true;
+                    }
+                    else if (item.Name == "steel key" && feature.Name == "rosewood chest")
                     {
                         Console.WriteLine("The key slides easily into the lock. With one sharp twist the clasp comes undone");
                         Console.WriteLine("Now that the rosewood chest is unlocked, would you like to search it?");
@@ -347,7 +359,13 @@ namespace DungeonCrawler
                 else
                 {
                     feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
-                    if (feature.Name == "skeleton" && item.Name =="rusty chain-flail")
+                    if (item.Name == "jailor keys" && (feature.Name == "far door" || feature.Name == "near door"))
+                    {
+                        Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door lock.");
+                        Console.ReadKey(true);
+                        return true;
+                    }
+                    else if (feature.Name == "skeleton" && item.Name =="rusty chain-flail")
                     {
                         feature.ItemList.Add(binkySkull);//binkySkull in this instance is steel key
                         feature.Description = "Its empty sockets fasten you with a stern gaze. It serves as a macabre reminder of what might yet befall you...";
@@ -1300,7 +1318,7 @@ namespace DungeonCrawler
                 return false; 
             }
         }
-        public List<bool> UseItem(Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, Dictionary<Item, List<Player>> usesDictionaryItemChar = null, Player player1 = null, Combat trialBattle = null)
+        public List<bool> UseItem(Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, List<Item> specialItems, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, Dictionary<Item, List<Player>> usesDictionaryItemChar = null, Player player1 = null, Combat trialBattle = null)
         {
             List<bool> tlist = new List<bool> { false, false };
             if (usesDictionary[item1].Contains(item2))
@@ -1309,7 +1327,30 @@ namespace DungeonCrawler
                 if (item2.Attribute == false)
                 {
                     item2.SpecifyAttribute = item2.SpecifyAttribute.Substring( 2, item2.SpecifyAttribute.Length-2);
-                    if (item1.Name == "magnifying glass" && item2.Name == "garment" && player.Traits.ContainsKey("jinxed"))
+                    if ((item1.Name == "bobby pin" && item2.Name == "stiletto blade")||(item2.Name == "bobby pin" && item1.Name == "stiletto blade"))
+                    {
+                        Console.WriteLine("You figure the thin sturdy blade will suffice with the bobby pin to make for a serviceable lockpicking set. \nNow if only there were a lock you could try it out on...");
+                        player.Inventory.Remove(item2);
+                        player.Inventory.Remove(item1);
+                        try
+                        {
+                            List<Item> stilettoItem = new List<Item> { item1 };
+                            List<Weapon> stilettoWeapon = stilettoItem.Cast<Weapon>().ToList();
+                            
+                            player.WeaponInventory.Remove(stilettoWeapon[0]);
+                        }
+                        catch
+                        {
+                            List<Item> stilettoItem = new List<Item> { item2 };
+                            List<Weapon> stilettoWeapon = stilettoItem.Cast<Weapon>().ToList();
+                            
+                            player.WeaponInventory.Remove(stilettoWeapon[0]);
+                        }
+                        player.Inventory.Add(specialItems[5]);
+                        
+                        
+                    }
+                    else if (item1.Name == "magnifying glass" && item2.Name == "garment" && player.Traits.ContainsKey("jinxed"))
                     {
                         Console.WriteLine("You slump to the floor, if not exactly resigned then idling in an absent minded flight of fancy. You toy with the magnifying glass, a bored expression on your face as you twist it this way and that.\nIt's minutes before an acrid scent hits your nostrils. Is that fried bacon?");
                         Console.ReadKey(true);
@@ -1321,7 +1362,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         player.Inventory.Remove(item2);
                         bool fire = true;
-                        if (trialBattle.Fight(usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, fire))
+                        if (trialBattle.Fight(usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, specialItems, fire))
                         {
                             tlist[0] = true;
                             tlist[1] = true;
@@ -1349,7 +1390,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         player.Inventory.Remove(item2);
                         bool fire = true;
-                        if (trialBattle.Fight(usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, fire))
+                        if (trialBattle.Fight(usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, specialItems, fire))
                         {
                             tlist[0] = true;
                             tlist[1] = true;
@@ -1389,18 +1430,24 @@ namespace DungeonCrawler
             else { return tlist; }
 
         }
-        public bool UseItem3(Item item1, Player player, Dictionary<Item, List<Player>> usesDictionary)
+        public bool UseItem3(Item item1, Player player, Dictionary<Item, List<Player>> usesDictionary, bool masked)
         {
             try {
                 if (usesDictionary[item1].Contains(player))
                 {
 
-
+                    string propString = "";
                     Dice D6 = new Dice(6);
-                    string propString = item1.Special.Substring(0, Special.IndexOf(":"));
+                    try
+                    {
+                        propString = item1.Special.Substring(0, Special.IndexOf(":"));
+                    }
+                    catch { }
                     //PropertyInfo boost = typeof(int).GetProperty(propString);
                     //object value = boost.GetValue(player, null);
                     //int CharacterAttribute = Convert.ToInt32(value);
+
+
                     if (propString == "Stamina")
                     {
                         if (player.Traits.ContainsKey("medicine man"))
@@ -1426,7 +1473,7 @@ namespace DungeonCrawler
                             Dice D40 = new Dice(40);
                             Dice D4 = new Dice(4);
                             int boost = D40.Roll(D40);
-                            if (player.Stamina + 2*player.Skill >= player.InitialStamina)
+                            if (player.Stamina + 2 * player.Skill >= player.InitialStamina)
                             {
                                 if (boost < 13)
                                 {
@@ -1446,8 +1493,8 @@ namespace DungeonCrawler
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"Urgh! That {item1.Name} didn't taste like the Fey 'magic' you've grown accustomed to... \nYou lose {boost/5} stamina points!");
-                                    player.Stamina -= boost/5;
+                                    Console.WriteLine($"Urgh! That {item1.Name} didn't taste like the Fey 'magic' you've grown accustomed to... \nYou lose {boost / 5} stamina points!");
+                                    player.Stamina -= boost / 5;
                                 }
                             }
                             else if (player.Stamina + boost > player.InitialStamina)
@@ -1499,12 +1546,12 @@ namespace DungeonCrawler
                     }
                     else if (propString == "Luck")
                     {
-                        
-                        
 
-                        
-                        
-                        
+
+
+
+
+
                         foreach (Weapon w in player.WeaponInventory)
                         {
 
@@ -1513,13 +1560,23 @@ namespace DungeonCrawler
 
 
                         }
-                        player.Inventory.Remove(item1); 
-                        
+                        player.Inventory.Remove(item1);
+
                         return true;
                     }
-                    else { Console.WriteLine($"~~{item1.Name} is an unknown quantity~~"); return false; }
+                    
+                    
+                    else if (item1.Name == "soot")
+                        {
+                            Console.WriteLine("you smear the soot across your cheeks in thick black lines like warpaint, obscuring your features. \nGrr! Your enemies better watch out...");
+                            player.Inventory.Remove(item1);
+                            masked = true;
+                            return true;
+                        }
+                        else { Console.WriteLine($"~~{item1.Name} is an unknown quantity~~"); return false; }
 
-                    }
+                } 
+                
                 else
                 {
                     Console.WriteLine("You can't use that item on yourself or anything to hand!");

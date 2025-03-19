@@ -1,6 +1,7 @@
 ﻿using DungeonCrawler;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Security.Cryptography.X509Certificates;
@@ -501,7 +502,7 @@ namespace DungeonCrawler
             //The following are lists of messages that might chance to appear in combat if certain, 
             //requirements are met, such as critical or good hits.
             Dice D4 = new Dice(4);
-
+            bool masked = false;
             Dice D2 = new Dice(2);
             List<Dice> damage = new List<Dice> { D4, D4 };
             List<Dice> damage1 = new List<Dice> { D3, D3, D2 };
@@ -595,12 +596,13 @@ namespace DungeonCrawler
             Feature holeInCeiling = new Feature("hole in the ceiling", "You gaze from the heap of debris that has buried the creature alive to the hole through the ceiling above. You bet you could climb the heap and enter the room above yours.");
             Door stairwayToLower = new Door("dark stairwell", "The steep stone steps descend beyond the light of the braziers and into the unknown murk lurking below", true, "blocked", null, null, "Feeling a knot of dread tighten about your stomach, you make the descent into a shifting web of shadows and silhouettes...");
             Door stairwayToUpper = new Door("lit stairway", "The wide flight of stone steps slowly curves around, leading to somewhere unseen but well-lit.", false, "unblocked", null, null, "You embark up the stairs two at a time.");
-            Door otherRosewoodDoor = new Door("near door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in.", false, "unlocked", null, null, "The door creaks ominously as you furtively pace into the next room.");
+            Door otherRosewoodDoor = new Door("near door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in.", true, "locked", null, null, "The door creaks ominously as you furtively pace into the next room.");
             Door armouryDoor = new Door("RmorRee door", "Its a heavyset door studded with iron bolts and a thoroughly unwelcoming aspect.", false, "unlocked", null, null, "The door swings open with a heave and opens into the next room...");
             Door circleDoor = new Door();
-            Door emptyCellDoor = new Door("far door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in. You notice the lock has scratches made from the inside. You surmise someone has attempted picking the lock, but unless they had something more than just a bobby pin, it's doubtful they succeeded.", false, "unlocked", null, null);
+            Door emptyCellDoor = new Door("far door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in. You notice the lock has scratches made from the inside. You surmise someone has attempted picking the lock, but unless they had something more than just a bobby pin, it's doubtful they succeeded.", true, "locked", null, null);
 
-            List<Item> rightbrazierItems = new List<Item> { merigoldRing};
+            Item soot = new Item("soot", "It's black. It's burned... Yep, that's soot.", false, "unsmeared", 0, ": ");
+            List<Item> rightbrazierItems = new List<Item> { merigoldRing, soot};
             Feature brokenRightBrazier = new Feature("right broken brazier", "It's been tampered with by magic. It seems the last occupant here knew their arcana. Looking to the scratches on the door you sense with a tot of foreboding that it didn't do them any good.\nProbing further you find a ring has been stashed inside the well where used to flicker a blue flame.", false, "unlit", rightbrazierItems);
             Feature brokenLeftBrazier = new Feature("left broken brazier", "It's been tampered with by magic. It seems the last occupant here knew their arcana. Looking to the scratches on the door you sense with a tot of foreboding that it didn't do them any good...", false, "unlit", null);
             Feature trunk = new Feature("weathered old trunk", "The leather of its sides is faded and worn. Unlike the rosewood chest in your room it hasn't been looked after and there's no hidden compartment.", false, "unlocked", trunkItems);
@@ -621,9 +623,11 @@ namespace DungeonCrawler
                  "that you will rise to the task in my absence and teach her the same gentleness of spirit that has always soothed and drawn forth the best in me. \nKnow that I, with all my heart and soul, will always love you, \n\n\tSandy'", false, "unburned");
             Item bookEC2 = new Item("dusty tome", "Judging by the weight of the manuscript, this literary brick is crammed with useless information. Flicking through its pages though you notice someone has torn out a page...", false, "unburned");
             Item bookEC1 = new Item("leatherbound journal", "Its contents aren't very interesting except for the scrawl that inhabits the margins of several pages, penned with a feverish hand. Squinting, these passages written over the main text seem to compose a diary of the previous occupants internment.", false, "unburned");
-            List<Item> otherBookcaseItems = new List<Item> { bookEC1, bookEC2, bookEC3};
+            Item bookEC4 = new Item("vespasian newsletter", "It's a strange propaganda leaflet that seems to have been circulated around the dastardly creatures that imprisoned you and held you captive. It's written english is somewhat to be desired, with the page littered with grammatical and spelling errors. From what you can discern, it was printed by the Vespasian Mercenary Company and distributed by *ahem* Da-Freebootaz-Squigalanche squad. \nA symbol of a winged serpent proudly crests the page. It's also seen to be worn by all the mercenaries in the etchings too...", false, "unread");
+            List<Item> otherBookcaseItems = new List<Item> { bookEC1, bookEC2, bookEC3, bookEC4};
             /// 
             /// armoury features
+            Item lockpickingSet = new Item("lockpicking set", "With a long thin blade and a pin, all kinds of new opportunities open themselves to you...", false, "unbroken");
             List<Dice> stilettoDamage = new List<Dice> { D3, D3, D3};
             List<Dice> bastardswordDamage = new List<Dice> { D6, D6};
             Weapon estoc = new Weapon("estoc", "It looks like a sword, its built like a sword, but its a spear. Don't ask...", bastardswordDamage, defaultCritHits, defaultGoodHits, 0, false);
@@ -635,7 +639,8 @@ namespace DungeonCrawler
             Weapon stiletto = new Weapon("stiletto blade", "This slender blade has a needle-like point that's sharper than a drill sergeant's tongue and a fox's wits and a bag of lemons and... \nWell, you get the idea.", stilettoDamage, defaultCritHits, defaultGoodHits, 1, false);
             Item bagOfCoins = new Item("bag of coins", "Most of the coins are scattered all over the table, with a few mounds forming the winnings of previous games. There is, however, a lovely large leather bag to stash them all in close by...", false, "unspent");
             List<Item> tableItems = new List<Item> { stiletto, bagOfCoins };
-            List<Item> goodRackWeapons = new List<Item> { axe, bastardSword, estoc};
+            List<Item> unlockedWeapons = new List<Item> { axe, estoc, bastardSword};
+            List<Item> goodRackWeapons = new List<Item> { };
             List<Item> badRackWeapons = new List<Item> { rustySword, sai, throwingKnife};
             Feature gamblingTable = new Feature("sturdy table", "This table looks like it served a former life as a smithy's worktop with its iron plated corners, battered surface and hefty legs. It's since been used as a place to play gambling games with coins.", false, "unshattered", tableItems);
             Feature goodWeaponRack = new Feature("weapon rack", "Replete with weapons of all descriptions, their oiled and well-polished blades gleam at you.\nIt's a shame someone was foresighted enough to lock them all behind an enchanted glass panel...", true, "locked", goodRackWeapons);
@@ -657,15 +662,19 @@ namespace DungeonCrawler
             ///emptyCell features
             Feature otherBookcase = new Feature("bookcase", "Unlike the bookcase in your former cell, this one is replete with a few leather-bound books and journals and its shelves are mostly intact.", false, "unshattered", otherBookcaseItems);
             List<Item> stickyItems = new List<Item> { bowlFragments, garment, bobbyPins, clunkySabaton, breastplate, helmet, bracers};
-            List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys };
+            List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys, lockpickingSet };
             // I instantiate a room with a list of items and features inside it and a description and room name
             List<Feature> cellfeatures = new List<Feature> { rosewoodDoor, rosewoodChest, bookCase, skeleton, leftbrazier, rightbrazier };
-            List<Item> corridorItems = new List<Item> { bowlFragments, bowlFragments, bowlFragments };
+            List<Item> corridorItems = new List<Item>();
             List<Feature> corridorFeatures = new List<Feature> { stairwayToLower, leftbrazier, rosewoodDoor, otherRosewoodDoor, rightbrazier, emptyCellDoor, anotherBrazier, stairwayToUpper };
             List<Feature> antechamberFeatures = new List<Feature> { pillar, plaque, armouryDoor, pillar, mosaic, circleDoor};
             List<Item> antechamberItems = new List<Item>();
             List<Item> emptyCellItems = new List<Item> { garment, rustyChains, bobbyPins, redThread};
             List<Feature> emptyCellFeatures = new List<Feature> { leftbrazier, emptyCellDoor, rightbrazier, otherBookcase};
+            ///
+            ///mess hall features and items
+            Item messhallBook1 = new Item("book on thievery", "A rather handy guide to the illicit - *ahem*, excuse me - to the skilled art of pickpocketing, conning, disguises and lockpicking.", false, "unread");
+            ///The above is for letting the player know that they can combine the bobby pin and the stiletto and that they can use the soot or warpaint to form a disguise
 
             Room room = new Room("dank cell", "The foreboding cell is bathed in the earthy glow of lit braziers, barely lighting cold stony walls, a heavy rosewood door studded with iron hinges, and only the sparsest of furnishings.\nThe door is set within the north wall, two flickering braziers casting orbs of low light either side of it so as to look like great fiery eyes watching you from the murk.\t\nTo the west wall there is a large chest, mingled with a cascade of rusted and disused iron shackles.\t\nTo the south wall is a small bookcase and some garments haphazardly strewn about you.\t\nTo the east wall is the last occupant; a skeleton with a permanent grin, bound fast to the wall by many interlocking heavy chains. It almost seems to watch you from dark wells where once there were its eyes. It holds something in its bony fist and something else glimmers from a place out of reach behind it.\t\t", cellInventory, cellfeatures);
             Room corridor = new Room("long corridor", "More of those strange braziers cast pools of frosty light within the dark corridor. Here and there they alleviate the murk within the passage of grim stone walls and rickety floorboards. It extends to the left into darkness and to the right towards a wide flight of stone stairs. \nTo the north you face another door similar to the ornate rosewood door behind you.\t\nTurning your gaze west down the shadowy passage you see the flickering braziers leading towards a dark stairwell, descending beyond the inky blackness to unknown depths.\t\nTurning your head south the ornate rosewood door to your own former cell meets your gaze.\t\nTo the east the passageway leads past more doors up to a flight of stairs, ascending to the next level of whatever building or (tower?) you find yourself in.\t\t", corridorItems, corridorFeatures);
@@ -673,7 +682,7 @@ namespace DungeonCrawler
             Room antechamber = new Room("antechamber", "The prodigious antechamber you now find yourself in is an architectural marvel of sweeping stone arches and a vaulted ceiling. For a few moments the sight of its extravagance, so vastly different from your previous surroundings, takes your breath away.\nGazing northwards you see a heavyset door studded with steel bolts, Above it a bronze plaque has been blackened as though blasted by some spell or fireball. \t\nTo the west you see the brightly illuminated stairway you just ascended.\t\nTurning your gaze to the south wall you find bare patches where once were probably opulent oil-paintings and portraits. Their absence adds to the ominous sense of some recent tragedy befalling this place.\t\nTo the east is another door leading out of the antechamber - this one a far more inviting set of oak-panelled double doors framed by fluted pillars and a grand archway enclosing some strange mosaic.\t\t", antechamberItems, antechamberFeatures);
             Room oubliette = new Room("oubliette", "~demon pit~", cellInventory, cellfeatures);
             Room emptyCell = new Room("empty cell", "Upon entering this cell you find scratch marks around the lock. The enchanted braziers cast everything in a shimmering ethereal glow, as though the light were reaching this room through some alien ocean or the underside of a glacier\nAhead of you are more garments strewn haphazardly about. Some of them have been piled against the wall, almost as though to form something to sit on.\t\nTurning your gaze left you espy more rusty chains, along with a bookcase that - like the one in your old cell - looks like its seen better days.\t\nFacing the rosewood door you came through you notice bobby pins litter the floor. They must've been something the previous occupant had brought here with them. It looks like they were used to try and unlock the door.\t\nTo the east, just peeping from under the garments, you notice a ball of red thread. It seems to have been collected by the last occupant but you've no idea what for.\t\t", emptyCellItems, emptyCellFeatures);
-            Room armoury = new Room("armoury", "The instant you step inside you are greeted with the surprised gaze of both a gnoll and a goblin. Gathered around a table, surrounded by weapon racks and other decidedly sharp furnishings, they turn to you, their rowdy clamouring frozen mid-game of coins... Ah, it seems you've intruded upon a private party. Their stunned Silence has not yet soured to hostility, however.\nThe high walls of the 'RmorRee' extend to a vaulted ceiling and appear to have been stripped of many ladders and shelves judging by the bare patches and splintered wood panels left behind. The north wall in particular is one of the few that betrays what this room might've been before its spartan refurbishment; a rosewood bookcase, replete with tomes, greets your gaze directly ahead.\t\nThe west wall to your left is where the table is situated where the gnoll and goblin played their game of coins.\t\nFacing south you find the door you just passed through.\t\nTo your right, gazing east, you see racks fully stocked with weapons and armour.\t\t", armouryItems, armouryFeatures);
+            Room armoury = new Room("armoury", "The instant you step inside you are greeted with a startled gnoll and goblin. Coins clatter to the table they're gathered around as they stare at you, surrounded by weapon racks and other decidedly sharp furnishings. Your presence has caused them to pause their boisterous clamouring mid-game of coins... It seems you've intruded upon a private party. Their stunned silence has yet to change into hostility, but it won't be long before it does...\nThe high walls of the 'RmorRee' extend to a vaulted ceiling and appear to have been stripped of many ladders and shelves judging by the bare patches and splintered wood panels left behind. The north wall in particular is one of the few that betrays what this room might've been before its spartan refurbishment; a rosewood bookcase, replete with tomes, greets your gaze directly ahead.\t\nThe west wall to your left is where the table is situated where the gnoll and goblin played their game of coins.\t\nFacing south you find the door you just passed through.\t\nTo your right, gazing east, you see racks fully stocked with weapons and armour.\t\t", armouryItems, armouryFeatures);
             Room messHall = new Room("mess hall", "~mess hall~", cell2Inventory, cell2features);
             Room circularLanding = new Room("circular landing", "~minor tour antics~", cell2Inventory, cell2features);
             Room magicalManufactory = new Room("magical manufactory", "~Merigold the Marvellous~", cell2Inventory, cell2features);
@@ -723,7 +732,73 @@ namespace DungeonCrawler
 
 
 
+            int getIntResponse(int option)
+            {
+                int answer1 = 0;
+                while (true)
+                {
+                    string answer = Console.ReadLine().Trim().ToLower();
+                    if (string.IsNullOrWhiteSpace(answer))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            
+                            answer1 = int.Parse(answer);
+                            if (answer1 < 1 || answer1 >= option)
+                            {
+                                Console.WriteLine($"Please enter a number between 1 and {option - 1}!");
+                            }
+                            else { break; }
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action!");
+                            continue;
+                        }
+                    }
+                }
+                return answer1;
+            }
+            List<long> getTimedIntResponse(int option)
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                long timeLapsed = 0;
+                long answer1 = 0;
+                while (true)
+                {
+                    string answer = Console.ReadLine().Trim().ToLower();
+                    if (string.IsNullOrWhiteSpace(answer))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        try
+                        {
 
+                            answer1 = int.Parse(answer);
+                            if (answer1 < 1 || answer1 >= option)
+                            {
+                                Console.WriteLine($"Please enter a number between 1 and {option - 1}!");
+                            }
+                            else { sw.Stop(); timeLapsed = sw.ElapsedMilliseconds; break; }
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action!");
+                            continue;
+                        }
+                    }
+                }
+                   
+                List<long> output = new List<long> { answer1,  timeLapsed};
+                return output;
+            }
             //
             //
             //
@@ -779,14 +854,17 @@ namespace DungeonCrawler
             player1.Inventory.Add(elixirFeline);
 
             ///Instantiating monsters to be fought later
-            List<Item> goblinInventory = new List<Item> { scimitar, breadKnife };
+            List<Item> goblinInventory = new List<Item> { scimitar };
             List<Item> gnollInventory = new List<Item> { dagger };
-            Item bracelet = new Item("Enchanted Bracelet of Blurred Image");
+            Item bracelet = new Item("Bracelet embossed MG", "It's a curious item to find, especially in such a place as this. It seems to shimmer with an energy beyond your understanding or ability to unlock.", false);
+            Item mercInsignia = new Item("insignia", "The insignia depicts a serpent with feathered wings. In the form of a broach it might look rather fetching on you...");
             List<Item> minotaurInventory = new List<Item> { vanquisher };
             Monster minotaur = new Monster("minotaur", "towering above you at eight feet, the minotaur levels its horns towards you, tenses its powerful muscles, and charges!", minotaurInventory, 120, 10, vanquisher);
             Monster goblin = new Monster("goblin", "The goblin's swarthy, pock-marked skin does little to lessen the effect of its ugly snarl.", goblinInventory, 50, 2, scimitar);
             goblin.Items.Add(bracelet);
-            Monster gnoll = new Monster("gnoll", "The ravenous gnoll stares at you with hungry eyes. It seeks to feast, and you would make an excellent appetiser...", gnollInventory, 50, 6, bite);
+            goblin.Items.Add(mercInsignia);
+            goblin.Items.Add(jailorKeys);
+            Monster gnoll = new Monster("gnoll", "The ravenous gnoll stares at you with hungry eyes. It seeks to feast, and you would make an excellent appetiser...", gnollInventory, 50, 4, bite);
             ///Instantiating battles to be used later.
             Combat trialBattle = new Combat(goblin, player1);
             Combat toughestBattle = new Combat(minotaur, player1);
@@ -803,6 +881,15 @@ namespace DungeonCrawler
                 usesDictionaryItemItem.Add(halfOfCrackedBowl, new List<Item> { otherHalfOfCrackedBowl });
                 usesDictionaryItemItem.Add(otherHalfOfCrackedBowl, new List<Item> { halfOfCrackedBowl });
                 
+            }
+            if (player1.Traits.ContainsKey("diligent")|| player1.Traits.ContainsKey("sadist")||player1.Traits.ContainsKey("medicine man")|| player1.Skill > 7)
+            {
+                
+                if (player1.Traits.ContainsKey("sadist")) { mercInsignia.Description += "\nYou instantly recognise the emblem as that of a cut-throat gang you've long admired from afar. "; }
+                else if (player1.Traits.ContainsKey("medicine man")) { mercInsignia.Description += "\nYou recall the emblem from the descriptions and stories their victims exchanged under the bloodied canvases of triage tents, many of whom you'd done your best to heal after many a sordid battle."; }
+                else if (player1.Traits.ContainsKey("diligent")) { mercInsignia.Description += "\nYour diligent studies pay off as you recognise the emblem. "; }
+                else { mercInsignia.Description += "\nYou recognise the emblem from your martial studies."; }
+                mercInsignia.Description += "\nIt's the mark of the Vespasian Mercenaries, a group of infamous swords-for-hire for whom no work, no matter how bloody or deplorable, is off limits if the price is right. You reason that wearing this could prove useful if you wanted to pass yourself as a fellow merc...\nSo long, of course, that the other guards don't recognise your face, of course.";
             }
             /*
             List<string> parlances = new List<string> { "This is the first parlance", "second parlance string"};
@@ -827,12 +914,21 @@ namespace DungeonCrawler
 
             usesDictionaryItemItem[magnifyingGlass].Add(garment);
 
-            Dictionary<Item, List<Player>> usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 } };
+            Dictionary<Item, List<Player>> usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [soot] = new List<Player> { player1} };
             List<Feature> features = new List<Feature>();
             /*
             Combat tester = new Combat(goblin, gnoll, player1, null);
             tester.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, true, holeInCeiling, false, false);
             */
+            Item merigoldBroach = new Item("broach embossed MG", "There's a shimmer to it that draws the eye, but the moment your gaze focuses on it the shimmer is gone and you are left looking at an altogether unprepossessing broach.");
+            Item merigoldMedallion = new Item("medallion embossed MG", "The medallion catches the light as you examine itt. It looks utterly worthless to your untrained eyes.");
+            List<Item> goblin2Inventory = new List<Item> { breadKnife, merigoldBroach};
+            gnollInventory.Add(merigoldMedallion);
+            Monster goblinCaptain = new Monster("goblin", "The goblin's swarthy, pock-marked skin does little to lessen the effect of its ugly snarl.", goblin2Inventory, 60, 0, breadKnife);
+            Combat dualDuel = new Combat(goblinCaptain, gnoll, player1);
+
+
+
             Console.WriteLine($"You rouse yourself from your self-reflection. " +
                 $"Who knows who, or what, this dubious curse-breaker is? Who knows what they have in store for you - or how their twisted designs might alleviate whatever Myrovia's curse is?");
             if (player1.Traits.ContainsKey("thespian"))
@@ -920,8 +1016,8 @@ namespace DungeonCrawler
                     {
                         e++;
                         List<bool> success = new List<bool>();
-                        test3.RunForCombat();
-                        success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                        
+                        success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                         if (player1.Inventory.Contains(jailorKeys))
                         {
                             escapedThroughDoor = true;
@@ -936,9 +1032,9 @@ namespace DungeonCrawler
                         
                         else if (success[1])
                         {
-                            Console.WriteLine("With the whole cell blazing around you, you flee through the door. A fiery haze billows in your wake as you throw yourself into a corridor and slam the rosewood door shut behind you.");
+                            Console.WriteLine("With the whole cell blazing around you, you snatch up the jailor's keys before you flee through the door. A fiery haze billows in your wake as you throw yourself into a corridor and slam the rosewood door shut behind you.");
                             if (player1.Inventory.Contains(bowlFragments)) { Console.WriteLine($"It's a moment before you realise your backpack is still smoking!\nOpening it up you scramble to save the contents, fishing out the {bowlFragments.Name} before they can burn everything, but it's too late. \nEverything inside your pack is burned and unusable!"); player1.Inventory.Clear(); Console.ReadKey(true); }
-
+                            player1.Inventory.Add(jailorKeys);
                             escapedRoom1 = true;
                             escapedThroughDoor = true;
                             fieryEscape = true;
@@ -951,7 +1047,7 @@ namespace DungeonCrawler
                         {
                             if (player1.WeaponInventory[0].Equipped)
                             {
-                                if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, false, false))
+                                if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false))
                                 {
                                     trialBattle.WonFight();
                                     escapedThroughDoor = true;
@@ -991,9 +1087,9 @@ namespace DungeonCrawler
                             }
                             else if (r3ply == "yes" || r3ply == "y")
                             {
-                                test3.RunForCombat();
+                                
                                 Console.WriteLine("You prise open the music box. Immediately its brass cogs begin to whir as a jaunty melody fills the room. You find the tune to be lively and cheery, but it's not long before a furious, rage-filled roar erupts from beyond the door. In a flurry of instants, boots have pounded closer, someone fumbles at the lock of your door, and finally a frenzied goblin bursts inside, scimitar drawn. For a moment you think he'll smash the music box, but instead he lunges towards you...");
-                                if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling))
+                                if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems))
                                 {
                                     if (player1.Inventory.Contains(binkySkull))
                                     {
@@ -1158,7 +1254,7 @@ namespace DungeonCrawler
                 }
                 
                 
-                bool FireProgress(int fireProgress, Player player1, Room corridor) // returns (still alive?)
+                int FireProgress(int fireProgress, Player player1, Room corridor) // returns (still alive?)
                 {
                     if (fireProgress > 0) 
                     {
@@ -1166,52 +1262,56 @@ namespace DungeonCrawler
                     }
                     else
                     {
-                        return true;
+                        return fireProgress;
                     }
                     switch (fireProgress)
                     {
                         case 1:
-                            return true;
+                            return fireProgress;
                         case 2:
                             Console.WriteLine("The smouldering door of your cell begins to blaze, crumbling into glowing charcoal as the flames roar behind it. Tendrils of smoke swell and stream from beneath the door, filling the corridor with an acrid haze. You begin to splutter and stagger. \nLose 3 stamina points!");
                             player1.Stamina -= 3;
+                            Console.ReadKey(true);
                             if (player1.Stamina < 1)
                             {
                                 Console.ReadKey(true);
                                 Console.WriteLine("On your last legs, bleeding profusely from your battle, the smoke proves to be too much for you. \nYou pass out. Soon enough the fire will consume you.");
                                 Console.ReadKey(true);
                                 Console.WriteLine("\nYour adventure ends here...");
-                                return false;
+                                return 1000;
                             }
-                            return true;
+                            return fireProgress;
                         case 3:
-                            return true;
+                            return fireProgress;
                         case 4:
-                            return true;
+                            return fireProgress;
                         case 5:
                             Console.WriteLine("The smouldering door of your cell collapses, a blizzard of flames suddenly blasting into the corridor. You get thrown back by the fiery gust. \nLose 10 stamina points!");
+                            corridor.Description = "The light cast by those strange braziers is rapidly being overwhelmed by the haze of smoke. The fire roars from your room and is catching down the smouldering corridor. The passage of grim stone walls and rickety floorboards swells with smoke. To the left, through the haze, the blackness of the stairwell beckons, while to the right lies a wide flight of stone stairs. \nTo the north you face another door similar to the ornate rosewood door behind you.\t\nTurning your gaze west down the shadowy passage you see the flickering braziers leading towards a dark stairwell, descending beyond the inky blackness to unknown depths.\t\nTurning your head south the ornate rosewood door to your own former cell meets your gaze.\t\nTo the east the passageway leads past more doors up to a flight of stairs, ascending to the next level of whatever building or (tower?) you find yourself in.\t\t";
                             player1.Stamina -= 10;
+                            Console.ReadKey(true);
                             if (player1.Stamina < 1)
                             {
                                 Console.ReadKey(true);
                                 Console.WriteLine("On your last legs, severe burns covering your body, the fire at last proves to be too much for you. \nYou pass out. Soon enough the fire will consume you.");
                                 Console.ReadKey(true);
                                 Console.WriteLine("\nYour adventure ends here...");
-                                return false;
+                                return 1000;
                             }
-                            return true;
+                            return fireProgress;
                         case 6:
-                            return true;
+                            return fireProgress;
                         case 7:
                             Console.WriteLine("The fire rages into an inferno! Flames lick at the doors and the flames in the braziers no longer cast their frosty light - their low flames become overrun by the roaring fire rapidly devouring the entire corridor, transforming it into a hellish portal. The heat threatens to torch you alive! \nLose 12 stamina points!");
                             player1.Stamina -= 12;
+                            Console.ReadKey(true);
                             if (player1.Stamina < 1)
                             {
                                 Console.ReadKey(true);
                                 Console.WriteLine("On your last legs, severe burns covering your body, the fire at last proves to be too much for you. \nYou pass out. Soon enough the fire will consume your body.");
                                 Console.ReadKey(true);
                                 Console.WriteLine("\nYour adventure ends here...");
-                                return false;
+                                return 1000;
                             }
                             Console.WriteLine("You have only one way forward - the stairwell down and the doors to the east are cut off by the flames, you must press on ever higher up the stairs to the east!");
                             List<string> fireWords = new List<string>
@@ -1228,11 +1328,14 @@ namespace DungeonCrawler
                             {
                                 item.Name = fireWords[D6.Roll(D6) - 1] + " " + item.Name;
                             }
-                            corridor.FeatureList.RemoveRange(0, 5);
+                            corridor.FeatureList.RemoveRange(0, 7);
                             
-                            return true;                        
+                            return 500;                        
                         default:
-                            return true;
+                            Console.WriteLine("You collapse amidst a swirl of smoke. Your body is consumed by the inferno you started.");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Your adventure ends here...");
+                            return 1000;
                     }
                 }
                 List<bool> leftWhichRooms = new List<bool> {true, false, true, true, true, true, 
@@ -1240,6 +1343,12 @@ namespace DungeonCrawler
                 Room newRoom1 = corridor;
                 bool victorious = false;
                 bool visitedRoom = true;
+                bool visitedArmouryBefore = false;
+                int b1 = 0;
+                Stopwatch fireClock = new Stopwatch();
+                fireClock.Start();
+                long fireTimeLapsed = 0;
+                bool visitedCorridor = false;
                 while (!victorious)
                 {
                     
@@ -1254,20 +1363,57 @@ namespace DungeonCrawler
                     
                     while (!leftWhichRooms[1])//corridor
                     {
+                        if (visitedCorridor)
+                        {
+                            
+                            fireClock.Stop();
+                            fireTimeLapsed = fireClock.ElapsedMilliseconds;
+                            if(fireProgress > 0 && fireProgress < 5 && fireTimeLapsed > 360000)
+                            {
+                                fireProgress = 4;
+                                fireProgress = FireProgress(fireProgress, player1, corridor);
+                                if (fireProgress > 999)
+                                {
+                                    return;
+                                }
+                                fireClock.Start();
+                            }
+                            else if(fireProgress > 4 && fireProgress < 7 && fireTimeLapsed > 840000)
+                            {
+                                fireProgress = 6;
+                                fireProgress = FireProgress(fireProgress, player1, corridor);
+                                if (fireProgress > 999)
+                                {
+                                    return;
+                                }
+                            }
+                            if (fireProgress < 7)
+                            {
+                                fireClock.Start();
+                            }
+                            
+                        }
+                        
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item>{ bobbyPins});
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto});
+                        if (!usesDictionaryItemFeature.ContainsKey(jailorKeys))
+                        {
+                            usesDictionaryItemFeature.Add(jailorKeys, new List<Feature> { emptyCellDoor, otherRosewoodDoor });
+                        }
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                         ///red herring in room above
                         ///Specific for each room, tailored.
-                        if (!(a==0 && b == 0))
+                        if (!(a==0 && b1 == 0))
                         {
                             Console.WriteLine("Now what will you do?");
                         }
                         Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine("[2] Investigate the corridor?");
-                        if (b > 0)
+                        if (b1 > 0)
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
@@ -1275,7 +1421,7 @@ namespace DungeonCrawler
                         try
                         {
                             int reply1 = int.Parse(reply);
-                            if ((b<1 && (reply1 < 1 || reply1 > 2)) || reply1<1 || reply1>3)
+                            if ((b1<1 && (reply1 < 1 || reply1 > 2)) || reply1<1 || reply1>3)
                             {
                                 Console.WriteLine("Please enter a number corresponding to a choice of action.");
                                 continue;
@@ -1284,14 +1430,18 @@ namespace DungeonCrawler
                             {
                                 player1.SearchPack(corridor.ItemList);
                                 a++;
-                                FireProgress(fireProgress, player1, corridor);
+                                fireProgress = FireProgress(fireProgress, player1, corridor);
+                                if (fireProgress > 999)
+                                {
+                                    return;
+                                }
                             }
                             else if (reply1 == 2)
                             {
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = corridor.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = corridor.Investigate(player1.Inventory, player1.WeaponInventory, b1, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != corridor.Name)
                                 {
 
@@ -1301,20 +1451,30 @@ namespace DungeonCrawler
                                 }
                                 else
                                 {
-                                    FireProgress(fireProgress, player1, corridor);
+                                    fireProgress = FireProgress(fireProgress, player1, corridor);
+                                    if (fireProgress > 999)
+                                    {
+                                        return;
+                                    }
                                 }
 
-                                b++;
+                                b1++;
                             }
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(corridor, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                
+                                success = player1.UseItemOutsideCombat(corridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                fireProgress = FireProgress(fireProgress, player1, corridor);
+                                if (fireProgress > 999)
+                                {
+                                    return;
+                                }
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
                     }
+                    visitedCorridor = true;
                     if (visitedRoom)
                     {
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
@@ -1326,6 +1486,8 @@ namespace DungeonCrawler
                     {
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -1376,8 +1538,8 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                
+                                success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -1394,6 +1556,8 @@ namespace DungeonCrawler
                         ///might want to add treacherous passage here test skill fall down steps
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -1444,8 +1608,8 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -1463,6 +1627,8 @@ namespace DungeonCrawler
                         newRoom1.Description.Remove(newRoom1.Description.IndexOf(".") + 1, deleteString.Length);
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -1513,8 +1679,8 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(antechamber, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                
+                                success = player1.UseItemOutsideCombat(antechamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -1530,6 +1696,9 @@ namespace DungeonCrawler
                     {
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
+                        //usesDictionaryItemFeature[jailorKeys].Remove(otherRosewoodDoor);
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -1580,8 +1749,8 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(cellOpposite, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                
+                                success = player1.UseItemOutsideCombat(cellOpposite, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -1595,13 +1764,1939 @@ namespace DungeonCrawler
                     a = 0;
                     while (!leftWhichRooms[5])//armoury 
                     {
+                        
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                         ///red herring in room above
                         ///Specific for each room, tailored.
+                        if (!visitedArmouryBefore)
+                        {
+                            Dialogue armouryTalk = new Dialogue(player1, goblinCaptain, dualDuel, armoury);
+                            Console.WriteLine("How do you respond? \n[once you press any key you will have only 12 seconds to decide. Choose wisely...]");
+                            string message = "";
+                            int option = 4;
+                            List<string> palaver = new List<string> 
+                            {
+                                "You try to politely excuse yourself and slip out of the door...",
+                                "You try to bluster and bluff your way out - you ask them what they think they're staring at...",
+                                "You ask if those weapons are for sale..."
+                            };
+                            message += "[1] You try to politely excuse yourself and slip out of the door..." +
+                                "\n[2] You try to bluster and bluff your way out - you ask them what they think they're staring at..." +
+                                "\n[3] You ask if those weapons are for sale...";
+                            if (player1.Inventory.Contains(journal))
+                            {
+                                message += $"\n[{option}] You apologise for the interruption and explain that you're looking for, um... Merigold?";
+                                option++;
+                                palaver.Add("You apologise for the interruption and explain that you're looking for, um... Merigold?");
+                            }
+                            if (player1.Traits.ContainsKey("thespian") && masked && player1.Inventory.Contains(mercInsignia))
+                            {
+                                message += $"\n[{option}] You bring to life and inhabit the persona of a drill-sergeant, and set about whipping these good-for-nothing grunts into shape!";
+                                option++;
+                                palaver.Add("You bring to life and inhabit the persona of a drill-sergeant, and set about whipping these good-for-nothing grunts into shape!");
+                            }
+                            else if ((player1.Traits.ContainsKey("thespian") && masked) ||(masked && player1.Inventory.Contains(mercInsignia)) || (player1.Traits.ContainsKey("thespian") && player1.Inventory.Contains(mercInsignia)))
+                            {
+                                message += $"\n[{option}] You adopt the unassuming role of just another grunt and complain about the food...";
+                                option++;
+                                message += $"\n[{option}] You adopt the unassuming role of just another grunt and complain about the pay...";
+                                option++;
+                                message += $"\n[{option}] You adopt the unassuming role of just another grunt and complain about the weapons...";
+                                option++;
+                                palaver.Add("You adopt the unassuming role of just another grunt and complain about the food...");
+                                palaver.Add("You adopt the unassuming role of just another grunt and complain about the pay...");
+                                palaver.Add("You adopt the unassuming role of just another grunt and complain about the weapons...");
+                            }
+                            else if (masked || player1.Traits.ContainsKey("thespian") || masked && player1.Inventory.Contains(mercInsignia))
+                            {
+                                message += $"\n[{option}] You adopt the role of commander-in-chief and sanctimoniously berate them for playing coins when... wait? coins? Why not cards? cards are so much better...";
+                                option++;
+                                palaver.Add("You adopt the role of commander-in-chief and sanctimoniously berate them for playing coins when... wait? coins? Why not cards? cards are so much better...");
+                            }
+                            if (fieryEscape && fireProgress > 5)
+                            {
+                                message += $"\n[{option}] You yell there's a fire downstairs and its rapidly threatening to burn the whole place down. They need to put it out. Now!";
+                                option++;
+                                palaver.Add("You yell there's a fire downstairs and its rapidly threatening to burn the whole place down. They need to put it out. Now!");
+                            }
+                            else if (fieryEscape)
+                            {
+                                message += $"\n[{option}] You yell there's a fire downstairs and they need to put it out!";
+                                option++;
+                                palaver.Add("You yell there's a fire downstairs and they need to put it out!");
+                            }
+                            if (player1.Traits.ContainsKey("jinxed"))
+                            {
+                                message += $"\n[{option}] You stammer as you beseech them both that they *really* don't want to fight you. Bad, inexplicable things always happen when you get caught in a fight...";
+                                option++;
+                                palaver.Add("You stammer as you beseech them both that they *really* don't want to fight you. Bad, inexplicable things always happen when you get caught in a fight...");
+                            }
+                            if (player1.Traits.ContainsKey("sadist"))
+                            {
+                                message += $"\n[{option}] You leer as you draw your weapon and tell them that you're going to enjoy this...";
+                                option++;
+                                palaver.Add("You leer as you draw your weapon and tell them that you're going to enjoy this...");
+                            }
+                            else if (player1.Traits.ContainsKey("opportunist"))
+                            {
+                                message += $"\n[{option}] You seize the initiative and attack while you have the advantage!";
+                                option++;
+                                palaver.Add("You seize the initiative and attack while you have the advantage!");
+                            }
+                            Console.ReadKey(true);
+                            Console.WriteLine(message);
+                            List<long> answer_and_time = getTimedIntResponse(option);
+                            if (answer_and_time[1]> 12000)
+                            {
+                                Console.WriteLine("Tongue-tied, you're unable to give an adequate response before your enemies draw their weapons...");
+                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                {
+                                    dualDuel.WonFight();
+                                    dualDuel.Monster = dualDuel.Monster2;
+                                    dualDuel.WonFight();
+                                }
+                                else
+                                {
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                
+                                long rep = answer_and_time[0] - 1;
+                                switch (rep)
+                                {
+                                    case 0:
+                                        Console.WriteLine("The two mercenaries take notice of your nervousness. Chairs scrape across the floor as the goblin and gnoll rise and draw their weapons.\nIt looks like you're going to have to fight...");
+                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                        {
+                                            dualDuel.WonFight();
+                                            dualDuel.Monster = dualDuel.Monster2;
+                                            dualDuel.WonFight();
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            return;
+                                        }
+                                    case 1:
+                                        Console.WriteLine("They are bold words, but unconvincingly delivered. The two mercenaries take notice of your nervousness. Chairs scrape across the floor as the goblin and gnoll rise and draw their weapons.\nIt looks like you're going to have to fight...");
+                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                        {
+                                            dualDuel.WonFight();
+                                            dualDuel.Monster = dualDuel.Monster2;
+                                            dualDuel.WonFight();
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            return;
+                                        }
+                                    case 2:
+                                        Console.WriteLine("It appears the answer is no, they are not, because soon after you asked chairs scrape across the floor and the goblin and gnoll rise and draw their weapons.\nDid you mistake them for merchants?...");
+                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                        {
+                                            dualDuel.WonFight();
+                                            dualDuel.Monster = dualDuel.Monster2;
+                                            dualDuel.WonFight();
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            return;
+                                        }
+                                    case 3:
+                                        try
+                                        {
+                                            if (palaver[3] == "You apologise for the interruption and explain that you're looking for, um... Merigold?")
+                                            {
+                                                Console.WriteLine("\nUpon mention of Merigold the two mercenaries' features darken. They rise from their seats, drawing their weapons. It seems they know all too well who and where Merigold is, and they also know that no friend of theirs would be traipsing through this place looking for him...\nYou shrug. Oh well, it was worth a shot. You prepare to fight...");
+                                                
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[3] == "You bring to life and inhabit the persona of a drill-sergeant, and set about whipping these good-for-nothing grunts into shape!")
+                                            {
+                                                Dialogue drillsergeant = new Dialogue(player1, goblinCaptain, dualDuel, armoury);
+                                                
+                                                string description = "The goblin and the gnoll eye you suspiciously. The goblin starts to speak.";
+                                                Dictionary<string, string> choice_customResponse = new Dictionary<string, string> 
+                                                {
+                                                    { "'Shut up, maggot! Just what in the seven hells do you think *you're* doing!'", "The goblin jumps back in surprise.\n\t'Wot? I don't...' but then he notices your Vespasian broach...\n'We're sorry, sir! Didn't realise who you was, sir..."},
+                                                    {"'Silence, you worthless reprobate! My god, this must be the damn stupidest army in the whole world and I get landed with the biggest two morons in the entire damn outfit!\nWhy aren't you with your platoon, maggots!'", "'Platoon?' the two creatures look at each other, stunned. 'But, uh we're jus' s'posed to be standin' guard duty, like... We were told to wait here until further instruction, so's we reckoned we'd pass the time a bit...'" },
+                                                    {"'Did you just speak to me without being spoken to? Did you even go through basic training? How do they expect me to turn scum like you into soldiers, I'll never know! Why-aren't-you-standing-to-attention-maggots?'", "The gnoll and the goblin stand to attention so fast it looks like a jolt of electricity coursed through them. 'Sorry, sir! Didn't recognise you, sir!'" },
+                                                    {"'Well, if wonders never cease... I was just thinking to myself, where might I find the two lowliest, feeble, can't-share-a-brain-cell-between-them morons in this entire damned outfit so that I can break them down and chew them up for breakfast! And God must love me today because, lo-and-behold, I just found them!'", "The goblin panics. 'Sir, no sir! That's the other goblin and gnoll, sir...'" },
+                                                    {"'NO! I do NOT want to play a game with you, morons! No, I do not want to play teacups and house with you two dunderkopfs! I am a sergeant, not your wet-nurse, you bootlicking chuckleheads!'", "The goblin stammers.\n'Yes, Sarge! Sorry, Sarge! uh..." },
+                                                    {$"'I'm sorry, did you just call me 'sir'? I am NOT a 'sir'! I work for a living, you morons! You will address me as sergeant or sergeant {player1.Name}! Do I make myself clear?'", "The goblin stammers. \n\t'No Sarge! I mean, yes Sarge! Sorry Sarge! uh...'" },
+                                                    {"'Let's get one thing straight, you dented chromosome, I do not care for a game. In fact, I do not even care for you! I care about precisely two things, grunt! The fighting fitness of the men under my command and hygiene, and that turnip you call a face is an affront to both!'", "The goblin stammers as the gnoll's gaze flits nervously between you. 'Yes, Sarge! I mean, no, Sarge! I mean... uh..." },
+                                                };
+                                                List<string> parlances = new List<string> 
+                                                { 
+                                                    "Jus' wot in the wozzname do you think yer...",
+                                                    "uh...Would you care for a game, sir?",
+                                                    "...was there something you wanted from us, Sarge?"
+                                                };
+                                                List<List< string>> playerchoices = new List<List<string>> 
+                                                {
+                                                    new List<string>
+                                                    {
+                                                        "'Shut up, maggot! Just what in the seven hells do you think *you're* doing!'",
+                                                        "'Silence, you worthless reprobate! My god, this must be the damn stupidest army in the whole world and I get landed with the biggest two morons in the entire damn outfit!\nWhy aren't you with your platoon, maggots!'",
+                                                        "'Did you just speak to me without being spoken to? Did you even go through basic training? How do they expect me to turn scum like you into soldiers, I'll never know! Why-aren't-you-standing-to-attention-maggots?'",
+                                                        "'Well, if wonders never cease... I was just thinking to myself, where might I find the two lowliest, feeble, can't-share-a-brain-cell-between-them morons in this entire damned outfit so that I can break them down and chew them up for breakfast! And God must love me today because, lo-and-behold, I just found them!'"
+                                                    },
+                                                    new List<string>
+                                                    {
+                                                        "'NO! I do NOT want to play a game with you, morons! No, I do not want to play teacups and house with you two dunderkopfs! I am a sergeant, not your wet-nurse, you bootlicking chuckleheads!'",
+                                                        $"'I'm sorry, did you just call me 'sir'? I am NOT a 'sir'! I work for a living, you morons! You will address me as sergeant or sergeant {player1.Name}! Do I make myself clear?'",
+                                                        "'Let's get one thing straight, you dented chromosome, I do not care for a game. In fact, I do not even care for you! I care about precisely two things, grunt! The fighting fitness of the men under my command and hygiene, and that turnip you call a face is an affront to both!'"
+                                                    },
+                                                    new List<string>
+                                                    {
+                                                        $"'Lord help us! You might not be the dumbest creature alive, grunt, but you better hope they don't die! My - Name - Is - Sergeant - {player1.Name}! Not Sarge! And you will address me as such, or before this day is through, the other grunts will be using your ugly mug to polish my boots! Now do twenty laps down all the stairs of this building and back! MOVE IT!'",
+                                                        $"'If I should ever like you, grunt, then I'll permit you to call me 'sarge.' But guess what? I don't like you! So you WILL call me Sergeant {player1.Name} or you WILL be scrubbing the latrines! The captain has orders for you. Report immediately to... wherever he's at!'"
+                                                    }
+                                                };
+                                                switch(drillsergeant.LinearParle(choice_customResponse, parlances, playerchoices, description))
+                                                {
+                                                    case 0:
+                                                        Console.WriteLine("Both the goblin and gnoll snap to attention!\n" +
+                                                            $"Yes, sergeant {player1.Name}! Right away, sergeant {player1.Name}!\n" +
+                                                            $"They both scramble out of the room, racing down the stairway and out of sight...");
+                                                        break;
+                                                    case 1:
+                                                        Console.WriteLine("\t'Wait,' the goblin 'which captain are you-.'");
+                                                        Console.ReadKey(true);
+                                                        Console.WriteLine("'*The* captain, morons! Now move out!'");
+                                                        Console.ReadKey(true);
+                                                        Console.WriteLine("\t'But sergeant, we don't know where this captain is...'");
+                                                        Console.ReadKey(true);
+                                                        Console.WriteLine("'THEN YOU'D BETTER START LOOKING, MAGGOTS! NOW!!!'");
+                                                        Console.WriteLine("Both the goblin and gnoll snap too attention!\n" +
+                                                            $"Yes, sergeant {player1.Name}! Right away, sergeant {player1.Name}!\n" +
+                                                            $"They both scramble out of the room, racing down the stairway and out of sight...");
+                                                        break;
+                                                    default:
+                                                        Console.WriteLine("Both the goblin and gnoll snap too attention!\n" +
+                                                            $"Yes, sergeant {player1.Name}! Right away, sergeant {player1.Name}!\n" +
+                                                            $"They both scramble out of the room, racing down the stairway and out of sight...");
+                                                        break;
+                                                }
+                                                break;
+                                            }
+                                            else if (palaver[3] == "You adopt the unassuming role of just another grunt and complain about the food...")
+                                            {
+                                                Console.WriteLine($"\t'What're you talkin' about?' the goblin retorts. 'Best food we've 'ad ever since workin' 'ere. We've been emptying this Merigold maggot's larder and wine cellar fer months now and it's still overflowin'!'");
+                                                Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[3] == "You adopt the unassuming role of just another grunt and complain about the pay...")
+                                            {
+                                                Console.WriteLine($"\n\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.");
+                                                string description = "\t'Pfft. Wot's there to complain about?' the goblin retorts. 'We've never 'ad it so good under the master. Raided this place first day I got 'ere. Its where I got this fancy broach from'\nHe produces a broach from somewhere, embossed with a golden M encircled by a cursive capital G. Then his suspicious nature once more comes to the fore.";
+                                                string parlance = "\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.";
+                                                List<string> responses = new List<string>
+                                                {
+                                                    "Ooh... you know... that one... starts with an 's'... on the tip of my tongue...",
+                                                    "The kamikaze-suicide crazies",
+                                                    "The knights who say 'ni'",
+                                                    "Teh Ordah of deh Mega-Tyrant",
+                                                    "Dee Hooliganz",
+                                                    "Squad 34529, reporting for duty!"
+                                                    
+                                                };
+                                                if (bookEC4.SpecifyAttribute == "read")
+                                                {
+                                                    responses.Add("Da-Freebootaz-Squigalanche");
+                                                }
+                                                
+                                                switch (armouryTalk.Parle(description, parlance, responses))
+                                                {
+                                                    case 1:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+                                                        
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 2:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 3:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 4:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 5:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 6:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 7:
+                                                        description = "The goblin's eyes light up. Meanwhile, the gnoll gazes at you with open admiration...";
+                                                        List<string> parlances = new List<string>{
+                                                            "'Get outta 'ere,' the goblin exclaims, awestruck. 'Yer one of 'em mad boys? The ones who stormed the gates of the DreadPortal in the dead of night, squishin' the enemy guard with boulders and clubs? You fellas are legends!'\nThe gnoll nods its head emphatically. It has a crazed fanboy look in its eyes.",
+                                                            "but I thought your squad were all trolls?'",
+                                                            "'say, why don't you join us for a game of coins? It'd be an honour...'"
+                                                        };
+                                                        List<List<string>> playerchoices = new List<List<string>>
+                                                        {
+                                                            new List<string> 
+                                                            {
+                                                                "You respond bashfully, saying a swish of a sword here a artful riposte there and the job was done...",
+                                                                "You brag, recounting the many foes you felled with your bare hands...",
+                                                                "You greet their reverence with a stoic silence, staring off into the distance and saying you don't like to talk about it..."
+                                                            },
+                                                            new List<string>
+                                                            {
+                                                                "Well, who do you think led them, you say...", 
+                                                                "You tell them they made an exception for you because you're so awesome...",
+                                                                "You examine your fingernails as you tell them that's the misconception most amateurs seem to have..."
+                                                            },
+                                                            new List<string>
+                                                            {
+                                                                "Say you'd love to, but the commander instructed you tell them they're needed outside...",
+                                                                "Say you'll have to check your schedule, in the meantime they have orders to... um, go away. On the double!",
+                                                                "Say you could but then they'll miss out on their chance to join Da-Freebootaz-Squigalanche. They're recruiting, and maybe you two might just have what it takes..."
+                                                            }
+                                                        };
+                                                        Dictionary<string, string> choice_customResponse = new Dictionary<string, string>
+                                                        {
+                                                            {
+                                                            "You respond bashfully, saying a swish of a sword here a artful riposte there and the job was done...", "The goblin nudges the gnoll. 'ere! and see how modest he is too! That's a sign of a real, storm-thumpin' warlord, that is. Cor blimey!..."
+                                                            },
+                                                            { "You brag, recounting the many foes you felled with your bare hands...", "They listen avidly, eyes growing wider and wider as you recount your many exploits, even the ones on the other side of the world where the Vespasian mercenaries have never been. They are so swept up in your vivid tales they scarcely notice..."},
+                                                            {"You greet their reverence with a stoic silence, staring off into the distance and saying you don't like to talk about it...", "They seem to revere you more as they're magnetised by your coolness. 'Wow...' they sigh. The gnoll drools adoringly." },
+                                                            {"Well, who do you think led them, you say...", "\t'Of course! of course!' the goblin rushes to agree. He elbows the gnoll, 'See? what'd I tell you? He's obviously the leader! 'At's what I said..." },
+                                                            { "You tell them they made an exception for you because you're so awesome...", "The two knuckleheads lap it up."},
+                                                            { "You examine your fingernails as you tell them that's the misconception most amateurs seem to have...", "\t'Oh! No, you got it all wrong, we're not amateurs!' the goblin stammers. The gnoll nods along, a pleading look in its eyes.'We're just repeatin' wot we heard from others... Wot fools' the goblin laughs nervously."}
+                                                        };
+                                                        switch (armouryTalk.LinearParle(choice_customResponse, parlances, playerchoices, description))
+                                                        {
+                                                            case 0:
+                                                                Console.WriteLine("The two meatheads look at each other then immediately stand to attention.\n\t'right away, sir!' They salute. Then they scramble hastily through the 'RmorRee' door, through the double doors and beyond...");
+                                                                break;
+                                                            case 1:
+                                                                Console.WriteLine("The two meatheads look at each other then immediately stand to attention.\n\t'right away, sir!' They salute. Then they scramble hastily through the 'RmorRee' door, through the double doors and beyond...");
+                                                                break;
+                                                            case 2:
+                                                                Console.WriteLine("The goblin and gnoll gasp and look at each other excitedly. \n\t'Thank you, sir!' The goblin gushes as he proudly salutes. 'You won't forget this, sir!' They dash out of the 'RmorRee', through the double doors and beyond...");
+                                                                break;
+                                                            default:
+                                                                Console.WriteLine("The goblin and gnoll gasp and look at each other excitedly. \n\t'Thank you, sir!' The goblin gushes as he proudly salutes. 'You won't forget this, sir!' They dash out of the 'RmorRee', through the double doors and beyond...");
+                                                                break;
+                                                        }
+                                                        break;
+                                                    default:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                }
+                                            }
+                                            else if (palaver[3] == "You adopt the unassuming role of just another grunt and complain about the weapons...")
+                                            {
+                                                Console.WriteLine("The goblin and gnoll seem to relax. \n\t'tell me about it,' the goblin mutters, 'They've kept the good weapons locked away behind enchanted glass for the elite squads.' The goblin's voice lowers to a conspiratorial whisper, 'One of our number, they tried to break the enchanted glass and steal one of the better weapons. The glass didn't shatter, but they did - right after he'd been frozen to a block of ice!' \nYou pay the weapons in question a wary glance through the strange glass. \n\t'Say,' the goblin perks up, 'You want to join us for a game?'");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("You play a few rounds before the gnoll and goblin say they'd better get back on patrol. They give a collegial farewell before exiting the 'RmorRee' door and through the double doors beyond...");
+                                                break;
+                                            }
+                                            else if (palaver[3] == "You adopt the role of commander-in-chief and sanctimoniously berate them for playing coins when... wait? coins? Why not cards? cards are so much better...")
+                                            {
+                                                Console.WriteLine("\nHow *dare* you insult the grand and noble game of coins! The gnoll and goblin both rise from their seats to fight you...");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[3] == "You yell there's a fire downstairs and its rapidly threatening to burn the whole place down. They need to put it out. Now!")
+                                            {
+                                                Console.WriteLine("\nThe gnoll and the goblin both peer around you, taking in the raging inferno storming up the stairway. Their gaze turns from the flaming stairs, to your soot-smeared expectant face, then finally to each other...");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("They both scramble for the window, plunging into some kind of moat below.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("Okaaay...");
+                                                break;
+                                            }
+                                            else if (palaver[3] == "You yell there's a fire downstairs and they need to put it out!")
+                                            {
+                                                Console.WriteLine("\nThey peer their heads around you and out towards the antechamber. They don't see much evidence of fire...\nYou assure them it's really, REALLY big.\n\t'Maybe so, stranger,' the goblin answers darkly. He draws his weapon and the gnoll follows suit. 'But I reckon we've got ourselves enough time to kill us some spies, or wotevers the hell you are.'\nBother! It looks like you're going to have to fight...'");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[3] == "You stammer as you beseech them both that they *really* don't want to fight you. Bad, inexplicable things always happen when you get caught in a fight...")
+                                            {
+                                                Console.WriteLine("\nUpon mention of Merigold the two mercenaries' features darken. They rise from their seats, drawing their weapons. It seems they know all too well who and where Merigold is, and they also know that no friend of theirs would be traipsing through this place looking for him...\nYou shrug. Oh well, it was worth a shot. You prepare to fight...");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[3] == "You leer as you draw your weapon and tell them that you're going to enjoy this...")
+                                            {
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[3] == "You seize the initiative and attack while you have the advantage!")
+                                            {
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                        catch {  }
+                                        break;
+                                    case 4:
+                                        try
+                                        {
+                                            
+                                            if (palaver[4] == "You bring to life and inhabit the persona of a drill-sergeant, and set about whipping these good-for-nothing grunts into shape!")
+                                            {
+                                                Dialogue drillsergeant = new Dialogue(player1, goblinCaptain, dualDuel, armoury);
+
+                                                string description = "The goblin and the gnoll eye you suspiciously. The goblin starts to speak.";
+                                                Dictionary<string, string> choice_customResponse = new Dictionary<string, string>
+                                                {
+                                                    { "'Shut up, maggot! Just what in the seven hells do you think *you're* doing!'", "The goblin jumps back in surprise.\n\t'Wot? I don't...' but then he notices your Vespasian broach...\n'We're sorry, sir! Didn't realise who you was, sir..."},
+                                                    {"'Silence, you worthless reprobate! My god, this must be the damn stupidest army in the whole world and I get landed with the biggest two morons in the entire damn outfit!\nWhy aren't you with your platoon, maggots!'", "'Platoon?' the two creatures look at each other, stunned. 'But, uh we're jus' s'posed to be standin' guard duty, like... We were told to wait here until further instruction, so's we reckoned we'd pass the time a bit...'" },
+                                                    {"'Did you just speak to me without being spoken to? Did you even go through basic training? How do they expect me to turn scum like you into soldiers, I'll never know! Why-aren't-you-standing-to-attention-maggots?'", "The gnoll and the goblin stand to attention so fast it looks like a jolt of electricity coursed through them. 'Sorry, sir! Didn't recognise you, sir!'" },
+                                                    {"'Well, if wonders never cease... I was just thinking to myself, where might I find the two lowliest, feeble, can't-share-a-brain-cell-between-them morons in this entire damned outfit so that I can break them down and chew them up for breakfast! And God must love me today because, lo-and-behold, I just found them!'", "The goblin panics. 'Sir, no sir! That's the other goblin and gnoll, sir...'" },
+                                                    {"'NO! I do NOT want to play a game with you, morons! No, I do not want to play teacups and house with you two dunderkopfs! I am a sergeant, not your wet-nurse, you bootlicking chuckleheads!'", "The goblin stammers.\n'Yes, Sarge! Sorry, Sarge! uh..." },
+                                                    {$"'I'm sorry, did you just call me 'sir'? I am NOT a 'sir'! I work for a living, you morons! You will address me as sergeant or sergeant {player1.Name}! Do I make myself clear?'", "The goblin stammers. \n\t'No Sarge! I mean, yes Sarge! Sorry Sarge! uh...'" },
+                                                    {"'Let's get one thing straight, you dented chromosome, I do not care for a game. In fact, I do not even care for you! I care about precisely two things, grunt! The fighting fitness of the men under my command and hygiene, and that turnip you call a face is an affront to both!'", "The goblin stammers as the gnoll's gaze flits nervously between you. 'Yes, Sarge! I mean, no, Sarge! I mean... uh..." },
+                                                };
+                                                List<string> parlances = new List<string>
+                                                {
+                                                    "Jus' wot in the wozzname do you think yer...",
+                                                    "uh...Would you care for a game, sir?",
+                                                    "...was there something you wanted from us, Sarge?"
+                                                };
+                                                List<List<string>> playerchoices = new List<List<string>>
+                                                {
+                                                    new List<string>
+                                                    {
+                                                        "'Shut up, maggot! Just what in the seven hells do you think *you're* doing!'",
+                                                        "'Silence, you worthless reprobate! My god, this must be the damn stupidest army in the whole world and I get landed with the biggest two morons in the entire damn outfit!\nWhy aren't you with your platoon, maggots!'",
+                                                        "'Did you just speak to me without being spoken to? Did you even go through basic training? How do they expect me to turn scum like you into soldiers, I'll never know! Why-aren't-you-standing-to-attention-maggots?'",
+                                                        "'Well, if wonders never cease... I was just thinking to myself, where might I find the two lowliest, feeble, can't-share-a-brain-cell-between-them morons in this entire damned outfit so that I can break them down and chew them up for breakfast! And God must love me today because, lo-and-behold, I just found them!'"
+                                                    },
+                                                    new List<string>
+                                                    {
+                                                        "'NO! I do NOT want to play a game with you, morons! No, I do not want to play teacups and house with you two dunderkopfs! I am a sergeant, not your wet-nurse, you bootlicking chuckleheads!'",
+                                                        $"'I'm sorry, did you just call me 'sir'? I am NOT a 'sir'! I work for a living, you morons! You will address me as sergeant or sergeant {player1.Name}! Do I make myself clear?'",
+                                                        "'Let's get one thing straight, you dented chromosome, I do not care for a game. In fact, I do not even care for you! I care about precisely two things, grunt! The fighting fitness of the men under my command and hygiene, and that turnip you call a face is an affront to both!'"
+                                                    },
+                                                    new List<string>
+                                                    {
+                                                        $"'Lord help us! You might not be the dumbest creature alive, grunt, but you better hope they don't die! My - Name - Is - Sergeant - {player1.Name}! Not Sarge! And you will address me as such, or before this day is through, the other grunts will be using your ugly mug to polish my boots! Now do twenty laps down all the stairs of this building and back! MOVE IT!'",
+                                                        $"'If I should ever like you, grunt, then I'll permit you to call me 'sarge.' But guess what? I don't like you! So you WILL call me Sergeant {player1.Name} or you WILL be scrubbing the latrines! The captain has orders for you. Report immediately to... wherever he's at!'"
+                                                    }
+                                                };
+                                                switch (drillsergeant.LinearParle(choice_customResponse, parlances, playerchoices, description))
+                                                {
+                                                    case 0:
+                                                        Console.WriteLine("Both the goblin and gnoll snap to attention!\n" +
+                                                            $"Yes, sergeant {player1.Name}! Right away, sergeant {player1.Name}!\n" +
+                                                            $"They both scramble out of the room, racing down the stairway and out of sight...");
+                                                        break;
+                                                    case 1:
+                                                        Console.WriteLine("\t'Wait,' the goblin 'which captain are you-.'");
+                                                        Console.ReadKey(true);
+                                                        Console.WriteLine("'*The* captain, morons! Now move out!'");
+                                                        Console.ReadKey(true);
+                                                        Console.WriteLine("\t'But sergeant, we don't know where this captain is...'");
+                                                        Console.ReadKey(true);
+                                                        Console.WriteLine("'THEN YOU'D BETTER START LOOKING, MAGGOTS! NOW!!!'");
+                                                        Console.WriteLine("Both the goblin and gnoll snap too attention!\n" +
+                                                            $"Yes, sergeant {player1.Name}! Right away, sergeant {player1.Name}!\n" +
+                                                            $"They both scramble out of the room, racing down the stairway and out of sight...");
+                                                        break;
+                                                    default:
+                                                        Console.WriteLine("Both the goblin and gnoll snap too attention!\n" +
+                                                            $"Yes, sergeant {player1.Name}! Right away, sergeant {player1.Name}!\n" +
+                                                            $"They both scramble out of the room, racing down the stairway and out of sight...");
+                                                        break;
+                                                }
+                                                break;
+                                            }
+                                            else if (palaver[4] == "You adopt the unassuming role of just another grunt and complain about the food...")
+                                            {
+                                                Console.WriteLine($"\t'What're you talkin' about?' the goblin retorts. 'Best food we've 'ad ever since workin' 'ere. We've been emptying this Merigold maggot's larder and wine cellar fer months now and it's still overflowin'!'");
+                                                Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[4] == "You adopt the unassuming role of just another grunt and complain about the pay...")
+                                            {
+                                                Console.WriteLine($"\n\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.");
+                                                string description = "\t'Pfft. Wot's there to complain about?' the goblin retorts. 'We've never 'ad it so good under the master. Raided this place first day I got 'ere. Its where I got this fancy broach from'\nHe produces a broach from somewhere, embossed with a golden M encircled by a cursive capital G. Then his suspicious nature once more comes to the fore.";
+                                                string parlance = "\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.";
+                                                List<string> responses = new List<string>
+                                                {
+                                                    "Ooh... you know... that one... starts with an 's'... on the tip of my tongue...",
+                                                    "The kamikaze-suicide crazies",
+                                                    "The knights who say 'ni'",
+                                                    "Teh Ordah of deh Mega-Tyrant",
+                                                    "Dee Hooliganz",
+                                                    "Squad 34529, reporting for duty!"
+
+                                                };
+                                                if (bookEC4.SpecifyAttribute == "read")
+                                                {
+                                                    responses.Add("Da-Freebootaz-Squigalanche");
+                                                }
+
+                                                switch (armouryTalk.Parle(description, parlance, responses))
+                                                {
+                                                    case 1:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 2:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 3:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 4:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 5:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 6:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 7:
+                                                        description = "The goblin's eyes light up. Meanwhile, the gnoll gazes at you with open admiration...";
+                                                        List<string> parlances = new List<string>{
+                                                            "'Get outta 'ere,' the goblin exclaims, awestruck. 'Yer one of 'em mad boys? The ones who stormed the gates of the DreadPortal in the dead of night, squishin' the enemy guard with boulders and clubs? You fellas are legends!'\nThe gnoll nods its head emphatically. It has a crazed fanboy look in its eyes.",
+                                                            "but I thought your squad were all trolls?'",
+                                                            "'say, why don't you join us for a game of coins? It'd be an honour...'"
+                                                        };
+                                                        List<List<string>> playerchoices = new List<List<string>>
+                                                        {
+                                                            new List<string>
+                                                            {
+                                                                "You respond bashfully, saying a swish of a sword here a artful riposte there and the job was done...",
+                                                                "You brag, recounting the many foes you felled with your bare hands...",
+                                                                "You greet their reverence with a stoic silence, staring off into the distance and saying you don't like to talk about it..."
+                                                            },
+                                                            new List<string>
+                                                            {
+                                                                "Well, who do you think led them, you say...",
+                                                                "You tell them they made an exception for you because you're so awesome...",
+                                                                "You examine your fingernails as you tell them that's the misconception most amateurs seem to have..."
+                                                            },
+                                                            new List<string>
+                                                            {
+                                                                "Say you'd love to, but the commander instructed you tell them they're needed outside...",
+                                                                "Say you'll have to check your schedule, in the meantime they have orders to... um, go away. On the double!",
+                                                                "Say you could but then they'll miss out on their chance to join Da-Freebootaz-Squigalanche. They're recruiting, and maybe you two might just have what it takes..."
+                                                            }
+                                                        };
+                                                        Dictionary<string, string> choice_customResponse = new Dictionary<string, string>
+                                                        {
+                                                            {
+                                                            "You respond bashfully, saying a swish of a sword here a artful riposte there and the job was done...", "The goblin nudges the gnoll. 'ere! and see how modest he is too! That's a sign of a real, storm-thumpin' warlord, that is. Cor blimey!..."
+                                                            },
+                                                            { "You brag, recounting the many foes you felled with your bare hands...", "They listen avidly, eyes growing wider and wider as you recount your many exploits, even the ones on the other side of the world where the Vespasian mercenaries have never been. They are so swept up in your vivid tales they scarcely notice..."},
+                                                            {"You greet their reverence with a stoic silence, staring off into the distance and saying you don't like to talk about it...", "They seem to revere you more as they're magnetised by your coolness. 'Wow...' they sigh. The gnoll drools adoringly." },
+                                                            {"Well, who do you think led them, you say...", "\t'Of course! of course!' the goblin rushes to agree. He elbows the gnoll, 'See? what'd I tell you? He's obviously the leader! 'At's what I said..." },
+                                                            { "You tell them they made an exception for you because you're so awesome...", "The two knuckleheads lap it up."},
+                                                            { "You examine your fingernails as you tell them that's the misconception most amateurs seem to have...", "\t'Oh! No, you got it all wrong, we're not amateurs!' the goblin stammers. The gnoll nods along, a pleading look in its eyes.'We're just repeatin' wot we heard from others... Wot fools' the goblin laughs nervously."}
+                                                        };
+                                                        switch (armouryTalk.LinearParle(choice_customResponse, parlances, playerchoices, description))
+                                                        {
+                                                            case 0:
+                                                                Console.WriteLine("The two meatheads look at each other then immediately stand to attention.\n\t'right away, sir!' They salute. Then they scramble hastily through the 'RmorRee' door, through the double doors and beyond...");
+                                                                break;
+                                                            case 1:
+                                                                Console.WriteLine("The two meatheads look at each other then immediately stand to attention.\n\t'right away, sir!' They salute. Then they scramble hastily through the 'RmorRee' door, through the double doors and beyond...");
+                                                                break;
+                                                            case 2:
+                                                                Console.WriteLine("The goblin and gnoll gasp and look at each other excitedly. \n\t'Thank you, sir!' The goblin gushes as he proudly salutes. 'You won't forget this, sir!' They dash out of the 'RmorRee', through the double doors and beyond...");
+                                                                break;
+                                                            default:
+                                                                Console.WriteLine("The goblin and gnoll gasp and look at each other excitedly. \n\t'Thank you, sir!' The goblin gushes as he proudly salutes. 'You won't forget this, sir!' They dash out of the 'RmorRee', through the double doors and beyond...");
+                                                                break;
+                                                        }
+                                                        break;
+                                                    default:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                }
+                                            }
+                                            else if (palaver[4] == "You adopt the unassuming role of just another grunt and complain about the weapons...")
+                                            {
+                                                Console.WriteLine("The goblin and gnoll seem to relax. \n\t'tell me about it,' the goblin mutters, 'They've kept the good weapons locked away behind enchanted glass for the elite squads.' The goblin's voice lowers to a conspiratorial whisper, 'One of our number, they tried to break the enchanted glass and steal one of the better weapons. The glass didn't shatter, but they did - right after he'd been frozen to a block of ice!' \nYou pay the weapons in question a wary glance through the strange glass. \n\t'Say,' the goblin perks up, 'You want to join us for a game?'");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("You play a few rounds before the gnoll and goblin say they'd better get back on patrol. They give a collegial farewell before exiting the 'RmorRee' door and through the double doors beyond...");
+                                                break;
+                                            }
+                                            else if (palaver[4] == "You adopt the role of commander-in-chief and sanctimoniously berate them for playing coins when... wait? coins? Why not cards? cards are so much better...")
+                                            {
+                                                Console.WriteLine("\nHow *dare* you insult the grand and noble game of coins! The gnoll and goblin both rise from their seats to fight you...");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[4] == "You yell there's a fire downstairs and its rapidly threatening to burn the whole place down. They need to put it out. Now!")
+                                            {
+                                                Console.WriteLine("\nThe gnoll and the goblin both peer around you, taking in the raging inferno storming up the stairway. Their gaze turns from the flaming stairs, to your soot-smeared expectant face, then finally to each other...");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("They both scramble for the window, plunging into some kind of moat below.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("Okaaay...");
+                                                break;
+                                            }
+                                            else if (palaver[4] == "You yell there's a fire downstairs and they need to put it out!")
+                                            {
+                                                Console.WriteLine("\nThey peer their heads around you and out towards the antechamber. They don't see much evidence of fire...\nYou assure them it's really, REALLY big.\n\t'Maybe so, stranger,' the goblin answers darkly. He draws his weapon and the gnoll follows suit. 'But I reckon we've got ourselves enough time to kill us some spies, or wotevers the hell you are.'\nBother! It looks like you're going to have to fight...'");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[4] == "You stammer as you beseech them both that they *really* don't want to fight you. Bad, inexplicable things always happen when you get caught in a fight...")
+                                            {
+                                                Console.WriteLine("\nUpon mention of Merigold the two mercenaries' features darken. They rise from their seats, drawing their weapons. It seems they know all too well who and where Merigold is, and they also know that no friend of theirs would be traipsing through this place looking for him...\nYou shrug. Oh well, it was worth a shot. You prepare to fight...");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[4] == "You leer as you draw your weapon and tell them that you're going to enjoy this...")
+                                            {
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[4] == "You seize the initiative and attack while you have the advantage!")
+                                            {
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                        catch { }
+                                        break;
+                                    case 5:
+                                        try
+                                        {
+                                                                                       
+                                            if (palaver[5] == "You adopt the unassuming role of just another grunt and complain about the food...")
+                                            {
+                                                Console.WriteLine($"\t'What're you talkin' about?' the goblin retorts. 'Best food we've 'ad ever since workin' 'ere. We've been emptying this Merigold maggot's larder and wine cellar fer months now and it's still overflowin'!'");
+                                                Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[5] == "You adopt the unassuming role of just another grunt and complain about the pay...")
+                                            {
+                                                Console.WriteLine($"\n\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.");
+                                                string description = "\t'Pfft. Wot's there to complain about?' the goblin retorts. 'We've never 'ad it so good under the master. Raided this place first day I got 'ere. Its where I got this fancy broach from'\nHe produces a broach from somewhere, embossed with a golden M encircled by a cursive capital G. Then his suspicious nature once more comes to the fore.";
+                                                string parlance = "\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.";
+                                                List<string> responses = new List<string>
+                                                {
+                                                    "Ooh... you know... that one... starts with an 's'... on the tip of my tongue...",
+                                                    "The kamikaze-suicide crazies",
+                                                    "The knights who say 'ni'",
+                                                    "Teh Ordah of deh Mega-Tyrant",
+                                                    "Dee Hooliganz",
+                                                    "Squad 34529, reporting for duty!"
+
+                                                };
+                                                if (bookEC4.SpecifyAttribute == "read")
+                                                {
+                                                    responses.Add("Da-Freebootaz-Squigalanche");
+                                                }
+
+                                                switch (armouryTalk.Parle(description, parlance, responses))
+                                                {
+                                                    case 1:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 2:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 3:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 4:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 5:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 6:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 7:
+                                                        description = "The goblin's eyes light up. Meanwhile, the gnoll gazes at you with open admiration...";
+                                                        List<string> parlances = new List<string>{
+                                                            "'Get outta 'ere,' the goblin exclaims, awestruck. 'Yer one of 'em mad boys? The ones who stormed the gates of the DreadPortal in the dead of night, squishin' the enemy guard with boulders and clubs? You fellas are legends!'\nThe gnoll nods its head emphatically. It has a crazed fanboy look in its eyes.",
+                                                            "but I thought your squad were all trolls?'",
+                                                            "'say, why don't you join us for a game of coins? It'd be an honour...'"
+                                                        };
+                                                        List<List<string>> playerchoices = new List<List<string>>
+                                                        {
+                                                            new List<string>
+                                                            {
+                                                                "You respond bashfully, saying a swish of a sword here a artful riposte there and the job was done...",
+                                                                "You brag, recounting the many foes you felled with your bare hands...",
+                                                                "You greet their reverence with a stoic silence, staring off into the distance and saying you don't like to talk about it..."
+                                                            },
+                                                            new List<string>
+                                                            {
+                                                                "Well, who do you think led them, you say...",
+                                                                "You tell them they made an exception for you because you're so awesome...",
+                                                                "You examine your fingernails as you tell them that's the misconception most amateurs seem to have..."
+                                                            },
+                                                            new List<string>
+                                                            {
+                                                                "Say you'd love to, but the commander instructed you tell them they're needed outside...",
+                                                                "Say you'll have to check your schedule, in the meantime they have orders to... um, go away. On the double!",
+                                                                "Say you could but then they'll miss out on their chance to join Da-Freebootaz-Squigalanche. They're recruiting, and maybe you two might just have what it takes..."
+                                                            }
+                                                        };
+                                                        Dictionary<string, string> choice_customResponse = new Dictionary<string, string>
+                                                        {
+                                                            {
+                                                            "You respond bashfully, saying a swish of a sword here a artful riposte there and the job was done...", "The goblin nudges the gnoll. 'ere! and see how modest he is too! That's a sign of a real, storm-thumpin' warlord, that is. Cor blimey!..."
+                                                            },
+                                                            { "You brag, recounting the many foes you felled with your bare hands...", "They listen avidly, eyes growing wider and wider as you recount your many exploits, even the ones on the other side of the world where the Vespasian mercenaries have never been. They are so swept up in your vivid tales they scarcely notice..."},
+                                                            {"You greet their reverence with a stoic silence, staring off into the distance and saying you don't like to talk about it...", "They seem to revere you more as they're magnetised by your coolness. 'Wow...' they sigh. The gnoll drools adoringly." },
+                                                            {"Well, who do you think led them, you say...", "\t'Of course! of course!' the goblin rushes to agree. He elbows the gnoll, 'See? what'd I tell you? He's obviously the leader! 'At's what I said..." },
+                                                            { "You tell them they made an exception for you because you're so awesome...", "The two knuckleheads lap it up."},
+                                                            { "You examine your fingernails as you tell them that's the misconception most amateurs seem to have...", "\t'Oh! No, you got it all wrong, we're not amateurs!' the goblin stammers. The gnoll nods along, a pleading look in its eyes.'We're just repeatin' wot we heard from others... Wot fools' the goblin laughs nervously."}
+                                                        };
+                                                        switch (armouryTalk.LinearParle(choice_customResponse, parlances, playerchoices, description))
+                                                        {
+                                                            case 0:
+                                                                Console.WriteLine("The two meatheads look at each other then immediately stand to attention.\n\t'right away, sir!' They salute. Then they scramble hastily through the 'RmorRee' door, through the double doors and beyond...");
+                                                                break;
+                                                            case 1:
+                                                                Console.WriteLine("The two meatheads look at each other then immediately stand to attention.\n\t'right away, sir!' They salute. Then they scramble hastily through the 'RmorRee' door, through the double doors and beyond...");
+                                                                break;
+                                                            case 2:
+                                                                Console.WriteLine("The goblin and gnoll gasp and look at each other excitedly. \n\t'Thank you, sir!' The goblin gushes as he proudly salutes. 'You won't forget this, sir!' They dash out of the 'RmorRee', through the double doors and beyond...");
+                                                                break;
+                                                            default:
+                                                                Console.WriteLine("The goblin and gnoll gasp and look at each other excitedly. \n\t'Thank you, sir!' The goblin gushes as he proudly salutes. 'You won't forget this, sir!' They dash out of the 'RmorRee', through the double doors and beyond...");
+                                                                break;
+                                                        }
+                                                        break;
+                                                    default:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                }
+                                            }
+                                            else if (palaver[5] == "You adopt the unassuming role of just another grunt and complain about the weapons...")
+                                            {
+                                                Console.WriteLine("The goblin and gnoll seem to relax. \n\t'tell me about it,' the goblin mutters, 'They've kept the good weapons locked away behind enchanted glass for the elite squads.' The goblin's voice lowers to a conspiratorial whisper, 'One of our number, they tried to break the enchanted glass and steal one of the better weapons. The glass didn't shatter, but they did - right after he'd been frozen to a block of ice!' \nYou pay the weapons in question a wary glance through the strange glass. \n\t'Say,' the goblin perks up, 'You want to join us for a game?'");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("You play a few rounds before the gnoll and goblin say they'd better get back on patrol. They give a collegial farewell before exiting the 'RmorRee' door and through the double doors beyond...");
+                                                break;
+                                            }
+                                            else if (palaver[5] == "You adopt the role of commander-in-chief and sanctimoniously berate them for playing coins when... wait? coins? Why not cards? cards are so much better...")
+                                            {
+                                                Console.WriteLine("\nHow *dare* you insult the grand and noble game of coins! The gnoll and goblin both rise from their seats to fight you...");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[5] == "You yell there's a fire downstairs and its rapidly threatening to burn the whole place down. They need to put it out. Now!")
+                                            {
+                                                Console.WriteLine("\nThe gnoll and the goblin both peer around you, taking in the raging inferno storming up the stairway. Their gaze turns from the flaming stairs, to your soot-smeared expectant face, then finally to each other...");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("They both scramble for the window, plunging into some kind of moat below.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("Okaaay...");
+                                                break;
+                                            }
+                                            else if (palaver[5] == "You yell there's a fire downstairs and they need to put it out!")
+                                            {
+                                                Console.WriteLine("\nThey peer their heads around you and out towards the antechamber. They don't see much evidence of fire...\nYou assure them it's really, REALLY big.\n\t'Maybe so, stranger,' the goblin answers darkly. He draws his weapon and the gnoll follows suit. 'But I reckon we've got ourselves enough time to kill us some spies, or wotevers the hell you are.'\nBother! It looks like you're going to have to fight...'");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[5] == "You stammer as you beseech them both that they *really* don't want to fight you. Bad, inexplicable things always happen when you get caught in a fight...")
+                                            {
+                                                Console.WriteLine("\nUpon mention of Merigold the two mercenaries' features darken. They rise from their seats, drawing their weapons. It seems they know all too well who and where Merigold is, and they also know that no friend of theirs would be traipsing through this place looking for him...\nYou shrug. Oh well, it was worth a shot. You prepare to fight...");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[5] == "You leer as you draw your weapon and tell them that you're going to enjoy this...")
+                                            {
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[5] == "You seize the initiative and attack while you have the advantage!")
+                                            {
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                        catch { }
+                                        break;
+                                    case 6:
+                                        try
+                                        {
+                                            if (palaver[6] == "You adopt the unassuming role of just another grunt and complain about the food...")
+                                            {
+                                                Console.WriteLine($"\t'What're you talkin' about?' the goblin retorts. 'Best food we've 'ad ever since workin' 'ere. We've been emptying this Merigold maggot's larder and wine cellar fer months now and it's still overflowin'!'");
+                                                Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[6] == "You adopt the unassuming role of just another grunt and complain about the pay...")
+                                            {
+                                                Console.WriteLine($"\n\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.");
+                                                string description = "\t'Pfft. Wot's there to complain about?' the goblin retorts. 'We've never 'ad it so good under the master. Raided this place first day I got 'ere. Its where I got this fancy broach from'\nHe produces a broach from somewhere, embossed with a golden M encircled by a cursive capital G. Then his suspicious nature once more comes to the fore.";
+                                                string parlance = "\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.";
+                                                List<string> responses = new List<string>
+                                                {
+                                                    "Ooh... you know... that one... starts with an 's'... on the tip of my tongue...",
+                                                    "The kamikaze-suicide crazies",
+                                                    "The knights who say 'ni'",
+                                                    "Teh Ordah of deh Mega-Tyrant",
+                                                    "Dee Hooliganz",
+                                                    "Squad 34529, reporting for duty!"
+
+                                                };
+                                                if (bookEC4.SpecifyAttribute == "read")
+                                                {
+                                                    responses.Add("Da-Freebootaz-Squigalanche");
+                                                }
+
+                                                switch (armouryTalk.Parle(description, parlance, responses))
+                                                {
+                                                    case 1:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 2:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 3:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 4:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 5:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 6:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 7:
+                                                        description = "The goblin's eyes light up. Meanwhile, the gnoll gazes at you with open admiration...";
+                                                        List<string> parlances = new List<string>{
+                                                            "'Get outta 'ere,' the goblin exclaims, awestruck. 'Yer one of 'em mad boys? The ones who stormed the gates of the DreadPortal in the dead of night, squishin' the enemy guard with boulders and clubs? You fellas are legends!'\nThe gnoll nods its head emphatically. It has a crazed fanboy look in its eyes.",
+                                                            "but I thought your squad were all trolls?'",
+                                                            "'say, why don't you join us for a game of coins? It'd be an honour...'"
+                                                        };
+                                                        List<List<string>> playerchoices = new List<List<string>>
+                                                        {
+                                                            new List<string>
+                                                            {
+                                                                "You respond bashfully, saying a swish of a sword here a artful riposte there and the job was done...",
+                                                                "You brag, recounting the many foes you felled with your bare hands...",
+                                                                "You greet their reverence with a stoic silence, staring off into the distance and saying you don't like to talk about it..."
+                                                            },
+                                                            new List<string>
+                                                            {
+                                                                "Well, who do you think led them, you say...",
+                                                                "You tell them they made an exception for you because you're so awesome...",
+                                                                "You examine your fingernails as you tell them that's the misconception most amateurs seem to have..."
+                                                            },
+                                                            new List<string>
+                                                            {
+                                                                "Say you'd love to, but the commander instructed you tell them they're needed outside...",
+                                                                "Say you'll have to check your schedule, in the meantime they have orders to... um, go away. On the double!",
+                                                                "Say you could but then they'll miss out on their chance to join Da-Freebootaz-Squigalanche. They're recruiting, and maybe you two might just have what it takes..."
+                                                            }
+                                                        };
+                                                        Dictionary<string, string> choice_customResponse = new Dictionary<string, string>
+                                                        {
+                                                            {
+                                                            "You respond bashfully, saying a swish of a sword here a artful riposte there and the job was done...", "The goblin nudges the gnoll. 'ere! and see how modest he is too! That's a sign of a real, storm-thumpin' warlord, that is. Cor blimey!..."
+                                                            },
+                                                            { "You brag, recounting the many foes you felled with your bare hands...", "They listen avidly, eyes growing wider and wider as you recount your many exploits, even the ones on the other side of the world where the Vespasian mercenaries have never been. They are so swept up in your vivid tales they scarcely notice..."},
+                                                            {"You greet their reverence with a stoic silence, staring off into the distance and saying you don't like to talk about it...", "They seem to revere you more as they're magnetised by your coolness. 'Wow...' they sigh. The gnoll drools adoringly." },
+                                                            {"Well, who do you think led them, you say...", "\t'Of course! of course!' the goblin rushes to agree. He elbows the gnoll, 'See? what'd I tell you? He's obviously the leader! 'At's what I said..." },
+                                                            { "You tell them they made an exception for you because you're so awesome...", "The two knuckleheads lap it up."},
+                                                            { "You examine your fingernails as you tell them that's the misconception most amateurs seem to have...", "\t'Oh! No, you got it all wrong, we're not amateurs!' the goblin stammers. The gnoll nods along, a pleading look in its eyes.'We're just repeatin' wot we heard from others... Wot fools' the goblin laughs nervously."}
+                                                        };
+                                                        switch (armouryTalk.LinearParle(choice_customResponse, parlances, playerchoices, description))
+                                                        {
+                                                            case 0:
+                                                                Console.WriteLine("The two meatheads look at each other then immediately stand to attention.\n\t'right away, sir!' They salute. Then they scramble hastily through the 'RmorRee' door, through the double doors and beyond...");
+                                                                break;
+                                                            case 1:
+                                                                Console.WriteLine("The two meatheads look at each other then immediately stand to attention.\n\t'right away, sir!' They salute. Then they scramble hastily through the 'RmorRee' door, through the double doors and beyond...");
+                                                                break;
+                                                            case 2:
+                                                                Console.WriteLine("The goblin and gnoll gasp and look at each other excitedly. \n\t'Thank you, sir!' The goblin gushes as he proudly salutes. 'You won't forget this, sir!' They dash out of the 'RmorRee', through the double doors and beyond...");
+                                                                break;
+                                                            default:
+                                                                Console.WriteLine("The goblin and gnoll gasp and look at each other excitedly. \n\t'Thank you, sir!' The goblin gushes as he proudly salutes. 'You won't forget this, sir!' They dash out of the 'RmorRee', through the double doors and beyond...");
+                                                                break;
+                                                        }
+                                                        break;
+                                                    default:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                }
+                                            }
+                                            else if (palaver[6] == "You adopt the unassuming role of just another grunt and complain about the weapons...")
+                                            {
+                                                Console.WriteLine("The goblin and gnoll seem to relax. \n\t'tell me about it,' the goblin mutters, 'They've kept the good weapons locked away behind enchanted glass for the elite squads.' The goblin's voice lowers to a conspiratorial whisper, 'One of our number, they tried to break the enchanted glass and steal one of the better weapons. The glass didn't shatter, but they did - right after he'd been frozen to a block of ice!' \nYou pay the weapons in question a wary glance through the strange glass. \n\t'Say,' the goblin perks up, 'You want to join us for a game?'");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("You play a few rounds before the gnoll and goblin say they'd better get back on patrol. They give a collegial farewell before exiting the 'RmorRee' door and through the double doors beyond...");
+                                                break;
+                                            }
+                                            else if (palaver[6] == "You adopt the role of commander-in-chief and sanctimoniously berate them for playing coins when... wait? coins? Why not cards? cards are so much better...")
+                                            {
+                                                Console.WriteLine("\nHow *dare* you insult the grand and noble game of coins! The gnoll and goblin both rise from their seats to fight you...");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[6] == "You yell there's a fire downstairs and its rapidly threatening to burn the whole place down. They need to put it out. Now!")
+                                            {
+                                                Console.WriteLine("\nThe gnoll and the goblin both peer around you, taking in the raging inferno storming up the stairway. Their gaze turns from the flaming stairs, to your soot-smeared expectant face, then finally to each other...");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("They both scramble for the window, plunging into some kind of moat below.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("Okaaay...");
+                                                break;
+                                            }
+                                            else if (palaver[6] == "You yell there's a fire downstairs and they need to put it out!")
+                                            {
+                                                Console.WriteLine("\nThey peer their heads around you and out towards the antechamber. They don't see much evidence of fire...\nYou assure them it's really, REALLY big.\n\t'Maybe so, stranger,' the goblin answers darkly. He draws his weapon and the gnoll follows suit. 'But I reckon we've got ourselves enough time to kill us some spies, or wotevers the hell you are.'\nBother! It looks like you're going to have to fight...'");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[6] == "You stammer as you beseech them both that they *really* don't want to fight you. Bad, inexplicable things always happen when you get caught in a fight...")
+                                            {
+                                                Console.WriteLine("\nUpon mention of Merigold the two mercenaries' features darken. They rise from their seats, drawing their weapons. It seems they know all too well who and where Merigold is, and they also know that no friend of theirs would be traipsing through this place looking for him...\nYou shrug. Oh well, it was worth a shot. You prepare to fight...");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[6] == "You leer as you draw your weapon and tell them that you're going to enjoy this...")
+                                            {
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[6] == "You seize the initiative and attack while you have the advantage!")
+                                            {
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                        catch { }
+                                        break;
+                                    case 7:
+                                        try
+                                        {
+                                            
+                                            if (palaver[7] == "You adopt the unassuming role of just another grunt and complain about the food...")
+                                            {
+                                                Console.WriteLine($"\t'What're you talkin' about?' the goblin retorts. 'Best food we've 'ad ever since workin' 'ere. We've been emptying this Merigold maggot's larder and wine cellar fer months now and it's still overflowin'!'");
+                                                Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[7] == "You adopt the unassuming role of just another grunt and complain about the pay...")
+                                            {
+                                                Console.WriteLine($"\n\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.");
+                                                string description = "\t'Pfft. Wot's there to complain about?' the goblin retorts. 'We've never 'ad it so good under the master. Raided this place first day I got 'ere. Its where I got this fancy broach from'\nHe produces a broach from somewhere, embossed with a golden M encircled by a cursive capital G. Then his suspicious nature once more comes to the fore.";
+                                                string parlance = "\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.";
+                                                List<string> responses = new List<string>
+                                                {
+                                                    "Ooh... you know... that one... starts with an 's'... on the tip of my tongue...",
+                                                    "The kamikaze-suicide crazies",
+                                                    "The knights who say 'ni'",
+                                                    "Teh Ordah of deh Mega-Tyrant",
+                                                    "Dee Hooliganz",
+                                                    "Squad 34529, reporting for duty!"
+
+                                                };
+                                                if (bookEC4.SpecifyAttribute == "read")
+                                                {
+                                                    responses.Add("Da-Freebootaz-Squigalanche");
+                                                }
+
+                                                switch (armouryTalk.Parle(description, parlance, responses))
+                                                {
+                                                    case 1:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 2:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 3:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 4:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 5:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 6:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    case 7:
+                                                        description = "The goblin's eyes light up. Meanwhile, the gnoll gazes at you with open admiration...";
+                                                        List<string> parlances = new List<string>{
+                                                            "'Get outta 'ere,' the goblin exclaims, awestruck. 'Yer one of 'em mad boys? The ones who stormed the gates of the DreadPortal in the dead of night, squishin' the enemy guard with boulders and clubs? You fellas are legends!'\nThe gnoll nods its head emphatically. It has a crazed fanboy look in its eyes.",
+                                                            "but I thought your squad were all trolls?'",
+                                                            "'say, why don't you join us for a game of coins? It'd be an honour...'"
+                                                        };
+                                                        List<List<string>> playerchoices = new List<List<string>>
+                                                        {
+                                                            new List<string>
+                                                            {
+                                                                "You respond bashfully, saying a swish of a sword here a artful riposte there and the job was done...",
+                                                                "You brag, recounting the many foes you felled with your bare hands...",
+                                                                "You greet their reverence with a stoic silence, staring off into the distance and saying you don't like to talk about it..."
+                                                            },
+                                                            new List<string>
+                                                            {
+                                                                "Well, who do you think led them, you say...",
+                                                                "You tell them they made an exception for you because you're so awesome...",
+                                                                "You examine your fingernails as you tell them that's the misconception most amateurs seem to have..."
+                                                            },
+                                                            new List<string>
+                                                            {
+                                                                "Say you'd love to, but the commander instructed you tell them they're needed outside...",
+                                                                "Say you'll have to check your schedule, in the meantime they have orders to... um, go away. On the double!",
+                                                                "Say you could but then they'll miss out on their chance to join Da-Freebootaz-Squigalanche. They're recruiting, and maybe you two might just have what it takes..."
+                                                            }
+                                                        };
+                                                        Dictionary<string, string> choice_customResponse = new Dictionary<string, string>
+                                                        {
+                                                            {
+                                                            "You respond bashfully, saying a swish of a sword here a artful riposte there and the job was done...", "The goblin nudges the gnoll. 'ere! and see how modest he is too! That's a sign of a real, storm-thumpin' warlord, that is. Cor blimey!..."
+                                                            },
+                                                            { "You brag, recounting the many foes you felled with your bare hands...", "They listen avidly, eyes growing wider and wider as you recount your many exploits, even the ones on the other side of the world where the Vespasian mercenaries have never been. They are so swept up in your vivid tales they scarcely notice..."},
+                                                            {"You greet their reverence with a stoic silence, staring off into the distance and saying you don't like to talk about it...", "They seem to revere you more as they're magnetised by your coolness. 'Wow...' they sigh. The gnoll drools adoringly." },
+                                                            {"Well, who do you think led them, you say...", "\t'Of course! of course!' the goblin rushes to agree. He elbows the gnoll, 'See? what'd I tell you? He's obviously the leader! 'At's what I said..." },
+                                                            { "You tell them they made an exception for you because you're so awesome...", "The two knuckleheads lap it up."},
+                                                            { "You examine your fingernails as you tell them that's the misconception most amateurs seem to have...", "\t'Oh! No, you got it all wrong, we're not amateurs!' the goblin stammers. The gnoll nods along, a pleading look in its eyes.'We're just repeatin' wot we heard from others... Wot fools' the goblin laughs nervously."}
+                                                        };
+                                                        switch (armouryTalk.LinearParle(choice_customResponse, parlances, playerchoices, description))
+                                                        {
+                                                            case 0:
+                                                                Console.WriteLine("The two meatheads look at each other then immediately stand to attention.\n\t'right away, sir!' They salute. Then they scramble hastily through the 'RmorRee' door, through the double doors and beyond...");
+                                                                break;
+                                                            case 1:
+                                                                Console.WriteLine("The two meatheads look at each other then immediately stand to attention.\n\t'right away, sir!' They salute. Then they scramble hastily through the 'RmorRee' door, through the double doors and beyond...");
+                                                                break;
+                                                            case 2:
+                                                                Console.WriteLine("The goblin and gnoll gasp and look at each other excitedly. \n\t'Thank you, sir!' The goblin gushes as he proudly salutes. 'You won't forget this, sir!' They dash out of the 'RmorRee', through the double doors and beyond...");
+                                                                break;
+                                                            default:
+                                                                Console.WriteLine("The goblin and gnoll gasp and look at each other excitedly. \n\t'Thank you, sir!' The goblin gushes as he proudly salutes. 'You won't forget this, sir!' They dash out of the 'RmorRee', through the double doors and beyond...");
+                                                                break;
+                                                        }
+                                                        break;
+                                                    default:
+                                                        Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
+
+                                                        Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
+                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight();
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight();
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                }
+                                            }
+                                            else if (palaver[7] == "You adopt the unassuming role of just another grunt and complain about the weapons...")
+                                            {
+                                                Console.WriteLine("The goblin and gnoll seem to relax. \n\t'tell me about it,' the goblin mutters, 'They've kept the good weapons locked away behind enchanted glass for the elite squads.' The goblin's voice lowers to a conspiratorial whisper, 'One of our number, they tried to break the enchanted glass and steal one of the better weapons. The glass didn't shatter, but they did - right after he'd been frozen to a block of ice!' \nYou pay the weapons in question a wary glance through the strange glass. \n\t'Say,' the goblin perks up, 'You want to join us for a game?'");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("You play a few rounds before the gnoll and goblin say they'd better get back on patrol. They give a collegial farewell before exiting the 'RmorRee' door and through the double doors beyond...");
+                                                break;
+                                            }
+                                            else if (palaver[7] == "You adopt the role of commander-in-chief and sanctimoniously berate them for playing coins when... wait? coins? Why not cards? cards are so much better...")
+                                            {
+                                                Console.WriteLine("\nHow *dare* you insult the grand and noble game of coins! The gnoll and goblin both rise from their seats to fight you...");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[7] == "You yell there's a fire downstairs and its rapidly threatening to burn the whole place down. They need to put it out. Now!")
+                                            {
+                                                Console.WriteLine("\nThe gnoll and the goblin both peer around you, taking in the raging inferno storming up the stairway. Their gaze turns from the flaming stairs, to your soot-smeared expectant face, then finally to each other...");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("They both scramble for the window, plunging into some kind of moat below.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("Okaaay...");
+                                                break;
+                                            }
+                                            else if (palaver[7] == "You yell there's a fire downstairs and they need to put it out!")
+                                            {
+                                                Console.WriteLine("\nThey peer their heads around you and out towards the antechamber. They don't see much evidence of fire...\nYou assure them it's really, REALLY big.\n\t'Maybe so, stranger,' the goblin answers darkly. He draws his weapon and the gnoll follows suit. 'But I reckon we've got ourselves enough time to kill us some spies, or wotevers the hell you are.'\nBother! It looks like you're going to have to fight...'");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[7] == "You stammer as you beseech them both that they *really* don't want to fight you. Bad, inexplicable things always happen when you get caught in a fight...")
+                                            {
+                                                Console.WriteLine("\nUpon mention of Merigold the two mercenaries' features darken. They rise from their seats, drawing their weapons. It seems they know all too well who and where Merigold is, and they also know that no friend of theirs would be traipsing through this place looking for him...\nYou shrug. Oh well, it was worth a shot. You prepare to fight...");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[7] == "You leer as you draw your weapon and tell them that you're going to enjoy this...")
+                                            {
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[7] == "You seize the initiative and attack while you have the advantage!")
+                                            {
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                        catch { }
+                                        break;
+                                    case 8:
+                                        try
+                                        {
+                                            if (palaver[8] == "You yell there's a fire downstairs and its rapidly threatening to burn the whole place down. They need to put it out. Now!")
+                                            {
+                                                Console.WriteLine("\nThe gnoll and the goblin both peer around you, taking in the raging inferno storming up the stairway. Their gaze turns from the flaming stairs, to your soot-smeared expectant face, then finally to each other...");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("They both scramble for the window, plunging into some kind of moat below.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("Okaaay...");
+                                                break;
+                                            }
+                                            else if (palaver[8] == "You yell there's a fire downstairs and they need to put it out!")
+                                            {
+                                                Console.WriteLine("\nThey peer their heads around you and out towards the antechamber. They don't see much evidence of fire...\nYou assure them it's really, REALLY big.\n\t'Maybe so, stranger,' the goblin answers darkly. He draws his weapon and the gnoll follows suit. 'But I reckon we've got ourselves enough time to kill us some spies, or wotevers the hell you are.'\nBother! It looks like you're going to have to fight...'");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[8] == "You stammer as you beseech them both that they *really* don't want to fight you. Bad, inexplicable things always happen when you get caught in a fight...")
+                                            {
+                                                Console.WriteLine("\nUpon mention of Merigold the two mercenaries' features darken. They rise from their seats, drawing their weapons. It seems they know all too well who and where Merigold is, and they also know that no friend of theirs would be traipsing through this place looking for him...\nYou shrug. Oh well, it was worth a shot. You prepare to fight...");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[8] == "You leer as you draw your weapon and tell them that you're going to enjoy this...")
+                                            {
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[8] == "You seize the initiative and attack while you have the advantage!")
+                                            {
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                        catch { }
+                                        break;
+                                    case 9:
+                                        try
+                                        {
+                                            if (palaver[9] == "You stammer as you beseech them both that they *really* don't want to fight you. Bad, inexplicable things always happen when you get caught in a fight...")
+                                            {
+                                                Console.WriteLine("\nUpon mention of Merigold the two mercenaries' features darken. They rise from their seats, drawing their weapons. It seems they know all too well who and where Merigold is, and they also know that no friend of theirs would be traipsing through this place looking for him...\nYou shrug. Oh well, it was worth a shot. You prepare to fight...");
+
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[9] == "You leer as you draw your weapon and tell them that you're going to enjoy this...")
+                                            {
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                            else if (palaver[9] == "You seize the initiative and attack while you have the advantage!")
+                                            {
+                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                {
+                                                    dualDuel.WonFight();
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight();
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                        catch { }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            
+                            Console.WriteLine("You dust your hands. Now what will you do?");
+                            visitedArmouryBefore = true;
+                        }
                         if (!(a == 0 && b == 0))
                         {
                             Console.WriteLine("Now what will you do?");
@@ -1647,8 +3742,8 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(armoury, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                
+                                success = player1.UseItemOutsideCombat(armoury, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -1664,6 +3759,8 @@ namespace DungeonCrawler
                     {
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -1714,8 +3811,8 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(messHall, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                
+                                success = player1.UseItemOutsideCombat(messHall, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -1733,6 +3830,8 @@ namespace DungeonCrawler
                         ///might have to split into 4 rooms, one for each passage
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -1783,8 +3882,8 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(circularLanding, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                
+                                success = player1.UseItemOutsideCombat(circularLanding, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -1800,6 +3899,9 @@ namespace DungeonCrawler
                     {
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
+                        //usesDictionaryItemFeature[jailorKeys].Remove(emptyCellDoor);
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -1850,8 +3952,8 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(emptyCell, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                
+                                success = player1.UseItemOutsideCombat(emptyCell, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -1867,6 +3969,8 @@ namespace DungeonCrawler
                     {
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -1917,8 +4021,8 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(magicalManufactory, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                
+                                success = player1.UseItemOutsideCombat(magicalManufactory, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -1934,6 +4038,8 @@ namespace DungeonCrawler
                     {
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -1984,8 +4090,8 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(broomCloset, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                
+                                success = player1.UseItemOutsideCombat(broomCloset, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -2001,6 +4107,8 @@ namespace DungeonCrawler
                     {
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -2052,7 +4160,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(highestParapet, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(highestParapet, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -2068,6 +4176,8 @@ namespace DungeonCrawler
                     {
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -2119,7 +4229,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(hugeBarracks, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(hugeBarracks, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -2135,6 +4245,8 @@ namespace DungeonCrawler
                     {
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -2185,8 +4297,8 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(desertIsland, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                
+                                success = player1.UseItemOutsideCombat(desertIsland, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -2202,6 +4314,8 @@ namespace DungeonCrawler
                     {
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -2252,8 +4366,8 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(bankVault, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                
+                                success = player1.UseItemOutsideCombat(bankVault, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -2269,6 +4383,8 @@ namespace DungeonCrawler
                     {
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -2319,8 +4435,7 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(dragonLair, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(dragonLair, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -2336,6 +4451,8 @@ namespace DungeonCrawler
                     {
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -2386,8 +4503,7 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(secretChamber, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(secretChamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -2403,6 +4519,8 @@ namespace DungeonCrawler
                     {
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -2454,7 +4572,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(prehistoricJungle, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(prehistoricJungle, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -2470,6 +4588,8 @@ namespace DungeonCrawler
                     {
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -2521,7 +4641,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(astralPlanes, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(astralPlanes, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -2537,6 +4657,8 @@ namespace DungeonCrawler
                     {
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -2588,7 +4710,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(oceanBottom, musicBox, binkySkull, steelKey, note, jailorKeys, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(oceanBottom, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -2602,13 +4724,13 @@ namespace DungeonCrawler
             
 
 
-            if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling))
+            if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems))
             {
                 trialBattle.WonFight();
-                if (tougherBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling))
+                if (tougherBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems))
                 {
                     tougherBattle.WonFight();
-                    if (toughestBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling)) { tougherBattle.WonFight(); }
+                    if (toughestBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems)) { tougherBattle.WonFight(); }
                 }
             }
 
