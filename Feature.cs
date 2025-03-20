@@ -47,7 +47,7 @@ namespace DungeonCrawler
         /// <returns></returns>
         public void investigateFeature(List<Item> specialItems, Monster minotaur)
         {
-            Console.WriteLine(Description);
+            
             if (Name == "peculiar mosaic")
             {
                 Console.WriteLine("The tiles finally settle and form the image of a vast non-descript face gazing placidly down at you. It's open features almost seems to invite questions from you...\n\tDo you wish to see if you can get a response out of the kaleidoscopic mosaic?");
@@ -185,7 +185,7 @@ namespace DungeonCrawler
             Console.WriteLine($"Rummaging about the {Name}, you find the following;");
             int r = 1;
             string message = $"{Description}\n";
-            if (Name == "bookcase" && ItemList.Count != 0)
+            if (Name == "bookcase" && ItemList.Count != 0 && room.Name == "dank cell")
             {
                 message += "Your keen eye notices a lone page just underneath the collapsed shelf, snagged at the back.\n";
             }

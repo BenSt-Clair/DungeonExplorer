@@ -1420,7 +1420,7 @@ namespace DungeonCrawler
                             }
                             
                         }
-                        
+                        stairwayToUpper.Description = "The wide flight of stone steps slowly curves around, leading to somewhere unseen but well-lit.";
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item>{ bobbyPins});
@@ -1668,6 +1668,13 @@ namespace DungeonCrawler
                         {
                             newRoom1.Description.Remove(newRoom1.Description.IndexOf(".") + 1, deleteString.Length);
                         }
+                        if (fireProgress > 6)
+                        {
+                            stairwayToUpper.Attribute = true;
+                            stairwayToUpper.SpecificAttribute = "blocked";
+                            stairwayToUpper.Description = "Peering down the stairway you see a fiery glow flicker upon the opposite wall where it curves around to the corridor. A fiery haze lurks like a ravenous beast below, as intense furnace-like heat buffets against you...\nThere's no way you're getting down there.";
+                        }
+                        else { stairwayToUpper.Description = "The wide flight of stone steps slowly curves around, leading to the frosty light of the corridor below..."; }
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });

@@ -505,8 +505,9 @@ namespace DungeonCrawler
                                 Console.WriteLine($"\n{ministryOfSillyWalks[19+D6.Roll(D6)]} to the {FeatureList[answer1].Name}...\n");
                             }
                             Console.ReadKey(true);
-                            FeatureList[answer1].investigateFeature(specialItems, minotaur);
                             Room newRoom = FeatureList[answer1].Search(inventory, weaponInventory, this);
+                            FeatureList[answer1].investigateFeature(specialItems, minotaur);
+                            
                             if ( newRoom.Name != this.Name)
                             {
                                 return newRoom;
