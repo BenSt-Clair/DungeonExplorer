@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,12 +14,109 @@ namespace DungeonCrawler
         Monster _interlocutor { get; set; }
         Combat _combat { get; set; }
         Room _room { get; set; }
+        Item _item { get; set; }
         public Dialogue(Player player, Monster monster, Combat combat, Room room)
         {
             _player = player;
             _interlocutor = monster;
             _combat = combat;
             _room = room;
+        }
+        public Dialogue(Item item)
+        {
+            _item = item;
+        }
+        public bool getYesNoResponse()
+        {
+            while (true)
+            {
+                string answer = Console.ReadLine().Trim().ToLower();
+                if (string.IsNullOrWhiteSpace(answer))
+                {
+                    continue;
+                }
+                else if (answer == "yes" || answer == "y")
+                {
+                    return true;
+                }
+                else if (answer == "no" || answer == "n")
+                {
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("PLease answer either 'yes' or 'no'.");
+                    continue;
+                }
+            }
+        }
+
+        public int getIntResponse(int option)
+        {
+            int answer1 = 0;
+            while (true)
+            {
+                string answer = Console.ReadLine().Trim().ToLower();
+                if (string.IsNullOrWhiteSpace(answer))
+                {
+                    continue;
+                }
+                else
+                {
+                    try
+                    {
+
+                        answer1 = int.Parse(answer);
+                        if (answer1 < 1 || answer1 >= option)
+                        {
+                            Console.WriteLine($"Please enter a number between 1 and {option - 1}!");
+                        }
+                        else { break; }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Please enter a number corresponding to your choice of action!");
+                        continue;
+                    }
+                }
+            }
+            return answer1;
+        }
+        public List<long> getTimedIntResponse(int option)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            long timeLapsed = 0;
+            long answer1 = 0;
+            while (true)
+            {
+                string answer = Console.ReadLine().Trim().ToLower();
+                if (string.IsNullOrWhiteSpace(answer))
+                {
+                    continue;
+                }
+                else
+                {
+                    try
+                    {
+
+                        answer1 = int.Parse(answer);
+                        if (answer1 < 1 || answer1 >= option)
+                        {
+                            Console.WriteLine($"Please enter a number between 1 and {option - 1}!");
+                        }
+                        else { sw.Stop(); timeLapsed = sw.ElapsedMilliseconds; break; }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Please enter a number corresponding to your choice of action!");
+                        continue;
+                    }
+                }
+            }
+
+            List<long> output = new List<long> { answer1, timeLapsed };
+            return output;
         }
         public int Parle(string description, string parlance, List<string> responses)
         {
@@ -109,6 +207,13 @@ namespace DungeonCrawler
                             Console.WriteLine($"Please enter a number between 1 and {option}");
                             continue;
                         }
+                        if (choice_CustomResponse[playerChoices[node][answer1]] == "You decide to stop reading the literature for now.")
+                        {
+                            Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]]);
+                            Console.ReadKey(true);
+                            return -1;
+                        }
+                        
                         Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]] + " " + parlances[node + 1]);
                         break;
                     }

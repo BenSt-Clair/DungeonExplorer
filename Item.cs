@@ -36,14 +36,280 @@ namespace DungeonCrawler
         {
             weaponInventory.Add(weapon);
         }
-        public string StudyItem(Item item)
+        public void StudyItem(Item item)
         {
             if (item.Name.Contains("newsletter"))
             {
                 item.Attribute = true;
                 item.SpecifyAttribute = "read";
             }
-            return item.Description;
+
+            Console.WriteLine(item.Description);
+            if(item.Name == "book on cursed weapons")
+            {
+                Console.WriteLine("Would you like to delve deeper into what this book has to say?");
+                Dialogue cursed_weapons = new Dialogue(item);
+                if (cursed_weapons.getYesNoResponse())
+                {
+                    string description = "With more than a tincture of curiosity you open the book and set about perusing it's many pages, until one in particular catches your eye...";
+                    List<string> pages = new List<string> 
+                    { 
+                        "The page below details a general background surrounding curses and hexes:" +
+                        "\n\n\t'Throughout the ages it has been a common misconception that curses are merely a synonym for hexes; that the two may be" +
+                        "used interchangeably without any loss of meaning. Such is the ignorance of those folk who spread such" +
+                        "facile falsehoods. 'Tis true that their symptoms often appear the same, in the nebulous sense that they are often cryptic in their resolution and the misfortunes and" +
+                        "maladies that arise are of a wholly capricious nature. " +
+                        "However, the notion of their identity with one another is not only unfounded but a dangerous presumption. " +
+                        "\n\tWhere hexes are man-made, or more often than not witch-made, curses are born of unspoken secrets and injustices festered." +
+                        "Where hexes are transient by nature and of limited scope in power and malice, curses by contrast seem boundless and find an infinite reservoir " +
+                        "for longevity in some chaos underlying the fabric of our world. Hexes can be easily countered, dispelled or at least ameliorated." +
+                        "\n\tCurses, by contrast, can linger for untold aeons, manifest in guises both terrific and terrible, and will confound even the greatest, mage, wizard, witch or sorceror." +
+                        "\nThere has only ever been one way to lift a curse, and no mortal man has as of yet found a second...'",
+                        
+                        "This page seems to examine the weapons curses have been known to latch themselves to:" +
+                        "\n\n\t'Weapons about which a curse has been afflicted is a rare occurrence. More often than not" +
+                        " curses do not confine themselves to any material object." +
+                        "\nThis is because of the nature of curses. Curses arise from secret, terrible deeds about which no one but the perpetrator is any the wiser. As such, when a curse finds itself bound to a weapon, " +
+                        "it is often because that is the weapon that has carried out such unspoken atrocities. \n This is unusual. It's often known for curses to not confine themselves to one person" +
+                        " but to afflict an entire town or kingdom. Many times it is not even restricted to a single place.\nIt is important to understand, that cursed weapons are not like enchanted weapons, whose spell will last for a relatively short while, or at most, only as" +
+                        " long as the caster's life. Cursed weapons are virtually perennial entities that after years of dedicated study one might almost be tempted to say have a life of their own." +
+                        " Not in the sense that they've thoughts or a mind, exactly, but their presence in one object almost seems to garner it the veneer of wicked intent. Harm has befallen me, dear reader, on more than one occasion" +
+                        " due to lack of vigilance around these weapons." +
+                        "\nBut before you surmise that my studies have been in vain, let me assure you otherwise! I have discovered that cursed weapons" +
+                        " appear to have an innate ability to destroy or 'devour' magic - even, some indications lead me to believe, souls...'",
+                        
+                        "This page delves into one weapon in particular of high renown;" +
+                        "\n\n\t'...The vanquisher, or as it has been known to some, the Sword of Sealed Souls, is such a weapon in my possession." +
+                        " It's original owner was the victim of a curse of course - transformed into some ghast or perhaps a banshee (the sources differ) after she sewed her own lips shut that she might" +
+                        " not reveal some horror that'd blighted her convent. The sword fell into my possession, naturally, through more mundane means: I bought it. " +
+                        "The chap frankly had been all too happy to part with it. Said it was keeping him up all night with haunting nightmares and ghoulish dreams. Imagine my glee! " +
+                        "\nI began studying it forthwith and found unmistakeable  signs of anti-magical energy fields and according to the astrological equations of Elminster's fourth law...'" +
+                        "\n[The passage then trails into esoteric formulas and a pseudo-mathematical lexicon that eludes your limited knowledge of the arcane]",
+                        
+                        "The final page you turn to deliberates upon the forces that bring about such curses and from where they are ultimately sourced;" +
+                        "\n\n\t'From the hearts of the cruel?\n\t\tFrom planes beyond our own?\n\t\t\tFrom some shadow of our own world?" +
+                        "\nFrom the same place our reflections go when we aren't looking? Or mayhaps the place where there resides the sound of a cat's paws, a fish's breath, or the roots of a mountain?" +
+                        "\nAlas, ultimately I know not, nor can I guess. There seems an otherworldly aspect to curses, but they escape the ken of magical artificers and mages alike. They elude control. They arise from some chaos and from somewhere no sane mind could venture." +
+                        "\nI am sorry to say, that after all my years of study, I must finally include myself in the storied list of magicians who have failed to understand our chosen topic's most elusive and fundamental question..." +
+                        "'"
+                    };
+                    List<List<string>> playerchoice = new List<List<string>>
+                    {
+                        new List<string>
+                        { 
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        { 
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        { 
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn back to the first page?",
+                            "Close the book?"
+                        }
+                    };
+                    Dictionary<string, string> action = new Dictionary<string, string>
+                    {
+                        {"Turn back to the first page?", "You scour the book for the first entry you came across..."},
+                        { "Turn the page?", "You leaf through a page or two more, before your eyes rest on the next intriguing excerpt." },
+                        {"Close the book?", "You decide to stop reading the literature for now." }
+                    };
+                    int x = 0;
+                    while(x == 0)
+                    {
+                        x = cursed_weapons.LinearParle(action, pages, playerchoice, description);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("You decide now isn't the time. You close the book.");
+                    Console.ReadKey(true);
+                    return;
+                }
+            }
+            else if (item.Name == "book on the history of curses")
+            {
+                Console.WriteLine("Would you like to delve deeper into what this book has to say?");
+                Dialogue history_curses = new Dialogue(item);
+                if (history_curses.getYesNoResponse())
+                {
+                    string description = "With more than a tincture of curiosity you open the book and set about perusing it's many pages, until one in particular catches your eye...";
+                    List<string> pages = new List<string>
+                    {
+                        "The first page you come across reads like a fairy tale:" +
+                        "\n\n\t'Once upon a time," +
+                        "\nthere was a midwife in a provincial town. She always wanted children of her own, alas it was not to be, " +
+                        "for husbands were sought and none were found who satisfied the high expectations of her family. And every day she'd deliver children into the world with a heart bursting with love. So fit to burst" +
+                        " was her heart that it tore at the seams. Her desire to bear her own children made her ache, and all could see and knew her pain. For the" +
+                        " villagers sent her flowers and gifts as thanks and to ease her suffering. And they all thought, 'well that was that'. \nBut on she continued, delivering babies into the world, holding her heart's desire for one precious moment, before" +
+                        " giving the child over to their mother with a bigger smile than anyone else there, because she had to keep the other feelings hidden somewhere no one would ever see. " +
+                        "\n\tOne day terrible tragedies began occurring, as babies one by one were stolen from their cribs. And the midwife shared her love with the mothers who'd lost their children. For finally they knew her pain" +
+                        " \nFor finally she was not alone. \nUntil, one day the villagers gave her new gifts. They bestowed upon her flowers whose bloom bore release from that pain forever. And privately, behind closed doors," +
+                        " they thought, 'well that was that,' and never spoke of her again. " +
+                        "\n\tNow there exists a secret door. It's the door to the abandoned home where children never laughed. It's the door to the derelict cottage where children were never heard to play. And when it wants to be found it beckons children inside. They are seen to " +
+                        "pass through it, and none who do ever make it to the other side...'",
+
+                        "This page details a creepy limerick:" +
+                        "\n\n'Once there were children who cried a lot," +
+                        "\nThey told their parents to go and rot," +
+                        "\nThen adventurers rode in, " +
+                        "\nThey made quite a din," +
+                        "\nFor there'd been something in the woods," +
+                        "\n\t and it'd taught them all how to plot...'",
+
+                        "This report sends a jolt through you, as the name of that accursed village that'd abducted you leaps out of the page at you;" +
+                        "\n\n\t'It's been many moons since Myrovia was first afflicted with its terrible curse. None know why it'd come about" +
+                        ", for the residents of this humble sanctuary within the mountains were by most accounts perfectly contented and you could find no one more" +
+                        " civil. Indeed the roots of this curse are as difficult to tell as the time it all began. " +
+                        "For though it might not seem like it, Myrovia is no stranger to tragedy." +
+                        "\n\tThe curse may have afflicted the mayor of Myrovia first, a man of noble heritage who'd fallen on hard times until he'd met his wife. " +
+                        "She had been, by all accounts, a spirited woman with beauty beyond compare. And through her influence she" +
+                        " had helped the man regain some of his riches, setting up Myrovia's only tavern. It was upon the birth of their third daughter" +
+                        " that she sadly passed away." +
+                        " Reports at the time state the mayor was inconsolable for years after this loss, and though eventually he'd begun searching" +
+                        " for a new wife, their affections only reminded him of how they fell short of his first beloved soulmate. However, its disputed by no one" +
+                        " that in spite of his loss, the mayor more than rose up to the duties of fatherhood. He was, by all accounts, dedicated to his three daughters." +
+                        "\n\t One tragedy, of course, would merely be that; a tragedy. But it's the chain of events that " +
+                        "follows that truly make some wonder whether the curse had already taken hold. For after the mayor had long" +
+                        " abandoned any hope of finding a new wife, the three daughters, one by one," +
+                        " committed suicide in shocking ways. " +
+                        "\n\tThe first had been the eldest who, before flowering into womanhood, had been vivacious and active. Many villagers had seen" +
+                        " her help with the harvest, and when it'd been time to celebrate she'd delighted the crowds with her dancing. However, the villagers witnessed some sickness befall her" +
+                        " - one with no physical symptoms. Days before her death, no one witnessed her smile and she spoke scarcely a word to any of her friends." +
+                        "\n\tThe second daughter, before she'd come of age, had elated the tavern's convivial evenings with her singing. However, she too seemed afflicted by the same malady as her sister. " +
+                        "One can only surmise that her grief was such that she could no longer bear to live, for she hanged herself by the tavern's very rafters." +
+                        "\n\tThe tavern's business had begun to dwindle after such a calamity, and by all accounts the mayor was beside himself" +
+                        " with grief. It was only his youngest daughter, who had grown to resemble her beautiful mother, who'd given him any comfort in these hard times. Accounts" +
+                        " at this point differ in some details as to the exact chain of events that followed. Some say there was an altercation after the mayor sought to protect" +
+                        " his daughter from an unworthy suitor. Others emphasise the grief she felt for her sisters along with an inexplicable fear that'd turned her ashen-faced in her last days. In either" +
+                        " case, the symptoms were the same. The strange malady struck, and shortly thereafter, she'd flung herself from the tallest spire in Myrovia." +
+                        "\n\tShortly afterwards, four ungodly crepuscular creatures stalk Myrovia whenever the moon waxes its fullest. Some say this is when the curse began." +
+                        " Others, that the curse had begun long before, only now it splays its tendrils across all of Myrovia, morphing into some new evil. No two theories are the same. And no solution is yet to be found." +
+                        "\n\tThere is only one more report of note; the autopsies that were conducted on the bodies, but little sense can be made of it. \nFor it states that though the girls were never married, and were denied contact with suitors, " +
+                        "none were virgins...'",
+                        
+                        "The final page makes you almost jump out of your own skin! There, before your eyes, words continually fill the page as though some invisible scribe were penning them;" +
+                        "\n\n\t'... and so the old lady made her pact in the woods with the Merchant of Mirrors, that she might be youthful once more and suitors would..." +
+                        "\n[and so on]'"
+                    };
+                    List<List<string>> playerchoice = new List<List<string>>
+                    {
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn back to the first page?",
+                            "Close the book?"
+                        }
+                    };
+                    Dictionary<string, string> action = new Dictionary<string, string>
+                    {
+                        {"Turn back to the first page?", "You scour the book for the first entry you came across..." },
+                        { "Turn the page?", "You leaf through a page or two more, before your eyes rest on the next intriguing excerpt." },
+                        {"Close the book?", "You decide to stop reading the literature for now." }
+                    };
+                    int x = 0;
+                    while (x == 0)
+                    {
+                        x = history_curses.LinearParle(action, pages, playerchoice, description);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("You decide now isn't the time. You close the book.");
+                    Console.ReadKey(true);
+                    return;
+                }
+            }
+            else if (item.Name == "book on Fey realms and magicks")
+            {
+                Console.WriteLine("Would you like to delve deeper into what this book has to say?");
+                Dialogue fey_realms = new Dialogue(item);
+                if (fey_realms.getYesNoResponse())
+                {
+                    string description = "With more than a tincture of curiosity you open the book and set about perusing it's many pages, until one in particular catches your eye...";
+                    List<string> pages = new List<string>
+                    {
+                        "The magnificent prose of this book holds you captivated as you begin scanning through the first page. " +
+                        "\nYou become so focused you don't notice yourself drawing closer and closer to the pages as your eyes dart across the elegant script.",
+
+                        "You become addicted to the questions raised by this book and especially those that are yet to be answered. You're" +
+                        " so hooked by what's to follow in the pages ahead that you lose all sense of time. Your heart beats faster. Your hands grow sweaty. This is the most sensational read" +
+                        " you've ever come across...",
+
+                        "Suddenly, you decide you don't ever want to pull away from this book. The power it promises, the worlds it opens... You flit hungrily through the pages, " +
+                        "absorbing the arcane symbols and otherworldly etchings as though in your fevered state they meant something to you..." +
+                        "\nYou feel yourself becoming lost...",
+
+                        "Finally you rifle through the pages to the book's conclusion. And suddenly you blink.\n" +
+                        "The spellbinding book's allure... it's broken. The giddy feelings of intoxication that'd bubbled inside you evaporate as you stare" +
+                        " down at a torn out page.\nFrowning you peruse the index, trying to discover what that page had contained, " +
+                        "before learning that it was the chapter on 'Summoning'..."
+                    };
+                    List<List<string>> playerchoice = new List<List<string>>
+                    {
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn back to the first page?",
+                            "Close the book?"
+                        }
+                    };
+                    Dictionary<string, string> action = new Dictionary<string, string>
+                    {
+                        {"Turn back to the first page?", "You scour the book for the first entry you came across..." },
+                        { "Turn the page?", "You leaf through a page or two more, before your eyes rest on the next intriguing excerpt." },
+                        {"Close the book?", "You decide to stop reading the literature for now." }
+                    };
+                    int x = 0;
+                    while (x == 0)
+                    {
+                        x = fey_realms.LinearParle(action, pages, playerchoice, description);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("You decide now isn't the time. You close the book.");
+                    Console.ReadKey(true);
+                    return;
+                }
+            }
+            return;
         }
         /// <summary>
         /// pickupitem can be used to pick up weapons or items, however the distinction
@@ -121,7 +387,7 @@ namespace DungeonCrawler
                     {
                         if (weapon == null)//if item is not a weapon
                         {
-                            Console.WriteLine(StudyItem(item));
+                            StudyItem(item);
                             if (range == 3 || range == 4 || range == 6)
                             {
                                 Console.WriteLine($"\nWould you now like to:\n [1]study the {Name} again \n[2]stash it upon your person \n[3]place it back where you found it?");
@@ -134,7 +400,7 @@ namespace DungeonCrawler
                         }
                         else//if item is a weapon
                         {
-                            Console.WriteLine(StudyItem(weapon));
+                            StudyItem(weapon);
                             if (range == 3 || range == 4 || range == 6)
                             {
                                 Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it upon your person \n[3]place it back where you found it?");
@@ -308,6 +574,12 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         return true;
                     }
+                    else if (item.Name == "brass key" && feature.Name == "double doors")
+                    {
+                        Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door unlock.");
+                        Console.ReadKey(true);
+                        return true;
+                    }
                     else if (item.Name == "steel key" && feature.Name == "rosewood chest")
                     {
                         Console.WriteLine("The key slides easily into the lock. With one sharp twist the clasp comes undone");
@@ -362,6 +634,12 @@ namespace DungeonCrawler
                     if (item.Name == "jailor keys" && (feature.Name == "far door" || feature.Name == "near door"))
                     {
                         Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door lock.");
+                        Console.ReadKey(true);
+                        return true;
+                    }
+                    else if (item.Name == "brass key" && feature.Name == "double doors")
+                    {
+                        Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door unlock.");
                         Console.ReadKey(true);
                         return true;
                     }

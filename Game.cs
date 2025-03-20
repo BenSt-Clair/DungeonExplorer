@@ -20,6 +20,7 @@ namespace DungeonCrawler
             GameName = gameName;
 
         }
+        
         private void Prologue(Room room)
         {
             Console.Write("Would you like to skip the prologue? ");
@@ -598,7 +599,7 @@ namespace DungeonCrawler
             Door stairwayToUpper = new Door("lit stairway", "The wide flight of stone steps slowly curves around, leading to somewhere unseen but well-lit.", false, "unblocked", null, null, "You embark up the stairs two at a time.");
             Door otherRosewoodDoor = new Door("near door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in.", true, "locked", null, null, "The door creaks ominously as you furtively pace into the next room.");
             Door armouryDoor = new Door("RmorRee door", "Its a heavyset door studded with iron bolts and a thoroughly unwelcoming aspect.", false, "unlocked", null, null, "The door swings open with a heave and opens into the next room...");
-            Door circleDoor = new Door();
+            Door circleDoor = new Door("double doors", "An ornate and set of vast double doors with brass locks and filigreed handles. You reckon a troll could fit through that door...", true, "locked", null, null, "You open one of the doors open just a fraction and slip your way through...");
             Door emptyCellDoor = new Door("far door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in. You notice the lock has scratches made from the inside. You surmise someone has attempted picking the lock, but unless they had something more than just a bobby pin, it's doubtful they succeeded.", true, "locked", null, null);
 
             Item soot = new Item("soot", "It's black. It's burned... Yep, that's soot.", false, "unsmeared", 0, ": ");
@@ -627,6 +628,7 @@ namespace DungeonCrawler
             List<Item> otherBookcaseItems = new List<Item> { bookEC1, bookEC2, bookEC3, bookEC4};
             /// 
             /// armoury features
+            Item circleDoorKey = new Item("brass key", "It's a filigreed but tarnished key that presumably opens something...");
             Item lockpickingSet = new Item("lockpicking set", "With a long thin blade and a pin, all kinds of new opportunities open themselves to you...", false, "unbroken");
             List<Dice> stilettoDamage = new List<Dice> { D3, D3, D3};
             List<Dice> bastardswordDamage = new List<Dice> { D6, D6};
@@ -638,7 +640,7 @@ namespace DungeonCrawler
             Weapon rustySword = new Weapon("rusty shortsword", "A tinge of rust traces the blade around the handle. It's been recently sharpened on a grindstone, but it probably still couldn't pierce a good set of armour worthy of the name.", damage1, defaultCritHits, defaultGoodHits);
             Weapon stiletto = new Weapon("stiletto blade", "This slender blade has a needle-like point that's sharper than a drill sergeant's tongue and a fox's wits and a bag of lemons and... \nWell, you get the idea.", stilettoDamage, defaultCritHits, defaultGoodHits, 1, false);
             Item bagOfCoins = new Item("bag of coins", "Most of the coins are scattered all over the table, with a few mounds forming the winnings of previous games. There is, however, a lovely large leather bag to stash them all in close by...", false, "unspent");
-            List<Item> tableItems = new List<Item> { stiletto, bagOfCoins };
+            List<Item> tableItems = new List<Item> { stiletto, bagOfCoins, circleDoorKey };
             List<Item> unlockedWeapons = new List<Item> { axe, estoc, bastardSword};
             List<Item> goodRackWeapons = new List<Item> { };
             List<Item> badRackWeapons = new List<Item> { rustySword, sai, throwingKnife};
@@ -646,7 +648,7 @@ namespace DungeonCrawler
             Feature goodWeaponRack = new Feature("weapon rack", "Replete with weapons of all descriptions, their oiled and well-polished blades gleam at you.\nIt's a shame someone was foresighted enough to lock them all behind an enchanted glass panel...", true, "locked", goodRackWeapons);
             Feature worseWeaponRack = new Feature("weapon rack", "Haphazardly heaped upon it are a motley assortment of rusty implements that might on a good day be described as weapons. These appear to be the ones the mercenaries had access to.", false, "unshattered", badRackWeapons);
             Item bookA1 = new Item("book on cursed weapons", "It's a surprisingly well-kept book with the cover and pages still perfectly intact. (You expect its because few of the creatures hired as mercenaries here are avid readers). It's entitled, 'Upon ye subject of cur'sed weapons and their bless'ed destruction", false, "unread");//like with door, in pickupItem() if Name contains ' book ' then start linear dialogue, player can choose to turn to next page or leave.
-            Item bookA2 = new Item("book on the history of curses", "It's an encyclopedic and thorough rendition of all the most notable curses that've arisen and passed through Myrovia over many centuries. It seems to have been a work in progress because the last hundred or so pages are left blank. You notice an embossed M within a G inside the front cover.", false, "unread");
+            Item bookA2 = new Item("book on the history of curses", "It's an encyclopedic and thorough rendition of all the most notable curses that've arisen and passed through the known world over many centuries. It seems to have been a work in progress because the last hundred or so pages are left blank. You notice an embossed M within a G inside the front cover.", false, "unread");
             Item bookA3 = new Item("book on Fey realms and magicks", "Its a book smaller than most with elooquent script, flowing prose and fanciful descriptions that entice and excite the imagination. Its words are so gripping in fact that you wonder if their lure and speciousness isn't a form of magic itself. It's almost as if the book wants you to fall through its pages into another world...", false, "unread");
             List<Item> armouryBookcaseItems = new List<Item> { bookA1, bookA2, bookA3};
             Feature armouryBookcase = new Feature("bookcase", "A rosewood bookcase that seems to have been left behind from when this place was something other than an armoury (a library perhaps). It is still stocked with books.", false, "unshattered", armouryBookcaseItems);
@@ -667,7 +669,7 @@ namespace DungeonCrawler
             List<Feature> cellfeatures = new List<Feature> { rosewoodDoor, rosewoodChest, bookCase, skeleton, leftbrazier, rightbrazier };
             List<Item> corridorItems = new List<Item>();
             List<Feature> corridorFeatures = new List<Feature> { stairwayToLower, leftbrazier, rosewoodDoor, otherRosewoodDoor, rightbrazier, emptyCellDoor, anotherBrazier, stairwayToUpper };
-            List<Feature> antechamberFeatures = new List<Feature> { pillar, plaque, armouryDoor, pillar, mosaic, circleDoor};
+            List<Feature> antechamberFeatures = new List<Feature> { stairwayToUpper, pillar, plaque, armouryDoor, pillar, mosaic, circleDoor};
             List<Item> antechamberItems = new List<Item>();
             List<Item> emptyCellItems = new List<Item> { garment, rustyChains, bobbyPins, redThread};
             List<Feature> emptyCellFeatures = new List<Feature> { leftbrazier, emptyCellDoor, rightbrazier, otherBookcase};
@@ -730,7 +732,30 @@ namespace DungeonCrawler
             test2.RunForPlayer();
 
 
-
+            bool getYesNoResponse()
+            {
+                while (true)
+                {
+                    string answer = Console.ReadLine().Trim().ToLower();
+                    if (string.IsNullOrWhiteSpace(answer))
+                    {
+                        continue;
+                    }
+                    else if (answer == "yes" || answer == "y")
+                    {
+                        return true;
+                    }
+                    else if (answer == "no" || answer == "n")
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("PLease answer either 'yes' or 'no'.");
+                        continue;
+                    }
+                }
+            }
 
             int getIntResponse(int option)
             {
@@ -924,6 +949,7 @@ namespace DungeonCrawler
             Item merigoldMedallion = new Item("medallion embossed MG", "The medallion catches the light as you examine itt. It looks utterly worthless to your untrained eyes.");
             List<Item> goblin2Inventory = new List<Item> { breadKnife, merigoldBroach};
             gnollInventory.Add(merigoldMedallion);
+            
             Monster goblinCaptain = new Monster("goblin", "The goblin's swarthy, pock-marked skin does little to lessen the effect of its ugly snarl.", goblin2Inventory, 60, 0, breadKnife);
             Combat dualDuel = new Combat(goblinCaptain, gnoll, player1);
 
@@ -1630,6 +1656,11 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
+                        try
+                        {
+                            usesDictionaryItemFeature.Add(circleDoorKey, new List<Feature> { circleDoor });
+                        }
+                        catch { }
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                         ///red herring in room above
