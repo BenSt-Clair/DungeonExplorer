@@ -566,15 +566,74 @@ namespace DungeonCrawler
                                 }
                                 else if (!success[0])
                                 {
-                                    Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
+                                    if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "dagger") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "dagger" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "estoc") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "estoc" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("While the blade is thin for a sword, you *may* find it to be a bit too unwieldy to use with the bobby pin for picking locks...");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "rusty scimitar") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "rusty scimitar" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("This blade is altogether too wide, curved and large to pick locks with the bobby pin - you won't be able to get through many doors with this...");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "Bread Knife") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "Bread Knife" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "sai-daggers") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "sai-daggers" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("These would be perfect for picking locks with the bobby pin - if it weren't for how they're so bent out of shape and dented.");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "throwing knife") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "throwing knife" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
+
+                                    }
                                 }
-                                
                                 
 
                                 
                                 return success;
                             }
-                            catch { Console.WriteLine($"You try using the {chosenItem.Name} on the {Inventory[effectedItemNum - 1 - room.ItemList.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised..."); return success; }
+                            catch 
+                            {
+                                if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "dagger") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "dagger" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this...");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "estoc") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "estoc" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("While the blade is thin for a sword, you *may* find it to be a bit too unwieldy to use with the bobby pin for picking locks...");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "rusty scimitar") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "rusty scimitar" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("This blade is altogether too wide, curved and large to pick locks with the bobby pin - you won't be able to get through many doors with this...");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "Bread Knife") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "Bread Knife" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "sai-daggers") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "sai-daggers" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("These would be perfect for picking locks with the bobby pin - if it weren't for how they're so bent out of shape and dented.");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "throwing knife") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "throwing knife" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
+
+                                }
+                                return success; 
+                            }
                         }
                         else
                         {
@@ -587,17 +646,73 @@ namespace DungeonCrawler
                                 }
                                 else if (!success[0])
                                 {
-                                    
-                                    Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
-                                    
+
+                                    if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "dagger") && (room.ItemList[effectedItemNum - 1].Name == "dagger" || room.ItemList[effectedItemNum - 1].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this...");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "estoc") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "estoc" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("While the blade is thin for a sword, you *may* find it to be a bit too unwieldy to use with the bobby pin for picking locks...");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "rusty scimitar") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "rusty scimitar" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("This blade is altogether too wide, curved and large to pick locks with the bobby pin - you won't be able to get through many doors with this...");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "Bread Knife") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "Bread Knife" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "sai-daggers") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "sai-daggers" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("These would be perfect for picking locks with the bobby pin - if it weren't for how they're so bent out of shape and dented.");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "throwing knife") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "throwing knife" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
+
+                                    }
+
                                 }
                                 return success;
                             }
                             catch 
                             {
-                                
-                                Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
-                                
+
+                                if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "dagger") && (room.ItemList[effectedItemNum - 1].Name == "dagger" || room.ItemList[effectedItemNum - 1].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this...");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "estoc") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "estoc" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("While the blade is thin for a sword, you *may* find it to be a bit too unwieldy to use with the bobby pin for picking locks...");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "rusty scimitar") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "rusty scimitar" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("This blade is altogether too wide, curved and large to pick locks with the bobby pin - you won't be able to get through many doors with this...");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "Bread Knife") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "Bread Knife" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "sai-daggers") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "sai-daggers" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("These would be perfect for picking locks with the bobby pin - if it weren't for how they're so bent out of shape and dented.");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "throwing knife") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "throwing knife" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
+
+                                }
+
                                 return success; 
                             }
                         }

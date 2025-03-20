@@ -601,6 +601,7 @@ namespace DungeonCrawler
             Door armouryDoor = new Door("RmorRee door", "Its a heavyset door studded with iron bolts and a thoroughly unwelcoming aspect.", false, "unlocked", null, null, "The door swings open with a heave and opens into the next room...");
             Door circleDoor = new Door("double doors", "An ornate and set of vast double doors with brass locks and filigreed handles. You reckon a troll could fit through that door...", true, "locked", null, null, "You open one of the doors open just a fraction and slip your way through...");
             Door emptyCellDoor = new Door("far door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in. You notice the lock has scratches made from the inside. You surmise someone has attempted picking the lock, but unless they had something more than just a bobby pin, it's doubtful they succeeded.", true, "locked", null, null);
+            Door magManDoor = new Door();
 
             Item soot = new Item("soot", "It's black. It's burned... Yep, that's soot.", false, "unsmeared", 0, ": ");
             List<Item> rightbrazierItems = new List<Item> { merigoldRing, soot};
@@ -1426,7 +1427,12 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto});
                         if (!usesDictionaryItemFeature.ContainsKey(jailorKeys))
                         {
+                            
                             usesDictionaryItemFeature.Add(jailorKeys, new List<Feature> { emptyCellDoor, otherRosewoodDoor });
+                        }
+                        if (!usesDictionaryItemFeature.ContainsKey(lockpickingSet))
+                        {
+                            usesDictionaryItemFeature.Add(lockpickingSet, new List<Feature> { emptyCellDoor, otherRosewoodDoor, circleDoor, goodWeaponRack, magManDoor });
                         }
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
@@ -1514,6 +1520,10 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
+                        if (!usesDictionaryItemFeature.ContainsKey(lockpickingSet))
+                        {
+                            usesDictionaryItemFeature.Add(lockpickingSet, new List<Feature> { emptyCellDoor, otherRosewoodDoor, circleDoor, goodWeaponRack, magManDoor });
+                        }
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -1584,6 +1594,10 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
+                        if (!usesDictionaryItemFeature.ContainsKey(lockpickingSet))
+                        {
+                            usesDictionaryItemFeature.Add(lockpickingSet, new List<Feature> { emptyCellDoor, otherRosewoodDoor, circleDoor, goodWeaponRack, magManDoor });
+                        }
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -1656,11 +1670,11 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
-                        try
+                        if (!usesDictionaryItemFeature.ContainsKey(circleDoorKey))
                         {
                             usesDictionaryItemFeature.Add(circleDoorKey, new List<Feature> { circleDoor });
                         }
-                        catch { }
+                        
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                         ///red herring in room above

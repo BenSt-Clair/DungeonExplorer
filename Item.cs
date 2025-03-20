@@ -580,6 +580,12 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         return true;
                     }
+                    else if (item.Name == "lockpicking set")
+                    {
+                        Console.WriteLine($"You slide the stiletto's blade through the top of the keyhole and begin jostling with the tumblers with the bobby pin. Sure enough something clunks. The {feature.Name} has been unlocked.");
+                        Console.ReadKey(true);
+                        return true;
+                    }
                     else if (item.Name == "steel key" && feature.Name == "rosewood chest")
                     {
                         Console.WriteLine("The key slides easily into the lock. With one sharp twist the clasp comes undone");
@@ -640,6 +646,12 @@ namespace DungeonCrawler
                     else if (item.Name == "brass key" && feature.Name == "double doors")
                     {
                         Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door unlock.");
+                        Console.ReadKey(true);
+                        return true;
+                    }
+                    else if (item.Name == "lockpicking set")
+                    {
+                        Console.WriteLine($"You slide the stiletto's blade through the top of the keyhole and begin jostling with the tumblers with the bobby pin. Sure enough something clunks. The {feature.Name} has been locked.");
                         Console.ReadKey(true);
                         return true;
                     }
