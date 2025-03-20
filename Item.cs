@@ -79,6 +79,18 @@ namespace DungeonCrawler
                         "\nBut before you surmise that my studies have been in vain, let me assure you otherwise! I have discovered that cursed weapons" +
                         " appear to have an innate ability to destroy or 'devour' magic - even, some indications lead me to believe, souls...'",
                         
+                        "The passage below details a cursed quarter-staff:" +
+                        "\n\n\t'...The Staff of Morphic Caprice has long been annihilated, but has been well documented" +
+                        " by many a scholar. Summoned through an unknown ritual, it harnessed great power for those who had" +
+                        " wielded it, but at a terrible price. For the staff sapped the user of their soul and sentience, and piece by piece transferred it" +
+                        " to the wielder's most beloved artefact or heirloom - and not necessarily in the correct configuration. " +
+                        "\n\tWhile the staff can be researched no more, destroyed by paladins of old, there are in my possession two such artefacts that were the result of this curse. " +
+                        "Two mosaics, formally brothers, who had fought over the staff with increasing intensity until one slay the other. Their souls lie bound to the mosaics that are their artisan family's most prized legacy. My studies have further uncovered" +
+                        " that one of these is cursed with knowing all things rational, but can not relay this knowledge, unless it is asked questions of a specific form: those that cannot be answered with a 'yes' or a 'no.' " +
+                        "\n\tAs for the other mosaic, it is the antithesis of its brother. It also speaks in riddles but where the first answers questions to elucidate in its own convoluted way, the other grants answers to questions never asked save in a persons deepest desires. " +
+                        "\nWhere one is decipherable, the other confers madness. \nWhere one answers the questions upon the interlocutor's mind. The other answers questions posed by those thoughts so hidden, even the interlocutor isn't aware of them." +
+                        "\n\tMy apprentice has had better luck with the latter, so he says. As for myself, I favour the one that gives - if not straight answers - at least decipherable ones...'",
+                        
                         "This page delves into one weapon in particular of high renown;" +
                         "\n\n\t'...The vanquisher, or as it has been known to some, the Sword of Sealed Souls, is such a weapon in my possession." +
                         " It's original owner was the victim of a curse of course - transformed into some ghast or perhaps a banshee (the sources differ) after she sewed her own lips shut that she might" +
@@ -111,6 +123,11 @@ namespace DungeonCrawler
                             "Turn the page?",
                             "Close the book?"
                         },
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        }, 
                         new List<string>
                         {
                             "Turn back to the first page?",
