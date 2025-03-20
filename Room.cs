@@ -294,7 +294,7 @@ namespace DungeonCrawler
         /// <param name="weaponInventory"></param>
         /// <param name="b"></param>
         /// <param name="player"></param>
-        public Room Investigate(List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains, List<Item> stickyItems)
+        public Room Investigate(List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains, List<Item> stickyItems, List<Item> specialItems = null, Monster minotaur = null)
         {
             Dice D20 = new Dice(20);
             Dice D6 = new Dice(6);
@@ -505,7 +505,7 @@ namespace DungeonCrawler
                                 Console.WriteLine($"\n{ministryOfSillyWalks[19+D6.Roll(D6)]} to the {FeatureList[answer1].Name}...\n");
                             }
                             Console.ReadKey(true);
-                            FeatureList[answer1].investigateFeature();
+                            FeatureList[answer1].investigateFeature(specialItems, minotaur);
                             Room newRoom = FeatureList[answer1].Search(inventory, weaponInventory, this);
                             if ( newRoom.Name != this.Name)
                             {

@@ -51,6 +51,7 @@ namespace DungeonCrawler
                 Dialogue cursed_weapons = new Dialogue(item);
                 if (cursed_weapons.getYesNoResponse())
                 {
+                    
                     string description = "With more than a tincture of curiosity you open the book and set about perusing it's many pages, until one in particular catches your eye...";
                     List<string> pages = new List<string> 
                     { 
@@ -127,6 +128,8 @@ namespace DungeonCrawler
                     {
                         x = cursed_weapons.LinearParle(action, pages, playerchoice, description);
                     }
+                    item.Attribute = true;
+                    item.SpecifyAttribute = "read";
                 }
                 else
                 {
@@ -309,6 +312,7 @@ namespace DungeonCrawler
                     return;
                 }
             }
+            
             return;
         }
         /// <summary>

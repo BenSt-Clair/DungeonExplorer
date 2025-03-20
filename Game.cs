@@ -665,7 +665,7 @@ namespace DungeonCrawler
             ///emptyCell features
             Feature otherBookcase = new Feature("bookcase", "Unlike the bookcase in your former cell, this one is replete with a few leather-bound books and journals and its shelves are mostly intact.", false, "unshattered", otherBookcaseItems);
             List<Item> stickyItems = new List<Item> { bowlFragments, garment, bobbyPins, clunkySabaton, breastplate, helmet, bracers};
-            List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys, lockpickingSet };
+            List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys, lockpickingSet, bookA1 };
             // I instantiate a room with a list of items and features inside it and a description and room name
             List<Feature> cellfeatures = new List<Feature> { rosewoodDoor, rosewoodChest, bookCase, skeleton, leftbrazier, rightbrazier };
             List<Item> corridorItems = new List<Item>();
@@ -1663,8 +1663,11 @@ namespace DungeonCrawler
                     a = 0;
                     while (!leftWhichRooms[3])//antechamber
                     {
-                        string deleteString = "For a few moments the sight of its extravagance, so vastly different from your previous surroundings, takes your breath away. ";
-                        newRoom1.Description.Remove(newRoom1.Description.IndexOf(".") + 1, deleteString.Length);
+                        string deleteString = "For a few moments the sight of its extravagance, so vastly different from your previous surroundings, takes your breath away.";
+                        if (antechamber.Description.Contains(deleteString))
+                        {
+                            newRoom1.Description.Remove(newRoom1.Description.IndexOf(".") + 1, deleteString.Length);
+                        }
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
@@ -1709,7 +1712,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = antechamber.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = antechamber.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
                                 if (newRoom.Name != antechamber.Name)
                                 {
 

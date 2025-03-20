@@ -15,6 +15,7 @@ namespace DungeonCrawler
         Combat _combat { get; set; }
         Room _room { get; set; }
         Item _item { get; set; }
+        Feature _feature { get; set; }
         public Dialogue(Player player, Monster monster, Combat combat, Room room)
         {
             _player = player;
@@ -25,6 +26,10 @@ namespace DungeonCrawler
         public Dialogue(Item item)
         {
             _item = item;
+        }
+        public Dialogue(Feature feature)
+        {
+            _feature = feature;
         }
         public bool getYesNoResponse()
         {
