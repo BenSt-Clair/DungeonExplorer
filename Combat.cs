@@ -1335,7 +1335,7 @@ namespace DungeonCrawler
                         if (Monster.Stamina > 0 && Monster2.Stamina > 0)
                         {
                             Console.WriteLine($"Do you attack... \n[1] the {Monster.Name}\n[2] or the {Monster2.Name}?\n[You've only 5 seconds to decide and give your answer the moment you press any key]");
-                            Console.ReadKey();
+                            Console.ReadKey(true);
 
                             while (true)
                             {
@@ -1477,38 +1477,38 @@ namespace DungeonCrawler
                                             {
                                                 if (Player.Skill < 4)
                                                 {
-                                                    playerWeapon = new Weapon("fists", "Your tremulous hands aren't fast enough to swat a fly, let alone hurt anyone", pugilism, pugilismCritHits, pugilismGoodHits, 10);
+                                                    playerWeapon = new Weapon("fists", "Your tremulous hands aren't fast enough to swat a fly, let alone hurt anyone", pugilism, pugilismCritHits2, pugilismGoodHits2, 10);
                                                 }
                                                 else if (Player.Skill < 7)
                                                 {
-                                                    playerWeapon = new Weapon("fists", "Your soft hands are less than accustomed to the rough life adventuring brings. They're more often used for leafing through a good book than fighting.", pugilism, pugilismCritHits, pugilismGoodHits, 10);
+                                                    playerWeapon = new Weapon("fists", "Your soft hands are less than accustomed to the rough life adventuring brings. They're more often used for leafing through a good book than fighting.", pugilism, pugilismCritHits2, pugilismGoodHits2, 10);
                                                 }
                                                 else if (Player.Skill < 10)
                                                 {
-                                                    playerWeapon = new Weapon("fists", "Your callused hands are well accustomed to the rough life adventuring brings, and have made a noted debut at many a pub brawl.", pugilism, pugilismCritHits, pugilismGoodHits, 10);
+                                                    playerWeapon = new Weapon("fists", "Your callused hands are well accustomed to the rough life adventuring brings, and have made a noted debut at many a pub brawl.", pugilism, pugilismCritHits2, pugilismGoodHits2, 10);
                                                 }
                                                 else
                                                 {
-                                                    playerWeapon = new Weapon("fists", "Your firm hands are deadly weapons in themselves; artfully precise implements of destruction that've been hardened by years of punching tree trunks and doing press ups on blazing hot coals.", pugilism, pugilismCritHits, pugilismGoodHits, 10);
+                                                    playerWeapon = new Weapon("fists", "Your firm hands are deadly weapons in themselves; artfully precise implements of destruction that've been hardened by years of punching tree trunks and doing press ups on blazing hot coals.", pugilism, pugilismCritHits2, pugilismGoodHits2, 10);
                                                 }
                                             }
                                             else
                                             {
                                                 if (Player.Skill < 4)
                                                 {
-                                                    playerWeapon = new Weapon("fists", "Your tremulous hands aren't fast enough to swat a fly, let alone hurt anyone", pugilism, pugilismCritHits, pugilismGoodHits);
+                                                    playerWeapon = new Weapon("fists", "Your tremulous hands aren't fast enough to swat a fly, let alone hurt anyone", pugilism, pugilismCritHits2, pugilismGoodHits2);
                                                 }
                                                 else if (Player.Skill < 7)
                                                 {
-                                                    playerWeapon = new Weapon("fists", "Your soft hands are less than accustomed to the rough life adventuring brings. They're more often used for leafing through a good book than fighting.", pugilism, pugilismCritHits, pugilismGoodHits);
+                                                    playerWeapon = new Weapon("fists", "Your soft hands are less than accustomed to the rough life adventuring brings. They're more often used for leafing through a good book than fighting.", pugilism, pugilismCritHits2, pugilismGoodHits2);
                                                 }
                                                 else if (Player.Skill < 10)
                                                 {
-                                                    playerWeapon = new Weapon("fists", "Your callused hands are well accustomed to the rough life adventuring brings, and have made a noted debut at many a pub brawl.", pugilism, pugilismCritHits, pugilismGoodHits);
+                                                    playerWeapon = new Weapon("fists", "Your callused hands are well accustomed to the rough life adventuring brings, and have made a noted debut at many a pub brawl.", pugilism, pugilismCritHits2, pugilismGoodHits2);
                                                 }
                                                 else
                                                 {
-                                                    playerWeapon = new Weapon("fists", "Your firm hands are deadly weapons in themselves; artfully precise implements of destruction that've been hardened by years of punching tree trunks and doing press ups on blazing hot coals.", pugilism, pugilismCritHits, pugilismGoodHits);
+                                                    playerWeapon = new Weapon("fists", "Your firm hands are deadly weapons in themselves; artfully precise implements of destruction that've been hardened by years of punching tree trunks and doing press ups on blazing hot coals.", pugilism, pugilismCritHits2, pugilismGoodHits2);
                                                 }
                                             }
                                             foreach (Weapon y in Player.WeaponInventory)
@@ -1519,7 +1519,7 @@ namespace DungeonCrawler
                                             {
                                                 playerWeapon.Boon = 6;
                                             }
-
+                                            
                                             damageDealt = playerWeapon.Attack(Player.Skill, Monster2.Skill, Monster2.Stamina, true, Monster2, player, another, room, holeInCeiling);
                                             Monster2.Stamina -= damageDealt;
 

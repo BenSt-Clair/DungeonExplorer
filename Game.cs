@@ -1850,13 +1850,13 @@ namespace DungeonCrawler
                                 option++;
                                 palaver.Add("You apologise for the interruption and explain that you're looking for, um... Merigold?");
                             }
-                            if (player1.Traits.ContainsKey("thespian") && masked && player1.Inventory.Contains(mercInsignia))
+                            if (player1.Traits.ContainsKey("thespian") && player1.Masked && player1.Inventory.Contains(mercInsignia))
                             {
                                 message += $"\n[{option}] You bring to life and inhabit the persona of a drill-sergeant, and set about whipping these good-for-nothing grunts into shape!";
                                 option++;
                                 palaver.Add("You bring to life and inhabit the persona of a drill-sergeant, and set about whipping these good-for-nothing grunts into shape!");
                             }
-                            else if ((player1.Traits.ContainsKey("thespian") && masked) ||(masked && player1.Inventory.Contains(mercInsignia)) || (player1.Traits.ContainsKey("thespian") && player1.Inventory.Contains(mercInsignia)))
+                            else if ((player1.Traits.ContainsKey("thespian") && player1.Masked) ||(player1.Masked && player1.Inventory.Contains(mercInsignia)) || (player1.Traits.ContainsKey("thespian") && player1.Inventory.Contains(mercInsignia)))
                             {
                                 message += $"\n[{option}] You adopt the unassuming role of just another grunt and complain about the food...";
                                 option++;
@@ -1868,7 +1868,7 @@ namespace DungeonCrawler
                                 palaver.Add("You adopt the unassuming role of just another grunt and complain about the pay...");
                                 palaver.Add("You adopt the unassuming role of just another grunt and complain about the weapons...");
                             }
-                            else if (masked || player1.Traits.ContainsKey("thespian") || masked && player1.Inventory.Contains(mercInsignia))
+                            else if (player1.Masked || player1.Traits.ContainsKey("thespian") || player1.Inventory.Contains(mercInsignia))
                             {
                                 message += $"\n[{option}] You adopt the role of commander-in-chief and sanctimoniously berate them for playing coins when... wait? coins? Why not cards? cards are so much better...";
                                 option++;

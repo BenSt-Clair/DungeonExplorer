@@ -54,8 +54,9 @@ namespace DungeonCrawler
         public int InitialStamina { get; set; }
         public List<Weapon> WeaponInventory { get; set; }
         public Dictionary<string, string> Traits { get; set; }
+        public bool Masked { get; set; }
 
-        public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits)
+        public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits, bool masked = false)
         {
             Name = name;
             Skill = skill;
@@ -64,6 +65,7 @@ namespace DungeonCrawler
             WeaponInventory = weaponInventory;
             Inventory = inventory;
             Traits = traits;
+            Masked = masked;
 
         }
         public string DisplayName() { return Name; }

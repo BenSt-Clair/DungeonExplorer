@@ -196,7 +196,7 @@ namespace DungeonCrawler
                         " that she sadly passed away." +
                         " Reports at the time state the mayor was inconsolable for years after this loss, and though eventually he'd begun searching" +
                         " for a new wife, their affections only reminded him of how they fell short of his first beloved soulmate. However, its disputed by no one" +
-                        " that in spite of his loss, the mayor more than rose up to the duties of fatherhood. He was, by all accounts, dedicated to his three daughters." +
+                        " that in spite of his loss, the mayor more than rose up to the duties of fatherhood. He was, by all accounts, dedicated to his three daughters, and his affection and devotion dwarfed that of any other father in Myrovia." +
                         "\n\t One tragedy, of course, would merely be that; a tragedy. But it's the chain of events that " +
                         "follows that truly make some wonder whether the curse had already taken hold. For after the mayor had long" +
                         " abandoned any hope of finding a new wife, the three daughters, one by one," +
@@ -1881,7 +1881,7 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("you smear the soot across your cheeks in thick black lines like warpaint, obscuring your features. \nGrr! Your enemies better watch out...");
                             player.Inventory.Remove(item1);
-                            masked = true;
+                            player.Masked = true;
                             return true;
                         }
                         else { Console.WriteLine($"~~{item1.Name} is an unknown quantity~~"); return false; }
