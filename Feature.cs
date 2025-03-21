@@ -180,7 +180,7 @@ namespace DungeonCrawler
         /// </summary>
         /// <param name="inventory"></param>
         /// <param name="weaponInventory"></param>
-        public Room Search(List<Item> inventory, List<Weapon> weaponInventory, Room room)
+        public Room Search(int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, Room room)
         {
             Console.WriteLine($"Rummaging about the {Name}, you find the following;");
             int r = 1;
@@ -294,7 +294,7 @@ namespace DungeonCrawler
                                             {
                                                 try //pickupitem() can be used on weapons or items but weapons must be distinguished as such
                                                 {
-                                                    i.PickUpItem(inventory, weaponInventory, 6, 0, i, null, ItemList);
+                                                    i.PickUpItem(carryCapacity, inventory, weaponInventory, 6, 0, i, null, ItemList);
 
                                                 }
                                                 catch
@@ -303,7 +303,7 @@ namespace DungeonCrawler
                                                     {
                                                         if (y.Name == objName)
                                                         {
-                                                            y.PickUpItem(inventory, weaponInventory, 6, 0, null, y, ItemList);
+                                                            y.PickUpItem(carryCapacity, inventory, weaponInventory, 6, 0, null, y, ItemList);
 
                                                         }
                                                     }
@@ -344,11 +344,11 @@ namespace DungeonCrawler
                                             if (freshLoop) { continue; }
                                             try
                                             {
-                                                foreach (Item i in itemList) { if (i.Name == objName) { i.PickUpItem(inventory, weaponInventory, 6, 0, i, null, ItemList); success = true; break; } }
+                                                foreach (Item i in itemList) { if (i.Name == objName) { i.PickUpItem(carryCapacity, inventory, weaponInventory, 6, 0, i, null, ItemList); success = true; break; } }
                                             }
                                             catch
                                             {
-                                                foreach (Weapon w in itemList) { if (w.Name == objName) { w.PickUpItem(inventory, weaponInventory, 6, 0, null, w, ItemList); success = true; break; } }
+                                                foreach (Weapon w in itemList) { if (w.Name == objName) { w.PickUpItem(carryCapacity, inventory, weaponInventory, 6, 0, null, w, ItemList); success = true; break; } }
                                             }
                                         }
                                         catch
@@ -483,7 +483,7 @@ namespace DungeonCrawler
                                         {
                                             try
                                             {
-                                                i.PickUpItem(inventory, weaponInventory, 6, 0, i, null, ItemList);
+                                                i.PickUpItem(carryCapacity, inventory, weaponInventory, 6, 0, i, null, ItemList);
 
                                             }
                                             catch
@@ -492,7 +492,7 @@ namespace DungeonCrawler
                                                 {
                                                     if (y.Name == objName)
                                                     {
-                                                        y.PickUpItem(inventory, weaponInventory, 6, 0, null, y, ItemList);
+                                                        y.PickUpItem(carryCapacity, inventory, weaponInventory, 6, 0, null, y, ItemList);
 
                                                     }
                                                 }
@@ -532,11 +532,11 @@ namespace DungeonCrawler
                                         if (freshLoop) { continue; }
                                         try
                                         {
-                                            foreach (Item i in itemList) { if (i.Name == objName) { i.PickUpItem(inventory, weaponInventory, 6, 0, i, null, ItemList); success = true; break; } }
+                                            foreach (Item i in itemList) { if (i.Name == objName) { i.PickUpItem(carryCapacity, inventory, weaponInventory, 6, 0, i, null, ItemList); success = true; break; } }
                                         }
                                         catch
                                         {
-                                            foreach (Weapon w in itemList) { if (w.Name == objName) { w.PickUpItem(inventory, weaponInventory, 6, 0, null, w, ItemList); success = true; break; } }
+                                            foreach (Weapon w in itemList) { if (w.Name == objName) { w.PickUpItem(carryCapacity, inventory, weaponInventory, 6, 0, null, w, ItemList); success = true; break; } }
                                         }
                                     }
                                     catch
@@ -594,7 +594,7 @@ namespace DungeonCrawler
                                             {
                                                 try
                                                 {
-                                                    i.PickUpItem(inventory, weaponInventory, 6, 0, i, null, ItemList);
+                                                    i.PickUpItem(carryCapacity, inventory, weaponInventory, 6, 0, i, null, ItemList);
 
                                                 }
                                                 catch
@@ -603,7 +603,7 @@ namespace DungeonCrawler
                                                     {
                                                         if (y.Name == objName)
                                                         {
-                                                            y.PickUpItem(inventory, weaponInventory, 6, 0, null, y, ItemList);
+                                                            y.PickUpItem(carryCapacity, inventory, weaponInventory, 6, 0, null, y, ItemList);
 
                                                         }
                                                     }
@@ -643,11 +643,11 @@ namespace DungeonCrawler
                                             if (freshLoop) { continue; }
                                             try
                                             {
-                                                foreach (Item i in itemList) { if (i.Name == objName) { i.PickUpItem(inventory, weaponInventory, 6, 0, i, null, ItemList); success = true; break; } }
+                                                foreach (Item i in itemList) { if (i.Name == objName) { i.PickUpItem(carryCapacity, inventory, weaponInventory, 6, 0, i, null, ItemList); success = true; break; } }
                                             }
                                             catch
                                             {
-                                                foreach (Weapon w in itemList) { if (w.Name == objName) { w.PickUpItem(inventory, weaponInventory, 6, 0, null, w, ItemList); success = true; break; } }
+                                                foreach (Weapon w in itemList) { if (w.Name == objName) { w.PickUpItem(carryCapacity, inventory, weaponInventory, 6, 0, null, w, ItemList); success = true; break; } }
                                             }
                                         }
                                         catch

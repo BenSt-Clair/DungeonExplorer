@@ -352,8 +352,16 @@ namespace DungeonCrawler
         /// <param name="weapon"></param>
         /// <param name="featureItems"></param>
         /// <param name="roomItems"></param>
-        public void PickUpItem(List<Item> inventory, List<Weapon> weaponInventory,  int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null, Weapon yourRustyChains = null, List<Item> stickyItems = null)
+        public void PickUpItem(int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null, Weapon yourRustyChains = null, List<Item> stickyItems = null, Monster monster = null)
         {
+            try
+            {
+                List<Item> weaponItemList = new List<Item> { this };
+                List<Weapon> weaponList = weaponItemList.Cast<Weapon>().ToList();
+                weapon = weaponList[0];
+                item = null;
+            }
+            catch { item = this; weapon = null; }
             //the following are customised messages for when an item is picked up. 
             List<string> messages = new List<string> { $"The {Name} now rests in your hands.", $"You reach over and pick up the {Name}.", $"You grasp the {Name} in your hands.", $"The {Name} is now clasped firmly in your hands.", $"With some trepidation, your clammy hand grips the {Name}.", $"You prise the {Name} from it's resting place", $"You slide the {Name} into your hands.", $"The {Name} is now nestled in your hands." };
             if (value == 0)
@@ -439,15 +447,59 @@ namespace DungeonCrawler
                         {
                             if (item == null)
                             {
-                                StashWeapon(weapon, weaponInventory);
-                                Console.WriteLine($"{Name} has been stashed in inventory.");
+                                if (weaponInventory.Count > 1)
+                                {
+                                    Console.WriteLine("You can only carry two weapons at a time!\n  Would you like to exchange this weapon for another?");
+                                    Dialogue exchangeWeapon = new Dialogue(weapon);
+                                    if (exchangeWeapon.getYesNoResponse())
+                                    {
+                                        Console.WriteLine($"Which weapon do you wish to exchange the {weapon.Name} for?");
+                                        int weaponNumber = 1;
+                                        foreach (Weapon w in weaponInventory)
+                                        {
+                                            Console.WriteLine($"[{weaponNumber}] {w.Name}");
+                                            weaponNumber++;
+                                        }
+                                        if (exchangeWeapon.getIntResponse(weaponNumber) == 2)
+                                        {
+                                            weaponInventory.Add(weapon);
+                                            monster.Items.Add(weaponInventory[1]);
+                                            weaponInventory.Remove(weaponInventory[1]);
+                                            monster.Items.Remove(weapon);
+                                        }
+                                        else
+                                        {
+                                            weaponInventory.Add(weapon);
+                                            monster.Items.Add(weaponInventory[0]);
+                                            weaponInventory.Remove(weaponInventory[0]);
+                                            monster.Items.Remove(weapon);
+                                        }
+                                        Console.WriteLine($"{Name} has been stashed in inventory.");
+                                    }
+                                    else { continue; }
+                                }
+                                else
+                                {
+                                    StashWeapon(weapon, weaponInventory);
+                                    monster.Items.Remove(weapon);
+                                    Console.WriteLine($"{Name} has been stashed in inventory.");
+                                }
                                 return;
                             }
                             else
                             {
-                                StashItem(item, inventory);
-                                Console.WriteLine($"{Name} has been stashed in inventory.");
-                                return;
+                                if (inventory.Count < carryCapacity)
+                                {
+                                    StashItem(item, inventory);
+                                    monster.Items.Remove(item);
+                                    Console.WriteLine($"{Name} has been stashed in inventory.");
+                                    return;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("You're already struggling to heft all the gear you have! You'll have to discard some items before you can take this one with you...");
+                                    return;
+                                }
                             }
                         }
                         else if (range == 4)//searching room
@@ -456,17 +508,51 @@ namespace DungeonCrawler
                             {
                                 if (weapon.Name == "rusty chains")
                                 {
-                                    
-                                    
-                                    
-                                    
-                                    StashWeapon(yourRustyChains, weaponInventory);
+                                    if (weaponInventory.Count < 2)
+                                    {
+                                        StashWeapon(yourRustyChains, weaponInventory);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("You can think of no earthly reason why you'd exchange any of your deadlier weapons for a rusty chain. Who needs it?");
+                                    }
                                 }
                                 else
                                 {
-
-
-                                    StashWeapon(weapon, weaponInventory);
+                                    if (weaponInventory.Count > 1)
+                                    {
+                                        Console.WriteLine("You can only carry two weapons at a time!\n  Would you like to exchange this weapon for another?");
+                                        Dialogue exchangeWeapon = new Dialogue(weapon);
+                                        if (exchangeWeapon.getYesNoResponse())
+                                        {
+                                            Console.WriteLine($"Which weapon do you wish to exchange the {weapon.Name} for?");
+                                            int weaponNumber = 1;
+                                            foreach (Weapon w in weaponInventory)
+                                            {
+                                                Console.WriteLine($"[{weaponNumber}] {w.Name}");
+                                                weaponNumber++;
+                                            }
+                                            if (exchangeWeapon.getIntResponse(weaponNumber) == 2)
+                                            {
+                                                weaponInventory.Add(weapon);
+                                                roomItems.Add(weaponInventory[1]);
+                                                weaponInventory.Remove(weaponInventory[1]);
+                                            }
+                                            else
+                                            {
+                                                weaponInventory.Add(weapon);
+                                                roomItems.Add(weaponInventory[0]);
+                                                weaponInventory.Remove(weaponInventory[0]);
+                                            }
+                                            
+                                        }
+                                        else { continue; }
+                                    }
+                                    else
+                                    {
+                                        StashWeapon(weapon, weaponInventory);
+                                        
+                                    }
                                 }
                                 if (weapon.Name != "bowl fragments" && weapon.Name != "garment")
                                 {
@@ -484,33 +570,83 @@ namespace DungeonCrawler
                             }
                             else
                             {
-                                StashItem(item, inventory);
-                                if (item.Name != "bowl fragments" && item.Name != "rusty chains" && item.Name != "garment" && !stickyItems.Contains(item))
+                                if (inventory.Count < carryCapacity)
                                 {
-                                    roomItems.Remove(item);
-                                }
-                                Console.WriteLine($"{Name} has been stashed in inventory.");
+                                    StashItem(item, inventory);
+                                    if (item.Name != "bowl fragments" && item.Name != "rusty chains" && item.Name != "garment" && !stickyItems.Contains(item))
+                                    {
+                                        roomItems.Remove(item);
+                                    }
+                                    Console.WriteLine($"{Name} has been stashed in inventory.");
 
-                                return;
+                                    return;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("You're already buckling under the weight of your backpack! Discard some items before picking up anything more...");
+                                    return;
+                                }
                             }
                         }
                         else if (range == 6)// searching feature
                         {
                             if (item == null)
                             {
-                                StashWeapon(weapon, weaponInventory);
-                                featureItems.Remove(item);
+                                if (weaponInventory.Count > 1)
+                                {
+                                    Console.WriteLine("You can only carry two weapons at a time!\n  Would you like to exchange this weapon for another?");
+                                    Dialogue exchangeWeapon = new Dialogue(weapon);
+                                    if (exchangeWeapon.getYesNoResponse())
+                                    {
+                                        Console.WriteLine($"Which weapon do you wish to exchange the {weapon.Name} for?");
+                                        int weaponNumber = 1;
+                                        foreach (Weapon w in weaponInventory)
+                                        {
+                                            Console.WriteLine($"[{weaponNumber}] {w.Name}");
+                                            weaponNumber++;
+                                        }
+                                        if (exchangeWeapon.getIntResponse(weaponNumber) == 2)
+                                        {
+                                            weaponInventory.Add(weapon);
+                                            featureItems.Add(weaponInventory[1]);
+                                            weaponInventory.Remove(weaponInventory[1]);
+                                            featureItems.Remove(weapon);
+                                        }
+                                        else
+                                        {
+                                            weaponInventory.Add(weapon);
+                                            featureItems.Add(weaponInventory[0]);
+                                            weaponInventory.Remove(weaponInventory[0]);
+                                            featureItems.Remove(weapon);
+                                        }
+
+                                    }
+                                    else { continue; }
+                                }
+                                else
+                                {
+                                    StashWeapon(weapon, weaponInventory);
+                                    featureItems.Remove(weapon);
+                                }
                                 Console.WriteLine($"{Name} has been stashed in inventory.");
 
                                 return;
                             }
                             else
                             {
-                                StashItem(item, inventory);
-                                featureItems.Remove(item);
-                                Console.WriteLine($"{Name} has been stashed in inventory.");
+                                if (inventory.Count < carryCapacity)
+                                {
+                                    StashItem(item, inventory);
+                                    featureItems.Remove(item);
+                                    Console.WriteLine($"{Name} has been stashed in inventory.");
 
-                                return;
+                                    return;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("You cannot carry another item or you'll collapse under the weight! Discard some items before considering adding any more...");
+                                    return;
+                                }
                             }
                         }
                         else { Console.WriteLine("You place the item back in your pack."); return; }
@@ -529,7 +665,7 @@ namespace DungeonCrawler
                             else//would have to cast weapon as item to store in roomitems - possible but unnecessary given story context
                             {
                                 
-                                Console.WriteLine($"Erm... Upon consideration you think discarding your {weapon.Name}, or any weapon, might be a bad idea...");
+                                Console.WriteLine($"Erm... Upon consideration you think discarding your {weapon.Name}, or any weapon, might be a bad idea unless there's another readily available...");
                                 return;
                             }
                         }
@@ -621,7 +757,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(inventory, weaponInventory, room);
+                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -696,7 +832,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(inventory, weaponInventory, room);
+                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -751,7 +887,7 @@ namespace DungeonCrawler
                                     }
                                     else if (answer == "yes" || answer == "y")
                                     {
-                                        feature.Search(inventory, weaponInventory, room);
+                                        feature.Search(player.CarryCapacity, inventory, weaponInventory, room);
                                         break;
                                     }
                                     else if (answer == "no" || answer == "n")
@@ -1078,7 +1214,7 @@ namespace DungeonCrawler
                                             Console.WriteLine("The jailor dies.");
                                             Console.ReadKey(true);
                                             Console.WriteLine("You look down and find the jailor's keys are just peeping through the gap under the door. With a happy-go-lucky shrug, you manage to purloin them from your captor and open the door to escape! \nYou find the dead goblin just by the foot of your door, it's face frozen in a rictus of half way between terror and hilarity.");
-                                            battle.WonFight();
+                                            battle.WonFight(room);
                                             inventory.Add(jailorKeys);
                                             return false;
                                         default:
@@ -1557,7 +1693,7 @@ namespace DungeonCrawler
                                         Console.WriteLine("The jailor dies.");
                                         Console.ReadKey(true);
                                         Console.WriteLine("You look down and find the jailor's keys are just peeping through the gap under the door. With a happy-go-lucky shrug, you manage to purloin them from your captor and open the door to escape! \nYou find the dead goblin just by the foot of your door, it's face frozen in a rictus of half way between terror and hilarity.");
-                                        battle.WonFight();
+                                        battle.WonFight(room);
                                         inventory.Add(jailorKeys);
                                         return false;
                                     default:
@@ -1610,7 +1746,7 @@ namespace DungeonCrawler
                                     Console.WriteLine("The jailor dies.");
                                     Console.ReadKey(true);
                                     Console.WriteLine("You look down and find the jailor's keys are just peeping through the gap under the door. With a happy-go-lucky shrug, you manage to purloin them from your captor and open the door to escape! \nYou find the dead goblin just by the foot of your door, it's face frozen in a rictus of half way between terror and hilarity.");
-                                    battle.WonFight();
+                                    battle.WonFight(room);
                                     inventory.Add(jailorKeys);                             
                                     return false;
                                 default:

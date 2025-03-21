@@ -31,7 +31,7 @@ namespace DungeonCrawler
         /// For after the player wins a fight and wishes
         /// to search the monster for treasure
         /// </summary>
-        public void WonFight()
+        public void WonFight(Room room)
         {
             Console.WriteLine($"Would you like to search the {Monster.Name} for items?");
 
@@ -40,10 +40,53 @@ namespace DungeonCrawler
                 string answer = Console.ReadLine().Trim().ToLower();
                 if (answer == "yes" || answer == "y")
                 {
-                    Monster.search(Player.Inventory, Player.WeaponInventory);
-                    break;
+                    Monster.search(Player.CarryCapacity, Player.Inventory, Player.WeaponInventory);
+                    Feature deadFoe1 = new Feature("fallen foe", "They've pockets free for the plundering...", true, "searched", Monster.Items);
+                    Feature fallenFoe = null;
+                    foreach(Feature f in room.FeatureList)
+                    {
+                        if (f.Name == "fallen foe")
+                        {
+                            fallenFoe = f;
+                        }
+                    }
+                    if (fallenFoe!=null)
+                    {
+                        
+                        Feature deadFoe2 = new Feature("dead enemy", "They've pockets available for pilfering...", true, "searched", Monster.Items);
+                        room.FeatureList.Add(deadFoe2);
+                        
+                    }
+                    else
+                    {
+                        room.FeatureList.Add(deadFoe1);
+                    }
+
+                    return;
                 }
-                else if (answer == "no" || answer == "n") { break; }
+                else if (answer == "no" || answer == "n") 
+                {
+                    Feature deadFoe1 = new Feature("fallen foe", "They've pockets free for the plundering...", true, "searched", Monster.Items);
+                    Feature fallenFoe = null;
+                    foreach (Feature f in room.FeatureList)
+                    {
+                        if (f.Name == "fallen foe")
+                        {
+                            fallenFoe = f;
+                        }
+                    }
+                    if (fallenFoe != null)
+                    {
+                        Feature deadFoe2 = new Feature("dead enemy", "They've pockets available for pilfering...", true, "searched", Monster.Items);
+                        room.FeatureList.Add(deadFoe2);
+                                               
+                    }
+                    else
+                    {
+                        room.FeatureList.Add(deadFoe1);
+                    }
+                    return; 
+                }
                 else { Console.WriteLine("ERROR! Please answer 'yes' or 'no'."); }
             }
         }
@@ -1331,12 +1374,12 @@ namespace DungeonCrawler
                     if (answer == "yes" || answer == "y")
                     {
                         Stopwatch stopwatch = new Stopwatch();
-                        stopwatch.Start();
+                        //stopwatch.Start();
                         if (Monster.Stamina > 0 && Monster2.Stamina > 0)
                         {
-                            Console.WriteLine($"Do you attack... \n[1] the {Monster.Name}\n[2] or the {Monster2.Name}?\n[You've only 5 seconds to decide and give your answer the moment you press any key]");
-                            Console.ReadKey(true);
-
+                            Console.WriteLine($"Do you attack... \n[1] the {Monster.Name}\n[2] or the {Monster2.Name}?\n[You've only 5 seconds to decide]");
+                            
+                            stopwatch.Start();
                             while (true)
                             {
                                 long timeLapsed = 0;

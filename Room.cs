@@ -505,7 +505,7 @@ namespace DungeonCrawler
                                 Console.WriteLine($"\n{ministryOfSillyWalks[19+D6.Roll(D6)]} to the {FeatureList[answer1].Name}...\n");
                             }
                             Console.ReadKey(true);
-                            Room newRoom = FeatureList[answer1].Search(inventory, weaponInventory, this);
+                            Room newRoom = FeatureList[answer1].Search(player.CarryCapacity, inventory, weaponInventory, this);
                             FeatureList[answer1].investigateFeature(specialItems, minotaur);
                             
                             if ( newRoom.Name != this.Name)
@@ -543,7 +543,7 @@ namespace DungeonCrawler
                                 if (freshLoop) { continue; }
                                 List<Item> weaponSplice = new List<Item> { itemList[answer1 - FeatureList.Count] };
                                 List<Weapon> weapon1 = weaponSplice.Cast<Weapon>().ToList();
-                                weapon1[0].PickUpItem(inventory, weaponInventory, 4, 0, null, weapon1[0], null, ItemList, yourRustyChains);
+                                weapon1[0].PickUpItem(player.CarryCapacity, inventory, weaponInventory, 4, 0, null, weapon1[0], null, ItemList, yourRustyChains);
                             }
                             catch // if not a weapon that is to be picked up...
                             {
@@ -568,7 +568,7 @@ namespace DungeonCrawler
                                     }
                                 }
                                 if (freshLoop) { continue; }
-                                itemList[answer1 - FeatureList.Count].PickUpItem(inventory, weaponInventory, 4, 0, itemList[answer1 - FeatureList.Count], null, null, ItemList, null, stickyItems); 
+                                itemList[answer1 - FeatureList.Count].PickUpItem(player.CarryCapacity, inventory, weaponInventory, 4, 0, itemList[answer1 - FeatureList.Count], null, null, ItemList, null, stickyItems); 
                                     
                                 
                             }

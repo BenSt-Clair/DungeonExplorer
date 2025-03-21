@@ -39,7 +39,7 @@ namespace DungeonCrawler
                 else if (response1 == "no" || response1 == "n")
                 {
 
-                    Console.ReadKey(true);
+                    
                     Console.WriteLine($"  You can't be certain what terrible events led you here" +
                         $". However as you look around the {room.Name.ToLower()} you can make a shrewd guess" +
                         $" as to why you've been held captive... and who's behind it. After all, you're not the first to be captured around these parts. \nYou're just the first to survive it.");
@@ -731,7 +731,7 @@ namespace DungeonCrawler
             Player player1 = CharacterCreation();
             Test test2 = new Test(player1, room);
             test2.RunForPlayer();
-
+            player1.CarryCapacity += player1.Stamina / 10;
 
             bool getYesNoResponse()
             {
@@ -1076,7 +1076,7 @@ namespace DungeonCrawler
                             {
                                 if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false))
                                 {
-                                    trialBattle.WonFight();
+                                    trialBattle.WonFight(room);
                                     escapedThroughDoor = true;
                                     escapedRoom1 = true;
                                     player1.Unequip(player1.WeaponInventory);
@@ -1123,7 +1123,7 @@ namespace DungeonCrawler
                                         Console.ReadKey(true);
                                         Console.WriteLine("\n\t'Just look at that,' Binky tuts, peering out of your backpack as you see if you've room for any more items. 'Honestly, where have all the good monsters gone these days, eh? I mean he isn't any Medusa or Circe or anything, but slouching on the job?' \n Your gaze matches his as you contemplate the sprawling bloody mess that was your foe. You answer that you're pretty sure the goblin's dead... right? As you speak a fly lands over its exposed eyeball before buzzing away. \n\t'Dead? Of course not! You're this story's hero! Hero's are never murderers, he's just bone idle!' \nYeah, you answer, you guess that makes sense... No, of course it does!\nWith your gleeful heart as light as an ever-so-teensy-bit-eccentric feather you skip over the corpse and ever onward in your quest!");
                                     }
-                                    trialBattle.WonFight();
+                                    trialBattle.WonFight(room);
                                     if (room.FeatureList.Contains(holeInCeiling))
                                     {
                                         while (true)
@@ -1912,9 +1912,9 @@ namespace DungeonCrawler
                                 Console.WriteLine("Tongue-tied, you're unable to give an adequate response before your enemies draw their weapons...");
                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                 {
-                                    dualDuel.WonFight();
+                                    dualDuel.WonFight(armoury);
                                     dualDuel.Monster = dualDuel.Monster2;
-                                    dualDuel.WonFight();
+                                    dualDuel.WonFight(armoury);
                                 }
                                 else
                                 {
@@ -1931,9 +1931,9 @@ namespace DungeonCrawler
                                         Console.WriteLine("The two mercenaries take notice of your nervousness. Chairs scrape across the floor as the goblin and gnoll rise and draw their weapons.\nIt looks like you're going to have to fight...");
                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                         {
-                                            dualDuel.WonFight();
+                                            dualDuel.WonFight(armoury);
                                             dualDuel.Monster = dualDuel.Monster2;
-                                            dualDuel.WonFight();
+                                            dualDuel.WonFight(armoury);
                                             break;
                                         }
                                         else
@@ -1944,9 +1944,9 @@ namespace DungeonCrawler
                                         Console.WriteLine("They are bold words, but unconvincingly delivered. The two mercenaries take notice of your nervousness. Chairs scrape across the floor as the goblin and gnoll rise and draw their weapons.\nIt looks like you're going to have to fight...");
                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                         {
-                                            dualDuel.WonFight();
+                                            dualDuel.WonFight(armoury);
                                             dualDuel.Monster = dualDuel.Monster2;
-                                            dualDuel.WonFight();
+                                            dualDuel.WonFight(armoury);
                                             break;
                                         }
                                         else
@@ -1957,9 +1957,9 @@ namespace DungeonCrawler
                                         Console.WriteLine("It appears the answer is no, they are not, because soon after you asked chairs scrape across the floor and the goblin and gnoll rise and draw their weapons.\nDid you mistake them for merchants?...");
                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                         {
-                                            dualDuel.WonFight();
+                                            dualDuel.WonFight(armoury);
                                             dualDuel.Monster = dualDuel.Monster2;
-                                            dualDuel.WonFight();
+                                            dualDuel.WonFight(armoury);
                                             break;
                                         }
                                         else
@@ -1975,9 +1975,9 @@ namespace DungeonCrawler
                                                 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2062,9 +2062,9 @@ namespace DungeonCrawler
                                                 Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2074,7 +2074,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[3] == "You adopt the unassuming role of just another grunt and complain about the pay...")
                                             {
-                                                Console.WriteLine($"\n\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.");
+                                                
                                                 string description = "\t'Pfft. Wot's there to complain about?' the goblin retorts. 'We've never 'ad it so good under the master. Raided this place first day I got 'ere. Its where I got this fancy broach from'\nHe produces a broach from somewhere, embossed with a golden M encircled by a cursive capital G. Then his suspicious nature once more comes to the fore.";
                                                 string parlance = "\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.";
                                                 List<string> responses = new List<string>
@@ -2100,9 +2100,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2115,9 +2115,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2130,9 +2130,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2145,9 +2145,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2160,9 +2160,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2175,9 +2175,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2245,9 +2245,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2269,9 +2269,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2294,9 +2294,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2310,9 +2310,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2324,9 +2324,9 @@ namespace DungeonCrawler
                                             {
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2338,9 +2338,9 @@ namespace DungeonCrawler
                                             {
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2432,9 +2432,9 @@ namespace DungeonCrawler
                                                 Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2444,7 +2444,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[4] == "You adopt the unassuming role of just another grunt and complain about the pay...")
                                             {
-                                                Console.WriteLine($"\n\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.");
+                                                
                                                 string description = "\t'Pfft. Wot's there to complain about?' the goblin retorts. 'We've never 'ad it so good under the master. Raided this place first day I got 'ere. Its where I got this fancy broach from'\nHe produces a broach from somewhere, embossed with a golden M encircled by a cursive capital G. Then his suspicious nature once more comes to the fore.";
                                                 string parlance = "\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.";
                                                 List<string> responses = new List<string>
@@ -2470,7 +2470,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2483,7 +2485,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight (armoury);
                                                             break;
                                                         }
                                                         else
@@ -2496,9 +2500,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2511,9 +2515,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2526,9 +2530,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2541,9 +2545,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2611,9 +2615,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2635,9 +2639,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2660,9 +2664,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2676,9 +2680,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2690,9 +2694,9 @@ namespace DungeonCrawler
                                             {
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2704,9 +2708,9 @@ namespace DungeonCrawler
                                             {
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2729,9 +2733,9 @@ namespace DungeonCrawler
                                                 Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2741,7 +2745,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[5] == "You adopt the unassuming role of just another grunt and complain about the pay...")
                                             {
-                                                Console.WriteLine($"\n\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.");
+                                                
                                                 string description = "\t'Pfft. Wot's there to complain about?' the goblin retorts. 'We've never 'ad it so good under the master. Raided this place first day I got 'ere. Its where I got this fancy broach from'\nHe produces a broach from somewhere, embossed with a golden M encircled by a cursive capital G. Then his suspicious nature once more comes to the fore.";
                                                 string parlance = "\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.";
                                                 List<string> responses = new List<string>
@@ -2767,9 +2771,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2782,9 +2786,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2797,9 +2801,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2812,9 +2816,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2827,9 +2831,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2842,9 +2846,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2912,9 +2916,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -2936,9 +2940,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2961,9 +2965,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2977,9 +2981,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -2991,9 +2995,9 @@ namespace DungeonCrawler
                                             {
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3005,9 +3009,9 @@ namespace DungeonCrawler
                                             {
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3029,9 +3033,9 @@ namespace DungeonCrawler
                                                 Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3041,7 +3045,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[6] == "You adopt the unassuming role of just another grunt and complain about the pay...")
                                             {
-                                                Console.WriteLine($"\n\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.");
+                                                
                                                 string description = "\t'Pfft. Wot's there to complain about?' the goblin retorts. 'We've never 'ad it so good under the master. Raided this place first day I got 'ere. Its where I got this fancy broach from'\nHe produces a broach from somewhere, embossed with a golden M encircled by a cursive capital G. Then his suspicious nature once more comes to the fore.";
                                                 string parlance = "\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.";
                                                 List<string> responses = new List<string>
@@ -3067,9 +3071,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -3082,9 +3086,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -3097,9 +3101,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -3112,9 +3116,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -3127,9 +3131,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -3142,9 +3146,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -3212,9 +3216,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -3236,9 +3240,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3261,9 +3265,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3277,9 +3281,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3291,9 +3295,9 @@ namespace DungeonCrawler
                                             {
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3305,9 +3309,9 @@ namespace DungeonCrawler
                                             {
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3330,9 +3334,9 @@ namespace DungeonCrawler
                                                 Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3342,7 +3346,6 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[7] == "You adopt the unassuming role of just another grunt and complain about the pay...")
                                             {
-                                                Console.WriteLine($"\n\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.");
                                                 string description = "\t'Pfft. Wot's there to complain about?' the goblin retorts. 'We've never 'ad it so good under the master. Raided this place first day I got 'ere. Its where I got this fancy broach from'\nHe produces a broach from somewhere, embossed with a golden M encircled by a cursive capital G. Then his suspicious nature once more comes to the fore.";
                                                 string parlance = "\t''ere, what'd you say the name of your squad woz again,' he chuckles humorlessly. 'Coz for the life of me, I don' reckon I've ever seen yer face before...'\nOut of the corner of your eye you see the gnoll eye you ravenously, a glint in its eye.";
                                                 List<string> responses = new List<string>
@@ -3368,9 +3371,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -3383,9 +3386,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -3398,9 +3401,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -3413,9 +3416,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -3428,9 +3431,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -3443,9 +3446,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -3513,9 +3516,9 @@ namespace DungeonCrawler
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
                                                         if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
-                                                            dualDuel.WonFight();
+                                                            dualDuel.WonFight(armoury);
                                                             break;
                                                         }
                                                         else
@@ -3537,9 +3540,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3562,9 +3565,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3578,9 +3581,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3592,9 +3595,9 @@ namespace DungeonCrawler
                                             {
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3606,9 +3609,9 @@ namespace DungeonCrawler
                                             {
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3637,9 +3640,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3653,9 +3656,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3667,9 +3670,9 @@ namespace DungeonCrawler
                                             {
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3681,9 +3684,9 @@ namespace DungeonCrawler
                                             {
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3703,9 +3706,9 @@ namespace DungeonCrawler
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3717,9 +3720,9 @@ namespace DungeonCrawler
                                             {
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -3731,9 +3734,9 @@ namespace DungeonCrawler
                                             {
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
-                                                    dualDuel.WonFight();
+                                                    dualDuel.WonFight(armoury);
                                                     break;
                                                 }
                                                 else
@@ -4781,11 +4784,11 @@ namespace DungeonCrawler
 
             if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems))
             {
-                trialBattle.WonFight();
+                trialBattle.WonFight(room);
                 if (tougherBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems))
                 {
-                    tougherBattle.WonFight();
-                    if (toughestBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems)) { tougherBattle.WonFight(); }
+                    tougherBattle.WonFight(circularLanding);
+                    if (toughestBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems)) { tougherBattle.WonFight(highestParapet); }
                 }
             }
 
