@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Security.Cryptography.X509Certificates;
@@ -573,7 +574,7 @@ namespace DungeonCrawler
                 " already accomplished what has so eluded me; you've escaped. Either way, don't give up! There is more at stake than you can imagine. Even with my meagre training in the arcane, I've sensed for days now something not right within these walls - something terrible. Something with powers beyond the pale. This curse-Breaker, as he chooses to be known, MUST NOT be permitted dominion over it.\n" +
                 "You have before you a crusade of inestimable import. To truly escape not just this tower but the future this evil man weaves, he must be vanquished. I can impart upon you here my own experiences, that you might learn what you're up against. But I also choose to bestow upon you these words:\n" +
                 "The enemy may be mighty. But they are not invincible. The enemy may be many. But they are far fewer than all those whose hopes march with you. The eyes of the world fall upon you. You may be the best hope of securing our freedom. More importantly, of delivering us from the Curse-Breaker's designs. Know that even should these words be all that's left of me, I have full confidence, even now, in your final victory. \n" +
-                "So good luck, god speed, And god bless you on this almighty undertaking. May the wardens of fate guide your hand true. Find Merigold. Find the source of the Curse-Breaker's power. Save us all...'", false, "unburned");
+                "So good luck, god speed, And god bless you on this almighty undertaking. May the wardens of fate guide your hand true. Find Merigold. Find the source of the Curse-Breaker's power. Save us all...'", false, "unread");
             Item merigoldRing = new Item("ring embossed 'MG'", "It is such an innocuous thing, so unassuming that it probably wouldn't sell at a village flea market. However, there's a certain - not sheen, but... a shimmer to it, that enchants the eye. You sense the ring has powers beyond the reach of hands untrained in the arcane such as yours.");
             List<Item> trunkItems = new List<Item> { journal};
             Item redThread = new Item("ball of red thread", "Turning it over in your hands, you surmise that its been knotted together out of strand upon strand of the threads within the surrounding garments. It's been wound tight.", true, "spooled");
@@ -595,7 +596,7 @@ namespace DungeonCrawler
             List<Item> inBookcase = new List<Item> { note };
             Feature bookCase = new Feature("bookcase", "The ostensibly empty bookcase is a little worse for wear. One of it's shelves is lopsided. Another at the bottom has collapsed. Cobwebs span its dusty corners.", true, "searched", inBookcase);
             Feature holeInCeiling = new Feature("hole in the ceiling", "You gaze from the heap of debris that has buried the creature alive to the hole through the ceiling above. You bet you could climb the heap and enter the room above yours.");
-            Door stairwayToLower = new Door("dark stairwell", "The steep stone steps descend beyond the light of the braziers and into the unknown murk lurking below", true, "blocked", null, null, "Feeling a knot of dread tighten about your stomach, you make the descent into a shifting web of shadows and silhouettes...");
+            Door stairwayToLower = new Door("dark stairwell", "The steep stone steps descend beyond the light of the braziers and into the unknown murk lurking below. Without some sort of light that can dispel the impenetrable darkness beneath your feet, you might want to think carefully before navigating this slippery and hazardous passage.", false, "unblocked", null, null, "Feeling a knot of dread tighten about your stomach, you make the descent into a shifting web of shadows and silhouettes...", true);
             Door stairwayToUpper = new Door("lit stairway", "The wide flight of stone steps slowly curves around, leading to somewhere unseen but well-lit.", false, "unblocked", null, null, "You embark up the stairs two at a time.");
             Door otherRosewoodDoor = new Door("near door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in.", true, "locked", null, null, "The door creaks ominously as you furtively pace into the next room.");
             Door armouryDoor = new Door("RmorRee door", "Its a heavyset door studded with iron bolts and a thoroughly unwelcoming aspect.", false, "unlocked", null, null, "The door swings open with a heave and opens into the next room...");
@@ -605,8 +606,9 @@ namespace DungeonCrawler
 
             Item soot = new Item("soot", "It's black. It's burned... Yep, that's soot.", false, "unsmeared", 0, ": ");
             List<Item> rightbrazierItems = new List<Item> { merigoldRing, soot};
+            List<Item> leftBrazierItems = new List<Item> { soot};
             Feature brokenRightBrazier = new Feature("right broken brazier", "It's been tampered with by magic. It seems the last occupant here knew their arcana. Looking to the scratches on the door you sense with a tot of foreboding that it didn't do them any good.\nProbing further you find a ring has been stashed inside the well where used to flicker a blue flame.", false, "unlit", rightbrazierItems);
-            Feature brokenLeftBrazier = new Feature("left broken brazier", "It's been tampered with by magic. It seems the last occupant here knew their arcana. Looking to the scratches on the door you sense with a tot of foreboding that it didn't do them any good...", false, "unlit", null);
+            Feature brokenLeftBrazier = new Feature("left broken brazier", "It's been tampered with by magic. It seems the last occupant here knew their arcana. Looking to the scratches on the door you sense with a tot of foreboding that it didn't do them any good...", false, "unlit", leftBrazierItems);
             Feature trunk = new Feature("weathered old trunk", "The leather of its sides is faded and worn. Unlike the rosewood chest in your room it hasn't been looked after and there's no hidden compartment.", false, "unlocked", trunkItems);
             List<Feature> cell2features = new List<Feature> { trunk, otherRosewoodDoor, brokenLeftBrazier, brokenRightBrazier};
             ///
@@ -622,7 +624,7 @@ namespace DungeonCrawler
                 "this in the forlorn knowledge my words might never find you, and I can only pray that if they do not that the sentiment and undying affection I bear for you and our child will prove too strong, and " +
                 "altogether too large, to be bound by such a physical form as ink and paper. If I should not make it, I know it will be hard for you, but though you may wish to give up, you cannot falter. Left to you is the greatest charge of all," +
                  "that of the raising of our child. \nThat she may know love and joy without my being there fills me with a dread eclipsing that of all other terrors I've faced or have yet to face, but I steel myself in the certainty, as implacable as the sunrise and the moonfall," +
-                 "that you will rise to the task in my absence and teach her the same gentleness of spirit that has always soothed and drawn forth the best in me. \nKnow that I, with all my heart and soul, will always love you, \n\n\tSandy'", false, "unburned");
+                 "that you will rise to the task in my absence and teach her the same gentleness of spirit that has always soothed and drawn forth the best in me. \nKnow that I, with all my heart and soul, will always love you, \n\n\tSandy'", false, "unread");
             Item bookEC2 = new Item("dusty tome", "Judging by the weight of the manuscript, this literary brick is crammed with useless information. Flicking through its pages though you notice someone has torn out a page...", false, "unburned");
             Item bookEC1 = new Item("leatherbound journal", "Its contents aren't very interesting except for the scrawl that inhabits the margins of several pages, penned with a feverish hand. Squinting, these passages written over the main text seem to compose a diary of the previous occupants internment.", false, "unburned");
             Item bookEC4 = new Item("vespasian newsletter", "It's a strange propaganda leaflet that seems to have been circulated around the dastardly creatures that imprisoned you and held you captive. It's written english is somewhat to be desired, with the page littered with grammatical and spelling errors. From what you can discern, it was printed by the Vespasian Mercenary Company and distributed by *ahem* Da-Freebootaz-Squigalanche squad. \nA symbol of a winged serpent proudly crests the page. It's also seen to be worn by all the mercenaries in the etchings too...", false, "unread");
@@ -678,7 +680,17 @@ namespace DungeonCrawler
             ///mess hall features and items
             Item messhallBook1 = new Item("book on thievery", "A rather handy guide to the illicit - *ahem*, excuse me - to the skilled art of pickpocketing, conning, disguises and lockpicking.", false, "unread");
             ///The above is for letting the player know that they can combine the bobby pin and the stiletto and that they can use the soot or warpaint to form a disguise
-
+            ///
+            ///DungeonChamber Items and features
+            Item femur = new Item("femur", "Upon closer inspection you find teeth marks denting the bone's length...", false);
+            Item jawBone = new Item("jaw bone", "This bone is of disquietingly human origin - and is warm...", false);
+            Item legBone = new Item("leg bone", "It's been gnawed until, in some places, whittled to the very marrow...", false);
+            Item rib = new Item("rib", "It's not much of a find...", false);
+            Door hatch = new Door("trapdoor", "It is constructed out of dwarven steel. Your hands trace the craftsmanship. However, you notice no bolts or locks keeping it shut. It's free to open - should you choose to go down it...", false, "unlocked", null, null, "You heft the heavy trapdoor open, before it clangs to the granite floor. Before you lies a gaping hole of unfathomable depths; only darkness seems to lurk beneath your feet. The noise reverberates for a moment as a chill wind whisks up from the dank depths below. \nThere's a ladder. With trepidation gnawing at your gut, you follow it down...");
+            Feature aBrazier = new Feature("brazier", "If this brazier does indeed burn it is not with any normal fire. Upon closer inspection, its dim flickering glow seemingly cannot be expunged. It barely keeps the looming shadows at bay.", true, "lit", null);
+            List<Item>dungeonItems = new List<Item> { femur, jawBone, legBone, rib};
+            List<Feature>dungeonFeatures = new List<Feature> {stairwayToLower, aBrazier, hatch};
+            ///Rooms
             Room room = new Room("dank cell", "The foreboding cell is bathed in the earthy glow of lit braziers, barely lighting cold stony walls, a heavy rosewood door studded with iron hinges, and only the sparsest of furnishings.\nThe door is set within the north wall, two flickering braziers casting orbs of low light either side of it so as to look like great fiery eyes watching you from the murk.\t\nTo the west wall there is a large chest, mingled with a cascade of rusted and disused iron shackles.\t\nTo the south wall is a small bookcase and some garments haphazardly strewn about you.\t\nTo the east wall is the last occupant; a skeleton with a permanent grin, bound fast to the wall by many interlocking heavy chains. It almost seems to watch you from dark wells where once there were its eyes. It holds something in its bony fist and something else glimmers from a place out of reach behind it.\t\t", cellInventory, cellfeatures);
             Room corridor = new Room("long corridor", "More of those strange braziers cast pools of frosty light within the dark corridor. Here and there they alleviate the murk within the passage of grim stone walls and rickety floorboards. It extends to the left into darkness and to the right towards a wide flight of stone stairs. \nTo the north you face another door similar to the ornate rosewood door behind you.\t\nTurning your gaze west down the shadowy passage you see the flickering braziers leading towards a dark stairwell, descending beyond the inky blackness to unknown depths.\t\nTurning your head south the ornate rosewood door to your own former cell meets your gaze.\t\nTo the east the passageway leads past more doors up to a flight of stairs, ascending to the next level of whatever building or (tower?) you find yourself in.\t\t", corridorItems, corridorFeatures);
             Room cellOpposite = new Room("eerie cell", "There are scratch marks on the inside of the rosewood door leading into this cell. Whoever was here was dragged out and taken Lord only knows where. \nAhead of you is a bare stone wall, a bowl left close by. A kind of nest has been formed out of the strewn garments - clearly where the last occupant had rested. They're still warm...\t\nYou find little of note save for a clumsy attempt to craft crude levers out of the wooden planks of the floor. You guess they were used to slip under the gap in the door and lever it out of its iron pin hinges. Judging by the snapped and splintered planks of wood around you, the attempt failed.\t\nTurning your gaze southwards you see the door through which you entered. Like your room there are braziers either side of it, but they've been bent out of shape, their unnatural frosty flames extinguished.\t\nLooking to the east wall you find a trunk made of coarse leather hide and a wooden frame.\t\t", cell2Inventory, cell2features);
@@ -699,13 +711,15 @@ namespace DungeonCrawler
             Room prehistoricJungle = new Room("prehistoric jungle", "~dinosaurs chase you~", cell2Inventory, cell2features);
             Room astralPlanes = new Room("astral planes", "~zero g!~", cell2Inventory, cell2features);
             Room oceanBottom = new Room("ocean bottom", "~under da sea!~", cell2Inventory, cell2features );
+            Room dungeonChamber = new Room("dungeon chamber", "The light of a single brazier casts an eerie glow over this claustrophobic, airless dungeon and its damp stone walls. Like the faint light reaching the fathomless depths of an ocean floor, it swims over scattered bones and barely illuminates twin hulking silhouettes lurking within shadow just beyond a solitary hatch leading somewhere deeper still. You feel the hairs on the back of your neck stand on end, as from somewhere within those shadows, chains clink and scrape along the granite floor...\nTurning your gaze right to look north you see the granite wall curve away from you and into blackness. It is studded with bolts that hold chains in place, most of which dangle limply to the stone floor below.\t\nDirectly ahead, some distance before the wall of darkness, lies a heavy trapdoor, presumably leading to an oubliette below. Scattered about it are assorted bones...\t\nTurning your gaze south and to the left you see a lone brazier, its lone orb of flickering frosty light the only thing alleviating the dank darkness besieging you.\t\nLooking back there is only the passageway you just descended...\t\t", dungeonItems, dungeonFeatures);
 
             List<Room> yourCellDoor = new List<Room> {room, corridor };
             List<Room> otherCellDoor = new List<Room> { corridor, cellOpposite };
             List<Room> stairwayUp = new List<Room> { corridor, antechamber};
-            List<Room> stairwellDown = new List<Room> { oubliette, corridor };
+            List<Room> stairwellDown = new List<Room> { dungeonChamber, corridor };
             List<Room> emptyCellPassage = new List<Room> { corridor, emptyCell };
             List<Room> armouryDoorway = new List<Room> { antechamber, armoury};
+            List<Room> hatchPassage = new List<Room> { oubliette, dungeonChamber };
             rosewoodDoor.CastDoor().Portal = yourCellDoor;            
             otherRosewoodDoor.CastDoor().Portal = otherCellDoor;            
             stairwayToLower.CastDoor().Portal = stairwellDown;
@@ -731,7 +745,7 @@ namespace DungeonCrawler
             Player player1 = CharacterCreation();
             Test test2 = new Test(player1, room);
             test2.RunForPlayer();
-            player1.CarryCapacity += player1.Stamina / 10;
+            player1.CarryCapacity += player1.InitialStamina / 10;
 
             bool getYesNoResponse()
             {
@@ -887,6 +901,8 @@ namespace DungeonCrawler
             List<Item> minotaurInventory = new List<Item> { vanquisher };
             Monster minotaur = new Monster("minotaur", "towering above you at eight feet, the minotaur levels its horns towards you, tenses its powerful muscles, and charges!", minotaurInventory, 120, 10, vanquisher);
             Monster goblin = new Monster("goblin", "The goblin's swarthy, pock-marked skin does little to lessen the effect of its ugly snarl.", goblinInventory, 50, 2, scimitar);
+            Monster ghoul2 = new Monster("ghoul engaged to Willow", "", gnollInventory, 1, 1, bite);
+            Monster ghoul1 = new Monster("ghoul with paladin garb", "", gnollInventory, 1, 1, bite);
             goblin.Items.Add(bracelet);
             goblin.Items.Add(mercInsignia);
             goblin.Items.Add(jailorKeys);
@@ -1366,7 +1382,7 @@ namespace DungeonCrawler
                     }
                 }
                 List<bool> leftWhichRooms = new List<bool> {true, false, true, true, true, true, 
-                true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+                true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
                 Room newRoom1 = corridor;
                 bool victorious = false;
                 bool visitedRoom = true;
@@ -1421,6 +1437,17 @@ namespace DungeonCrawler
                             
                         }
                         stairwayToUpper.Description = "The wide flight of stone steps slowly curves around, leading to somewhere unseen but well-lit.";
+                        stairwayToLower.Description = "The steep stone steps descend beyond the light of the braziers and into the unknown murk lurking below. Without some sort of light that can dispel the impenetrable darkness beneath your feet, you might want to think carefully before navigating this slippery and hazardous passage.";
+                        if (stairwayToLower.Dark)
+                        {
+                            stairwayToLower.Passing = "Feeling a knot of dread tighten about your stomach, you make the descent into a shifting web of shadows and silhouettes...";
+                            stairwayToLower.Description = "The steep stone steps descend beyond the light of the braziers and into the unknown murk lurking below. Without some sort of light that can dispel the impenetrable darkness beneath your feet, you might want to think carefully before navigating this slippery and hazardous passage.";
+                        }
+                        else
+                        {
+                            stairwayToLower.Passing = "With Merigolds enchantment lifting the magical darkness you can see for the first time how truly treacherous these crooked stone steps really are. Knowing time is against you as midnight approaches, you throw caution to the wind and race down them...";
+                            stairwayToLower.Description = "The steep stone steps, alighted by Merigold's spell, spiral down into the unknown. You still might want to think twice before navigating this slippery and hazardous passage.";
+                        }
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item>{ bobbyPins});
@@ -1452,6 +1479,7 @@ namespace DungeonCrawler
                         string reply = Console.ReadLine().ToLower().Trim();
                         try
                         {
+                            int j = player1.Stamina;
                             int reply1 = int.Parse(reply);
                             if ((b1<1 && (reply1 < 1 || reply1 > 2)) || reply1<1 || reply1>3)
                             {
@@ -1509,7 +1537,10 @@ namespace DungeonCrawler
                     visitedCorridor = true;
                     if (visitedRoom)
                     {
-                        Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
+                        if (leftWhichRooms[20])
+                        {
+                            Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
+                        }
                         visitedRoom = false;
                     }
                     b = 0;
@@ -1587,7 +1618,7 @@ namespace DungeonCrawler
                     }
                     b = 0;
                     a = 0;
-                    while (!leftWhichRooms[2])//oubliette
+                    while (!leftWhichRooms[2])//oubliette : no return through hatch!
                     {
                         ///might want to add treacherous passage here test skill fall down steps
                         visitedRoom = true;
@@ -4773,7 +4804,485 @@ namespace DungeonCrawler
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
                     }
-                    
+                    if (visitedRoom)
+                    {
+                        Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
+                        visitedRoom = false;
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[20])//dungeon Chamber : only way in is by the stairs. can be bypassed by portal
+                    {
+                        bool leave = false;
+                        if (stairwayToLower.Dark)
+                        {
+                            Console.ReadKey(true);
+                            Console.WriteLine("Traversing these treacherous steps in the dark is no mean feat. You must continually test your skill all the way down.");
+                            Dice D8 = new Dice(8);
+                            int tests = 9 - player1.Skill/2;
+                            List<string> slips = new List<string> 
+                            { 
+                                "You miss a step in the dark and take a fall...",
+                                "You slip and tumble down some steps...",
+                                "You lose your balance and trip...",
+                                "You grope in the dark before lurching forward and plummeting several steps down...",
+                                "You hit your head on something in the dark and stumble...",
+                                "You crash forwards as you lose your footing...",
+                                "One of the steps crumbles underfoot! You are sent careering headfirst...",
+                                "You slip on the damp steps and crash on your back!"
+                            };
+                            
+                            while (tests > 0)
+                            {
+                                Console.WriteLine("Test your skill:\n[You must roll a D8 under or equal to half your skill score]");
+                                Console.ReadKey(true);
+                                int result = D8.Roll(D8);
+                                if (result > player1.Skill / 2)
+                                {
+                                    Thread.Sleep(93);
+                                    int slip = D8.Roll(D8) - 1;
+                                    Console.WriteLine($"You rolled {result}\n" + slips[slip]);
+                                    slip = 0;
+                                    for (int i = 0; i < 4; i++)
+                                    {
+                                        Thread.Sleep(27);
+                                        slip += D8.Roll(D8);
+                                    }
+                                    player1.Stamina -= slip;
+                                    Console.WriteLine($"You've lost {slip} stamina!");
+                                    Console.ReadKey(true);
+                                    if (player1.Stamina < 0)
+                                    {
+                                        Console.WriteLine("This fall is your last. Losing all footing and all purchase on the steep stairs, you plummet endlessly down them. By the time your crumpled body reaches the bottom, your neck has snapped.");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Your adventure ends here...");
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Would you like to continue down the stairs?");
+                                        if (getYesNoResponse())
+                                        {
+                                            tests--;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            newRoom1 = stairwayToLower.CastDoor().Passage(dungeonChamber);
+                                            leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                            
+                                            
+                                            break;
+                                        }
+                                    }
+
+                                }
+                                else
+                                {
+                                    Console.WriteLine("You gingerly take the next few steps...");
+                                    Console.ReadKey(true);
+                                }
+                                
+
+                                tests--;
+                            } 
+                        }
+                        else
+                        {
+                            Console.ReadKey(true);
+                            Console.WriteLine("Traversing these treacherous steps even when brightly lit by Merigold's magic is no mean feat. You must continually test your skill all the way down.");
+                            Dice D8 = new Dice(8);
+                            int tests = 3 - player1.Skill / 3;
+                            List<string> slips = new List<string>
+                            {
+                                "In your rush to reach the oubliette before midnight you miss a step and take a fall...",
+                                "As you race down the brightly lit sheer steps you slip and tumble...",
+                                "As you hurry down the steps two at a time you lose your balance and trip...",
+                                "You pick up the speed before lurching forward and plummeting several steps down..."
+                                
+                            };
+
+                            while (tests > 0)
+                            {
+                                Console.WriteLine("Test your skill:\n[You must roll a D6 under or equal to half your skill score]");
+                                Console.ReadKey(true);
+                                int result = D6.Roll(D6);
+                                if (result > player1.Skill / 2)
+                                {
+                                    Thread.Sleep(result * D8.Roll(D8));
+                                    int slip = (D8.Roll(D8)-1)/2;
+                                    Console.WriteLine($"You rolled {result}\n" + slips[slip]);
+                                    slip = 0;
+                                    for (int i = 0; i < 3; i++)
+                                    {
+                                        Thread.Sleep(27);
+                                        slip += D8.Roll(D8);
+                                    }
+                                    player1.Stamina -= slip;
+                                    Console.WriteLine($"You've lost {slip} stamina!");
+                                    Console.ReadKey(true);
+                                    if (player1.Stamina < 0)
+                                    {
+                                        Console.WriteLine("This fall is your last. Losing all footing and all purchase on the steep stairs, you plummet endlessly down them. By the time your crumpled body reaches the bottom, your neck has snapped.");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Your adventure ends here...");
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Would you like to continue down the stairs?");
+                                        if (getYesNoResponse())
+                                        {
+                                            tests--;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            newRoom1 = stairwayToLower.CastDoor().Passage(dungeonChamber);
+                                            leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+
+
+                                            break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (tests == 1)
+                                    {
+                                        Console.WriteLine("You keep your footing, furtively racing against time as midnight looms...");
+                                        Console.ReadKey(true);
+                                    }
+                                    if (tests == 2) 
+                                    {
+                                        Console.WriteLine("You press on down the steps two at a time...");
+                                        Console.ReadKey(true);
+                                    }
+                                    if (tests == 3)
+                                    {
+                                        Console.WriteLine("You tentatively pick up the pace, the steps whisking under your feet as you race down...");
+                                    }
+                                }
+                                tests--;
+                            }
+                        }
+                        if (leftWhichRooms[20])
+                        {
+                            break;
+                        }
+                        Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
+                        stairwayToLower.Description = "The steep stone steps ascend beyond the faint light of the lone brazier and up towards the corridor above.";
+                        stairwayToLower.Passing = "Leaving this ghastly chamber behind and whatever further horrors lurk beyond the trapdoor, you ascend the steep steps...";
+                        visitedRoom = true;
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        ///
+                        Console.ReadKey(true);
+                        Console.WriteLine("Suddenly, from beyond the braziers enchanted light, those hulking silhouettes jerk to life. They rise, their angular and unsettling forms looming at least seven feet, and amble towards you, eyes gleaming spookily from within the shadows. You feel the hairs on your arms stand on end as yu brace yourself for what approaches...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("The shadowy figures, upon catching your scent, suddenly lunge at you. Their bodies snap from jerky steps to disjointed lurch in the darkness, sending you pale. You think they're about to overwhelm you when the strange creatures are caught by the rusty chains that fetter them to the far wall.\nThey stop, snared, just within the faint light and standing just a step over the trapdoor.");
+                        Console.ReadKey(true);
+                        if (player1.Traits.ContainsKey("thespian"))
+                        {
+                            Console.WriteLine("Your courageous facade slips, as you recoil from the beasts before you. Never in your most fevered imaginings and tall tales have you once envisioned such gangly and frightful creatures as these.");
+                        }
+                        else if (player1.Traits.ContainsKey("diligent") || player1.Traits.ContainsKey("medicine man"))
+                        {
+                            Console.WriteLine("You recoil in shock. For you recognise what lurches before you. Ghouls - souls cleaved from their bodies through dark magic, twisted until they retain only a glimmer of who they once were, and then stitched with necromancy back to their hollow shells like strings to a vile puppet.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("You recoil in fright from the horrific creatures before you. You don't need to know what they are to tell that some dark sorcery is at work behind those blank, listless eyes staring back at you.");
+                        }
+                        Console.ReadKey(true);
+                        Console.WriteLine("They each look as though they stand upon death's door, their emaciated forms hideous to look upon. Their pale skin is taut over their bones. Their limbs are unnaturally long, as though their bodies had suffered the winching of a rack. But their eyes...\nTheir eye sockets are sunken pits from which untold and ineffable suffering lurks behind misted eyes. Tears trail their cheeks even as they savagely flail at you. It's almost as if some glimmer of what they once were, deep within some dementia, was pleading their body to hold back...\nYou make sure to keep out of their reach as you peer closer at the pitiable figures...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("You notice that the left figure's tattered garb is that of a paladin. Its hands are grimy with soot, and its cracked fingernails seem to have something trapped under them. As for the second, it wears a wedding ring upon its finger - a gold band. As it's claw-like hand flails in front of your face, a name, engraved upon the gold, flashes before your eyes; 'Willow.'");
+                        if (bookEC3.Attribute && journal.Attribute)
+                        {
+                            Console.ReadKey(true);
+                            Console.Write(" Suddenly you remember the name from the empty cell above, one of the ones opposite your own. It's with a dawning species of horror, hitherto utterly alien to you, that you realise the creatures before you are - or were - your fellow prisoners. They've been transfigured into this form by the Curse-Breaker, that they might guard whatever lies through the trapdoor below...");
+                        }
+                        Console.ReadKey(true);
+                        Console.WriteLine("\nIt takes a while for your feelings to turn to what must be done. \nThey both stand over the trapdoor and you won't be able to reach it, or anything else in this dungeon, without first dealing with the pitiable figures before you.");
+                        Console.WriteLine("Will you put an end to these creatures?");
+                        if (getYesNoResponse())
+                        {
+                            if (player1.WeaponInventory.Count == 0)
+                            {
+                                Console.WriteLine("You search the floor for a weapon before finding a snapped femur with a deadly sharp point.");
+                                Console.ReadKey(true);
+                            }
+                            Console.WriteLine($"Will you attack the ghoul to your left first or the ghoul to your right?\n[1] {ghoul1.Name}\n[2] {ghoul2.Name}");
+                            if (getIntResponse(3) == 1)
+                            {
+                                string ghoulString = "the pitiful ghoul";
+                                if (journal.Attribute && bookEC3.Attribute)
+                                {
+                                    ghoulString = "your fellow prisoner";
+                                }
+                                Dialogue sweetMurderousFun = new Dialogue(player1, ghoul1);
+                                string description = $"You take a moment to steel yourself. You take a deep breath. Then you draw your weapon and step towards the {ghoul1.Name}.";
+                                List<string> pityMePlease = new List<string>
+                                {
+                                    $"You see your reflection in the glassy eyes of {ghoulString} as you make your solemn approach, footsteps clapping resolutely upon the cold granite floor. Something behind those eyes gazes back at you, pleading you. But whether it's for mercy or for the release of death, you cannot say...",
+                                    $" They seem to not know themselves as they claw frenziedly at you...",
+                                    $" They still claw at you in pained and sluggish swings, but their efforts are more than feeble. They slowly turn their gaze up at you, a rueful hopelessness lurking somewhere behind its misted and glittering eyes..."
+                                };
+                                List<List<string>> makeAToughChoice = new List<List<string>>
+                                {
+                                    new List<string>
+                                    {
+                                        "Harden your heart and do what must be done.", 
+                                        "Surely there's another way...?"
+                                    },
+                                    new List<string>
+                                    {
+                                        "Brush off their struggles and do what's for the best.",
+                                        "No... this can't be right..."
+                                    }, 
+                                    new List<string>
+                                    {
+                                        "Expunge the pity in your heart and deliver the killing blow.",
+                                        "I'm sorry... I'm so sorry... I can't..."
+                                    }
+                                };
+                                Dictionary<string, string> choice_customResponse = new Dictionary<string, string>
+                                {
+                                    {"Harden your heart and do what must be done.", $"You strike as best you can, but {ghoulString} struggles against you." },
+                                    {"Brush off their struggles and do what's for the best.", $"{ghoulString} sinks to their knees, groaning pitiably." },
+                                    {"Surely there's another way...?", $"You back away from {ghoulString}, sheathing your weapon. You'll try a different course of action for now..." },
+                                    {"No... this can't be right...", $"You back away from {ghoulString}, appalled by your actions. Stammering a tearful apology, you resolve to try a different course of action for now..." }
+                                    
+                                    
+                                };
+                                int whichChoice = sweetMurderousFun.LinearParle(choice_customResponse, pityMePlease, makeAToughChoice, description);
+                                if ( whichChoice == -1)
+                                {
+                                    Console.WriteLine("With the trapdoor beyond reach, you conclude that there is nothing you can do but turn back. \nYou return to the stairwell.");
+                                    newRoom1 = stairwayToLower.CastDoor().Passage(dungeonChamber);
+                                    leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                    break;
+                                }
+                                else if (whichChoice == -1000)
+                                {
+                                    Console.WriteLine("The ghoul's claw strikes true, tearing into your neck and opening your jugular. You are still alive as the two ghouls feast on you.");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("Your adventure ends here...");
+                                    return;
+                                }
+                                else if (whichChoice == 2)
+                                {
+                                    if (!player1.Traits.ContainsKey("sadist"))
+                                    {
+                                        Console.WriteLine("You stare down in horror at what you've done, throwing your weapon away in disgust. You feel like you might be sick. \nYou resolve to make the Curse-Breaker pay for the crimes he's committed, but not this way. You'll find another path...");
+                                        if (player1.WeaponInventory.Count > 0)
+                                        {
+                                            player1.WeaponInventory.RemoveAt(0);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("you can't do it... It's just no fun when they can't fight back");
+                                    }
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("With the trapdoor beyond reach, you conclude that there is nothing you can do but turn back. \nYou return to the stairwell.");
+                                    newRoom1 = stairwayToLower.CastDoor().Passage(dungeonChamber);
+                                    leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                    break;
+                                }
+                                else
+                                {
+                                    if (journal.Attribute)
+                                    {
+                                        Console.WriteLine("You step over the former paladin, weapon raised. Before you release them from their suffering, you tell them you read their journal and express how grateful you were for their advice. Their words were a source of strength.\n\tThey gaze up at you, uncomprehending... defeated.\n Finally you close their eyes forever...");
+                                        Console.ReadKey(true);
+                                       
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("You step over the ghoul and raise your weapon. You say a few prayers that the gods might deliver their soul complete and true to the afterlife, then tell them your sorry. \nThey gaze up at you, uncomprehending... defeated. \n Finally, you close their eyes forever.");
+                                        Console.ReadKey(true);
+                                    }
+                                    if (!player1.Traits.ContainsKey("sadist"))
+                                    {
+                                        Console.WriteLine($"\nWith {ghoulString} sprawled dead before you. You repeat the act with the second. By the time you're done, blood grimes your sword and tears grit your eyes. You swear that so long as you live, you'll do everything in your power such that this act need never be repeated. \nSteeling yourself, your determined gaze latches upon the trapdoor...");
+                                        Console.ReadKey(true);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("You dust your hands. \nWell, that was some good sport! What next?");
+                                        Console.ReadKey(true);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                string ghoulString = "the pitiable ghoul";
+                                if (journal.Attribute && bookEC3.Attribute)
+                                {
+                                    ghoulString = $"Willow's soulmate";
+                                }
+                                Dialogue sweetMurderousFun = new Dialogue(player1, ghoul2);
+                                string description = $"You take a moment to steel yourself. You take a deep breath. Then you draw your weapon and step towards the {ghoul2.Name}.";
+                                List<string> pityMePlease = new List<string>
+                                {
+                                    $"You see your reflection in the glassy eyes of {ghoulString} as you make your solemn approach, footsteps clapping resolutely upon the cold granite floor. Something behind those eyes gazes back at you, pleading you. But whether it's for mercy or for the release of death, you cannot say...",
+                                    $" They seem to not know themselves as they claw frenziedly at you...",
+                                    $" They still claw at you in pained and sluggish swings, but their efforts are more than feeble. They slowly turn their gaze up at you, a rueful hopelessness lurking somewhere behind its misted and glittering eyes..."
+                                };
+                                List<List<string>> makeAToughChoice = new List<List<string>>
+                                {
+                                    new List<string>
+                                    {
+                                        "Harden your heart and do what must be done.",
+                                        "Surely there's another way...?"
+                                    },
+                                    new List<string>
+                                    {
+                                        "Brush off their struggles and do what's for the best.",
+                                        "No... this can't be right..."
+                                    },
+                                    new List<string>
+                                    {
+                                        "Expunge the pity in your heart and deliver the killing blow.",
+                                        "I'm sorry... I'm so sorry... I can't..."
+                                    }
+                                };
+                                Dictionary<string, string> choice_customResponse = new Dictionary<string, string>
+                                {
+                                    {"Harden your heart and do what must be done.", $"You strike as best you can, but the {ghoul2.Name} struggles against you." },
+                                    {"Brush off their struggles and do what's for the best.", $"The {ghoul2.Name} sinks to their knees, groaning pitiably." },
+                                    {"Surely there's another way...?", $"You back away from {ghoulString}, sheathing your weapon. You'll try a different course of action for now..." },
+                                    {"No... this can't be right...", $"You back away from {ghoulString}, appalled by your actions. Stammering a tearful apology, you resolve to try a different course of action for now..." }
+
+
+                                };
+                                int whichChoice = sweetMurderousFun.LinearParle(choice_customResponse, pityMePlease, makeAToughChoice, description);
+                                if (whichChoice == -1)
+                                {
+                                    Console.WriteLine("With the trapdoor beyond reach, you conclude that there is nothing you can do but turn back. \nYou return to the stairwell.");
+                                    newRoom1 = stairwayToLower.CastDoor().Passage(dungeonChamber);
+                                    leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                    break;
+                                }
+                                else if (whichChoice == -1000)
+                                {
+                                    Console.WriteLine("The ghoul's claw strikes true, tearing into your neck and opening your jugular. You are still alive as the two ghouls feast on you.");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("Your adventure ends here...");
+                                    return;
+                                }
+                                else if (whichChoice == 2)
+                                {
+                                    if (!player1.Traits.ContainsKey("sadist"))
+                                    {
+                                        Console.WriteLine("You stare down in horror at what you've done, throwing your weapon away in disgust. You feel like you might be sick. \nYou resolve to make the Curse-Breaker pay for the crimes he's committed, but not this way. You'll find another path...");
+                                        if (player1.WeaponInventory.Count > 0)
+                                        {
+                                            player1.WeaponInventory.RemoveAt(0);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("you can't do it... It's just no fun when they can't fight back");
+                                    }
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("With the trapdoor beyond reach, you conclude that there is nothing you can do but turn back. \nYou return to the stairwell.");
+                                    newRoom1 = stairwayToLower.CastDoor().Passage(dungeonChamber);
+                                    leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                    break;
+                                }
+                                else
+                                {
+                                    if (bookEC3.Attribute)
+                                    {
+                                        Console.WriteLine("You step over Willow's lover, weapon raised. Before you release them from their suffering, you tell them you found their letter and that once this is over you'll find her and pass on your words. She and their child will want for nothing, you promise.\n\tThey gaze up at you, uncomprehending... defeated.\n Finally you close their eyes forever...");
+                                        Console.ReadKey(true);
+
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("You step over the ghoul and raise your weapon. You say a few prayers that the gods might deliver their soul complete and true to the afterlife, then tell them your sorry. \nThey gaze up at you, uncomprehending... defeated. \n Finally, you close their eyes forever.");
+                                        Console.ReadKey(true);
+                                    }
+                                    if (!player1.Traits.ContainsKey("sadist"))
+                                    {
+                                        Console.WriteLine($"\nWith {ghoulString} sprawled dead before you. You repeat the act with the second. By the time you're done, blood grimes your sword and tears grit your eyes. You swear that so long as you live, you'll do everything in your power such that this act need never be repeated. \nSteeling yourself, your determined gaze latches upon the trapdoor...");
+                                        Console.ReadKey(true);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("You dust your hands. \nWell, that was some good sport! What next?");
+                                        Console.ReadKey(true);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("With the trapdoor beyond reach, you reason that there is nothing you can do but turn back. \nYou return to the stairwell.");
+                            newRoom1 = stairwayToLower.CastDoor().Passage(dungeonChamber);
+                            leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                            break;
+                        }
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine("[2] Investigate the dungeon chamber?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(dungeonChamber.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = dungeonChamber.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                if (newRoom.Name != dungeonChamber.Name)
+                                {
+
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(dungeonChamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
 
 
                 }

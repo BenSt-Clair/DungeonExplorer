@@ -764,7 +764,8 @@ namespace DungeonCrawler
     {
         public List<Room> Portal { get; set; }
         public string Passing { get; set; }
-        public Door(string name = "door", string description = "It's a pretty ordinary door", bool attribute = true, string specificAttribute = "locked", List<Item> itemList = null, List<Room> portal = null, string passing = "You pass through the door and into the next room...")
+        public bool Dark {  get; set; }
+        public Door(string name = "door", string description = "It's a pretty ordinary door", bool attribute = true, string specificAttribute = "locked", List<Item> itemList = null, List<Room> portal = null, string passing = "You pass through the door and into the next room...", bool dark = false)
         {
             Name = name;
             Description = description;
@@ -773,6 +774,7 @@ namespace DungeonCrawler
             ItemList = itemList;
             Portal = portal;
             Passing = passing;
+            Dark = dark;
         }
         public Room Passage(Room room)
         {

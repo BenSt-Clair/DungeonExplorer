@@ -43,7 +43,16 @@ namespace DungeonCrawler
                 item.Attribute = true;
                 item.SpecifyAttribute = "read";
             }
-
+            else if (item.Name == "love letter")
+            {
+                item.Attribute = true;
+                item.SpecifyAttribute = "read";
+            }
+            else if (item.Name == "worn journal")
+            {
+                item.Attribute= true;
+                item.SpecifyAttribute = "read";
+            }
             Console.WriteLine(item.Description);
             if(item.Name == "book on cursed weapons")
             {

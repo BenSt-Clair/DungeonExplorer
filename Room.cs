@@ -232,6 +232,19 @@ namespace DungeonCrawler
 
                 return roomList;
             }
+            else if (Name == "dungeon chamber")//before oubliette, ghoul named willow
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 20)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
             else if (Name == "huge barracks")// killed by army
             {
                 for (int i = 0; i < roomList.Count; i++)

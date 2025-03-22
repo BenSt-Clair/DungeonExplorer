@@ -23,6 +23,11 @@ namespace DungeonCrawler
             _combat = combat;
             _room = room;
         }
+        public Dialogue(Player player, Monster monster) 
+        {
+            _player = player; 
+            _interlocutor = monster;
+        }
         public Dialogue(Item item)
         {
             _item = item;
@@ -218,8 +223,15 @@ namespace DungeonCrawler
                             Console.ReadKey(true);
                             return -1;
                         }
+                        else if (choice_CustomResponse[playerChoices[node][answer1]] == "Surely there's another way...?" || choice_CustomResponse[playerChoices[node][answer1]] == "No... this can't be right...")
+                        {
+                            Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]]);
+                            Console.ReadKey(true);
+                            return -1;
+                        }
                         
                         Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]] + " " + parlances[node + 1]);
+                        
                         break;
                     }
                     catch
@@ -230,6 +242,18 @@ namespace DungeonCrawler
 
                 }
                 node++;
+                if (_interlocutor != null && _player != null)
+                {
+                    if (_interlocutor.Name.Contains("ghoul"))
+                    {
+                        _player.Stamina -= (3-node) * 4;
+                        Console.WriteLine($"You've lost {(3 - node)*4} stamina points!");
+                        if (_player.Stamina < 1)
+                        {
+                            return -1000;
+                        }
+                    }
+                }
             }
             if (!(parlances.Count == 1))
             {
