@@ -1377,7 +1377,7 @@ namespace DungeonCrawler
                         //stopwatch.Start();
                         if (Monster.Stamina > 0 && Monster2.Stamina > 0)
                         {
-                            Console.WriteLine($"Do you attack... \n[1] the {Monster.Name}\n[2] or the {Monster2.Name}?\n[You've only 5 seconds to decide]");
+                            Console.WriteLine($"Do you attack... \n[1] the {Monster.Name}\n[2] or the {Monster2.Name}?\n[You've only 3 seconds to decide]");
                             
                             stopwatch.Start();
                             while (true)
@@ -1400,7 +1400,7 @@ namespace DungeonCrawler
                                     {
                                         stopwatch.Stop();
                                         timeLapsed = stopwatch.ElapsedMilliseconds;
-                                        if (timeLapsed < 5000)
+                                        if (timeLapsed < 3000)
                                         {
                                             pugilism = new List<Dice>();
                                             i = 0;
@@ -1496,7 +1496,7 @@ namespace DungeonCrawler
                                     {
                                         stopwatch.Stop();
                                         timeLapsed = stopwatch.ElapsedMilliseconds;
-                                        if (timeLapsed < 5000)
+                                        if (timeLapsed < 3000)
                                         {
                                             pugilism = new List<Dice>();
                                             i = 0;

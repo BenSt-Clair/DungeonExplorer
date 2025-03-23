@@ -734,6 +734,8 @@ namespace DungeonCrawler
         public string Description { get; set; }
         public List<Item> Items { get; set; }
         public Weapon Veapon { get; set; }
+        public Room Location { get; set; }
+        public List<Room> Path { get; set; }
         public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon)
         {
             Name = name;
@@ -742,6 +744,17 @@ namespace DungeonCrawler
             Stamina = stamina;
             Skill = skill;
             Veapon = weapon;
+        }
+        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, Room location, List<Room> path)
+        {
+            Name = name;
+            Description = description;
+            Items = items;
+            Stamina = stamina;
+            Skill = skill;
+            Veapon = weapon;
+            Location = location;
+            Path = path;
         }
         public string getDescription() { return Description; }
         public string getName() { return Name; }

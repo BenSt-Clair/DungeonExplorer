@@ -1185,7 +1185,7 @@ namespace DungeonCrawler
                                         "You recount the time you mixed drinks at a party and the whole brewery exploded like a firework display...",
                                         "You reminisce when a humble bridgekeeper asked you what the air speed velocity of an unladen swallow was, and he was suddenly launched twenty feet into the air...",
                                         "You remember your first battle when you were... *ahem* ...preoccupied behind some bushes. Some bugger tried to steal your horse so you snuck up and beheaded them, only to discover it was your own king...",
-                                        "You ruminate on the time you couldn't stop snickering at the name of your commander's fiend, Biggus Dicus. He had everyone executed for insubordinate giggling just after you excused yourself..."
+                                        "You ruminate on the time you couldn't stop snickering at the name of your commander's friend, Biggus Diccus. He had everyone executed for insubordinate giggling just after you excused yourself..."
                                     };
                                     speech = goblin_RustyChains.Parle(description, parlance, responses);
                                     switch (speech)
@@ -1223,6 +1223,7 @@ namespace DungeonCrawler
                                             Console.WriteLine("The jailor dies.");
                                             Console.ReadKey(true);
                                             Console.WriteLine("You look down and find the jailor's keys are just peeping through the gap under the door. With a happy-go-lucky shrug, you manage to purloin them from your captor and open the door to escape! \nYou find the dead goblin just by the foot of your door, it's face frozen in a rictus of half way between terror and hilarity.");
+                                            battle.Monster.Items.Remove(jailorKeys);
                                             battle.WonFight(room);
                                             inventory.Add(jailorKeys);
                                             return false;
@@ -1665,7 +1666,7 @@ namespace DungeonCrawler
                                     "You recount the time you mixed drinks at a party and the whole brewery exploded like a firework display...",
                                     "You reminisce when a humble bridgekeeper asked you what the air speed velocity of an unladen swallow was, and he was suddenly launched twenty feet into the air...",
                                     "You remember your first battle when you were... *ahem* ...preoccupied behind some bushes. Some bugger tried to steal your horse so you snuck up and beheaded them, only to discover it was your own king...",
-                                    "You ruminate on the time you couldn't stop snickering at the name of your commander's fiend, Biggus Dicus. He had everyone executed for insubordinate giggling just after you excused yourself..."
+                                    "You ruminate on the time you couldn't stop snickering at the name of your commander's friend, Biggus Diccus. He had everyone executed for insubordinate giggling just after you excused yourself..."
                                 };
                                 speech = goblin_RustyChains.Parle(description, parlance, responses);
                                 switch (speech)
@@ -1702,6 +1703,7 @@ namespace DungeonCrawler
                                         Console.WriteLine("The jailor dies.");
                                         Console.ReadKey(true);
                                         Console.WriteLine("You look down and find the jailor's keys are just peeping through the gap under the door. With a happy-go-lucky shrug, you manage to purloin them from your captor and open the door to escape! \nYou find the dead goblin just by the foot of your door, it's face frozen in a rictus of half way between terror and hilarity.");
+                                        battle.Monster.Items.Remove(jailorKeys);
                                         battle.WonFight(room);
                                         inventory.Add(jailorKeys);
                                         return false;
@@ -1719,7 +1721,7 @@ namespace DungeonCrawler
                                     "You recount the time you mixed drinks at a party and the whole brewery exploded like a firework display...",
                                     "You reminisce when a humble bridgekeeper asked you what the air speed velocity of an unladen swallow was, and he was suddenly launched twenty feet into the air...",
                                     "You remember your first battle when you were... *ahem* ...preoccupied behind some bushes. Some bugger tried to steal your horse so you snuck up and beheaded them, only to discover it was your own king...",
-                                    "You ruminate on the time you couldn't stop snickering at the name of your commander's fiend, Biggus Dicus. He had everyone executed for insubordinate giggling just after you excused yourself..."
+                                    "You ruminate on the time you couldn't stop snickering at the name of your commander's friend, Biggus Diccus. He had everyone executed for insubordinate giggling just after you excused yourself..."
                                 };
                             speech = goblin_RustyChains.Parle(description, parlance, responses);
                             switch (speech)
@@ -1755,6 +1757,7 @@ namespace DungeonCrawler
                                     Console.WriteLine("The jailor dies.");
                                     Console.ReadKey(true);
                                     Console.WriteLine("You look down and find the jailor's keys are just peeping through the gap under the door. With a happy-go-lucky shrug, you manage to purloin them from your captor and open the door to escape! \nYou find the dead goblin just by the foot of your door, it's face frozen in a rictus of half way between terror and hilarity.");
+                                    battle.Monster.Items.Remove(jailorKeys);
                                     battle.WonFight(room);
                                     inventory.Add(jailorKeys);                             
                                     return false;
