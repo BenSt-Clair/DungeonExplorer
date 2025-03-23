@@ -602,7 +602,7 @@ namespace DungeonCrawler
             Door stairwayToUpper = new Door("lit stairway", "The wide flight of stone steps slowly curves around, leading to somewhere unseen but well-lit.", false, "unblocked", null, null, "You embark along the stairs two at a time.");
             Door otherRosewoodDoor = new Door("near door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in.", true, "locked", null, null, "The door creaks ominously as you furtively pace into the next room.");
             Door armouryDoor = new Door("RmorRee door", "Its a heavyset door studded with iron bolts and a thoroughly unwelcoming aspect.", false, "unlocked", null, null, "The door swings open with a heave and opens into the next room...");
-            Door circleDoor = new Door("double doors", "An ornate and set of vast double doors with brass locks and filigreed handles. You reckon a troll could fit through that door...", true, "locked", null, null, "You open one of the doors open just a fraction and slip your way through...");
+            Door circleDoor = new Door("double doors", "An ornate and set of vast double doors with brass locks and filigreed handles. You reckon something as large as a troll could fit through that door...", true, "locked", null, null, "You open one of the doors open just a fraction and slip your way through...");
             Door emptyCellDoor = new Door("far door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in. You notice the lock has scratches made from the inside. You surmise someone has attempted picking the lock, but unless they had something more than just a bobby pin, it's doubtful they succeeded.", true, "locked", null, null);
             Door magManDoor = new Door();
             Door messHallDoor = new Door();
@@ -1354,6 +1354,7 @@ namespace DungeonCrawler
                     corridor.FeatureList[2].CastDoor().Portal = null;
                     fireProgress = 1;
                     Console.ReadKey(true);
+                    player1.FieryEscape = true;
                     
                 }
                 else
@@ -3860,6 +3861,7 @@ namespace DungeonCrawler
                             
                             Console.WriteLine("You dust your hands. Now what will you do?");
                             visitedArmouryBefore = true;
+                            armoury.Description = "Stepping back into the armoury you see the familiar clutter of sabatons and breastplates, bracers and helmets, all scattered about you. \nThe high walls of the 'RmorRee' extend to a vaulted ceiling and appear to have been stripped of many ladders and shelves judging by the bare patches and splintered wood panels left behind. The north wall in particular is one of the few that betrays what this room might've been before its spartan refurbishment; a rosewood bookcase, replete with tomes, greets your gaze directly ahead.\t\nThe west wall to your left is where the table is situated where the gnoll and goblin played their game of coins.\t\nFacing south you find the door you just passed through.\t\nTo your right, gazing east, you see racks fully stocked with weapons and armour.\t\t";
                         }
                         if (!(a == 0 && b == 0))
                         {

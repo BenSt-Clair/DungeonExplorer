@@ -96,7 +96,7 @@ namespace DungeonCrawler
                             {"How can I defeat the Curse-Breaker?", "\n\n\t'A maggot devours its fill. Once it is sated it will form its chrysalis, wherein its skin is shed and its body eaten from the inside by a new form..." +
                             " \n\tThis form is one with wings. Wings are a feature of Fey denizens too, even if metamorphosis is not. That is normally where any similarities you may like to draw end. \n\tBut tonight there exists something also awaiting transformation in the dungeons far below." +
                             "\nWithin this chrysalis of stone and mortar and forbidden magic it has its own wings, whose beauty lies in their lethality. \n\n\tThe Curse-Breaker is a man. While he is a man he is vulnerable to sharp steel and poisons and fire like any other man. " +
-                            "\nBut he is also a man yet to shed his skin. A man yet to transfigure wings from within another. And his ambitions inch him closer to that goal.\n\n" +
+                            "\nBut he is also a man yet to shed his skin. A man yet to transfigure those frightful wings from within another. And his ambitions inch him closer to that goal.\n\n" +
                             "You have until midnight to slay a man upon the highest parapet, or else be doomed..." },
 
                             {"Where am I?", "\n\n\t'An abode once loved,\nA time long lost, " +
@@ -180,7 +180,7 @@ namespace DungeonCrawler
         /// </summary>
         /// <param name="inventory"></param>
         /// <param name="weaponInventory"></param>
-        public Room Search(int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, Room room)
+        public Room Search(int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, Room room, bool fieryEscape)
         {
             Console.WriteLine($"Rummaging about the {Name}, you find the following;");
             int r = 1;
@@ -741,7 +741,7 @@ namespace DungeonCrawler
                         }
                         else if (reply == "y" || reply == "yes")
                         {
-                            if(room.Name == "armoury" && room.FirstVisit)
+                            if(room.Name == "armoury" && room.FirstVisit && !fieryEscape)
                             {
                                 Console.WriteLine("You pull away from the door suddenly!");
                                 Console.ReadKey(true);
@@ -751,9 +751,9 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.Write("a jostle of keys, tumblers turn and a door opens wide - but not your door. You listen closely, heart galloping in your all too tight chest, as the massive beast out in the antechamber strides through the double doors under the mosaic and beyond. Those doors close shut with an eerie creak, you hear them locked again, then the heavy footfalls fade into the distance...");
                                 Console.ReadKey(true);
-                                Console.WriteLine("Whatever that thing was,");
+                                Console.WriteLine("Whatever that thing was,"
                                 
-                                Console.Write(" you sense with an icy dread that battling it would be the very last thing you do.");
+                                + " you sense with an icy dread that battling it would be the very last thing you do.");
                                 Console.ReadKey(true);
                                 room.FirstVisit = false;
                             }
