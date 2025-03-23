@@ -767,12 +767,28 @@ namespace DungeonCrawler
             List<Room> emptyCellPassage = new List<Room> { corridor, emptyCell };
             List<Room> armouryDoorway = new List<Room> { antechamber, armoury};
             List<Room> hatchPassage = new List<Room> { oubliette, dungeonChamber };
+            List<Room> circleDoorPass = new List<Room> { antechamber, westernmostCorridor};
+            List<Room> northwestCornerTurn = new List<Room> {westernmostCorridor, northernmostCorridor };
+            List<Room> southwestCornerTurn = new List<Room> { westernmostCorridor, southernmostCorridor };
+            List<Room> northeastCornerTurn = new List<Room> {easternmostCorridor, northernmostCorridor };
+            List<Room> southeastCornerTurn = new List<Room> { southernmostCorridor, easternmostCorridor };
+            List<Room> magManPassage = new List<Room> {northernmostCorridor, magicalManufactory };
+            List<Room> messHallPassage = new List<Room> {easternmostCorridor, messHall };
+            List<Room> broomClosetPassage = new List<Room> {northernmostCorridor, broomCloset };
             rosewoodDoor.CastDoor().Portal = yourCellDoor;            
             otherRosewoodDoor.CastDoor().Portal = otherCellDoor;            
             stairwayToLower.CastDoor().Portal = stairwellDown;
             stairwayToUpper.CastDoor().Portal = stairwayUp;
             emptyCellDoor.CastDoor().Portal = emptyCellPassage;
             armouryDoor.CastDoor().Portal = armouryDoorway;
+            northeastCorner.CastDoor().Portal = northeastCornerTurn;
+            northwestCorner.CastDoor().Portal= northwestCornerTurn;
+            southeastCorner.CastDoor().Portal = southeastCornerTurn;
+            southwestCorner.CastDoor().Portal = southwestCornerTurn;
+            magManDoor.CastDoor().Portal = magManPassage;
+            circleDoor.CastDoor().Portal = circleDoorPass;
+            broomClosetDoor.CastDoor().Portal = broomClosetPassage;
+            messHallDoor.CastDoor().Portal = messHallPassage;
             Test test1 = new Test(room);
             test1.RunForRoom();
             ///
@@ -1433,11 +1449,13 @@ namespace DungeonCrawler
                     }
                 }
                 List<bool> leftWhichRooms = new List<bool> {true, false, true, true, true, true, 
-                true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+                true, true, true, true, true, true, true, true, true, true, true, true, true, true, 
+                true, true, true, true};
                 Room newRoom1 = corridor;
                 bool victorious = false;
                 bool visitedRoom = true;
                 bool visitedArmouryBefore = false;
+                
                 int b1 = 0;
                 Stopwatch fireClock = new Stopwatch();
                 fireClock.Start();
@@ -3970,7 +3988,7 @@ namespace DungeonCrawler
                     }
                     b = 0;
                     a = 0;
-                    while (!leftWhichRooms[7])//circular landing
+                    while (!leftWhichRooms[7])//circular landing : change to westernmost corridor
                     {
                         ///special room with minotaur patrolling, use of Task and time
                         ///might have to split into 4 rooms, one for each passage
@@ -4004,7 +4022,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(circularLanding.ItemList);
+                                player1.SearchPack(westernmostCorridor.ItemList);
                                 a++;
 
                             }
@@ -4013,8 +4031,8 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = circularLanding.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
-                                if (newRoom.Name != circularLanding.Name)
+                                Room newRoom = westernmostCorridor.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                if (newRoom.Name != westernmostCorridor.Name)
                                 {
 
                                     leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
@@ -4029,7 +4047,214 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(circularLanding, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(westernmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    if (visitedRoom)
+                    {
+                        Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
+                        visitedRoom = false;
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[21])//north-facing corridor
+                    {
+                        visitedRoom = true;
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine("[2] Investigate the north-facing corridor?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(northernmostCorridor.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = northernmostCorridor.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                if (newRoom.Name != northernmostCorridor.Name)
+                                {
+
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(northernmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    if (visitedRoom)
+                    {
+                        Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
+                        visitedRoom = false;
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[22])//easternmost corridor
+                    {
+                        visitedRoom = true;
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine("[2] Investigate the easternmost corridor?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(easternmostCorridor.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = easternmostCorridor.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                if (newRoom.Name != easternmostCorridor.Name)
+                                {
+
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(easternmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                            }
+                        }
+                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    }
+                    if (visitedRoom)
+                    {
+                        Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
+                        visitedRoom = false;
+                    }
+                    b = 0;
+                    a = 0;
+                    while (!leftWhichRooms[23])//south-facing corridor
+                    {
+                        visitedRoom = true;
+                        usesDictionaryItemItem.Clear();
+                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
+                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
+                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                        ///enter new Dictionaries for item use here
+                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                        ///red herring in room above
+                        ///Specific for each room, tailored.
+                        if (!(a == 0 && b == 0))
+                        {
+                            Console.WriteLine("Now what will you do?");
+                        }
+                        Console.WriteLine("[1] Check what items are still on your person?");
+                        Console.WriteLine("[2] Investigate the south-facing corridor?");
+                        if (b > 0)
+                        {
+                            Console.WriteLine("[3] Use one of your items on something?");
+                        }
+                        string reply = Console.ReadLine().ToLower().Trim();
+                        try
+                        {
+                            int reply1 = int.Parse(reply);
+                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            {
+                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                continue;
+                            }
+                            else if (reply1 == 1)
+                            {
+                                player1.SearchPack(southernmostCorridor.ItemList);
+                                a++;
+
+                            }
+                            else if (reply1 == 2)
+                            {
+                                ///when player discards rusty chains they may appear more than once. 
+                                ///fungshui() is present to preempt that and prevent duplicates.
+
+                                Room newRoom = southernmostCorridor.Investigate(player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                if (newRoom.Name != southernmostCorridor.Name)
+                                {
+
+                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
+                                    newRoom1 = newRoom;
+                                    continue;
+                                }
+
+
+                                b++;
+                            }
+                            else
+                            {
+                                List<bool> success = new List<bool>();
+                                test3.RunForCombat();
+                                success = player1.UseItemOutsideCombat(southernmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -5389,6 +5614,7 @@ namespace DungeonCrawler
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
                     }
+                    
 
 
                 }

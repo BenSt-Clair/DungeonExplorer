@@ -741,6 +741,22 @@ namespace DungeonCrawler
                         }
                         else if (reply == "y" || reply == "yes")
                         {
+                            if(room.Name == "armoury" && room.FirstVisit)
+                            {
+                                Console.WriteLine("You pull away from the door suddenly!");
+                                Console.ReadKey(true);
+                                Console.WriteLine("Around you the weapons are rattling upon their racks. The door trembles and the ground quakes beneath your feet. You can hear something - and *feel* something - very big and very heavy stomping up the lit stairway, each heavy footfall reverberating through the door. \nYou back away slowly, your clammy hand feverishly reaching to clasp a weapon. Your breath catches in your throat as whatever approaches stops outside your door.");
+                                Console.ReadKey(true);
+                                Console.WriteLine("You wait with bated breath in the crackling silence. Then, ");
+                                Console.ReadKey(true);
+                                Console.Write("a jostle of keys, tumblers turn and a door opens wide - but not your door. You listen closely, heart galloping in your all too tight chest, as the massive beast out in the antechamber strides through the double doors under the mosaic and beyond. Those doors close shut with an eerie creak, you hear them locked again, then the heavy footfalls fade into the distance...");
+                                Console.ReadKey(true);
+                                Console.WriteLine("Whatever that thing was,");
+                                
+                                Console.Write(" you sense with an icy dread that battling it would be the very last thing you do.");
+                                Console.ReadKey(true);
+                                room.FirstVisit = false;
+                            }
                             Room newRoom = this.CastDoor().Passage(room);
                             
                             return newRoom;

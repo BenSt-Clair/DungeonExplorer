@@ -14,12 +14,14 @@ namespace DungeonCrawler
         public string Description { get; set; }
         public List<Item> ItemList { get; set; }
         public List<Feature> FeatureList { get; set; }
-        public Room(string name, string description, List<Item> itemList, List<Feature> featureList)
+        public bool FirstVisit { get; set; }
+        public Room(string name, string description, List<Item> itemList, List<Feature> featureList, bool firstVisit = true)
         {
             Name = name;
             Description = description;
             ItemList = itemList;
             FeatureList = featureList;
+            FirstVisit = firstVisit;
         }
         public List<bool> WhichRoom(List<bool> roomList)
         {
@@ -115,7 +117,7 @@ namespace DungeonCrawler
 
                 return roomList;
             }
-            else if (Name == "circular landing")
+            else if (Name == "westernmost corridor")
             {
                 for (int i = 0; i < roomList.Count; i++)
                 {
@@ -290,6 +292,45 @@ namespace DungeonCrawler
                 {
                     roomList[i] = true;
                     if (i == 15)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "north-facing corridor") // fight skill 10 boon 10 stamina 999, or else dialogue answer riddle and magicked back
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 21)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "easternmost corridor") // fight skill 10 boon 10 stamina 999, or else dialogue answer riddle and magicked back
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 22)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
+            else if (Name == "south-facing corridor") // fight skill 10 boon 10 stamina 999, or else dialogue answer riddle and magicked back
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 23)
                     {
                         roomList[i] = false;
                     }
