@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace DungeonCrawler
@@ -739,6 +740,8 @@ namespace DungeonCrawler
         public List<Room> Path { get; set; }
         public bool Rage { get; set; }
         public bool Suspicious { get; set; }
+        public Stopwatch Patrol { get; set; }
+        public long Time { get; set; }
         public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, bool rage = false)
         {
             Name = name;
@@ -748,7 +751,7 @@ namespace DungeonCrawler
             Skill = skill;
             Veapon = weapon;
         }
-        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, Room location, List<Room> path, bool rage = false, bool suspicious = false)
+        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, Room location, List<Room> path, bool rage = false, bool suspicious = false, Stopwatch patrol = null)
         {
             Name = name;
             Description = description;
@@ -760,6 +763,32 @@ namespace DungeonCrawler
             Path = path;
             Rage = rage;
             Suspicious = suspicious;
+            Patrol = patrol;
+            Time = Path.Count * 15000;
+        }
+        public void MinotaurReturns(Room room)
+        {
+            this.Patrol.Stop();
+            long time = this.Time - this.Patrol.ElapsedMilliseconds;
+
+
+            if (time < (this.Path.Count - 2) * 20000 && this.Location.Name != "north-facing corridor")
+            {
+                this.Location = this.Path[1];
+                if (room.Name.Contains("corridor") || room.Name == "mess hall" || room.Name == "broom closet" || room.Name == "antechamber" || room.Name == "armoury")
+                {
+                    Console.WriteLine($"You hear the monster's lumbering footfalls as it moves into the {this.Location.Name}...");
+                }
+                this.Path.RemoveAt(0);
+
+            }
+            this.Patrol.Start();
+            if (this.Location.Name == "north-facing corridor")
+            {
+                this.Patrol = new Stopwatch();
+                this.Time = (this.Path.Count - 1) * 20000;
+            }
+
         }
         public string getDescription() { return Description; }
         public string getName() { return Name; }

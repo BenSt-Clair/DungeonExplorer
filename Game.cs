@@ -1171,8 +1171,7 @@ namespace DungeonCrawler
                         {
                             if (newRoom1.Name.Contains("corridor"))
                             {
-                                minotaur.Location = oldRoom;
-                                minotaur.Path.Add(oldRoom);
+                                
                                 Console.WriteLine("Back pressed against the wall by the corner you hear the beast's heavy breathing and grunts as it scours the corridor you just left. You can almost feel its eyes linger on the corner you just turned. As it stalks a pace or two further forward, your breath catches as you see its huge shadow climb the wall opposite you...");
                                 Console.ReadKey(true);
                                 if (!circleDoor.Attribute && oldRoom == westernmostCorridor)
@@ -1182,6 +1181,8 @@ namespace DungeonCrawler
                                     
                                     if (searching > 5 && newRoom1 != antechamber)
                                     {
+                                        minotaur.Location = oldRoom;
+                                        minotaur.Path.Insert(0, oldRoom);
                                         Console.WriteLine("The monster is about to turn back when it notices something. You feel your pulse thumping in double time as you realise you left the double doors unlocked and slightly ajar! Now the beast knows you're here...");
                                         minotaur.Suspicious = true;
                                         return minotaurStalks(newRoom1, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
@@ -1196,8 +1197,7 @@ namespace DungeonCrawler
                                 }
                                 else
                                 {
-                                    minotaur.Location = oldRoom;
-                                    minotaur.Path.Add(oldRoom);
+                                    
                                     Console.WriteLine("Back pressed against the wall by the corner you hear the beast's heavy breathing and grunts as it scours the corridor you just left. You can almost feel its eyes linger on the corner you just turned. As it stalks a pace or two further forward, your breath catches as you see its huge shadow climb the wall opposite you...");
                                     Console.ReadKey(true);
                                     Console.WriteLine("The beast heads back the way it came...");
@@ -1219,7 +1219,7 @@ namespace DungeonCrawler
                         else
                         {
                             minotaur.Location = oldRoom;
-                            minotaur.Path.Add(oldRoom);
+                            minotaur.Path.Insert(0, oldRoom);
                             if (minotaur.Suspicious || minotaur.Rage)
                             {
                                 Dice D8 = new Dice(8);
@@ -1236,6 +1236,7 @@ namespace DungeonCrawler
                                 else
                                 {
                                     Console.WriteLine("The beast growls as it scans for any sign of you. Finally, you hear the monster's heavy footfalls as it returns from whence it came.");
+                                    minotaur.Time = (minotaur.Path.Count-1) * 20000;
                                     return newRoom1;
                                 }
                             }
@@ -1244,6 +1245,7 @@ namespace DungeonCrawler
                                 Console.WriteLine("The monster sniffs the air, as though to catch some unfamiliar scent...");
                                 Console.ReadKey(true);
                                 Console.WriteLine("Finally, you hear the beast's heavy footfalls as it returns from whence it came.");
+                                minotaur.Time = (minotaur.Path.Count - 1) * 20000;
                                 return newRoom1;
                             }
                         }
@@ -1254,6 +1256,7 @@ namespace DungeonCrawler
                     return newRoom1;
                 }
             }
+            
             
             //
             //
@@ -1320,7 +1323,7 @@ namespace DungeonCrawler
             List<Item> minotaurInventory = new List<Item> { vanquisher, armBand, belt, diadem };
             List<Room> minotaurPath = new List<Room> { northernmostCorridor};
             Stopwatch minotaurTimer = new Stopwatch();
-            Monster minotaur = new Monster("minotaur", "towering above you at eight feet, the minotaur levels its horns towards you, tenses its powerful muscles, and charges!", minotaurInventory, 120, 10, vanquisher, northernmostCorridor, minotaurPath);
+            Monster minotaur = new Monster("minotaur", "towering above you at eight feet, the minotaur levels its horns towards you, tenses its powerful muscles, and charges!", minotaurInventory, 120, 10, vanquisher, northernmostCorridor, minotaurPath, false, false, minotaurTimer);
             Monster goblin = new Monster("goblin", "The goblin's swarthy, pock-marked skin does little to lessen the effect of its ugly snarl.", goblinInventory, 50, 2, scimitar);
             Monster ghoul2 = new Monster("ghoul engaged to Willow", "", gnollInventory, 1, 1, bite);
             Monster ghoul1 = new Monster("ghoul with paladin garb", "", gnollInventory, 1, 1, bite);
@@ -4282,6 +4285,23 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
+                        if (minotaur.Stamina > 0)
+                        {
+                            minotaur.MinotaurReturns(messHall);
+                            if (minotaur.Location == messHall)
+                            {
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, messHall, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                {
+                                    minotaurKafuffle.WonFight(messHall);
+                                }
+                                else
+                                {
+                                    return;
+                                }
+                            }
+                            minotaurApproaches(messHall, minotaur, false, 14000, false, minotaur.Rage);
+                        }
+                        
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                         ///red herring in room above
