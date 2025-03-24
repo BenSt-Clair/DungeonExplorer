@@ -1112,6 +1112,149 @@ namespace DungeonCrawler
                 }
                 
             }
+            Room minotaurStalks(Room newRoom1, Monster minotaur, long minotaurAlertedBy, long minotaurAlerted, Combat minotaurKafuffle, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar, List<bool> leftWhichRooms)
+            {
+                List<Door> doors = new List<Door>();
+                foreach(Feature f in room.FeatureList)
+                {
+                    if(f is Door)
+                    {
+                        doors.Add(f.CastDoor());
+                    }
+                }
+                List<Room> locationLocationLocation = new List<Room>();
+                foreach(Door d in doors)
+                {
+                    foreach(Room r in d.Portal)
+                    {
+                        if (r != newRoom1)
+                        {
+                            locationLocationLocation.Add(r);
+                        }
+                    }
+                }
+                if (locationLocationLocation.Contains(minotaur.Location) && minotaur.Stamina > 1 && minotaurAlertedBy < minotaurAlerted)
+                {
+                    Room oldRoom = newRoom1;
+                    newRoom1 = minotaurApproaches(oldRoom, minotaur, westernmostCorridor.FirstVisit, 14000, false, minotaur.Rage);
+                    if (oldRoom.Name == newRoom1.Name)
+                    {
+                        if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, oldRoom, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                        {
+                            minotaurKafuffle.WonFight(newRoom1);
+                            leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                            return newRoom1;
+                        }
+                        else
+                        {
+                            Console.ReadKey(true);
+                            return oceanBottom;
+                        }
+                    }
+                    else if (minotaur.Location.Name == newRoom1.Name)
+                    {
+                        if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, minotaur.Location, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, true, player1.Masked))
+                        {
+                            minotaurKafuffle.WonFight(newRoom1);
+                            leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                            return newRoom1;
+                        }
+                        else
+                        {
+                            Console.ReadKey(true);
+                            return oceanBottom;
+                        }
+                    }
+                    else
+                    {
+                        if (oldRoom == westernmostCorridor && westernmostCorridor.FirstVisit)
+                        {
+                            if (newRoom1.Name.Contains("corridor"))
+                            {
+                                minotaur.Location = oldRoom;
+                                minotaur.Path.Add(oldRoom);
+                                Console.WriteLine("Back pressed against the wall by the corner you hear the beast's heavy breathing and grunts as it scours the corridor you just left. You can almost feel its eyes linger on the corner you just turned. As it stalks a pace or two further forward, your breath catches as you see its huge shadow climb the wall opposite you...");
+                                Console.ReadKey(true);
+                                if (!circleDoor.Attribute && oldRoom == westernmostCorridor)
+                                {
+                                    Dice D8 = new Dice(8);
+                                    int searching = D8.Roll(D8);
+                                    
+                                    if (searching > 5 && newRoom1 != antechamber)
+                                    {
+                                        Console.WriteLine("The monster is about to turn back when it notices something. You feel your pulse thumping in double time as you realise you left the double doors unlocked and slightly ajar! Now the beast knows you're here...");
+                                        minotaur.Suspicious = true;
+                                        return minotaurStalks(newRoom1, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("You hear the monster growl before the double doors close shut and are once again locked. The beast heads back the way it came...");
+                                        circleDoor.Attribute = true;
+                                        circleDoor.SpecificAttribute = "locked";
+                                        return newRoom1;
+                                    }
+                                }
+                                else
+                                {
+                                    minotaur.Location = oldRoom;
+                                    minotaur.Path.Add(oldRoom);
+                                    Console.WriteLine("Back pressed against the wall by the corner you hear the beast's heavy breathing and grunts as it scours the corridor you just left. You can almost feel its eyes linger on the corner you just turned. As it stalks a pace or two further forward, your breath catches as you see its huge shadow climb the wall opposite you...");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("The beast heads back the way it came...");
+                                    circleDoor.Attribute = true;
+                                    circleDoor.SpecificAttribute = "locked";
+                                    return newRoom1;
+                                }
+                            }
+                            else
+                            {
+                                
+                                Console.WriteLine("Back pressed against the door you realise you've left it unlocked! \nYour heart knocks against your chest as you hear the monster pass by. It pauses a moment, seemingly scanning the corridor...");
+                                Console.ReadKey(true);
+                                Console.WriteLine("Finally, you hear the monster's heavy footfalls as it returns from whence it came.");
+                                return newRoom1;
+                            }
+
+                        }
+                        else
+                        {
+                            minotaur.Location = oldRoom;
+                            minotaur.Path.Add(oldRoom);
+                            if (minotaur.Suspicious || minotaur.Rage)
+                            {
+                                Dice D8 = new Dice(8);
+                                int searching = D8.Roll(D8);
+                                if (minotaur.Rage && searching > 4)
+                                {
+                                    return minotaurStalks(newRoom1, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
+                                    ///make into recursive function
+                                }
+                                else if (minotaur.Suspicious && searching > 6)
+                                {
+                                    return minotaurStalks(newRoom1, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("The beast growls as it scans for any sign of you. Finally, you hear the monster's heavy footfalls as it returns from whence it came.");
+                                    return newRoom1;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("The monster sniffs the air, as though to catch some unfamiliar scent...");
+                                Console.ReadKey(true);
+                                Console.WriteLine("Finally, you hear the beast's heavy footfalls as it returns from whence it came.");
+                                return newRoom1;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    return newRoom1;
+                }
+            }
+            
             //
             //
             //
@@ -4226,8 +4369,8 @@ namespace DungeonCrawler
                         sw.Start();
                         if ((minotaur.Location == northernmostCorridor || minotaur.Location == southernmostCorridor || minotaur.Location == antechamber) && minotaur.Stamina > 1 && minotaurAlertedBy < minotaurAlerted)
                         {
-                            Room room1 = minotaurApproaches(westernmostCorridor, minotaur, westernmostCorridor.FirstVisit, 14000, false, minotaur.Rage);
-                            if (westernmostCorridor.Name == room1.Name)
+                            newRoom1 = minotaurApproaches(westernmostCorridor, minotaur, westernmostCorridor.FirstVisit, 14000, false, minotaur.Rage);
+                            if (westernmostCorridor.Name == newRoom1.Name)
                             {
                                 if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, westernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
                                 {
@@ -4239,11 +4382,13 @@ namespace DungeonCrawler
                                     return;
                                 }
                             }
-                            else if(minotaur.Location.Name == room1.Name)
+                            else if(minotaur.Location.Name == newRoom1.Name)
                             {
                                 if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, minotaur.Location, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, true, player1.Masked))
                                 {
-                                    minotaurKafuffle.WonFight(westernmostCorridor);
+                                    minotaurKafuffle.WonFight(newRoom1);
+                                    leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                    continue;
                                 }
                                 else
                                 {
@@ -4255,11 +4400,39 @@ namespace DungeonCrawler
                             {
                                 if (westernmostCorridor.FirstVisit)
                                 {
-                                    Console.WriteLine("Back pressed against the wall you hear the beast enter where you'd ");
+                                    if (newRoom1.Name.Contains("corridor"))
+                                    {
+                                        Console.WriteLine("Back pressed against the wall by the corner you hear the beast's heavy breathing and grunts as it scours the corridor you just left. You can almost feel its eyes linger on the corner you just turned. As it stalks a pace or two further forward, your breath catches as you see its huge shadow climb the wall opposite you...");
+                                        Console.ReadKey(true);
+                                        if (!circleDoor.Attribute)
+                                        {
+                                            Dice D8 = new Dice(8);
+                                            int searching = D8.Roll(D8);
+                                            Console.WriteLine("The monster is about to turn back when it notices something. You feel your pulse thumping in double time as you realise you left the double doors unlocked and slightly ajar! Now the beast knows you're here...");
+                                            minotaur.Suspicious = true;
+                                            if (searching > 5)
+                                            {
+                                                newRoom1 = minotaurApproaches(westernmostCorridor, minotaur, westernmostCorridor.FirstVisit, 14000, false, minotaur.Rage);
+                                            }
+                                        }
+                                    }
                                 }
                                 else
                                 {
-
+                                    if (minotaur.Suspicious || minotaur.Rage)
+                                    {
+                                        Dice D8 = new Dice(8);
+                                        int searching = D8.Roll(D8);
+                                        if (minotaur.Rage && searching > 4)
+                                        {
+                                            newRoom1 = minotaurApproaches(westernmostCorridor, minotaur, westernmostCorridor.FirstVisit, 14000, false, minotaur.Rage);
+                                            ///make into recursive function
+                                        }
+                                        else if (minotaur.Suspicious && searching > 6)
+                                        {
+                                            newRoom1 = minotaurApproaches(westernmostCorridor, minotaur, westernmostCorridor.FirstVisit, 14000, false, minotaur.Rage);
+                                        }
+                                    }
                                 }
                             }
                         }

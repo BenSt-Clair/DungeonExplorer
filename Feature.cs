@@ -809,6 +809,7 @@ namespace DungeonCrawler
                 Console.WriteLine("Door.Passage() has failed. Check Portal list.");
                 return room;
             }
+            
         }
 
     }

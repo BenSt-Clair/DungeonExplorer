@@ -738,6 +738,7 @@ namespace DungeonCrawler
         public Room Location { get; set; }
         public List<Room> Path { get; set; }
         public bool Rage { get; set; }
+        public bool Suspicious { get; set; }
         public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, bool rage = false)
         {
             Name = name;
@@ -747,7 +748,7 @@ namespace DungeonCrawler
             Skill = skill;
             Veapon = weapon;
         }
-        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, Room location, List<Room> path)
+        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, Room location, List<Room> path, bool rage = false, bool suspicious = false)
         {
             Name = name;
             Description = description;
@@ -757,6 +758,8 @@ namespace DungeonCrawler
             Veapon = weapon;
             Location = location;
             Path = path;
+            Rage = rage;
+            Suspicious = suspicious;
         }
         public string getDescription() { return Description; }
         public string getName() { return Name; }
