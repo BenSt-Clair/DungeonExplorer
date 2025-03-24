@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -902,6 +903,215 @@ namespace DungeonCrawler
                 List<long> output = new List<long> { answer1,  timeLapsed};
                 return output;
             }
+            List<long> minotaurStomp(int options, long timeLimit)
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                List<long> output = new List<long>();
+                while (4*timeLimit/5 < timeLimit - sw.ElapsedMilliseconds)
+                {
+                    output = getTimedIntResponse(options);
+                    output.Add(timeLimit - sw.ElapsedMilliseconds);
+                    return output;
+                }
+                Console.WriteLine("\nstomp...\n");
+                while (3 * timeLimit / 5 < timeLimit - sw.ElapsedMilliseconds)
+                {
+                    output = getTimedIntResponse(options);
+                    output.Add(timeLimit - sw.ElapsedMilliseconds);
+                    return output;
+                }
+                Console.WriteLine("\n\t\tStomp...\n");
+                while (2 * timeLimit / 5 < timeLimit - sw.ElapsedMilliseconds)
+                {
+                    output = getTimedIntResponse(options);
+                    output.Add(timeLimit - sw.ElapsedMilliseconds);
+                    return output;
+                }
+                Console.WriteLine("\n\t\t\t\tSTOMP...\n");
+                while (1 * timeLimit / 5 < timeLimit - sw.ElapsedMilliseconds)
+                {
+                    output = getTimedIntResponse(options);
+                    output.Add(timeLimit - sw.ElapsedMilliseconds);
+                    return output;
+                }
+                Console.WriteLine("\n\t\t\t\t\t\t...STOMP!\n");
+                while (0 < timeLimit - sw.ElapsedMilliseconds)
+                {
+                    output = getTimedIntResponse(options);
+                    output.Add(timeLimit - sw.ElapsedMilliseconds);
+                    return output;
+                }
+                return output;
+            }
+            Room minotaurApproaches(Room room, Monster monster, bool firstTime, long timeLimit, bool oops = false, bool rage = false)
+            {
+                Dice D8 = new Dice(8);
+                Dice D6 = new Dice(6);
+                Dice D4 = new Dice(4);
+                Dice D3 = new Dice(3);
+                Dice D2 = new Dice(2);
+                List<string> monsterMarch = new List<string>
+                {
+                    $"Your actions haven't gone unheard by the monster in the {monster.Location.Name}. Once again, you here it close in...",
+                    $"Your footsteps haven't been as soft as you'd hoped. You feel the tremors through the floor, reverberating from the {monster.Location.Name}, as the beast draws near...",
+                    $"You pull back abruptly from what you were doing. From the {monster.Location.Name} the beast approaches...",
+                    $"The monster senses something amiss - a mouse pitter-pattering where it shouldn't. It moves from the {monster.Location.Name} to investigate...",
+                    $"The beast hears something. It draws forth from the {monster.Location.Name} to hunt for trespassers...",
+                    $"The walls shiver once more. The beast closes in from the {monster.Location.Name}"
+                };
+                if (firstTime)
+                {
+                    Console.WriteLine($"The ground suddenly trembles beneath your feet. The corridor's lanterns shiver in their alcoves, shadows jostling along the walls before their quivering flames. From the {monster.Location.Name} something approaches...");
+                    Console.ReadKey(true);
+
+                }
+                else if (oops) { }
+                else
+                {
+
+                    Console.WriteLine(monsterMarch[D6.Roll(D6) - 1]);
+                    Console.ReadKey(true);
+                }
+                
+                if (rage)
+                {
+                    timeLimit = 3*timeLimit/5;
+                }
+                string strand = "";
+                if (!oops)
+                {
+                    strand = "to decide!";
+                }
+                else
+                {
+                    strand = "left...";
+                }
+                Console.WriteLine($"What will you do?\n[You have only {timeLimit/1000} seconds {strand}]");
+                List<Door> doors = new List<Door>();
+                foreach(Feature f in room.FeatureList)
+                {
+                    if (f is Door)
+                    {
+                        doors.Add(f.CastDoor());
+                    }
+                }
+                long i = 1;
+                string action = "";
+                List<string> slipsnipsdarts = new List<string>
+                {
+                    "Slip", "Nip", "Dart", "Scurry", "Rush", "Slink", "Hurry", "Slip"
+                };
+                List<string> choices = new List<string>();
+                Dictionary<long, Door> choice_door = new Dictionary<long, Door>();
+                Dictionary<string, Door> tie_door = new Dictionary<string, Door>();
+                foreach (Door d in doors)
+                {
+                    if (d.Portal.Contains(monster.Location))
+                    {
+                        action = $"Stride up to the {d.Name} and confront the beast...";
+                    }
+                    else if (d.Name.Contains("corner"))
+                    {
+                        
+                        action = $"{slipsnipsdarts[D8.Roll(D8) - 1]} around the {d.Name}";
+                    }
+                    else
+                    {
+                        action = $"{slipsnipsdarts[D8.Roll(D8) - 1]} through the {d.Name}";
+                    }
+                    choices.Add(action);
+                    tie_door[action] = d;
+                }
+                if (choices.Count == 4)
+                {
+                    int index = D4.Roll(D4) - 1;
+                    Console.WriteLine($"[{i}] {choices[index]}");
+                    choices.Remove(choices[index]);
+                    choice_door[i] = tie_door[choices[index]];
+                    i++;
+                }
+                if (choices.Count == 3)
+                {
+                    int index = D3.Roll(D3) - 1;
+                    Console.WriteLine($"[{i}] {choices[index]}");
+                    choices.Remove(choices[index]);
+                    choice_door[i] = tie_door[choices[index]];
+                    i++;
+                }
+                if (choices.Count == 2)
+                {
+                    int index = D2.Roll(D2) - 1;
+                    Console.WriteLine($"[{i}] {choices[index]}");
+                    choices.Remove(choices[index]);
+                    choice_door[i] = tie_door[choices[index]];
+                    i++;
+                }
+                if (choices.Count == 1)
+                {
+                    Console.WriteLine($"[{i}] {choices[0]}");
+                    choices.Remove(choices[0]);
+                    choice_door[i] = tie_door[choices[0]];
+                    i++;
+                }
+                
+                int x = unchecked((int)i);
+                List<long> output = minotaurStomp(x, timeLimit);
+                int index2 = unchecked((int)output[0]);
+                if (output.Count == 0)
+                {
+                    Console.WriteLine("TOO LATE! Fixed within the monster's sights, you brace yourself for the fight of your life...");
+                    return room;
+                }
+                else if (choice_door[output[0]].Passage(room) == monster.Location)
+                {
+                    Console.WriteLine("Feeling perhaps a smidge crazy, you've the sudden overwhelming urge to face your destiny (that or a death wish...) \nYou gallantly take the fight to the monster!");
+                    Console.ReadKey(true);
+                    return choice_door[output[0]].Passage(room);
+                }
+                else if (output[1]<2*timeLimit/5)
+                {
+                    Console.WriteLine($"You manage to reach the {choice_door[output[0]].Name} with time to spare...");
+                    if (choice_door[output[0]].Attribute)
+                    {
+                        
+                        Console.ReadKey(true);
+                        Console.WriteLine("With dawning horror your clammy hands fumble as they try to open a locked door!");
+                        minotaurApproaches(room, monster, false, output[3], true, rage);
+
+                    }
+                    return choice_door[output[0]].Passage(room);
+                }
+                else if (output[1] < 7 * timeLimit / 10)
+                {
+                    Console.WriteLine($"You scramble to the {choice_door[output[0]].Name}...");
+                    if (choice_door[output[0]].Attribute)
+                    {
+
+                        Console.ReadKey(true);
+                        Console.WriteLine("With dawning horror your clammy hands fumble as they try to open a locked door!");
+                        minotaurApproaches(room, monster, false, output[3], true, rage);
+
+                    }
+                    return choice_door[output[0]].Passage(room);
+                }
+                else
+                {
+                    Console.WriteLine($"You scramble to the {choice_door[output[0]].Name}...");
+                    if (choice_door[output[0]].Attribute)
+                    {
+
+                        Console.ReadKey(true);
+                        Console.WriteLine("With dawning horror your clammy hands fumble as they try to open the door! It's locked!");
+                        Console.ReadKey(true);
+                        Console.WriteLine("It's with a chill that you feel the monster's shadow fall over you. It's caught you red-handed. Feeling your stomach twist in knots, you face your foe...");
+                        return room;
+
+                    }
+                    return choice_door[output[0]].Passage(room);
+                }
+                
+            }
             //
             //
             //
@@ -966,6 +1176,7 @@ namespace DungeonCrawler
             Item mercInsignia = new Item("insignia", "The insignia depicts a serpent with feathered wings. In the form of a broach it might look rather fetching on you...");
             List<Item> minotaurInventory = new List<Item> { vanquisher, armBand, belt, diadem };
             List<Room> minotaurPath = new List<Room> { northernmostCorridor};
+            Stopwatch minotaurTimer = new Stopwatch();
             Monster minotaur = new Monster("minotaur", "towering above you at eight feet, the minotaur levels its horns towards you, tenses its powerful muscles, and charges!", minotaurInventory, 120, 10, vanquisher, northernmostCorridor, minotaurPath);
             Monster goblin = new Monster("goblin", "The goblin's swarthy, pock-marked skin does little to lessen the effect of its ugly snarl.", goblinInventory, 50, 2, scimitar);
             Monster ghoul2 = new Monster("ghoul engaged to Willow", "", gnollInventory, 1, 1, bite);
@@ -1036,7 +1247,7 @@ namespace DungeonCrawler
             
             Monster goblinCaptain = new Monster("goblin", "The goblin's swarthy, pock-marked skin does little to lessen the effect of its ugly snarl.", goblin2Inventory, 60, 0, breadKnife);
             Combat dualDuel = new Combat(goblinCaptain, gnoll, player1);
-
+            Combat minotaurKafuffle = new Combat(minotaur, player1);
 
 
             Console.WriteLine($"You rouse yourself from your self-reflection. " +
@@ -3990,11 +4201,16 @@ namespace DungeonCrawler
                     }
                     b = 0;
                     a = 0;
+                    long minotaurAlertedBy = D6.Roll(D6) * 1000;
                     while (!leftWhichRooms[7])//circular landing : change to westernmost corridor
                     {
                         ///special room with minotaur patrolling, use of Task and time
                         ///might have to split into 4 rooms, one for each passage
                         visitedRoom = true;
+                        northwestCorner.Description = "The corner turns sharply right...";
+                        northwestCorner.Passing = "You follow the corner around and into the north-facing corridor.";
+                        southwestCorner.Description = "The corner turns sharply left...";
+                        southwestCorner.Passing = "You follow the corner around and into the south-facing corridor.";
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
@@ -4003,6 +4219,52 @@ namespace DungeonCrawler
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                         ///red herring in room above
                         ///Specific for each room, tailored.
+                        
+                        Stopwatch sw = new Stopwatch();
+                        sw.Stop();
+                        long minotaurAlerted = sw.ElapsedMilliseconds;
+                        sw.Start();
+                        if ((minotaur.Location == northernmostCorridor || minotaur.Location == southernmostCorridor || minotaur.Location == antechamber) && minotaur.Stamina > 1 && minotaurAlertedBy < minotaurAlerted)
+                        {
+                            Room room1 = minotaurApproaches(westernmostCorridor, minotaur, westernmostCorridor.FirstVisit, 14000, false, minotaur.Rage);
+                            if (westernmostCorridor.Name == room1.Name)
+                            {
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, westernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                {
+                                    minotaurKafuffle.WonFight(westernmostCorridor);
+                                }
+                                else
+                                {
+                                    Console.ReadKey(true);
+                                    return;
+                                }
+                            }
+                            else if(minotaur.Location.Name == room1.Name)
+                            {
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, minotaur.Location, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, true, player1.Masked))
+                                {
+                                    minotaurKafuffle.WonFight(westernmostCorridor);
+                                }
+                                else
+                                {
+                                    Console.ReadKey(true);
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                if (westernmostCorridor.FirstVisit)
+                                {
+                                    Console.WriteLine("Back pressed against the wall you hear the beast enter where you'd ");
+                                }
+                                else
+                                {
+
+                                }
+                            }
+                        }
+                        
+                        ///
                         if (!(a == 0 && b == 0))
                         {
                             Console.WriteLine("Now what will you do?");
@@ -4053,6 +4315,7 @@ namespace DungeonCrawler
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                        westernmostCorridor.FirstVisit = false;
                     }
                     if (visitedRoom)
                     {
@@ -4064,6 +4327,10 @@ namespace DungeonCrawler
                     while (!leftWhichRooms[21])//north-facing corridor
                     {
                         visitedRoom = true;
+                        northwestCorner.Description = "The corner turns sharply left...";
+                        northwestCorner.Passing = "You follow the corner around and into the westernmost corridor.";
+                        northeastCorner.Description = "The corner turns sharply right...";
+                        northeastCorner.Passing = "You follow the corner around and into the easternmost corridor.";
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
@@ -4122,6 +4389,7 @@ namespace DungeonCrawler
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                        northernmostCorridor.FirstVisit = false;
                     }
                     if (visitedRoom)
                     {
@@ -4133,6 +4401,10 @@ namespace DungeonCrawler
                     while (!leftWhichRooms[22])//easternmost corridor
                     {
                         visitedRoom = true;
+                        northeastCorner.Description = "The corner turns sharply left...";
+                        northeastCorner.Passing = "You follow the corner around and into the north-facing corridor.";
+                        southeastCorner.Description = "The corner turns sharply right...";
+                        southeastCorner.Passing = "You follow the corner around and into the south-facing corridor.";
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
@@ -4191,6 +4463,7 @@ namespace DungeonCrawler
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                        easternmostCorridor.FirstVisit = false;
                     }
                     if (visitedRoom)
                     {
@@ -4202,6 +4475,10 @@ namespace DungeonCrawler
                     while (!leftWhichRooms[23])//south-facing corridor
                     {
                         visitedRoom = true;
+                        southwestCorner.Description = "The corner turns sharply right...";
+                        southwestCorner.Passing = "You follow the corner around and into the westernmost corridor.";
+                        southeastCorner.Description = "The corner turns sharply left...";
+                        southeastCorner.Passing = "You follow the corner around and into the easternmost corridor.";
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
@@ -4260,6 +4537,7 @@ namespace DungeonCrawler
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                        southernmostCorridor.FirstVisit = false;
                     }
                     if (visitedRoom)
                     {

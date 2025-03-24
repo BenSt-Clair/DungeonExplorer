@@ -737,7 +737,8 @@ namespace DungeonCrawler
         public Weapon Veapon { get; set; }
         public Room Location { get; set; }
         public List<Room> Path { get; set; }
-        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon)
+        public bool Rage { get; set; }
+        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, bool rage = false)
         {
             Name = name;
             Description = description;
