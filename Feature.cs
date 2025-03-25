@@ -792,16 +792,16 @@ namespace DungeonCrawler
             Passing = passing;
             Dark = dark;
         }
-        public Room Passage(Room room)
+        public Room Passage(Room room, bool message = true)
         {
             if (Portal[0].Name == room.Name)
             {
-                Console.WriteLine($"{Passing}");
+                if (message) { Console.WriteLine($"{Passing}"); }
                 return Portal[1];
             }
             else if (Portal[1].Name == room.Name)
             {
-                Console.WriteLine($"{Passing}");
+                if (message) { Console.WriteLine($"{Passing}"); }
                 return Portal[0];
             }
             else
