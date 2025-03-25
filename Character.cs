@@ -183,7 +183,7 @@ namespace DungeonCrawler
         /// the formula for this code is very similar to searchfeature.
         /// </summary>
         /// <param name="roomItems"></param>
-        public void SearchPack(List<Item> roomItems)
+        public void SearchPack(List<Item> roomItems, Room room, List<Room> threadPath)
         {
             Console.WriteLine("Rummaging through your effects you find the following;");
             int r = 1;
@@ -231,8 +231,8 @@ namespace DungeonCrawler
                             bool success = false;
                             string objName = message.Substring(message.IndexOf(reply1.ToString()) + 3, message.IndexOf((reply1 + 1).ToString()) - 2 - (message.IndexOf(reply1.ToString()) + 3)).Trim();
                             Console.WriteLine(objName);
-                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems); success = true; break; } }
-                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems); success = true; break; } }
+                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
                             if (!success) { Console.WriteLine($"You threw your {objName} away!"); }
 
                         }
@@ -241,8 +241,8 @@ namespace DungeonCrawler
                             bool success = false;
                             string objName = message.Substring(message.IndexOf((r - 1).ToString()) + 3, message.Length - 1 - (message.IndexOf((r - 1).ToString()) + 3)).Trim();
                             Console.WriteLine(objName);
-                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems); success = true; break; } }
-                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(CarryCapacity,    Inventory, WeaponInventory, 5, 0, null, w, null, roomItems); success = true; break; } }
+                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(CarryCapacity,    Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
                             if (!success) { Console.WriteLine($"You threw your {objName} away!"); }
                         }
                     }
@@ -764,7 +764,7 @@ namespace DungeonCrawler
             Rage = rage;
             Suspicious = suspicious;
             Patrol = patrol;
-            Time = Path.Count * 15000;
+            Time = (Path.Count - 1) * 20000;
         }
         public bool MinotaurReturning(Room room)
         {
@@ -773,22 +773,25 @@ namespace DungeonCrawler
             long time = this.Time - this.Patrol.ElapsedMilliseconds;
             
 
-            if (time < (this.Path.Count - 2) * 20000 && this.Location.Name != "north-facing corridor")
+            if (time < (this.Path.Count - 2) * 20000 && this.Path.Count>1)
             {
                 this.Location = this.Path[1];
-                if (room.Name.Contains("corridor") || room.Name == "mess hall" || room.Name == "broom closet" || room.Name == "antechamber" || room.Name == "armoury")
+                if (((room.Name.Contains("corridor") && room.Name != "long corridor")|| room.Name == "mess hall" || room.Name == "broom closet" || room.Name == "antechamber" || room.Name == "armoury") && ((Location.Name.Contains("corridor") && Location.Name != "long corridor")|| Location.Name == "mess hall" || Location.Name == "broom closet" || Location.Name == "antechamber" || Location.Name == "armoury"))
+                {
+                    Console.WriteLine($"You hear the monster's lumbering footfalls as it moves into the {this.Location.Name}...");
+                }
+                else if((room.Name == "long corridor" || room.Name == "dank cell" || room.Name == "eerie cell" || room.Name == "empty cell" || room.Name == "antechamber" || room.Name == "dungeon chamber") && (Location.Name == "long corridor" || Location.Name == "dank cell" || Location.Name == "eerie cell" || Location.Name == "empty cell" || Location.Name == "antechamber" || Location.Name == "dungeon chamber"))
                 {
                     Console.WriteLine($"You hear the monster's lumbering footfalls as it moves into the {this.Location.Name}...");
                 }
                 this.Path.RemoveAt(0);
-
+                
             }
-            
-            if (this.Location.Name == "north-facing corridor")
+            if (this.Location.Name == "north-facing corridor" && this.Path.Count == 1)
             {
                 this.Patrol.Stop();
                 this.Patrol = new Stopwatch();
-                this.Time = (this.Path.Count - 1) * 20000;
+                this.Time = 0;
                 return false;
             }
             else

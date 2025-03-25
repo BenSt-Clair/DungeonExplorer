@@ -361,7 +361,7 @@ namespace DungeonCrawler
         /// <param name="weapon"></param>
         /// <param name="featureItems"></param>
         /// <param name="roomItems"></param>
-        public void PickUpItem(int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null, Weapon yourRustyChains = null, List<Item> stickyItems = null, Monster monster = null)
+        public void PickUpItem( int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null, Weapon yourRustyChains = null, List<Item> stickyItems = null, Monster monster = null, List<Room> threadPath = null, Room room = null)
         {
             try
             {
@@ -393,21 +393,42 @@ namespace DungeonCrawler
             {
                 Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?");
             }
+            if (Name == "ball of red thread" && SpecifyAttribute == "spooled")
+            {
+                Console.WriteLine("[4] Begin unspooling the red thread and leave it trailing behind you from room to room?");
+            }
             do
             {
                 string answer = Console.ReadLine();
                 if (answer.Trim() == "")
                 {
-                    Console.WriteLine("Please enter '1', '2', or '3'");
-                    if (range == 3 || range == 4 || range == 6)
+                    if (Name == "ball of red thread" && SpecifyAttribute == "spooled")
                     {
-                        Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it upon your person \n[3]place it back where you found it?");
+                        Console.WriteLine("Please enter '1', '2', '3' or '4'");
+                        if (range == 3 || range == 4 || range == 6)
+                        {
+                            Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it upon your person \n[3]place it back where you found it?\n[4] Take it and begin unspooling it as you proceed?");
+                        }
+                        else if (range == 5)
+                        {
+                            Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?\n[4]Begin unspooling it as you travel from room to room?");
+                        }
+                        continue;
                     }
-                    else if (range == 5)
+                    else
                     {
-                        Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?");
+                        Console.WriteLine("Please enter '1', '2', or '3'");
+                        if (range == 3 || range == 4 || range == 6)
+                        {
+                            Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it upon your person \n[3]place it back where you found it?");
+                        }
+                        else if (range == 5)
+                        {
+                            Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?");
+                        }
+                        continue;
                     }
-                    continue;
+                    
                 }
                 /// this was incase the user typed something like 'option 2' or something
                 int size = answer.Trim().Length;
@@ -416,9 +437,14 @@ namespace DungeonCrawler
                 try
                 {
                     int answerNum = int.Parse(answer);
-                    if (answerNum < 1 || answerNum > 3)
+                    if ((answerNum < 1 || answerNum > 3)&& (Name != "ball of red thread" || SpecifyAttribute != "spooled"))
                     {
                         Console.WriteLine("Please choose option 1, 2, or 3.");
+                        continue;
+                    }
+                    else if (answerNum < 1 || answerNum > 4)
+                    {
+                        Console.WriteLine("Please choose option 1, 2, 3, or 4.");
                         continue;
                     }
                     else if (answerNum == 1)//study the item
@@ -434,6 +460,7 @@ namespace DungeonCrawler
                             {
                                 Console.WriteLine($"\nWould you now like to:\n [1]study the {Name} again \n[2]stash it back in your pack \n[3]discard it?");
                             }
+                            
                             continue;
                         }
                         else//if item is a weapon
@@ -581,7 +608,27 @@ namespace DungeonCrawler
                             {
                                 if (inventory.Count < carryCapacity)
                                 {
-                                    StashItem(item, inventory);
+                                    if (item.Name != "ball of red thread" && item.SpecifyAttribute != "unspooled") 
+                                    { 
+                                        StashItem(item, inventory); 
+                                    }
+                                    else if (item.Name == "ball of red thread" && threadPath.Count < 3)
+                                    {
+                                        item.Attribute = true;
+                                        item.SpecifyAttribute = "spooled";
+                                        threadPath.Clear();
+                                        StashItem(item, inventory);
+                                        Console.WriteLine("You quickly spin the spool, gathering up all the thread. It's lucky it's not spread out too far or it would've been too tangled to respool...");
+                                        Console.ReadKey(true);
+                                        
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("You don't have time to" +
+                                            " pick up that tangled mess!");
+                                        Console.ReadKey(true);
+                                        return;
+                                    }
                                     if (item.Name != "bowl fragments" && item.Name != "rusty chains" && item.Name != "garment" && !stickyItems.Contains(item))
                                     {
                                         roomItems.Remove(item);
@@ -660,7 +707,7 @@ namespace DungeonCrawler
                         }
                         else { Console.WriteLine("You place the item back in your pack."); return; }
                     }
-                    else
+                    else if (answerNum == 3)
                     {
                         if (range == 5)//if discarding weapon/item from your pack
                         {
@@ -691,6 +738,18 @@ namespace DungeonCrawler
                                 return;
                             }
                         }
+                    }
+                    else
+                    {
+                        Console.WriteLine("You begin unravelling the thread. It trails behind you as you move...");
+                        SpecifyAttribute = "unspooled";
+                        Attribute = false;
+                        if (!inventory.Contains(item))
+                        {
+                            StashItem(item, inventory);
+                        }
+                        room.ItemList.Remove(item);
+                        threadPath.Insert(0, room);
                     }
                 }
                 catch //if a number was not entered

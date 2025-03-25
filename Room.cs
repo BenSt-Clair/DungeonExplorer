@@ -348,7 +348,7 @@ namespace DungeonCrawler
         /// <param name="weaponInventory"></param>
         /// <param name="b"></param>
         /// <param name="player"></param>
-        public Room Investigate(List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains, List<Item> stickyItems, List<Item> specialItems = null, Monster minotaur = null)
+        public Room Investigate(List<Room> threadPath, List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains, List<Item> stickyItems, List<Item> specialItems = null, Monster minotaur = null)
         {
             Dice D20 = new Dice(20);
             Dice D6 = new Dice(6);
@@ -597,7 +597,7 @@ namespace DungeonCrawler
                                 if (freshLoop) { continue; }
                                 List<Item> weaponSplice = new List<Item> { itemList[answer1 - FeatureList.Count] };
                                 List<Weapon> weapon1 = weaponSplice.Cast<Weapon>().ToList();
-                                weapon1[0].PickUpItem(player.CarryCapacity, inventory, weaponInventory, 4, 0, null, weapon1[0], null, ItemList, yourRustyChains);
+                                weapon1[0].PickUpItem( player.CarryCapacity, inventory, weaponInventory, 4, 0, null, weapon1[0], null, ItemList, yourRustyChains, stickyItems, null, threadPath, this);
                             }
                             catch // if not a weapon that is to be picked up...
                             {
@@ -622,7 +622,7 @@ namespace DungeonCrawler
                                     }
                                 }
                                 if (freshLoop) { continue; }
-                                itemList[answer1 - FeatureList.Count].PickUpItem(player.CarryCapacity, inventory, weaponInventory, 4, 0, itemList[answer1 - FeatureList.Count], null, null, ItemList, null, stickyItems); 
+                                itemList[answer1 - FeatureList.Count].PickUpItem( player.CarryCapacity, inventory, weaponInventory, 4, 0, itemList[answer1 - FeatureList.Count], null, null, ItemList, null, stickyItems, null, threadPath, this); 
                                     
                                 
                             }
