@@ -713,12 +713,16 @@ namespace DungeonCrawler
                 {
                     Console.WriteLine($"{Description} \nTry as hard as you might, you find no items hidden about the {Name}. It remains {SpecificAttribute}.");
                 }
-                if ((Name.Contains("door") || Name.Contains("stair")) && (SpecificAttribute == "unlocked"|| SpecificAttribute == "unblocked") && !Description.Contains("smouldering"))
+                if ((Name.Contains("door") || Name.Contains("stair") || Name.Contains("corner")) && (SpecificAttribute == "unlocked"|| SpecificAttribute == "unblocked") && !Description.Contains("smouldering"))
                 {
                     List<Room> upOrDown = this.CastDoor().Portal;
                     if (Name.Contains("door") || Name.Contains("portal"))
                     {
                         Console.WriteLine($"Would you like to go through this {Name}?");
+                    }
+                    else if (Name.Contains("corner"))
+                    {
+                        Console.WriteLine($"would you like to go around the {Name}?");
                     }
                     else if (upOrDown[0].Name == room.Name)
                     {
