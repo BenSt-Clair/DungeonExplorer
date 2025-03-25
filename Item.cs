@@ -726,7 +726,7 @@ namespace DungeonCrawler
         /// <param name="weaponInventory"></param>
         /// <param name="binkySkull"></param>
         /// <returns></returns>
-        public bool UseItem1(Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Monster monster, Combat battle, Item binkySkull = null, Item musicBox = null, Item note = null, Item jailorKeys = null)
+        public bool UseItem1(Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Monster monster, Combat battle, bool fieryEscape, Item binkySkull = null, Item musicBox = null, Item note = null, Item jailorKeys = null)
         {
             if (usesDictionary[item].Contains(feature))
             {
@@ -766,7 +766,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room);
+                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -841,7 +841,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room);
+                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -896,7 +896,7 @@ namespace DungeonCrawler
                                     }
                                     else if (answer == "yes" || answer == "y")
                                     {
-                                        feature.Search(player.CarryCapacity, inventory, weaponInventory, room);
+                                        feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape);
                                         break;
                                     }
                                     else if (answer == "no" || answer == "n")

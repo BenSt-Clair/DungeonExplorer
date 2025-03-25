@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace DungeonCrawler
@@ -308,7 +309,7 @@ namespace DungeonCrawler
         /// <param name="trialBattle"></param>
         /// <returns></returns>
 
-        public List<bool> UseItemOutsideCombat(Room room, Item musicBox, Item binkySkull, Item steelKey, Item note, Item jailorKeys, List<Item> specialItems, Feature rosewoodChest, Feature holeInCeiling, Dictionary<Item, List<Player>> usesDictionaryItemChar, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, bool masked, Monster monster, Combat battle = null)
+        public List<bool> UseItemOutsideCombat(Room room, Item musicBox, Item binkySkull, Item steelKey, Item note, Item jailorKeys, List<Item> specialItems, Feature rosewoodChest, Feature holeInCeiling, Dictionary<Item, List<Player>> usesDictionaryItemChar, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, bool masked, Monster monster, bool fieryEscape, Combat battle = null)
         {
 
             List<bool> success = new List<bool> { false, false }; //{successful use of item, fire}
@@ -462,7 +463,7 @@ namespace DungeonCrawler
                             {
                                 if (chosenItem.Name == "rusty chain-flail")
                                 {
-                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, steelKey, null, null, jailorKeys);
+                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, steelKey, null, null, jailorKeys);
                                     List<Weapon> _weapons = new List<Weapon>();
                                     List<Item> _weaponItem = new List<Item> { chosenItem};
                                     _weapons = _weaponItem.Cast<Weapon>().ToList();
@@ -477,11 +478,11 @@ namespace DungeonCrawler
                                 }
                                 else if (chosenItem.Name == "healing potion"|| chosenItem.Name=="Felix Felicis"|| chosenItem.Name=="elixir of feline guile")
                                 {
-                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, binkySkull, musicBox, note);
+                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, binkySkull, musicBox, note);
                                 }
                                 else
                                 {
-                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, null, musicBox, note);
+                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, musicBox, note);
                                 }
                                 if (!success[0])
                                 {
@@ -738,6 +739,9 @@ namespace DungeonCrawler
         public Room Location { get; set; }
         public List<Room> Path { get; set; }
         public bool Rage { get; set; }
+        public bool Suspicious { get; set; }
+        public Stopwatch Patrol { get; set; }
+        public long Time { get; set; }
         public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, bool rage = false)
         {
             Name = name;
@@ -747,7 +751,7 @@ namespace DungeonCrawler
             Skill = skill;
             Veapon = weapon;
         }
-        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, Room location, List<Room> path)
+        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, Room location, List<Room> path, bool rage = false, bool suspicious = false, Stopwatch patrol = null)
         {
             Name = name;
             Description = description;
@@ -757,6 +761,42 @@ namespace DungeonCrawler
             Veapon = weapon;
             Location = location;
             Path = path;
+            Rage = rage;
+            Suspicious = suspicious;
+            Patrol = patrol;
+            Time = Path.Count * 15000;
+        }
+        public bool MinotaurReturning(Room room)
+        {
+            this.Patrol.Stop();
+            
+            long time = this.Time - this.Patrol.ElapsedMilliseconds;
+            
+
+            if (time < (this.Path.Count - 2) * 20000 && this.Location.Name != "north-facing corridor")
+            {
+                this.Location = this.Path[1];
+                if (room.Name.Contains("corridor") || room.Name == "mess hall" || room.Name == "broom closet" || room.Name == "antechamber" || room.Name == "armoury")
+                {
+                    Console.WriteLine($"You hear the monster's lumbering footfalls as it moves into the {this.Location.Name}...");
+                }
+                this.Path.RemoveAt(0);
+
+            }
+            
+            if (this.Location.Name == "north-facing corridor")
+            {
+                this.Patrol.Stop();
+                this.Patrol = new Stopwatch();
+                this.Time = (this.Path.Count - 1) * 20000;
+                return false;
+            }
+            else
+            {
+                this.Patrol.Start();
+            }
+            return true;
+
         }
         public string getDescription() { return Description; }
         public string getName() { return Name; }

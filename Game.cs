@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
+
 namespace DungeonCrawler
 {
     internal class Game
@@ -756,10 +757,11 @@ namespace DungeonCrawler
             Room astralPlanes = new Room("astral planes", "~zero g!~", cell2Inventory, cell2features);
             Room oceanBottom = new Room("ocean bottom", "~under da sea!~", cell2Inventory, cell2features );
             Room dungeonChamber = new Room("dungeon chamber", "The light of a single brazier casts an eerie glow over this claustrophobic, airless dungeon and its damp stone walls. Like the faint light reaching the fathomless depths of an ocean floor, it swims over scattered bones and barely illuminates twin hulking silhouettes lurking within shadow just beyond a solitary hatch leading somewhere deeper still. You feel the hairs on the back of your neck stand on end, as from somewhere within those shadows, chains clink and scrape along the granite floor...\nTurning your gaze right to look north you see the granite wall curve away from you and into blackness. It is studded with bolts that hold chains in place, most of which dangle limply to the stone floor below.\t\nDirectly ahead, some distance before the wall of darkness, lies a heavy trapdoor, presumably leading to an oubliette below. Scattered about it are assorted bones...\t\nTurning your gaze south and to the left you see a lone brazier, its lone orb of flickering frosty light the only thing alleviating the dank darkness besieging you.\t\nLooking back there is only the passageway you just descended...\t\t", dungeonItems, dungeonFeatures);
-            Room westernmostCorridor = new Room("westernmost corridor", "You enter upon the westernmost corridor of the circular landing. Opposite the antechamber through the double doors is a bare rosewood panelled wall. The corridor leads north where it turns sharply right, or you can follow it south where it veers left at another corner. Guiding both paths are rows of lanterns, casting a febrile glow...", westCorridorItems, westCorridorFeatures);
-            Room northernmostCorridor = new Room("north-facing corridor", "You enter upon the north-facing corridor of the circular landing. Before you, within the glow of the dim lanterns, are two rosewood doors opposite one another. The one in the north wall and another in the south wall leading within the room you must have been circling. The corridor leads east whereupon it turns sharply right, or you can follow it west where it veers left at another corner...", northCorridorItems, northCorridorFeatures);
-            Room easternmostCorridor = new Room("easternmost corridor", "You enter upon the easternmost corridor of the circular landing. A bare rosewood panelled wall spans the western side while a door greets your sight some way down the eastern side of the passage. The corridor leads north where it turns sharply left, or you can follow it south where it veers right at another corner. Guiding both paths are more lanterns, throwing shadows along the walls with their dim, flickering light...", eastCorridorItems, eastCorridorFeatures);
-            Room southernmostCorridor = new Room("south-facing corridor", "You enter upon the south-facing corridor of the circular landing. There is a window in the south-facing wall some way down the passage. The corridor leads east where it turns sharply left or you can follow it west where it veers right at another corner. The lanterns within their alcoves are pockets of warm light, trailing the way down either passage. There are no doors here...", southCorridorItems, southCorridorFeatures);
+            
+            Room westernmostCorridor = new Room("westernmost corridor", "You enter upon the westernmost corridor of the circular landing. Opposite the antechamber through the double doors is a bare rosewood panelled wall. The corridor leads north where it turns sharply right, or you can follow it south where it veers left at another corner. Guiding both paths are rows of lanterns, casting a febrile glow...\nTo the north you see the rosewood panelled corridor end at a corner leading right.\t\nTo the west you face a pair of double doors.\t\nTurning your gaze southward the corridor ends at a corner that veers left.\t\nFacing east you find nothing of note save a blank wall bereft of portraits and the litter left behind by those who looted them.\t\t", westCorridorItems, westCorridorFeatures);
+            Room northernmostCorridor = new Room("north-facing corridor", "You enter upon the north-facing corridor of the circular landing. Before you, within the glow of the dim lanterns, are two rosewood doors opposite one another. The one in the north wall and another in the south wall leading within the room you must have been circling. The corridor leads east whereupon it turns sharply right, or you can follow it west where it veers left at another corner...\nTo the north, in the centre of the hallway, you espy a rosewood door identical to the one in the south wall that it stands across from.\t\nTo the west the corridor ends at a corner that turns sharply left.\t\nTurning your gaze southward you espy a rosewood door, identical to the one in the north wall, and standing across from it.\t\nLooking to the east you see the corridor end at a corner that veers right.\t\t", northCorridorItems, northCorridorFeatures);
+            Room easternmostCorridor = new Room("easternmost corridor", "You enter upon the easternmost corridor of the circular landing. A bare rosewood panelled wall spans the western side while a door greets your sight some way down the eastern side of the passage. The corridor leads north where it turns sharply left, or you can follow it south where it veers right at another corner. Guiding both paths are more lanterns, throwing shadows along the walls with their dim, flickering light...\nsurveying the northern end of the hallway you see a corner that turns left.\t\nTo the west there is only bare wall and the marks left by marauders who looted the paintings.\t\nTurning your gaze south you see a corner. It turns right.\t\nTo the east is a rosewood door. There is no plaque or label to indicate where it leads...\t\t", eastCorridorItems, eastCorridorFeatures);
+            Room southernmostCorridor = new Room("south-facing corridor", "You enter upon the south-facing corridor of the circular landing. There is a window in the south-facing wall some way down the passage. The corridor leads east where it turns sharply left or you can follow it west where it veers right at another corner. The lanterns within their alcoves are pockets of warm light, trailing the way down either passage. There are no doors here...\nTo the north you see only bare wall illuminated by the lanterns trailing its length.\t\nTurning your gaze to the west you see the corridor end at a corner turning right.\t\nLooking a the south wall, you see its much the same as the north wall, except for a floor-to-ceiling length Palladian window through which moonbeams filter through the partially drawn diaphanous curtains.\t\nGazing eastward you see the corridor end at a shadowy corner. It turns left.\t\t", southCorridorItems, southCorridorFeatures);
 
             List<Room> yourCellDoor = new List<Room> {room, corridor };
             List<Room> otherCellDoor = new List<Room> { corridor, cellOpposite };
@@ -801,7 +803,7 @@ namespace DungeonCrawler
             /// are all of the same basic formula
             ///
             Prologue(room);
-
+            bool justStalked = false;
             string pk; // not important, it's just for the console.readline at the end of the program.
 
             
@@ -903,49 +905,89 @@ namespace DungeonCrawler
                 List<long> output = new List<long> { answer1,  timeLapsed};
                 return output;
             }
-            List<long> minotaurStomp(int options, long timeLimit)
+            char getTimedKeyResponse(int option, out long timeLapsed, List<char> KeyOptions)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
+                timeLapsed = 0;
+                
+                while (true)
+                {
+                    char answer = Console.ReadKey().KeyChar;
+                    if (string.IsNullOrWhiteSpace(answer.ToString()))
+                    {
+                        continue;
+                    }
+                    else if (!KeyOptions.Contains(answer))
+                    {
+                        Console.WriteLine("You waste your time fumbling and fretting!");
+                        sw.Stop();
+                        timeLapsed = 20000;
+
+                        return answer;
+                    }
+                    else
+                    {
+                        sw.Stop();
+                        timeLapsed = sw.ElapsedMilliseconds;
+                        return answer;
+                    }
+                }
+            }
+            List<long> minotaurStomp(int options, long timeLimit)
+            {
                 List<long> output = new List<long>();
-                while (4*timeLimit/5 < timeLimit - sw.ElapsedMilliseconds)
+                output = getTimedIntResponse(options);
+                output.Add(timeLimit - output[1]);
+                if (output[2] < timeLimit * 3 / 4 && timeLimit > 7500)
                 {
-                    output = getTimedIntResponse(options);
-                    output.Add(timeLimit - sw.ElapsedMilliseconds);
-                    return output;
+                    
+                    Console.WriteLine("\nstomp...\n");
+                    Thread.Sleep(700);
+                    if (timeLimit > 9000)
+                    {
+                        Thread.Sleep(500);
+                    }
                 }
-                Console.WriteLine("\nstomp...\n");
-                while (3 * timeLimit / 5 < timeLimit - sw.ElapsedMilliseconds)
+                if (output[2] < timeLimit/2) 
                 {
-                    output = getTimedIntResponse(options);
-                    output.Add(timeLimit - sw.ElapsedMilliseconds);
-                    return output;
+                    
+                    Console.WriteLine("\n\t\tStomp...\n");
+                    Thread.Sleep(700);
+                    if (timeLimit > 9000)
+                    {
+                        Thread.Sleep(500);
+                    }
                 }
-                Console.WriteLine("\n\t\tStomp...\n");
-                while (2 * timeLimit / 5 < timeLimit - sw.ElapsedMilliseconds)
+                if (output[2] < timeLimit / 4)
                 {
-                    output = getTimedIntResponse(options);
-                    output.Add(timeLimit - sw.ElapsedMilliseconds);
-                    return output;
+                    
+                    Console.WriteLine("\n\t\t\t\tSTOMP...\n");
+                    Thread.Sleep(700);
+                    if (timeLimit > 9000)
+                    {
+                        Thread.Sleep(500);
+                    }
                 }
-                Console.WriteLine("\n\t\t\t\tSTOMP...\n");
-                while (1 * timeLimit / 5 < timeLimit - sw.ElapsedMilliseconds)
+                if (output[2] < 0)
                 {
-                    output = getTimedIntResponse(options);
-                    output.Add(timeLimit - sw.ElapsedMilliseconds);
-                    return output;
-                }
-                Console.WriteLine("\n\t\t\t\t\t\t...STOMP!\n");
-                while (0 < timeLimit - sw.ElapsedMilliseconds)
-                {
-                    output = getTimedIntResponse(options);
-                    output.Add(timeLimit - sw.ElapsedMilliseconds);
-                    return output;
+                    
+                    Console.WriteLine("\n\t\t\t\t\t\t...STOMP!\n");
+                    Thread.Sleep(700);
+                    if (timeLimit > 9000)
+                    {
+                        Thread.Sleep(500);
+                    }
+                    
                 }
                 return output;
             }
             Room minotaurApproaches(Room room, Monster monster, bool firstTime, long timeLimit, bool oops = false, bool rage = false)
             {
+                southwestCorner.Passing = "Fleet of foot, you nip around the southwest corner.";
+                northwestCorner.Passing = "Feeling your heart clap in your chest, you throw yourself around the northwest corner.";
+                northeastCorner.Passing = "You duck out of sight around the northeast corner.";
+                southeastCorner.Passing = "You stealthily slip around the southeast corner.";
                 Dice D8 = new Dice(8);
                 Dice D6 = new Dice(6);
                 Dice D4 = new Dice(4);
@@ -987,7 +1029,8 @@ namespace DungeonCrawler
                 {
                     strand = "left...";
                 }
-                Console.WriteLine($"What will you do?\n[You have only {timeLimit/1000} seconds {strand}]");
+                Console.WriteLine($"What will you do?\n[You have only {timeLimit/1000} seconds {strand} after you press any key...]");
+                Console.ReadKey(true);
                 List<Door> doors = new List<Door>();
                 foreach(Feature f in room.FeatureList)
                 {
@@ -1027,57 +1070,64 @@ namespace DungeonCrawler
                 {
                     int index = D4.Roll(D4) - 1;
                     Console.WriteLine($"[{i}] {choices[index]}");
-                    choices.Remove(choices[index]);
                     choice_door[i] = tie_door[choices[index]];
+                    choices.Remove(choices[index]);
+                    
                     i++;
                 }
                 if (choices.Count == 3)
                 {
                     int index = D3.Roll(D3) - 1;
                     Console.WriteLine($"[{i}] {choices[index]}");
-                    choices.Remove(choices[index]);
                     choice_door[i] = tie_door[choices[index]];
+                    choices.Remove(choices[index]);
+                    
                     i++;
                 }
                 if (choices.Count == 2)
                 {
                     int index = D2.Roll(D2) - 1;
                     Console.WriteLine($"[{i}] {choices[index]}");
-                    choices.Remove(choices[index]);
                     choice_door[i] = tie_door[choices[index]];
+                    choices.Remove(choices[index]);
                     i++;
                 }
                 if (choices.Count == 1)
                 {
                     Console.WriteLine($"[{i}] {choices[0]}");
-                    choices.Remove(choices[0]);
                     choice_door[i] = tie_door[choices[0]];
+                    choices.Remove(choices[0]);
+                    
                     i++;
                 }
                 
                 int x = unchecked((int)i);
+                
                 List<long> output = minotaurStomp(x, timeLimit);
                 int index2 = unchecked((int)output[0]);
-                if (output.Count == 0)
+                if (output[2] < 0)
                 {
                     Console.WriteLine("TOO LATE! Fixed within the monster's sights, you brace yourself for the fight of your life...");
+                    Console.ReadKey(true);
                     return room;
                 }
-                else if (choice_door[output[0]].Passage(room) == monster.Location)
+                else if (choice_door[output[0]].Passage(room, false) == monster.Location)
                 {
-                    Console.WriteLine("Feeling perhaps a smidge crazy, you've the sudden overwhelming urge to face your destiny (that or a death wish...) \nYou gallantly take the fight to the monster!");
+                    Console.WriteLine($"Feeling perhaps a smidge crazy, you've the sudden overwhelming urge to face your destiny (that or a death wish...) \nYou gallantly stride up to the {choice_door[output[0]].Name} and take the fight to the monster!");
                     Console.ReadKey(true);
-                    return choice_door[output[0]].Passage(room);
+                    return choice_door[output[0]].Passage(room, false);
                 }
                 else if (output[1]<2*timeLimit/5)
                 {
                     Console.WriteLine($"You manage to reach the {choice_door[output[0]].Name} with time to spare...");
+                    Console.ReadKey(true);
                     if (choice_door[output[0]].Attribute)
                     {
                         
-                        Console.ReadKey(true);
+                        
                         Console.WriteLine("With dawning horror your clammy hands fumble as they try to open a locked door!");
-                        minotaurApproaches(room, monster, false, output[3], true, rage);
+                        Console.ReadKey(true);
+                        return minotaurApproaches(room, monster, false, output[2], true, rage);
 
                     }
                     return choice_door[output[0]].Passage(room);
@@ -1085,12 +1135,14 @@ namespace DungeonCrawler
                 else if (output[1] < 7 * timeLimit / 10)
                 {
                     Console.WriteLine($"You scramble to the {choice_door[output[0]].Name}...");
+                    Console.ReadKey(true); 
                     if (choice_door[output[0]].Attribute)
                     {
 
-                        Console.ReadKey(true);
+                        
                         Console.WriteLine("With dawning horror your clammy hands fumble as they try to open a locked door!");
-                        minotaurApproaches(room, monster, false, output[3], true, rage);
+                        Console.ReadKey(true);
+                        return minotaurApproaches(room, monster, false, output[2], true, rage);
 
                     }
                     return choice_door[output[0]].Passage(room);
@@ -1105,6 +1157,7 @@ namespace DungeonCrawler
                         Console.WriteLine("With dawning horror your clammy hands fumble as they try to open the door! It's locked!");
                         Console.ReadKey(true);
                         Console.WriteLine("It's with a chill that you feel the monster's shadow fall over you. It's caught you red-handed. Feeling your stomach twist in knots, you face your foe...");
+                        Console.ReadKey(true);
                         return room;
 
                     }
@@ -1112,6 +1165,155 @@ namespace DungeonCrawler
                 }
                 
             }
+            Room minotaurStalks(Room newRoom1, Monster minotaur, long minotaurAlertedBy, long minotaurAlerted, Combat minotaurKafuffle, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar, List<bool> leftWhichRooms)
+            {
+                List<Door> doors = new List<Door>();
+                foreach(Feature f in newRoom1.FeatureList)
+                {
+                    if(f is Door)
+                    {
+                        doors.Add(f.CastDoor());
+                    }
+                }
+                List<Room> locationLocationLocation = new List<Room>();
+                foreach(Door d in doors)
+                {
+                    foreach(Room r in d.Portal)
+                    {
+                        if (r != newRoom1)
+                        {
+                            locationLocationLocation.Add(r);
+                        }
+                    }
+                }
+                if (locationLocationLocation.Contains(minotaur.Location) && minotaur.Stamina > 0 && minotaurAlertedBy < minotaurAlerted)
+                {
+                    Room oldRoom = newRoom1;
+                    newRoom1 = minotaurApproaches(oldRoom, minotaur, westernmostCorridor.FirstVisit, 10000, false, minotaur.Rage);
+                    if (oldRoom.Name == newRoom1.Name)
+                    {
+                        if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, oldRoom, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                        {
+                            minotaurKafuffle.WonFight(newRoom1);
+                            leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                            return newRoom1;
+                        }
+                        else
+                        {
+                            Console.ReadKey(true);
+                            return oceanBottom;
+                        }
+                    }
+                    else if (minotaur.Location.Name == newRoom1.Name)
+                    {
+                        if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, minotaur.Location, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, true, player1.Masked))
+                        {
+                            minotaurKafuffle.WonFight(newRoom1);
+                            leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                            return newRoom1;
+                        }
+                        else
+                        {
+                            Console.ReadKey(true);
+                            return oceanBottom;
+                        }
+                    }
+                    else
+                    {
+                        if (oldRoom == westernmostCorridor && westernmostCorridor.FirstVisit)
+                        {
+                            if (newRoom1.Name.Contains("corridor"))
+                            {
+                                westernmostCorridor.FirstVisit = false;
+                                Console.WriteLine("Back pressed against the wall by the corner you hear the beast's heavy breathing and grunts as it scours the corridor you just left. You can almost feel its eyes linger on the corner you just turned. As it stalks a pace or two further forward, your breath catches as you see its huge shadow climb the wall opposite you...");
+                                Console.ReadKey(true);
+                                if (!circleDoor.Attribute && oldRoom == westernmostCorridor)
+                                {
+                                    Dice D8 = new Dice(8);
+                                    int searching = D8.Roll(D8);
+                                    
+                                    if (searching > 5 && newRoom1 != antechamber)
+                                    {
+                                        minotaur.Location = oldRoom;
+                                        minotaur.Path.Insert(0, oldRoom);
+                                        Console.WriteLine("The monster is about to turn back when it notices something. You feel your pulse thumping in double time as you realise you left the double doors unlocked and slightly ajar! Now the beast knows you're here...");
+                                        Console.ReadKey(true);
+                                        minotaur.Suspicious = true;
+                                        return minotaurStalks(newRoom1, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("You hear the monster growl before the double doors close shut and are once again locked. The beast heads back the way it came...");
+                                        Console.ReadKey(true);
+                                        circleDoor.Attribute = true;
+                                        circleDoor.SpecificAttribute = "locked";
+                                        return newRoom1;
+                                    }
+                                }
+                                else
+                                {
+                                    
+                                    Console.WriteLine("Back pressed against the wall by the corner you hear the beast's heavy breathing and grunts as it scours the corridor you just left. You can almost feel its eyes linger on the corner you just turned. As it stalks a pace or two further forward, your breath catches as you see its huge shadow climb the wall opposite you...");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("The beast heads back the way it came...");
+                                    circleDoor.Attribute = true;
+                                    circleDoor.SpecificAttribute = "locked";
+                                    return newRoom1;
+                                }
+                            }
+                            else
+                            {
+                                
+                                Console.WriteLine("Back pressed against the door you realise you've left it unlocked! \nYour heart knocks against your chest as you hear the monster pass by. It pauses a moment, seemingly scanning the corridor...");
+                                Console.ReadKey(true);
+                                Console.WriteLine("Finally, you hear the monster's heavy footfalls as it returns from whence it came. It seems it didn't notice the door was left slightly ajar...");
+                                return newRoom1;
+                            }
+
+                        }
+                        else
+                        {
+                            minotaur.Location = oldRoom;
+                            minotaur.Path.Insert(0, oldRoom);
+                            if (minotaur.Suspicious || minotaur.Rage)
+                            {
+                                Dice D8 = new Dice(8);
+                                int searching = D8.Roll(D8);
+                                if (minotaur.Rage && searching > 4)
+                                {
+                                    
+                                    return minotaurStalks(newRoom1, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
+                                    ///make into recursive function
+                                }
+                                else if (minotaur.Suspicious && searching > 6)
+                                {
+                                    return minotaurStalks(newRoom1, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("The beast growls as it scans for any sign of you. Finally, you hear the monster's heavy footfalls as it returns from whence it came.");
+                                    minotaur.Time = (minotaur.Path.Count-1) * 20000;
+                                    return newRoom1;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("The monster sniffs the air, as though to catch some unfamiliar scent...");
+                                Console.ReadKey(true);
+                                Console.WriteLine("Finally, you hear the beast's heavy footfalls as it returns from whence it came.");
+                                minotaur.Time = (minotaur.Path.Count - 1) * 20000;
+                                return newRoom1;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    return newRoom1;
+                }
+            }
+            
+            
             //
             //
             //
@@ -1177,7 +1379,7 @@ namespace DungeonCrawler
             List<Item> minotaurInventory = new List<Item> { vanquisher, armBand, belt, diadem };
             List<Room> minotaurPath = new List<Room> { northernmostCorridor};
             Stopwatch minotaurTimer = new Stopwatch();
-            Monster minotaur = new Monster("minotaur", "towering above you at eight feet, the minotaur levels its horns towards you, tenses its powerful muscles, and charges!", minotaurInventory, 120, 10, vanquisher, northernmostCorridor, minotaurPath);
+            Monster minotaur = new Monster("minotaur", "towering above you at eight feet, the minotaur levels its horns towards you, tenses its powerful muscles, and charges!", minotaurInventory, 120, 10, vanquisher, northernmostCorridor, minotaurPath, false, false, minotaurTimer);
             Monster goblin = new Monster("goblin", "The goblin's swarthy, pock-marked skin does little to lessen the effect of its ugly snarl.", goblinInventory, 50, 2, scimitar);
             Monster ghoul2 = new Monster("ghoul engaged to Willow", "", gnollInventory, 1, 1, bite);
             Monster ghoul1 = new Monster("ghoul with paladin garb", "", gnollInventory, 1, 1, bite);
@@ -1338,7 +1540,7 @@ namespace DungeonCrawler
                         e++;
                         List<bool> success = new List<bool>();
                         
-                        success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                        success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                         if (player1.Inventory.Contains(jailorKeys))
                         {
                             escapedThroughDoor = true;
@@ -1667,7 +1869,7 @@ namespace DungeonCrawler
                 bool victorious = false;
                 bool visitedRoom = true;
                 bool visitedArmouryBefore = false;
-                
+                long minotaurAlerted = 0;
                 int b1 = 0;
                 Stopwatch fireClock = new Stopwatch();
                 fireClock.Start();
@@ -1811,7 +2013,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(corridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(corridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                                 fireProgress = FireProgress(fireProgress, player1, corridor);
                                 if (fireProgress > 999)
                                 {
@@ -1893,7 +2095,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -1967,7 +2169,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -2053,7 +2255,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(antechamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(antechamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -2123,7 +2325,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(cellOpposite, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(cellOpposite, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -2994,7 +3196,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[4] == "You stammer as you beseech them both that they *really* don't want to fight you. Bad, inexplicable things always happen when you get caught in a fight...")
                                             {
-                                                Console.WriteLine("\nUpon mention of Merigold the two mercenaries' features darken. They rise from their seats, drawing their weapons. It seems they know all too well who and where Merigold is, and they also know that no friend of theirs would be traipsing through this place looking for him...\nYou shrug. Oh well, it was worth a shot. You prepare to fight...");
+                                                Console.WriteLine("\nThe two mercenaries each break out into a leer as they rise from their seats, drawing their weapons...\nYou shrug. Oh well. At least you tried to warn them. You prepare to fight...");
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
@@ -3295,7 +3497,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[5] == "You stammer as you beseech them both that they *really* don't want to fight you. Bad, inexplicable things always happen when you get caught in a fight...")
                                             {
-                                                Console.WriteLine("\nUpon mention of Merigold the two mercenaries' features darken. They rise from their seats, drawing their weapons. It seems they know all too well who and where Merigold is, and they also know that no friend of theirs would be traipsing through this place looking for him...\nYou shrug. Oh well, it was worth a shot. You prepare to fight...");
+                                                Console.WriteLine("\nThe two mercenaries each break out into a leer as they rise from their seats, drawing their weapons...\nYou shrug. Oh well. At least you tried to warn them. You prepare to fight...");
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
@@ -3595,7 +3797,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[6] == "You stammer as you beseech them both that they *really* don't want to fight you. Bad, inexplicable things always happen when you get caught in a fight...")
                                             {
-                                                Console.WriteLine("\nUpon mention of Merigold the two mercenaries' features darken. They rise from their seats, drawing their weapons. It seems they know all too well who and where Merigold is, and they also know that no friend of theirs would be traipsing through this place looking for him...\nYou shrug. Oh well, it was worth a shot. You prepare to fight...");
+                                                Console.WriteLine("\nThe two mercenaries each break out into a leer as they rise from their seats, drawing their weapons...\nYou shrug. Oh well. At least you tried to warn them. You prepare to fight...");
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
@@ -3895,7 +4097,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[7] == "You stammer as you beseech them both that they *really* don't want to fight you. Bad, inexplicable things always happen when you get caught in a fight...")
                                             {
-                                                Console.WriteLine("\nUpon mention of Merigold the two mercenaries' features darken. They rise from their seats, drawing their weapons. It seems they know all too well who and where Merigold is, and they also know that no friend of theirs would be traipsing through this place looking for him...\nYou shrug. Oh well, it was worth a shot. You prepare to fight...");
+                                                Console.WriteLine("\nThe two mercenaries each break out into a leer as they rise from their seats, drawing their weapons...\nYou shrug. Oh well. At least you tried to warn them. You prepare to fight...");
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
@@ -3970,7 +4172,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[8] == "You stammer as you beseech them both that they *really* don't want to fight you. Bad, inexplicable things always happen when you get caught in a fight...")
                                             {
-                                                Console.WriteLine("\nUpon mention of Merigold the two mercenaries' features darken. They rise from their seats, drawing their weapons. It seems they know all too well who and where Merigold is, and they also know that no friend of theirs would be traipsing through this place looking for him...\nYou shrug. Oh well, it was worth a shot. You prepare to fight...");
+                                                Console.WriteLine("\nThe two mercenaries each break out into a leer as they rise from their seats, drawing their weapons...\nYou shrug. Oh well. At least you tried to warn them. You prepare to fight...");
 
                                                 if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
@@ -4120,7 +4322,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(armoury, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(armoury, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -4132,6 +4334,10 @@ namespace DungeonCrawler
                     }
                     b = 0;
                     a = 0;
+                    long minotaurAlertedBy = D6.Roll(D6) * 8000;
+                    Stopwatch sw = new Stopwatch();
+                    justStalked = false;
+                    minotaurAlerted = 0;
                     while (!leftWhichRooms[6])//mess hall
                     {
                         visitedRoom = true;
@@ -4139,6 +4345,58 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
+                        sw.Stop();
+                        minotaurAlerted = sw.ElapsedMilliseconds;
+                        sw.Start();
+                        if (minotaur.Stamina > 0)
+                        {
+                            if (!minotaur.MinotaurReturning(messHall))
+                            {
+                                if (minotaur.Location == messHall)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, messHall, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(messHall);
+                                    }
+                                    else
+                                    {
+                                        return;
+                                    }
+                                }
+                                else if (minotaurAlerted > minotaurAlertedBy)
+                                {
+                                    justStalked = true;
+                                    newRoom1 = minotaurStalks(messHall, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
+                                    if (newRoom1 == oceanBottom)
+                                    {
+                                        return;
+                                    }
+                                    leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                    continue;
+                                }
+                            }
+                            else if (minotaur.Location == messHall)
+                            {
+                                Console.WriteLine("The hulking monster at last locks eyes with you!");
+                                Console.ReadKey(true);
+                                Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
+                                Console.ReadKey(true);
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, messHall, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                {
+                                    minotaurKafuffle.WonFight(messHall);
+                                }
+                                else
+                                {
+                                    return;
+                                }
+                            }
+                            else if (minotaur.Path[1] == messHall)
+                            {
+                                Console.WriteLine("Up and down the corridor lanterns quiver as the monster approaches!");
+                                Console.ReadKey(true);
+                            }
+                        }
+                        
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                         ///red herring in room above
@@ -4154,19 +4412,32 @@ namespace DungeonCrawler
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
                         string reply = Console.ReadLine().ToLower().Trim();
+                        sw.Stop();
+                        if (!justStalked && sw.ElapsedMilliseconds > minotaurAlertedBy && minotaur.Location == easternmostCorridor)
+                        {
+                            continue;
+                        }
+                        sw.Start();
                         try
                         {
                             int reply1 = int.Parse(reply);
                             if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
                             {
                                 Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
                                 continue;
                             }
                             else if (reply1 == 1)
                             {
                                 player1.SearchPack(messHall.ItemList);
                                 a++;
-
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
                             }
                             else if (reply1 == 2)
                             {
@@ -4181,7 +4452,10 @@ namespace DungeonCrawler
                                     newRoom1 = newRoom;
                                     continue;
                                 }
-
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
 
                                 b++;
                             }
@@ -4189,10 +4463,21 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(messHall, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(messHall, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                        catch { 
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                            minotaurAlertedBy = D6.Roll(D6) * 1000;
+                            sw = new Stopwatch();
+                            justStalked = false;
+                            minotaurAlerted = 0;
+                        }
+                        
                     }
                     if (visitedRoom)
                     {
@@ -4201,7 +4486,10 @@ namespace DungeonCrawler
                     }
                     b = 0;
                     a = 0;
-                    long minotaurAlertedBy = D6.Roll(D6) * 1000;
+                    minotaurAlertedBy = D6.Roll(D6) * 8000;
+                    minotaurAlerted = 0;
+                    justStalked = false;
+                    sw = new Stopwatch();
                     while (!leftWhichRooms[7])//circular landing : change to westernmost corridor
                     {
                         ///special room with minotaur patrolling, use of Task and time
@@ -4220,50 +4508,60 @@ namespace DungeonCrawler
                         ///red herring in room above
                         ///Specific for each room, tailored.
                         
-                        Stopwatch sw = new Stopwatch();
+                        
                         sw.Stop();
-                        long minotaurAlerted = sw.ElapsedMilliseconds;
+                        minotaurAlerted = sw.ElapsedMilliseconds;
                         sw.Start();
-                        if ((minotaur.Location == northernmostCorridor || minotaur.Location == southernmostCorridor || minotaur.Location == antechamber) && minotaur.Stamina > 1 && minotaurAlertedBy < minotaurAlerted)
+                        if (minotaur.Stamina > 0)
                         {
-                            Room room1 = minotaurApproaches(westernmostCorridor, minotaur, westernmostCorridor.FirstVisit, 14000, false, minotaur.Rage);
-                            if (westernmostCorridor.Name == room1.Name)
+                            if (!minotaur.MinotaurReturning(westernmostCorridor))
                             {
+                                if (minotaur.Location == westernmostCorridor)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, westernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(westernmostCorridor);
+                                    }
+                                    else
+                                    {
+                                        return;
+                                    }
+                                }
+                                else if (minotaurAlerted > minotaurAlertedBy)
+                                {
+                                    justStalked = true;
+                                    newRoom1 = minotaurStalks(westernmostCorridor, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
+                                    if (newRoom1 == oceanBottom)
+                                    {
+                                        return;
+                                    }
+                                    leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                    westernmostCorridor.FirstVisit = false;
+                                    continue;
+                                }
+                            }
+                            else if (minotaur.Location == westernmostCorridor)
+                            {
+                                Console.WriteLine("The hulking monster at last locks eyes with you!");
+                                Console.ReadKey(true);
+                                Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
+                                Console.ReadKey(true);
                                 if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, westernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(westernmostCorridor);
                                 }
                                 else
                                 {
-                                    Console.ReadKey(true);
                                     return;
                                 }
                             }
-                            else if(minotaur.Location.Name == room1.Name)
+                            else if (minotaur.Path[1] == westernmostCorridor)
                             {
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, minotaur.Location, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, true, player1.Masked))
-                                {
-                                    minotaurKafuffle.WonFight(westernmostCorridor);
-                                }
-                                else
-                                {
-                                    Console.ReadKey(true);
-                                    return;
-                                }
-                            }
-                            else
-                            {
-                                if (westernmostCorridor.FirstVisit)
-                                {
-                                    Console.WriteLine("Back pressed against the wall you hear the beast enter where you'd ");
-                                }
-                                else
-                                {
-
-                                }
+                                Console.WriteLine("Up and down the corridor lanterns quiver as the monster approaches!");
+                                Console.ReadKey(true);
                             }
                         }
-                        
+
                         ///
                         if (!(a == 0 && b == 0))
                         {
@@ -4276,19 +4574,35 @@ namespace DungeonCrawler
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
                         string reply = Console.ReadLine().ToLower().Trim();
+                        sw.Stop();
+                        minotaurAlerted = sw.ElapsedMilliseconds;
+                        if (!justStalked && minotaurAlerted > minotaurAlertedBy && (minotaur.Location == northernmostCorridor || minotaur.Location == southernmostCorridor || minotaur.Location == antechamber))
+                        {
+                            
+                            
+                            continue;
+                        }
+                        sw.Start();
                         try
                         {
                             int reply1 = int.Parse(reply);
                             if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
                             {
                                 Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
                                 continue;
                             }
                             else if (reply1 == 1)
                             {
                                 player1.SearchPack(westernmostCorridor.ItemList);
                                 a++;
-
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
                             }
                             else if (reply1 == 2)
                             {
@@ -4303,7 +4617,10 @@ namespace DungeonCrawler
                                     newRoom1 = newRoom;
                                     continue;
                                 }
-
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
 
                                 b++;
                             }
@@ -4311,11 +4628,21 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(westernmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(westernmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
-                        westernmostCorridor.FirstVisit = false;
+                        catch { 
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                            minotaurAlertedBy = D6.Roll(D6) * 1000;
+                            sw = new Stopwatch();
+                            justStalked = false;
+                            minotaurAlerted = 0;
+                        }
+                        
                     }
                     if (visitedRoom)
                     {
@@ -4324,6 +4651,10 @@ namespace DungeonCrawler
                     }
                     b = 0;
                     a = 0;
+                    minotaurAlertedBy = D6.Roll(D6) * 8000;
+                    minotaurAlerted = 0;
+                    justStalked = false;
+                    sw = new Stopwatch();
                     while (!leftWhichRooms[21])//north-facing corridor
                     {
                         visitedRoom = true;
@@ -4335,6 +4666,57 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
+                        sw.Stop();
+                        minotaurAlerted = sw.ElapsedMilliseconds;
+                        sw.Start();
+                        if (minotaur.Stamina > 0)
+                        {
+                            if (!minotaur.MinotaurReturning(northernmostCorridor))
+                            {
+                                if (minotaur.Location == northernmostCorridor)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, northernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(northernmostCorridor);
+                                    }
+                                    else
+                                    {
+                                        return;
+                                    }
+                                }
+                                else if (minotaurAlerted > minotaurAlertedBy)
+                                {
+                                    justStalked = true;
+                                    newRoom1 = minotaurStalks(northernmostCorridor, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
+                                    if (newRoom1 == oceanBottom)
+                                    {
+                                        return;
+                                    }
+                                    leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                    continue;
+                                }
+                            }
+                            else if (minotaur.Location == northernmostCorridor)
+                            {
+                                Console.WriteLine("The hulking monster at last locks eyes with you!");
+                                Console.ReadKey(true);
+                                Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
+                                Console.ReadKey(true);
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, northernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                {
+                                    minotaurKafuffle.WonFight(northernmostCorridor);
+                                }
+                                else
+                                {
+                                    return;
+                                }
+                            }
+                            else if (minotaur.Path[1] == northernmostCorridor)
+                            {
+                                Console.WriteLine("Up and down the corridor lanterns quiver as the monster approaches!");
+                                Console.ReadKey(true);
+                            }
+                        }
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                         ///red herring in room above
@@ -4350,19 +4732,32 @@ namespace DungeonCrawler
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
                         string reply = Console.ReadLine().ToLower().Trim();
+                        sw.Stop();
+                        if (!justStalked && sw.ElapsedMilliseconds > minotaurAlertedBy &&(minotaur.Location == westernmostCorridor || minotaur.Location == easternmostCorridor ))
+                        {
+                            continue;
+                        }
+                        sw.Start();
                         try
                         {
                             int reply1 = int.Parse(reply);
                             if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
                             {
                                 Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
                                 continue;
                             }
                             else if (reply1 == 1)
                             {
                                 player1.SearchPack(northernmostCorridor.ItemList);
                                 a++;
-
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
                             }
                             else if (reply1 == 2)
                             {
@@ -4377,7 +4772,10 @@ namespace DungeonCrawler
                                     newRoom1 = newRoom;
                                     continue;
                                 }
-
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
 
                                 b++;
                             }
@@ -4385,10 +4783,20 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(northernmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(northernmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                        catch { 
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                            minotaurAlertedBy = D6.Roll(D6) * 1000;
+                            sw = new Stopwatch();
+                            justStalked = false;
+                            minotaurAlerted = 0;
+                        }
                         northernmostCorridor.FirstVisit = false;
                     }
                     if (visitedRoom)
@@ -4398,6 +4806,10 @@ namespace DungeonCrawler
                     }
                     b = 0;
                     a = 0;
+                    minotaurAlertedBy = D6.Roll(D6) * 8000;
+                    sw = new Stopwatch();
+                    justStalked = false;
+                    minotaurAlerted = 0;
                     while (!leftWhichRooms[22])//easternmost corridor
                     {
                         visitedRoom = true;
@@ -4409,6 +4821,57 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
+                        sw.Stop();
+                        minotaurAlerted = sw.ElapsedMilliseconds;
+                        sw.Start();
+                        if (minotaur.Stamina > 0)
+                        {
+                            if (!minotaur.MinotaurReturning(easternmostCorridor))
+                            {
+                                if (minotaur.Location == easternmostCorridor)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, easternmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(easternmostCorridor);
+                                    }
+                                    else
+                                    {
+                                        return;
+                                    }
+                                }
+                                else if (minotaurAlerted > minotaurAlertedBy)
+                                {
+                                    justStalked = true;
+                                    newRoom1 = minotaurStalks(easternmostCorridor, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
+                                    if (newRoom1 == oceanBottom)
+                                    {
+                                        return;
+                                    }
+                                    leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                    continue;
+                                }
+                            }
+                            else if (minotaur.Location == easternmostCorridor)
+                            {
+                                Console.WriteLine("The hulking monster at last locks eyes with you!");
+                                Console.ReadKey(true);
+                                Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
+                                Console.ReadKey(true);
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, easternmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                {
+                                    minotaurKafuffle.WonFight(easternmostCorridor);
+                                }
+                                else
+                                {
+                                    return;
+                                }
+                            }
+                            else if (minotaur.Path[1] == easternmostCorridor)
+                            {
+                                Console.WriteLine("Up and down the corridor lanterns quiver as the monster approaches!");
+                                Console.ReadKey(true);
+                            }
+                        }
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                         ///red herring in room above
@@ -4424,19 +4887,32 @@ namespace DungeonCrawler
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
                         string reply = Console.ReadLine().ToLower().Trim();
+                        sw.Stop();
+                        if (!justStalked && sw.ElapsedMilliseconds > minotaurAlertedBy && (minotaur.Location == messHall || minotaur.Location == northernmostCorridor || minotaur.Location == southernmostCorridor))
+                        {
+                            continue;
+                        }
+                        sw.Start();
                         try
                         {
                             int reply1 = int.Parse(reply);
                             if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
                             {
                                 Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
                                 continue;
                             }
                             else if (reply1 == 1)
                             {
                                 player1.SearchPack(easternmostCorridor.ItemList);
                                 a++;
-
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
                             }
                             else if (reply1 == 2)
                             {
@@ -4451,7 +4927,10 @@ namespace DungeonCrawler
                                     newRoom1 = newRoom;
                                     continue;
                                 }
-
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
 
                                 b++;
                             }
@@ -4459,10 +4938,20 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(easternmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(easternmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                        catch { 
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                            minotaurAlertedBy = D6.Roll(D6) * 1000;
+                            sw = new Stopwatch();
+                            justStalked = false;
+                            minotaurAlerted = 0;
+                        }
                         easternmostCorridor.FirstVisit = false;
                     }
                     if (visitedRoom)
@@ -4472,6 +4961,10 @@ namespace DungeonCrawler
                     }
                     b = 0;
                     a = 0;
+                    minotaurAlertedBy = D6.Roll(D6) * 8000;
+                    sw = new Stopwatch();
+                    justStalked = false;
+                    minotaurAlerted = 0;
                     while (!leftWhichRooms[23])//south-facing corridor
                     {
                         visitedRoom = true;
@@ -4483,6 +4976,57 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
+                        sw.Stop();
+                        minotaurAlerted = sw.ElapsedMilliseconds;
+                        sw.Start();
+                        if (minotaur.Stamina > 0)
+                        {
+                            if (!minotaur.MinotaurReturning(southernmostCorridor))
+                            {
+                                if (minotaur.Location == southernmostCorridor)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, southernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(southernmostCorridor);
+                                    }
+                                    else
+                                    {
+                                        return;
+                                    }
+                                }
+                                else if (minotaurAlerted > minotaurAlertedBy)
+                                {
+                                    justStalked = true;
+                                    newRoom1 = minotaurStalks(southernmostCorridor, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
+                                    if (newRoom1 == oceanBottom)
+                                    {
+                                        return;
+                                    }
+                                    leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                    continue;
+                                }
+                            }
+                            else if (minotaur.Location == southernmostCorridor)
+                            {
+                                Console.WriteLine("The hulking monster at last locks eyes with you!");
+                                Console.ReadKey(true);
+                                Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
+                                Console.ReadKey(true);
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, southernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                {
+                                    minotaurKafuffle.WonFight(southernmostCorridor);
+                                }
+                                else
+                                {
+                                    return;
+                                }
+                            }
+                            else if (minotaur.Path[1]==southernmostCorridor)
+                            {
+                                Console.WriteLine("Up and down the corridor lanterns quiver as the monster approaches!");
+                                Console.ReadKey(true);
+                            }
+                        }
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                         ///red herring in room above
@@ -4497,20 +5041,35 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
+                        
+                        
                         string reply = Console.ReadLine().ToLower().Trim();
+                        sw.Stop();
+                        if (sw.ElapsedMilliseconds > minotaurAlertedBy && !justStalked && (minotaur.Location == easternmostCorridor || minotaur.Location == westernmostCorridor))
+                        {
+                            continue;
+                        }
+                        sw.Start();
                         try
                         {
                             int reply1 = int.Parse(reply);
                             if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
                             {
                                 Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
                                 continue;
                             }
                             else if (reply1 == 1)
                             {
                                 player1.SearchPack(southernmostCorridor.ItemList);
                                 a++;
-
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
                             }
                             else if (reply1 == 2)
                             {
@@ -4525,7 +5084,10 @@ namespace DungeonCrawler
                                     newRoom1 = newRoom;
                                     continue;
                                 }
-
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
 
                                 b++;
                             }
@@ -4533,10 +5095,20 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(southernmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(southernmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                sw = new Stopwatch();
+                                justStalked = false;
+                                minotaurAlerted = 0;
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                        catch { 
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                            minotaurAlertedBy = D6.Roll(D6) * 1000;
+                            sw = new Stopwatch();
+                            justStalked = false;
+                            minotaurAlerted = 0;
+                        }
                         southernmostCorridor.FirstVisit = false;
                     }
                     if (visitedRoom)
@@ -4604,7 +5176,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(emptyCell, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(emptyCell, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -4673,7 +5245,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(magicalManufactory, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(magicalManufactory, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -4742,7 +5314,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(broomCloset, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(broomCloset, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -4811,7 +5383,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(highestParapet, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(highestParapet, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -4880,7 +5452,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(hugeBarracks, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(hugeBarracks, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -4949,7 +5521,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(desertIsland, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(desertIsland, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -5018,7 +5590,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(bankVault, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(bankVault, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -5086,7 +5658,7 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                success = player1.UseItemOutsideCombat(dragonLair, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(dragonLair, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -5154,7 +5726,7 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                success = player1.UseItemOutsideCombat(secretChamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(secretChamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -5223,7 +5795,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(prehistoricJungle, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(prehistoricJungle, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -5292,7 +5864,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(astralPlanes, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(astralPlanes, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -5361,7 +5933,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(oceanBottom, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(oceanBottom, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -5889,7 +6461,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(dungeonChamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, trialBattle);
+                                success = player1.UseItemOutsideCombat(dungeonChamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
