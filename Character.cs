@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace DungeonCrawler
@@ -54,8 +55,11 @@ namespace DungeonCrawler
         public int InitialStamina { get; set; }
         public List<Weapon> WeaponInventory { get; set; }
         public Dictionary<string, string> Traits { get; set; }
+        public bool Masked { get; set; }
+        public int CarryCapacity { get; set; }
+        public bool FieryEscape { get; set; }
 
-        public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits)
+        public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits, bool masked = false, bool fieryEscape = false)
         {
             Name = name;
             Skill = skill;
@@ -64,7 +68,9 @@ namespace DungeonCrawler
             WeaponInventory = weaponInventory;
             Inventory = inventory;
             Traits = traits;
-
+            Masked = masked;
+            CarryCapacity = 12;
+            FieryEscape = fieryEscape;
         }
         public string DisplayName() { return Name; }
         public int DisplaySkill() { return Skill; }
@@ -177,7 +183,7 @@ namespace DungeonCrawler
         /// the formula for this code is very similar to searchfeature.
         /// </summary>
         /// <param name="roomItems"></param>
-        public void SearchPack(List<Item> roomItems)
+        public void SearchPack(List<Item> roomItems, Room room, List<Room> threadPath)
         {
             Console.WriteLine("Rummaging through your effects you find the following;");
             int r = 1;
@@ -225,8 +231,8 @@ namespace DungeonCrawler
                             bool success = false;
                             string objName = message.Substring(message.IndexOf(reply1.ToString()) + 3, message.IndexOf((reply1 + 1).ToString()) - 2 - (message.IndexOf(reply1.ToString()) + 3)).Trim();
                             Console.WriteLine(objName);
-                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(Inventory, WeaponInventory, 5, 0, i, null, null, roomItems); success = true; break; } }
-                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(Inventory, WeaponInventory, 5, 0, null, w, null, roomItems); success = true; break; } }
+                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
                             if (!success) { Console.WriteLine($"You threw your {objName} away!"); }
 
                         }
@@ -235,8 +241,8 @@ namespace DungeonCrawler
                             bool success = false;
                             string objName = message.Substring(message.IndexOf((r - 1).ToString()) + 3, message.Length - 1 - (message.IndexOf((r - 1).ToString()) + 3)).Trim();
                             Console.WriteLine(objName);
-                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(Inventory, WeaponInventory, 5, 0, i, null, null, roomItems); success = true; break; } }
-                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(Inventory, WeaponInventory, 5, 0, null, w, null, roomItems); success = true; break; } }
+                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(CarryCapacity,    Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
                             if (!success) { Console.WriteLine($"You threw your {objName} away!"); }
                         }
                     }
@@ -303,10 +309,14 @@ namespace DungeonCrawler
         /// <param name="trialBattle"></param>
         /// <returns></returns>
 
-        public List<bool> UseItemOutsideCombat(Room room, Item musicBox, Item binkySkull, Item steelKey, Item note, Feature rosewoodChest, Feature holeInCeiling, Dictionary<Item, List<Player>> usesDictionaryItemChar, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Combat trialBattle = null)
+        public List<bool> UseItemOutsideCombat(Room room, Item musicBox, Item binkySkull, Item steelKey, Item note, Item jailorKeys, List<Item> specialItems, Feature rosewoodChest, Feature holeInCeiling, Dictionary<Item, List<Player>> usesDictionaryItemChar, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, bool masked, Monster monster, bool fieryEscape, Combat battle = null)
         {
 
             List<bool> success = new List<bool> { false, false }; //{successful use of item, fire}
+            ///{false, false} = item used unsuccessfully
+            ///{true, false} = item used successfully
+            ///{true, true} = item used successfully to cause a fire and won fight.
+            ///{false, true} = caused fire but died in battle
             if (Inventory.Count > 0)
             {
                 Console.WriteLine("Which item in your pack do you wish to use?");
@@ -316,14 +326,12 @@ namespace DungeonCrawler
                     Console.WriteLine($"[{g}] {item.Name}");
                     g++;
                 }
-                if (room.Name == "dank cell")
+                foreach (Item weapon in WeaponInventory)
                 {
-                    foreach (Item weapon in WeaponInventory)
-                    {
-                        Console.WriteLine($"[{g}] {weapon.Name}");
-                        g++;
-                    }
+                    Console.WriteLine($"[{g}] {weapon.Name}");
+                    g++;
                 }
+                
                 Item chosenItem = null;
                 while (true)
                 {
@@ -337,23 +345,22 @@ namespace DungeonCrawler
                             chosenItem = Inventory[reply0];
                             break;
                         }
-                        catch {
-                            if (room.Name == "dank cell") 
-                            { 
-                                try
-                                {
-                                    chosenItem = WeaponInventory[reply0 - Inventory.Count];
-                                    break;
-                                }
-                                catch
-                                {
-                                    Console.WriteLine("Please enter a number corresponding to an item listed above!");
-                                }
+                        catch 
+                        {
+                             
+                            
+                            try
+                            {
+                                chosenItem = WeaponInventory[reply0 - Inventory.Count];
+                                break;
                             }
-                            else
+                            catch
                             {
                                 Console.WriteLine("Please enter a number corresponding to an item listed above!");
+                                continue;
                             }
+                            
+                            
                         }
 
                     }
@@ -368,7 +375,7 @@ namespace DungeonCrawler
                             }
 
                         }
-                        if (chosenItem == null && room.Name == "dank cell")
+                        if (chosenItem == null)
                         {
                             foreach (Item weapon in WeaponInventory)
                             {
@@ -423,7 +430,7 @@ namespace DungeonCrawler
                         {
                             try
                             {
-                                success[0] = chosenItem.UseItem3(chosenItem, this, usesDictionaryItemChar);
+                                success[0] = chosenItem.UseItem3(chosenItem, this, usesDictionaryItemChar, masked);
 
                                 if (chosenItem.Name.Trim().ToLower() == "healing potion")
                                 {
@@ -436,6 +443,10 @@ namespace DungeonCrawler
                                 else if (chosenItem.Name.Trim().ToLower() == "felix felicis") // luck potion grants boon to all weapons.
                                 {
                                     Console.WriteLine("The sweet liquid tastes like nirvana. It's effervescent body dances on your tongue and delights the senses. Suddenly you feel like anything is possible...");
+                                }
+                                else if (chosenItem.Name == "soot")
+                                {
+
                                 }
                                 else
                                 {
@@ -452,15 +463,26 @@ namespace DungeonCrawler
                             {
                                 if (chosenItem.Name == "rusty chain-flail")
                                 {
-                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, steelKey);
+                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, steelKey, null, null, jailorKeys);
+                                    List<Weapon> _weapons = new List<Weapon>();
+                                    List<Item> _weaponItem = new List<Item> { chosenItem};
+                                    _weapons = _weaponItem.Cast<Weapon>().ToList();
+                                    if (Inventory.Contains(jailorKeys))
+                                    {
+                                        return success;
+                                    }
+                                    else if (_weapons[0].Equipped)
+                                    {
+                                        return success;
+                                    }
                                 }
                                 else if (chosenItem.Name == "healing potion"|| chosenItem.Name=="Felix Felicis"|| chosenItem.Name=="elixir of feline guile")
                                 {
-                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, binkySkull, musicBox, note);
+                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, binkySkull, musicBox, note);
                                 }
                                 else
                                 {
-                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, null, musicBox, note);
+                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, musicBox, note);
                                 }
                                 if (!success[0])
                                 {
@@ -479,6 +501,7 @@ namespace DungeonCrawler
                                         Console.WriteLine($"You rack your brains trying to come up with an escape from your prison. With a tincture of desperation you conclude the only way is to start a fire. Maybe, just maybe, you can ambush the guard when they try to put it out...\nIf they come to put it out.\nWith not a small number of misgivings winching around your tight chest, you feverishly begin trying to light the {chosenItem.Name} on fire with the brazier. However, the low flickering flame seems to burn with an unnatural frostiness. This is no ordinary flame but something magical, casting only chilly light into the room and sharing none of the heat you'd otherwise expect. The {chosenItem.Name} refuses to burn.\nIf you truly believe arson is your only means to escape, then you'll have to deploy some greater ingenuity, and do so before your time runs out...");
                                     }
                                     else if (chosenItem.Name == "magnifying glass") { }
+                                    else if (chosenItem.Name == "rusty chain-flail" && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "rosewood door" && !room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Description.Contains("dent")) { room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Description = room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Description + " You can see the dent left the last time you hammered against this door."; }
                                     else
                                     {
                                         Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
@@ -522,6 +545,7 @@ namespace DungeonCrawler
                                     
 
                                 }
+                                else if (chosenItem.Name == "rusty chain-flail" && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name == "rosewood door" && !room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Description.Contains("dent")) { room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Description = room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Description + " You can see the dent left the last time you hammered against this door."; }
                                 else
                                 {
                                     Console.WriteLine($"You try using the {chosenItem.Name} on the {room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
@@ -538,45 +562,160 @@ namespace DungeonCrawler
                             }
                             try
                             {
-                                success = chosenItem.UseItem(chosenItem, Inventory[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, trialBattle);
+                                success = chosenItem.UseItem(chosenItem, Inventory[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, specialItems, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, battle);
                                 if (!success[0] && success[1])
                                 {
                                     return success;
                                 }
                                 else if (!success[0])
                                 {
-                                    Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
+                                    if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "dagger") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "dagger" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "estoc") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "estoc" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("While the blade is thin for a sword, you *may* find it to be a bit too unwieldy to use with the bobby pin for picking locks...");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "rusty scimitar") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "rusty scimitar" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("This blade is altogether too wide, curved and large to pick locks with the bobby pin - you won't be able to get through many doors with this...");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "Bread Knife") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "Bread Knife" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "sai-daggers") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "sai-daggers" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("These would be perfect for picking locks with the bobby pin - if it weren't for how they're so bent out of shape and dented.");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "throwing knife") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "throwing knife" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"You try using the {chosenItem.Name} on the {Inventory[effectedItemNum - 1 - room.ItemList.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
+
+                                    }
                                 }
-                                
                                 
 
                                 
                                 return success;
                             }
-                            catch { Console.WriteLine($"You try using the {chosenItem.Name} on the {Inventory[effectedItemNum - 1 - room.ItemList.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised..."); return success; }
+                            catch 
+                            {
+                                if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "dagger") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "dagger" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this...");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "estoc") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "estoc" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("While the blade is thin for a sword, you *may* find it to be a bit too unwieldy to use with the bobby pin for picking locks...");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "rusty scimitar") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "rusty scimitar" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("This blade is altogether too wide, curved and large to pick locks with the bobby pin - you won't be able to get through many doors with this...");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "Bread Knife") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "Bread Knife" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "sai-daggers") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "sai-daggers" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("These would be perfect for picking locks with the bobby pin - if it weren't for how they're so bent out of shape and dented.");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "throwing knife") && (Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "throwing knife" || Inventory[effectedItemNum - 1 - room.ItemList.Count].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"You try using the {chosenItem.Name} on the {Inventory[effectedItemNum - 1 - room.ItemList.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
+
+                                }
+                                return success; 
+                            }
                         }
                         else
                         {
                             try
                             {
-                                success = chosenItem.UseItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, trialBattle);
+                                success = chosenItem.UseItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, specialItems, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, battle);
                                 if (!success[0] && success[1])
                                 {
                                     return success;
                                 }
                                 else if (!success[0])
                                 {
-                                    
-                                    Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
-                                    
+
+                                    if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "dagger") && (room.ItemList[effectedItemNum - 1].Name == "dagger" || room.ItemList[effectedItemNum - 1].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this...");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "estoc") && (Inventory[effectedItemNum - 1].Name == "estoc" || Inventory[effectedItemNum - 1].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("While the blade is thin for a sword, you *may* find it to be a bit too unwieldy to use with the bobby pin for picking locks...");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "rusty scimitar") && (Inventory[effectedItemNum - 1].Name == "rusty scimitar" || Inventory[effectedItemNum - 1].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("This blade is altogether too wide, curved and large to pick locks with the bobby pin - you won't be able to get through many doors with this...");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "Bread Knife") && (Inventory[effectedItemNum - 1].Name == "Bread Knife" || Inventory[effectedItemNum - 1].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "sai-daggers") && (Inventory[effectedItemNum - 1].Name == "sai-daggers" || Inventory[effectedItemNum - 1].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("These would be perfect for picking locks with the bobby pin - if it weren't for how they're so bent out of shape and dented.");
+                                    }
+                                    else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "throwing knife") && (Inventory[effectedItemNum - 1].Name == "throwing knife" || Inventory[effectedItemNum - 1].Name == "bobby pin"))
+                                    {
+                                        Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
+
+                                    }
+
                                 }
                                 return success;
                             }
                             catch 
                             {
-                                
-                                Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
-                                
+
+                                if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "dagger") && (room.ItemList[effectedItemNum - 1].Name == "dagger" || room.ItemList[effectedItemNum - 1].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this...");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "estoc") && (Inventory[effectedItemNum - 1].Name == "estoc" || Inventory[effectedItemNum - 1].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("While the blade is thin for a sword, you *may* find it to be a bit too unwieldy to use with the bobby pin for picking locks...");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "rusty scimitar") && (Inventory[effectedItemNum - 1].Name == "rusty scimitar" || Inventory[effectedItemNum - 1].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("This blade is altogether too wide, curved and large to pick locks with the bobby pin - you won't be able to get through many doors with this...");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "Bread Knife") && (Inventory[effectedItemNum - 1].Name == "Bread Knife" || Inventory[effectedItemNum - 1].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "sai-daggers") && (Inventory[effectedItemNum - 1].Name == "sai-daggers" || Inventory[effectedItemNum - 1].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("These would be perfect for picking locks with the bobby pin - if it weren't for how they're so bent out of shape and dented.");
+                                }
+                                else if ((chosenItem.Name == "bobby pin" || chosenItem.Name == "throwing knife") && (Inventory[effectedItemNum - 1].Name == "throwing knife" || Inventory[effectedItemNum - 1].Name == "bobby pin"))
+                                {
+                                    Console.WriteLine("This blade is altogether too wide to pick locks with the bobby pin - you won't be able to get through many doors with this.\nNow if only their was something the same length but thinner...");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");
+
+                                }
+
                                 return success; 
                             }
                         }
@@ -597,7 +736,13 @@ namespace DungeonCrawler
         public string Description { get; set; }
         public List<Item> Items { get; set; }
         public Weapon Veapon { get; set; }
-        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon)
+        public Room Location { get; set; }
+        public List<Room> Path { get; set; }
+        public bool Rage { get; set; }
+        public bool Suspicious { get; set; }
+        public Stopwatch Patrol { get; set; }
+        public long Time { get; set; }
+        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, bool rage = false)
         {
             Name = name;
             Description = description;
@@ -605,6 +750,56 @@ namespace DungeonCrawler
             Stamina = stamina;
             Skill = skill;
             Veapon = weapon;
+        }
+        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, Room location, List<Room> path, bool rage = false, bool suspicious = false, Stopwatch patrol = null)
+        {
+            Name = name;
+            Description = description;
+            Items = items;
+            Stamina = stamina;
+            Skill = skill;
+            Veapon = weapon;
+            Location = location;
+            Path = path;
+            Rage = rage;
+            Suspicious = suspicious;
+            Patrol = patrol;
+            Time = (Path.Count - 1) * 20000;
+        }
+        public bool MinotaurReturning(Room room)
+        {
+            this.Patrol.Stop();
+            
+            long time = this.Time - this.Patrol.ElapsedMilliseconds;
+            
+
+            if (time < (this.Path.Count - 2) * 20000 && this.Path.Count>1)
+            {
+                this.Location = this.Path[1];
+                if (((room.Name.Contains("corridor") && room.Name != "long corridor")|| room.Name == "mess hall" || room.Name == "broom closet" || room.Name == "antechamber" || room.Name == "armoury") && ((Location.Name.Contains("corridor") && Location.Name != "long corridor")|| Location.Name == "mess hall" || Location.Name == "broom closet" || Location.Name == "antechamber" || Location.Name == "armoury"))
+                {
+                    Console.WriteLine($"You hear the monster's lumbering footfalls as it moves into the {this.Location.Name}...");
+                }
+                else if((room.Name == "long corridor" || room.Name == "dank cell" || room.Name == "eerie cell" || room.Name == "empty cell" || room.Name == "antechamber" || room.Name == "dungeon chamber") && (Location.Name == "long corridor" || Location.Name == "dank cell" || Location.Name == "eerie cell" || Location.Name == "empty cell" || Location.Name == "antechamber" || Location.Name == "dungeon chamber"))
+                {
+                    Console.WriteLine($"You hear the monster's lumbering footfalls as it moves into the {this.Location.Name}...");
+                }
+                this.Path.RemoveAt(0);
+                
+            }
+            if (this.Location.Name == "north-facing corridor" && this.Path.Count == 1)
+            {
+                this.Patrol.Stop();
+                this.Patrol = new Stopwatch();
+                this.Time = 0;
+                return false;
+            }
+            else
+            {
+                this.Patrol.Start();
+            }
+            return true;
+
         }
         public string getDescription() { return Description; }
         public string getName() { return Name; }
@@ -615,18 +810,20 @@ namespace DungeonCrawler
         /// </summary>
         /// <param name="inventory"></param>
         /// <param name="weaponInventory"></param>
-        public void search(List<Item> inventory, List<Weapon> weaponInventory)
+        public void search(int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory)
         {
             bool continueSearch = true;
             string message = "You find";
-            foreach (Item x in Items)
+            int number = 1;
+            List<Item> plunder = Items;
+            foreach (Item x in plunder)
             {
-                message += " " + x.Name + ",";
-
+                message += $"\n[{number}] {x.Name}";
+                number++;
             }
 
-            message = message.Substring(0, message.Length - 1);
-            message += $" upon the {Name}.";
+            
+            message += $"\nupon the {Name}.";
             if (Items.Count() == 0)
             {
                 message = "You find nothing of note";
@@ -634,7 +831,8 @@ namespace DungeonCrawler
             }
             Console.WriteLine(message);
             int i = 0;
-            if (continueSearch && Items.Count() > 1)
+            int turn = 0;
+            if (continueSearch && plunder.Count() > 1)
             {
                 Console.WriteLine("Would you like to pick up one of these artefacts?");
             }
@@ -646,17 +844,42 @@ namespace DungeonCrawler
             bool skip = false;
             while (continueSearch)
             {
-                if (i > 0)
+                if (turn > 0)
                 {
+                    plunder = Items;
+                    message = "You find";
+                    number = 1;
+                    foreach (Item x in plunder)
+                    {
+                        message += $"\n[{number}] {x.Name}";
+                        number++;
+                    }
+
+
+                    message += $"\nupon the {Name}.";
                     Console.WriteLine(message, "\nWould you like to pick up another one of the above items?");
                 }
+                turn++;
                 string answer = Console.ReadLine().Trim().ToLower();
                 while (answer.ToLower() == "yes" || answer.ToLower() == "y" || answer.ToLower() == "n" || answer.ToLower() == "no")
                 {
                     if (answer.ToLower() == "yes" || answer.ToLower() == "y")
                     {
-                        Console.WriteLine("Please type the name of the item you wish to pick up.");
+                        Console.WriteLine("Please type the name of the item you wish to pick up or its corresponding number.");
                         answer = Console.ReadLine().Trim().ToLower();
+                        try
+                        {
+                            int answer1 = int.Parse(answer);
+                            if (answer1 < 1 || answer1 > plunder.Count)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                answer = plunder[answer1 - 1].Name.Trim().ToLower();
+                            }
+                        }
+                        catch {  }
                         break;
                     }
                     else
@@ -664,6 +887,25 @@ namespace DungeonCrawler
                         continueSearch = false;
                         break;
                     }
+                }
+                try
+                {
+                    int answer1 = int.Parse(answer);
+                    if (answer1 < 1 || answer1 > plunder.Count)
+                    {
+                        Console.WriteLine("Please enter a number corresponding to the list of items.");
+                        continue;
+                    }
+                    else
+                    {
+                        answer = plunder[answer1 - 1].Name.Trim().ToLower();
+                    }
+                }
+                catch { }
+                if (!continueSearch)
+                {
+                    Console.WriteLine($"You finish rummaging through the {Name}'s effects.");
+                    continue;
                 }
                 alreadyStashed = false;
                 foreach (Item z in inventory)
@@ -690,13 +932,13 @@ namespace DungeonCrawler
                 for (i = Items.Count - 1; i >= 0; i--)
                 {
                     if (Items[i] is Weapon)
-                    { weaponSplice.Add(Items[i]); }
+                    { weaponSplice.Add(plunder[i]); }
                 }
                 ///I have to create a separate list for weapons out of Monster.Items and then
                 ///cast them as weapons afterwards
                 List<Weapon> weapon1 = weaponSplice.Cast<Weapon>().ToList();
                 List<string> checkWeapon = new List<string>();
-                foreach (Item weapon in Items) { checkWeapon.Add(weapon.Name.Trim().ToLower()); }
+                foreach (Item weapon in plunder) { checkWeapon.Add(weapon.Name.Trim().ToLower()); }
                 for (i = weapon1.Count - 1; i >= 0; i--)
                 {
                     Weapon x = weapon1[i]; // change monster class to having two lists, or start with reviewing all weapons throughout and construct new item from weapon details
@@ -708,24 +950,11 @@ namespace DungeonCrawler
                     else if (x.Name.Trim().ToLower() == answer)
                     {
 
-                        x.PickUpItem(inventory, weaponInventory, 3, 0, null, x);
+                        x.PickUpItem(carryCapacity, inventory, weaponInventory, 3, 0, null, x, null, null, null, null, this);
                         answer = "";
                         skip = true;
 
-                        try
-                        {
-                            if (weaponInventory.Contains(x))
-                            {
-                                Items.Remove(x);
-                            }
-
-
-                            else if (inventory.Contains(x))
-                            {
-                                Items.Remove(x);
-                            }
-                        }
-                        catch { }
+                        
 
                         break;
                     }
@@ -745,21 +974,8 @@ namespace DungeonCrawler
 
                     else if (x.Name.Trim().ToLower() == answer)
                     {
-                        x.PickUpItem(inventory, weaponInventory, 3, 0, x);
-                        try
-                        {
-                            if (weaponInventory.Contains(x))
-                            {
-                                Items.Remove(x);
-                            }
-
-
-                            else if (inventory.Contains(x))
-                            {
-                                Items.Remove(x);
-                            }
-                        }
-                        catch { }
+                        x.PickUpItem(carryCapacity, inventory, weaponInventory, 3, 0, x, null,null,null, null,null, this);
+                        
                         break;
                     }
 
