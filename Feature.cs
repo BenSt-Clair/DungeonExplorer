@@ -800,8 +800,17 @@ namespace DungeonCrawler
         {
             if (Portal[0].Name == room.Name)
             {
-                if (message) { Console.WriteLine($"{Passing}"); }
-                return Portal[1];
+                try
+                {
+                    if (message) { Console.WriteLine($"{Passing}"); }
+                    return Portal[1];
+                }
+                catch
+                {
+                    Console.WriteLine("You open the door but to your surprise, you find nothing the other side but a bare brick wall...");
+                    return room;
+                }
+                               
             }
             else if (Portal[1].Name == room.Name)
             {

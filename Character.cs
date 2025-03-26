@@ -766,32 +766,119 @@ namespace DungeonCrawler
             Patrol = patrol;
             Time = (Path.Count - 1) * 20000;
         }
-        public bool MinotaurReturning(Room room)
+        public bool MinotaurReturning(Room room, Item redThread, Item musicBox, List<Room> threadPath)
         {
             this.Patrol.Stop();
-            
+            Dice D6 = new Dice(6);
             long time = this.Time - this.Patrol.ElapsedMilliseconds;
-            
-
-            if (time < (this.Path.Count - 2) * 20000 && this.Path.Count>1)
+            List<string> enragedHunt = new List<string> 
+            { 
+                $"You overhear the monster crashing through the {Location.Name} in search of you...",
+                $"The sound of the monster tearing the {Location.Name} apart as it hunts you fills you with icy foreboding. \nBetter move quickly...",
+                $"The monster storms the {Location.Name}. You can hear the carnage wrought from the {room.Name}...",
+                $"You hear the beast barrel into the {Location.Name}, ripping the place apart as it attempts to scare up your hiding spot...",
+                $"The din of the beasts furious roars and frenzied hunting continues into the {Location.Name}...",
+                $"You overhear the beast charge into the {Location.Name} as it looks for you..."
+            };
+            List<Room> adjacentrooms = new List<Room>();
+            List<Door> doors = new List<Door>();
+            foreach(Feature f in Location.FeatureList)
             {
-                this.Location = this.Path[1];
-                if (((room.Name.Contains("corridor") && room.Name != "long corridor")|| room.Name == "mess hall" || room.Name == "broom closet" || room.Name == "antechamber" || room.Name == "armoury") && ((Location.Name.Contains("corridor") && Location.Name != "long corridor")|| Location.Name == "mess hall" || Location.Name == "broom closet" || Location.Name == "antechamber" || Location.Name == "armoury"))
+                if(f is Door)
                 {
-                    Console.WriteLine($"You hear the monster's lumbering footfalls as it moves into the {this.Location.Name}...");
+                    doors.Add(f.CastDoor());
                 }
-                else if((room.Name == "long corridor" || room.Name == "dank cell" || room.Name == "eerie cell" || room.Name == "empty cell" || room.Name == "antechamber" || room.Name == "dungeon chamber") && (Location.Name == "long corridor" || Location.Name == "dank cell" || Location.Name == "eerie cell" || Location.Name == "empty cell" || Location.Name == "antechamber" || Location.Name == "dungeon chamber"))
+            }
+            foreach(Door d in doors)
+            {
+                foreach(Room r in d.Portal)
                 {
+                    if (r != Location)
+                    {
+                        adjacentrooms.Add(r);
+                    }
+                }
+            }
+            foreach (Room r in adjacentrooms)
+            {
+                if (r.ItemList.Contains(musicBox) && musicBox.Attribute)
+                {
+                    this.Path.Insert(1, Location);
+                    this.Path.Insert(1, r);
+                }
+            }
+            if (Path.Count > 1)
+            {
+                if (this.Path[1].ItemList.Contains(musicBox) && musicBox.Attribute)
+                {
+                    Console.WriteLine($"You hear the monster abruptly pause as it listens to the music box's melody. \n You listen with bated breath as it's heavy footfalls enter the {Path[1].Name} to investigate...");
+                    Console.ReadKey(true);
+                    if (Path[1] == room)
+                    {
+                        Location = Path[1];
+                        Path.RemoveAt(0);
+                        return true;
+                    }
+                    Console.WriteLine("The music box continues playing. It seems the monster is momentarily captivated by it! But how long for you don't know...");
+                    Console.ReadKey(true);
+                    this.Location = this.Path[1];
+                    this.Time += 1200000;
+                    this.Items.Add(musicBox);
+
+                    this.Path.RemoveAt(0);
+                    return true;
+                }
+                else if (this.Location.ItemList.Contains(musicBox) && musicBox.Attribute && time > (this.Path.Count - 2) * 20000)
+                {
+                    Console.ReadKey(true);
+                    Console.WriteLine($"You hear the music continue playing in the {Location.Name}, concealing the sound of your footsteps. So long as you keep away from that place you should go undetected...");
+                    return true;
+                }
+                
+            }
+            
+            if (time < (this.Path.Count - 2) * 20000 && this.Path.Count > 1)
+            {
+                if (Location.ItemList.Contains(musicBox))
+                {
+                    Console.WriteLine("The music box snaps shut!");
+                    Console.ReadKey(true);
+                    Console.WriteLine("It seems the monster's suspicions are roused once more, as it keeps an eye out for you...");
+                    Suspicious = true;
+                    Rage = false;
+                    Location.ItemList.Remove(musicBox);
+                }
+                this.Location = this.Path[1];
+                if (this.Rage)
+                {
+                    Console.ReadKey(true);
+                    Console.WriteLine(enragedHunt[D6.Roll(D6) - 1]);
+                    Console.ReadKey(true);
+                }
+                else if (((room.Name.Contains("corridor") && room.Name != "long corridor") || room.Name == "mess hall" || room.Name == "broom closet" || room.Name == "antechamber" || room.Name == "armoury") && ((Location.Name.Contains("corridor") && Location.Name != "long corridor") || Location.Name == "mess hall" || Location.Name == "broom closet" || Location.Name == "antechamber" || Location.Name == "armoury"))
+                {
+                    Console.ReadKey(true);
                     Console.WriteLine($"You hear the monster's lumbering footfalls as it moves into the {this.Location.Name}...");
+                    Console.ReadKey(true);
+                }
+                else if ((room.Name == "long corridor" || room.Name == "dank cell" || room.Name == "eerie cell" || room.Name == "empty cell" || room.Name == "antechamber" || room.Name == "dungeon chamber") && (Location.Name == "long corridor" || Location.Name == "dank cell" || Location.Name == "eerie cell" || Location.Name == "empty cell" || Location.Name == "antechamber" || Location.Name == "dungeon chamber"))
+                {
+                    Console.ReadKey(true);
+                    Console.WriteLine($"You hear the monster's lumbering footfalls as it moves into the {this.Location.Name}...");
+                    Console.ReadKey(true);
                 }
                 this.Path.RemoveAt(0);
-                
+
             }
             if (this.Location.Name == "north-facing corridor" && this.Path.Count == 1)
             {
                 this.Patrol.Stop();
                 this.Patrol = new Stopwatch();
                 this.Time = 0;
+                if (this.Items.Contains(redThread))
+                {
+                    threadPath.Clear();
+                }
                 return false;
             }
             else

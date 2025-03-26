@@ -397,6 +397,17 @@ namespace DungeonCrawler
             {
                 Console.WriteLine("[4] Begin unspooling the red thread and leave it trailing behind you from room to room?");
             }
+            if (Name == "music box" && range == 5)
+            {
+                if (Attribute)
+                {
+                    Console.WriteLine("[4] Close the music box?");
+                }
+                else
+                {
+                    Console.WriteLine($"[4] Open the music box and leave it in the {room.Name} as a distraction?");
+                }
+            }
             do
             {
                 string answer = Console.ReadLine();
@@ -413,6 +424,18 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?\n[4]Begin unspooling it as you travel from room to room?");
                         }
+                        continue;
+                    }
+                    else if (Name == "music box" && Attribute && range == 5)
+                    {
+                        Console.WriteLine("Please enter '1', '2', '3' or '4'");
+                        Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?\n[4] Close the music box?");
+                        continue;
+                    }
+                    else if (Name == "music box" && range == 5)
+                    {
+                        Console.WriteLine("Please enter '1', '2', '3' or '4'");
+                        Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?\n[4] Open the music box and leave it in the {room.Name} as a distraction?");
                         continue;
                     }
                     else
@@ -437,10 +460,19 @@ namespace DungeonCrawler
                 try
                 {
                     int answerNum = int.Parse(answer);
-                    if ((answerNum < 1 || answerNum > 3)&& (Name != "ball of red thread" || SpecifyAttribute != "spooled"))
+                    if ((answerNum < 1 || answerNum > 3)&& (Name != "ball of red thread" || SpecifyAttribute != "spooled") && (range != 5 || Name != "music box"))
                     {
-                        Console.WriteLine("Please choose option 1, 2, or 3.");
-                        continue;
+                        if (range != 5 || Name != "music box")
+                        {
+                            Console.WriteLine("Please choose option 1, 2, or 3.");
+                            continue;
+                        }
+
+                        else
+                        {
+                            Console.WriteLine("Please choose option 1, 2, 3, or 4.");
+                            continue;
+                        }
                     }
                     else if (answerNum < 1 || answerNum > 4)
                     {
@@ -741,15 +773,38 @@ namespace DungeonCrawler
                     }
                     else
                     {
-                        Console.WriteLine("You begin unravelling the thread. It trails behind you as you move...");
-                        SpecifyAttribute = "unspooled";
-                        Attribute = false;
-                        if (!inventory.Contains(item))
+                        if (item.Name == "ball of red thread")
                         {
-                            StashItem(item, inventory);
+                            Console.WriteLine("You begin unravelling the thread. It trails behind you as you move...");
+                            SpecifyAttribute = "unspooled";
+                            Attribute = false;
+                            if (!inventory.Contains(item))
+                            {
+                                StashItem(item, inventory);
+                            }
+                            room.ItemList.Remove(item);
+                            threadPath.Insert(0, room);
+                            return;
                         }
-                        room.ItemList.Remove(item);
-                        threadPath.Insert(0, room);
+                        else
+                        {
+                            if (!item.Attribute)
+                            {
+                                Console.WriteLine($"You open up the music box and let it's enchanting music fill the {room.Name}.\n You then leave it behind. If you're being followed, maybe it'll make a good distraction...");
+                                item.SpecifyAttribute = "opened";
+                                item.Attribute = true;
+                                room.ItemList.Add(item);
+                                inventory.Remove(item);
+                                return;
+                            }
+                            else
+                            {
+                                Console.WriteLine("You close the lovely music box. It's melody stops at once...");
+                                item.SpecifyAttribute = "unopened";
+                                item.Attribute = false;
+                                return;
+                            }
+                        }
                     }
                 }
                 catch //if a number was not entered
