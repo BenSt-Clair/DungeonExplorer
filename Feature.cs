@@ -745,21 +745,40 @@ namespace DungeonCrawler
                         }
                         else if (reply == "y" || reply == "yes")
                         {
-                            if(room.Name == "armoury" && room.FirstVisit && !fieryEscape)
+                            if(room.Name == "armoury" && room.FirstVisit)
                             {
-                                Console.WriteLine("You pull away from the door suddenly!");
-                                Console.ReadKey(true);
-                                Console.WriteLine("Around you the weapons are rattling upon their racks. The door trembles and the ground quakes beneath your feet. You can hear something - and *feel* something - very big and very heavy stomping up the lit stairway, each heavy footfall reverberating through the door. \nYou back away slowly, your clammy hand feverishly reaching to clasp a weapon. Your breath catches in your throat as whatever approaches stops outside your door.");
-                                Console.ReadKey(true);
-                                Console.WriteLine("You wait with bated breath in the crackling silence. Then, ");
-                                Console.ReadKey(true);
-                                Console.Write("a jostle of keys, tumblers turn and a door opens wide - but not your door. You listen closely, heart galloping in your all too tight chest, as the massive beast out in the antechamber strides through the double doors under the mosaic and beyond. Those doors close shut with an eerie creak, you hear them locked again, then the heavy footfalls fade into the distance...");
-                                Console.ReadKey(true);
-                                Console.WriteLine("Whatever that thing was,"
-                                
-                                + " you sense with an icy dread that battling it would be the very last thing you do.");
-                                Console.ReadKey(true);
-                                room.FirstVisit = false;
+                                if (!fieryEscape)
+                                {
+                                    Console.WriteLine("You pull away from the door suddenly!");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("Around you the weapons are rattling upon their racks. The door trembles and the ground quakes beneath your feet. You can hear something - and *feel* something - very big and very heavy stomping up the lit stairway, each heavy footfall reverberating through the door. \nYou back away slowly, your clammy hand feverishly reaching to clasp a weapon. Your breath catches in your throat as whatever approaches stops outside your door.");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("You wait with bated breath in the crackling silence. Then, ");
+                                    Console.ReadKey(true);
+                                    Console.Write("a jostle of keys, tumblers turn and a door opens wide - but not your door. You listen closely, heart galloping in your all too tight chest, as the massive beast out in the antechamber strides through the double doors under the mosaic and beyond. Those doors close shut with an eerie creak, you hear them locked again, then the heavy footfalls fade into the distance...");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("Whatever that thing was,"
+
+                                    + " you sense with an icy dread that battling it would be the very last thing you do.");
+                                    Console.ReadKey(true);
+                                    room.FirstVisit = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("You pull away from the door suddenly!");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("Around you the weapons are rattling upon their racks. The door trembles and the ground quakes beneath your feet. You can hear something - and *feel* something - very big and very heavy charging up to the double doors from the rooms beyond. Each heavy footfall reverberates through the armoury door. \nYou back away slowly, your clammy hand feverishly reaching to clasp a weapon. Your breath catches in your throat as whatever it is swings the double doors wide, enters the antechamber and stops outside your door...");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("You wait with bated breath in the crackling silence, listening to it sniff the air, as though it can almost catch your scent in spite of the smoke from the flames below...");
+                                    Console.ReadKey(true);
+                                    Console.Write("Heart galloping, you're almost sure the beast can hear its febrile tattoo in your all too tight chest for a moment. Then, responding to the urgent yells of the CurseBreaker's forces frenziedly trying to douse the flames somewhere below, it turns. The monster storms down the fiery stairway and into the heart of the inferno...");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("You feel relief flood through you, resting a hand on the table to steady yourself a moment. \nWhatever that thing was,"
+
+                                    + " you sense with an icy dread that battling it would be the very last thing you do.");
+                                    Console.ReadKey(true);
+                                    room.FirstVisit = false;
+                                }
                             }
                             Room newRoom = this.CastDoor().Passage(room);
                             

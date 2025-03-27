@@ -870,7 +870,7 @@ namespace DungeonCrawler
                 this.Path.RemoveAt(0);
 
             }
-            if (this.Location.Name == "north-facing corridor" && this.Path.Count == 1)
+            if ((this.Location.Name == "north-facing corridor" || this.Location.Name == "ocean bottom") && this.Path.Count == 1)
             {
                 this.Patrol.Stop();
                 this.Patrol = new Stopwatch();

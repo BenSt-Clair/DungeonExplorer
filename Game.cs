@@ -1925,7 +1925,8 @@ namespace DungeonCrawler
                     fireProgress = 1;
                     Console.ReadKey(true);
                     player1.FieryEscape = true;
-                    
+                    minotaur.Location = oceanBottom;
+                    minotaur.Path = new List<Room> { northernmostCorridor };
                 }
                 else
                 {
@@ -1935,7 +1936,7 @@ namespace DungeonCrawler
                 }
                 
                 
-                int FireProgress(int fireProgress, Player player1, Room corridor) // returns (still alive?)
+                int FireProgress(int fireProgress, Player player1, Room newRoom1) // returns (still alive?)
                 {
                     if (fireProgress > 0) 
                     {
@@ -1945,79 +1946,240 @@ namespace DungeonCrawler
                     {
                         return fireProgress;
                     }
-                    switch (fireProgress)
+                    if (newRoom1.Name == "long corridor")
                     {
-                        case 1:
-                            return fireProgress;
-                        case 2:
-                            Console.WriteLine("The smouldering door of your cell begins to blaze, crumbling into glowing charcoal as the flames roar behind it. Tendrils of smoke swell and stream from beneath the door, filling the corridor with an acrid haze. You begin to splutter and stagger. \nLose 3 stamina points!");
-                            player1.Stamina -= 3;
-                            Console.ReadKey(true);
-                            if (player1.Stamina < 1)
+                        switch (fireProgress)
+                        {
+                            case 1:
+                                return fireProgress;
+                            case 2:
+                                Console.WriteLine("The smouldering door of your cell begins to blaze, crumbling into glowing charcoal as the flames roar behind it. Tendrils of smoke swell and stream from beneath the door, filling the corridor with an acrid haze. You begin to splutter and stagger. \nLose 3 stamina points!");
+                                player1.Stamina -= 3;
+                                Console.ReadKey(true);
+                                if (player1.Stamina < 1)
+                                {
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("On your last legs, bleeding profusely from your battle, the smoke proves to be too much for you. \nYou pass out. Soon enough the fire will consume you.");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("\nYour adventure ends here...");
+                                    return 1000;
+                                }
+                                return fireProgress;
+                            case 3:
+                                return fireProgress;
+                            case 4:
+                                return fireProgress;
+                            case 5:
+                                Console.WriteLine("The smouldering door of your cell collapses, a blizzard of flames suddenly blasting into the corridor. You get thrown back by the fiery gust. \nLose 10 stamina points!");
+                                corridor.Description = "The light cast by those strange braziers is rapidly being overwhelmed by the haze of smoke. The fire roars from your room and is catching down the smouldering corridor. The passage of grim stone walls and rickety floorboards swells with smoke. To the left, through the haze, the blackness of the stairwell beckons, while to the right lies a wide flight of stone stairs. \nTo the north you face another door similar to the ornate rosewood door behind you.\t\nTurning your gaze west down the shadowy passage you see the flickering braziers leading towards a dark stairwell, descending beyond the inky blackness to unknown depths.\t\nTurning your head south the ornate rosewood door to your own former cell meets your gaze.\t\nTo the east the passageway leads past more doors up to a flight of stairs, ascending to the next level of whatever building or (tower?) you find yourself in.\t\t";
+                                player1.Stamina -= 10;
+                                Console.ReadKey(true);
+                                if (player1.Stamina < 1)
+                                {
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("On your last legs, severe burns covering your body, the fire at last proves to be too much for you. \nYou pass out. Soon enough the fire will consume you.");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("\nYour adventure ends here...");
+                                    return 1000;
+                                }
+                                return fireProgress;
+                            case 6:
+                                return fireProgress;
+                            case 7:
+                                Console.WriteLine("The fire rages into an inferno! Flames lick at the doors and the flames in the braziers no longer cast their frosty light - their low flames become overrun by the roaring fire rapidly devouring the entire corridor, transforming it into a hellish portal. The heat threatens to torch you alive! \nLose 12 stamina points!");
+                                player1.Stamina -= 12;
+                                Console.ReadKey(true);
+                                if (player1.Stamina < 1)
+                                {
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("On your last legs, severe burns covering your body, the fire at last proves to be too much for you. \nYou pass out. Soon enough the fire will consume your body.");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("\nYour adventure ends here...");
+                                    return 1000;
+                                }
+                                Console.WriteLine("You have only one way forward - the stairwell down and the doors to the east are cut off by the flames, you must press on ever higher up the stairs to the east!");
+                                List<string> fireWords = new List<string>
                             {
-                                Console.ReadKey(true);
-                                Console.WriteLine("On your last legs, bleeding profusely from your battle, the smoke proves to be too much for you. \nYou pass out. Soon enough the fire will consume you.");
-                                Console.ReadKey(true);
-                                Console.WriteLine("\nYour adventure ends here...");
-                                return 1000;
-                            }
-                            return fireProgress;
-                        case 3:
-                            return fireProgress;
-                        case 4:
-                            return fireProgress;
-                        case 5:
-                            Console.WriteLine("The smouldering door of your cell collapses, a blizzard of flames suddenly blasting into the corridor. You get thrown back by the fiery gust. \nLose 10 stamina points!");
-                            corridor.Description = "The light cast by those strange braziers is rapidly being overwhelmed by the haze of smoke. The fire roars from your room and is catching down the smouldering corridor. The passage of grim stone walls and rickety floorboards swells with smoke. To the left, through the haze, the blackness of the stairwell beckons, while to the right lies a wide flight of stone stairs. \nTo the north you face another door similar to the ornate rosewood door behind you.\t\nTurning your gaze west down the shadowy passage you see the flickering braziers leading towards a dark stairwell, descending beyond the inky blackness to unknown depths.\t\nTurning your head south the ornate rosewood door to your own former cell meets your gaze.\t\nTo the east the passageway leads past more doors up to a flight of stairs, ascending to the next level of whatever building or (tower?) you find yourself in.\t\t";
-                            player1.Stamina -= 10;
-                            Console.ReadKey(true);
-                            if (player1.Stamina < 1)
-                            {
-                                Console.ReadKey(true);
-                                Console.WriteLine("On your last legs, severe burns covering your body, the fire at last proves to be too much for you. \nYou pass out. Soon enough the fire will consume you.");
-                                Console.ReadKey(true);
-                                Console.WriteLine("\nYour adventure ends here...");
-                                return 1000;
-                            }
-                            return fireProgress;
-                        case 6:
-                            return fireProgress;
-                        case 7:
-                            Console.WriteLine("The fire rages into an inferno! Flames lick at the doors and the flames in the braziers no longer cast their frosty light - their low flames become overrun by the roaring fire rapidly devouring the entire corridor, transforming it into a hellish portal. The heat threatens to torch you alive! \nLose 12 stamina points!");
-                            player1.Stamina -= 12;
-                            Console.ReadKey(true);
-                            if (player1.Stamina < 1)
-                            {
-                                Console.ReadKey(true);
-                                Console.WriteLine("On your last legs, severe burns covering your body, the fire at last proves to be too much for you. \nYou pass out. Soon enough the fire will consume your body.");
-                                Console.ReadKey(true);
-                                Console.WriteLine("\nYour adventure ends here...");
-                                return 1000;
-                            }
-                            Console.WriteLine("You have only one way forward - the stairwell down and the doors to the east are cut off by the flames, you must press on ever higher up the stairs to the east!");
-                            List<string> fireWords = new List<string>
-                            { 
                                 "blazing",
-                                "burning", 
+                                "burning",
                                 "smoking",
                                 "smouldering",
                                 "flaming",
                                 "fiery"
                             };
-                            
-                            foreach (Item item in corridor.ItemList)
-                            {
-                                item.Name = fireWords[D6.Roll(D6) - 1] + " " + item.Name;
-                            }
-                            corridor.FeatureList.RemoveRange(0, 7);
-                            
-                            return 500;                        
-                        default:
-                            Console.WriteLine("You collapse amidst a swirl of smoke. Your body is consumed by the inferno you started.");
-                            Console.ReadKey(true);
-                            Console.WriteLine("Your adventure ends here...");
-                            return 1000;
+
+                                foreach (Item item in newRoom1.ItemList)
+                                {
+                                    item.Name = fireWords[D6.Roll(D6) - 1] + " " + item.Name;
+                                }
+                                newRoom1.FeatureList.RemoveRange(0, 7);
+
+                                return fireProgress;
+                            default:
+                                Console.WriteLine("You collapse amidst a swirl of smoke. Your body is consumed by the inferno you started.");
+                                Console.ReadKey(true);
+                                Console.WriteLine("Your adventure ends here...");
+                                return 1000;
+                        }
                     }
+                    else if(newRoom1.Name == "antechamber")
+                    {
+                        switch (fireProgress)
+                        {
+                            case 1:
+                                return fireProgress;
+                            case 2:
+                                Console.WriteLine("You hear the distant flames roar from atop the stairway. Tendrils of smoke swell from the corridor and begin to unfurl up the roof of those stairs. An acrid haze assaults your senses even from the antechamber.");
+                                
+                                Console.ReadKey(true);
+                                if (player1.Stamina < 1)
+                                {
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("On your last legs, bleeding profusely from your battle, the smoke proves to be too much for you. \nYou pass out. Soon enough the fire will consume you.");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("\nYour adventure ends here...");
+                                    return 1000;
+                                }
+                                return fireProgress;
+                            case 3:
+                                return fireProgress;
+                            case 4:
+                                return fireProgress;
+                            case 5:
+                                threadPath.RemoveAll(r => r.Name == "long corridor");
+                                threadPath.RemoveAll(r => r.Name == "fiery cell");
+                                threadPath.RemoveAll(r => r.Name == "dank cell");
+                                threadPath.RemoveAll(r => r.Name == "empty cell");
+                                threadPath.RemoveAll(r => r.Name == "eerie cell");
+                                threadPath.RemoveAll(r => r.Name == "dungeon chamber");
+                                threadPath.RemoveAll(r => r.Name == "secret chamber");
+                                Console.WriteLine("You hear the smouldering door of your cell finally collapse, and from atop the stairway you can see a hellish red glow adorn the walls up to the antechamber. The fire has been unleashed and expanded into the corridor. As the acrid haze swells further, you begin to splutter and cough. \nLose 3 stamina points!");
+                                corridor.Description = "The light cast by those strange braziers is rapidly being overwhelmed by the haze of smoke. The fire roars from your room and is catching down the smouldering corridor. The passage of grim stone walls and rickety floorboards swells with smoke. To the left, through the haze, the blackness of the stairwell beckons, while to the right lies a wide flight of stone stairs. \nTo the north you face another door similar to the ornate rosewood door behind you.\t\nTurning your gaze west down the shadowy passage you see the flickering braziers leading towards a dark stairwell, descending beyond the inky blackness to unknown depths.\t\nTurning your head south the ornate rosewood door to your own former cell meets your gaze.\t\nTo the east the passageway leads past more doors up to a flight of stairs, ascending to the next level of whatever building or (tower?) you find yourself in.\t\t";
+                                player1.Stamina -= 3;
+                                Console.ReadKey(true);
+                                if (player1.Stamina < 1)
+                                {
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("On your last legs, the smoke suffocating you, the fire at last proves to be too much for you. \nYou pass out. Soon enough the fire will consume you.");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("\nYour adventure ends here...");
+                                    return 1000;
+                                }
+                                return fireProgress;
+                            case 6:
+                                threadPath.RemoveAll(r => r.Name == "long corridor");
+                                threadPath.RemoveAll(r => r.Name == "fiery cell");
+                                threadPath.RemoveAll(r => r.Name == "dank cell");
+                                threadPath.RemoveAll(r => r.Name == "empty cell");
+                                threadPath.RemoveAll(r => r.Name == "eerie cell");
+                                threadPath.RemoveAll(r => r.Name == "dungeon chamber");
+                                threadPath.RemoveAll(r => r.Name == "secret chamber");
+                                return fireProgress;
+                            case 7:
+                                threadPath.RemoveAll(r => r.Name == "long corridor");
+                                threadPath.RemoveAll(r => r.Name == "fiery cell");
+                                threadPath.RemoveAll(r => r.Name == "dank cell");
+                                threadPath.RemoveAll(r => r.Name == "empty cell");
+                                threadPath.RemoveAll(r => r.Name == "eerie cell");
+                                threadPath.RemoveAll(r => r.Name == "dungeon chamber");
+                                threadPath.RemoveAll(r => r.Name == "secret chamber");
+                                Console.WriteLine("The fire rages into an inferno! Flames lick at the panelled walls up the stairway, as flurries of embers, whisked up by the ever swelling smoke, cascade into the antechamber around you. Those swirling embers steadily bloom and catch light all that's flammable, whilst the stairs below transfigure into a hellish portal of towering flames. \nLose 10 stamina points as the acrid haze stings your lungs!");
+                                player1.Stamina -= 10;
+                                Console.ReadKey(true);
+                                if (player1.Stamina < 1)
+                                {
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("On your last legs, severe burns covering your body, the fire at last proves to be too much for you. \nYou pass out. Soon enough the fire will consume your body.");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("\nYour adventure ends here...");
+                                    return 1000;
+                                }
+                                Console.WriteLine("You have only one way forward - the lit stairway down to the corridor has now been cut off by the flames. You must press on through the double doors or face certain death!");
+                                List<string> fireWords = new List<string>
+                            {
+                                "blazing",
+                                "burning",
+                                "smoking",
+                                "smouldering",
+                                "flaming",
+                                "fiery"
+                            };
+
+                                
+                                
+                                newRoom1.FeatureList[0].Attribute = true;
+                                newRoom1.FeatureList[0].SpecificAttribute = "blocked";
+                                newRoom1.FeatureList[0].Description = "The stairway down is nought but a portal spewing smoke and a blizzard of embers that torch the skin like a dragon's fiery breath. You are not getting through there...";
+                                return fireProgress;
+                            case 8:
+                                if (player1.Inventory.Contains(redThread) && redThread.SpecifyAttribute == "unspooled")
+                                {
+                                    Console.WriteLine("The red thread you left behind you has been reduced to nought but ash!");
+                                    Console.ReadKey(true);
+                                    player1.Inventory.Remove(redThread);
+                                }
+                                threadPath.RemoveAll(r => r.Name == "long corridor");
+                                threadPath.RemoveAll(r => r.Name == "fiery cell");
+                                threadPath.RemoveAll(r => r.Name == "dank cell");
+                                threadPath.RemoveAll(r => r.Name == "empty cell");
+                                threadPath.RemoveAll(r => r.Name == "eerie cell");
+                                threadPath.RemoveAll(r => r.Name == "dungeon chamber");
+                                threadPath.RemoveAll(r => r.Name == "secret chamber");
+                                newRoom1.FeatureList[0].Attribute = true;
+                                newRoom1.FeatureList[0].SpecificAttribute = "blocked";
+                                newRoom1.FeatureList[0].Description = "The stairway down is nought but a portal spewing smoke and a blizzard of embers that torch the skin like a dragon's fiery breath. You are not getting through there...";
+                                return fireProgress;
+                            case 9:
+                                threadPath.RemoveAll(r => r.Name == "long corridor");
+                                threadPath.RemoveAll(r => r.Name == "fiery cell");
+                                threadPath.RemoveAll(r => r.Name == "dank cell");
+                                threadPath.RemoveAll(r => r.Name == "empty cell");
+                                threadPath.RemoveAll(r => r.Name == "eerie cell");
+                                threadPath.RemoveAll(r => r.Name == "dungeon chamber");
+                                threadPath.RemoveAll(r => r.Name == "secret chamber");
+                                newRoom1.FeatureList[0].Attribute = true;
+                                newRoom1.FeatureList[0].SpecificAttribute = "blocked";
+                                newRoom1.FeatureList[0].Description = "The stairway down is nought but a portal spewing smoke and a blizzard of embers that torch the skin like a dragon's fiery breath. You are not getting through there...";
+                                return fireProgress;
+                            case 10:
+                                threadPath.RemoveAll(r => r.Name == "antechamber");
+                                threadPath.RemoveAll(r => r.Name == "armoury");
+                                Console.WriteLine("Fire has tangled the antechamber like a briar whilst you tried to scare up some method of opening the double doors and racing ahead of the inferno. You find yourself winding through a hellscape of smog and blizzards of ash, almost unable to find your way as the room begins to spin. You must find some escape now, or perish...\nLose 16 stamina!");
+                                Console.ReadKey(true);
+                                player1.Stamina -= 16;
+                                if (player1.Stamina < 1)
+                                {
+                                    
+                                    Console.WriteLine("On your last legs, severe burns covering your body, the fire at last proves to be too much for you. \nYou pass out. Soon enough the fire will consume your body.");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("\nYour adventure ends here...");
+                                    return 1000;
+                                }
+                                List<string> fireWord = new List<string>
+                                {
+                                    "blazing",
+                                    "burning",
+                                    "smoking",
+                                    "smouldering",
+                                    "flaming",
+                                    "fiery"
+                                };
+                                foreach (Feature feature in newRoom1.FeatureList)
+                                {
+                                    feature.Name = fireWord[D6.Roll(D6) - 1] + " " + feature.Name;
+                                }
+                                return fireProgress;
+                            case 11:
+                                return fireProgress;
+                            default:
+                                Console.WriteLine("You collapse amidst a swirl of smoke. Your body is consumed by the inferno you started.");
+                                Console.ReadKey(true);
+                                Console.WriteLine("Your adventure ends here...");
+                                
+                                return 1000;
+                        }
+                    }
+                    return fireProgress;
                 }
                 List<bool> leftWhichRooms = new List<bool> {true, false, true, true, true, true, 
                 true, true, true, true, true, true, true, true, true, true, true, true, true, true, 
@@ -2511,6 +2673,49 @@ namespace DungeonCrawler
                         {
                             newRoom1.Description.Remove(newRoom1.Description.IndexOf(".") + 1, deleteString.Length);
                         }
+                        fireClock.Stop();
+                        fireTimeLapsed = fireClock.ElapsedMilliseconds;
+                        if (fireProgress > 0 && fireProgress < 5 && fireTimeLapsed > 360000)
+                        {
+                            fireProgress = 4;
+                            fireProgress = FireProgress(fireProgress, player1, antechamber);
+                            if (fireProgress > 999)
+                            {
+                                return;
+                            }
+                            fireClock.Start();
+                        }
+                        else if (fireProgress > 4 && fireProgress < 7 && fireTimeLapsed > 840000)
+                        {
+                            fireProgress = 6;
+                            fireProgress = FireProgress(fireProgress, player1, antechamber);
+                            if (fireProgress > 999)
+                            {
+                                return;
+                            }
+                        }
+                        else if (fireProgress > 6 && fireProgress < 10 && fireTimeLapsed > 1200000)
+                        {
+                            threadPath.RemoveAll(r => r.Name == "long corridor");
+                            threadPath.RemoveAll(r => r.Name == "fiery cell");
+                            threadPath.RemoveAll(r => r.Name == "dank cell");
+                            threadPath.RemoveAll(r => r.Name == "empty cell");
+                            threadPath.RemoveAll(r => r.Name == "eerie cell");
+                            threadPath.RemoveAll(r => r.Name == "dungeon chamber");
+                            threadPath.RemoveAll(r => r.Name == "secret chamber");
+                            threadPath.RemoveAll(r => r.Name == "armoury");
+                            threadPath.RemoveAll(r => r.Name == "antechamber");
+                            fireProgress = 9;
+                            fireProgress = FireProgress(fireProgress, player1, antechamber);
+                            if (fireProgress > 999)
+                            {
+                                return;
+                            }
+                        }
+                        if (fireProgress < 12)
+                        {
+                            fireClock.Start();
+                        }
                         if (fireProgress > 6)
                         {
                             stairwayToUpper.Attribute = true;
@@ -2621,7 +2826,11 @@ namespace DungeonCrawler
                             {
                                 player1.SearchPack(antechamber.ItemList, newRoom1, threadPath);
                                 a++;
-
+                                fireProgress = FireProgress(fireProgress, player1, antechamber);
+                                if (fireProgress > 999)
+                                {
+                                    return;
+                                }
                             }
                             else if (reply1 == 2)
                             {
@@ -2636,7 +2845,11 @@ namespace DungeonCrawler
                                     newRoom1 = newRoom;
                                     continue;
                                 }
-
+                                fireProgress = FireProgress(fireProgress, player1, antechamber);
+                                if (fireProgress > 999)
+                                {
+                                    return;
+                                }
 
                                 b++;
                             }
@@ -2645,6 +2858,11 @@ namespace DungeonCrawler
                                 List<bool> success = new List<bool>();
                                 
                                 success = player1.UseItemOutsideCombat(antechamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                fireProgress = FireProgress(fireProgress, player1, antechamber);
+                                if (fireProgress > 999)
+                                {
+                                    return;
+                                }
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
@@ -5049,7 +5267,13 @@ namespace DungeonCrawler
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                         ///red herring in room above
                         ///Specific for each room, tailored.
-                        
+                        if (player1.FieryEscape && a == 0 && b == 0)
+                        {
+                            Console.WriteLine("From just beyond the double doors you can hear the CurseBreaker's private army scramble and clamour somewhere below, desperately trying to put out the inferno.\nThe fire should hold off the throng of goblins and gnolls and motley assortment of petty villains for a while. But you best not tarry too long.");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Soon enough they'll be looking for who started it...");
+                            Console.ReadKey(true);
+                        }
                         
                         sw.Stop();
                         minotaurAlerted = sw.ElapsedMilliseconds;
@@ -5217,6 +5441,25 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
+
+                        if (minotaur.Location == oceanBottom && circleDoor.SpecificAttribute == "unlocked")
+                        {
+                            Console.WriteLine("Suddenly, from beyond the westernmost corridor, you hear booming footfalls as something storms the stairway. Like some primal war drum they reverberate through the corridor, sending the lanterns rattling in their alcoves.");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Before you can react, it's through the double doors. With an almighty roar, some monster has entered into the westernmost corridor whilst the CurseBreaker's forces battle the flames below.\nYou instantly know three things...");
+                            Console.ReadKey(true);
+                            Console.WriteLine("It's something huge.");
+                            Console.ReadKey(true);
+                            Console.WriteLine("It's something furious.");
+                            Console.ReadKey(true);
+                            Console.WriteLine("And its something out for blood - Yours!");
+                            minotaur.Location = antechamber;
+                            minotaur.Path = new List<Room> { antechamber, westernmostCorridor, southernmostCorridor, easternmostCorridor, northernmostCorridor, broomCloset, northernmostCorridor, westernmostCorridor, northernmostCorridor, easternmostCorridor, messHall, easternmostCorridor, northernmostCorridor, easternmostCorridor, southernmostCorridor, westernmostCorridor, northernmostCorridor };
+                            minotaur.Rage = true;
+                            minotaur.Time = (minotaur.Path.Count - 1) * 20000;
+                            minotaur.Description = "Its fur scorched and smoking, wielding a great sword that streams some spectral fire, and piercing you with its bloodshot red eyes, the looming minotaur thunders a roar as it charges towards you...";
+                        }
+
                         sw.Stop();
                         minotaurAlerted = sw.ElapsedMilliseconds;
                         sw.Start();
@@ -5371,6 +5614,23 @@ namespace DungeonCrawler
                     minotaurAlerted = 0;
                     while (!leftWhichRooms[22])//easternmost corridor
                     {
+                        if(minotaur.Location == oceanBottom && circleDoor.SpecificAttribute == "locked")
+                        {
+                            Console.WriteLine("Suddenly, from beyond the westernmost corridor, you hear booming footfalls as something storms the stairway. Like some primal war drum they reverberate through the corridor, sending the lanterns rattling in their alcoves.");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Before you can react, it's at the double doors. It hurls itself at them, breaking down the locks. They barely hold but for a moment, before something smashes its way through them. With an almighty roar, some monster has entered into the corridor whilst the CurseBreaker's forces battle the flames below.\nYou instantly know three things...");
+                            Console.ReadKey(true);
+                            Console.WriteLine("It's something huge.");
+                            Console.ReadKey(true);
+                            Console.WriteLine("It's something furious.");
+                            Console.ReadKey(true);
+                            Console.WriteLine("And its something out for blood - Yours!");
+                            minotaur.Location = antechamber;
+                            minotaur.Path = new List<Room> { antechamber, westernmostCorridor, southernmostCorridor, easternmostCorridor, northernmostCorridor, broomCloset, northernmostCorridor, westernmostCorridor, northernmostCorridor, easternmostCorridor, messHall, easternmostCorridor, northernmostCorridor, easternmostCorridor, southernmostCorridor, westernmostCorridor, northernmostCorridor };
+                            minotaur.Rage = true;
+                            minotaur.Time = (minotaur.Path.Count - 1) * 20000;
+                            minotaur.Description = "Its fur scorched and smoking, wielding a great sword that streams some spectral fire, and piercing you with its bloodshot red eyes, the looming minotaur thunders a roar as it charges towards you...";
+                        }
                         visitedRoom = true;
                         northeastCorner.Description = "The corner turns sharply left...";
                         northeastCorner.Passing = "You follow the corner around and into the north-facing corridor.";
@@ -5434,7 +5694,7 @@ namespace DungeonCrawler
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"Up and down the {newRoom1.Name} braziers quiver as the monster approaches!");
+                                    Console.WriteLine($"Up and down the {newRoom1.Name} braziers quiver as the monster closes in!");
                                     Console.ReadKey(true);
                                 }
                             }
@@ -5551,6 +5811,25 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
+
+                        if (minotaur.Location == oceanBottom && circleDoor.SpecificAttribute == "unlocked")
+                        {
+                            Console.WriteLine("Suddenly, from beyond the westernmost corridor, you hear booming footfalls as something storms the stairway. Like some primal war drum they reverberate through the corridor, sending the lanterns rattling in their alcoves.");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Before you can react, it's through the double doors. With an almighty roar, some monster has entered into the westernmost corridor whilst the CurseBreaker's forces battle the flames below.\nYou instantly know three things...");
+                            Console.ReadKey(true);
+                            Console.WriteLine("It's something huge.");
+                            Console.ReadKey(true);
+                            Console.WriteLine("It's something furious.");
+                            Console.ReadKey(true);
+                            Console.WriteLine("And its something out for blood - Yours!");
+                            minotaur.Location = antechamber;
+                            minotaur.Path = new List<Room> { antechamber, westernmostCorridor, southernmostCorridor, easternmostCorridor, northernmostCorridor, broomCloset, northernmostCorridor, westernmostCorridor, northernmostCorridor, easternmostCorridor, messHall, easternmostCorridor, northernmostCorridor, easternmostCorridor, southernmostCorridor, westernmostCorridor, northernmostCorridor };
+                            minotaur.Rage = true;
+                            minotaur.Time = (minotaur.Path.Count - 1) * 20000;
+                            minotaur.Description = "Its fur scorched and smoking, wielding a great sword that streams some spectral fire, and piercing you with its bloodshot red eyes, the looming minotaur thunders a roar as it charges towards you...";
+                        }
+
                         sw.Stop();
                         minotaurAlerted = sw.ElapsedMilliseconds;
                         sw.Start();
