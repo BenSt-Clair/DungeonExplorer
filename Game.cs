@@ -2568,7 +2568,11 @@ namespace DungeonCrawler
                     }
                     minotaurAlertedBy = D6.Roll(D6) * 8000;
                     minotaurAlerted = 0;
-                    justStalked = false;
+                    if (minotaur.Path.Count == 1)
+                    {
+                        justStalked = false;
+                    }
+                    else { justStalked = true; }
                     sw = new Stopwatch();
                     b = 0;
                     a = 0;
@@ -2664,7 +2668,11 @@ namespace DungeonCrawler
                     }
                     minotaurAlertedBy = D6.Roll(D6) * 8000;
                     minotaurAlerted = 0;
-                    justStalked = false;
+                    if (minotaur.Path.Count == 1)
+                    {
+                        justStalked = false;
+                    }
+                    else { justStalked = true; }
                     sw = new Stopwatch();
                     while (!leftWhichRooms[3])//antechamber
                     {
@@ -2876,7 +2884,11 @@ namespace DungeonCrawler
                     a = 0;
                     minotaurAlertedBy = D6.Roll(D6) * 8000;
                     minotaurAlerted = 0;
-                    justStalked = false;
+                    if (minotaur.Path.Count == 1)
+                    {
+                        justStalked = false;
+                    }
+                    else { justStalked = true; }
                     sw = new Stopwatch();
                     if (minotaur.Location == corridor && !corridor.Description.Contains("You see garments hurled about the corridor, braziers wrought, doors hacked. The monster has been very thorough in its search for you...")) { corridorItems.Add(garment); corridorItems.Add(bowlFragments); corridorItems.Add(looseNail); corridorItems.Add(splinter); corridor.ItemList = corridorItems; corridor.Description += "You see garments hurled about the corridor, braziers wrought, doors hacked. The monster has been very thorough in its search for you..."; }
                     if (minotaur.Location == antechamber && !antechamber.Description.Contains("You are struck by the carnage of the monster's obsessive hunt.")) { antechamber.ItemList.Add(breastplate); antechamber.ItemList.Add(helmet); antechamber.ItemList.Add(clunkySabaton); antechamber.Description = "You are struck by the carnage of the monster's obsessive hunt. The once wondrous and spacious antechamber is strewn with smashed breastplates and other detritus from the armoury. The monster also seems to have taken out its rage on the pillars, for you find them hacked with chunks of that fabulous marble scattered everywhere. The unscathed mosaic, high above the double doors, surveys it all.\nGazing northwards you see a heavyset door studded with steel bolts, Above it a bronze plaque has been blackened as though blasted by some spell or fireball. \t\nTo the west you see the brightly illuminated stairway you just ascended.\t\nTurning your gaze to the south wall you find bare patches where once were probably opulent oil-paintings and portraits. Their absence adds to the ominous sense of some recent tragedy befalling this place.\t\nTo the east is another door leading out of the antechamber - this one a far more inviting set of oak-panelled double doors framed by fluted pillars and a grand archway enclosing some strange mosaic.\t\t"; }
@@ -5079,7 +5091,11 @@ namespace DungeonCrawler
                     a = 0;
                     minotaurAlertedBy = D6.Roll(D6) * 8000;
                     minotaurAlerted = 0;
-                    justStalked = false;
+                    if (minotaur.Path.Count == 1)
+                    {
+                        justStalked = false;
+                    }
+                    else { justStalked = true; }
                     sw = new Stopwatch();
                     if (minotaur.Location == corridor && !corridor.Description.Contains("You see garments hurled about the corridor, braziers wrought, doors hacked. The monster has been very thorough in its search for you...")) { corridorItems.Add(garment); corridorItems.Add(bowlFragments); corridorItems.Add(looseNail); corridorItems.Add(splinter); corridor.ItemList = corridorItems; corridor.Description += "You see garments hurled about the corridor, braziers wrought, doors hacked. The monster has been very thorough in its search for you..."; }
                     if (minotaur.Location == antechamber && !antechamber.Description.Contains("You are struck by the carnage of the monster's obsessive hunt.")) { antechamber.ItemList.Add(breastplate); antechamber.ItemList.Add(helmet); antechamber.ItemList.Add(clunkySabaton); antechamber.Description = "You are struck by the carnage of the monster's obsessive hunt. The once wondrous and spacious antechamber is strewn with smashed breastplates and other detritus from the armoury. The monster also seems to have taken out its rage on the pillars, for you find them hacked with chunks of that fabulous marble scattered everywhere. The unscathed mosaic, high above the double doors, surveys it all.\nGazing northwards you see a heavyset door studded with steel bolts, Above it a bronze plaque has been blackened as though blasted by some spell or fireball. \t\nTo the west you see the brightly illuminated stairway you just ascended.\t\nTurning your gaze to the south wall you find bare patches where once were probably opulent oil-paintings and portraits. Their absence adds to the ominous sense of some recent tragedy befalling this place.\t\nTo the east is another door leading out of the antechamber - this one a far more inviting set of oak-panelled double doors framed by fluted pillars and a grand archway enclosing some strange mosaic.\t\t"; }
@@ -5248,7 +5264,11 @@ namespace DungeonCrawler
                     }
                     minotaurAlertedBy = D6.Roll(D6) * 8000;
                     minotaurAlerted = 0;
-                    justStalked = false;
+                    if (minotaur.Path.Count == 1 && minotaur.Location != oceanBottom)
+                    {
+                        justStalked = false;
+                    }
+                    else { justStalked = true; }
                     sw = new Stopwatch();
                     while (!leftWhichRooms[7])//circular landing : change to westernmost corridor
                     {
@@ -5428,7 +5448,11 @@ namespace DungeonCrawler
                     }
                     minotaurAlertedBy = D6.Roll(D6) * 8000;
                     minotaurAlerted = 0;
-                    justStalked = false;
+                    if (minotaur.Path.Count == 1 && minotaur.Location != oceanBottom)
+                    {
+                        justStalked = false;
+                    }
+                    else { justStalked = true; }
                     sw = new Stopwatch();
                     while (!leftWhichRooms[21])//north-facing corridor
                     {
@@ -5453,8 +5477,8 @@ namespace DungeonCrawler
                             Console.WriteLine("It's something furious.");
                             Console.ReadKey(true);
                             Console.WriteLine("And its something out for blood - Yours!");
-                            minotaur.Location = antechamber;
-                            minotaur.Path = new List<Room> { antechamber, westernmostCorridor, southernmostCorridor, easternmostCorridor, northernmostCorridor, broomCloset, northernmostCorridor, westernmostCorridor, northernmostCorridor, easternmostCorridor, messHall, easternmostCorridor, northernmostCorridor, easternmostCorridor, southernmostCorridor, westernmostCorridor, northernmostCorridor };
+                            minotaur.Location = westernmostCorridor;
+                            minotaur.Path = new List<Room> { westernmostCorridor, southernmostCorridor, easternmostCorridor, northernmostCorridor, broomCloset, northernmostCorridor, westernmostCorridor, northernmostCorridor, easternmostCorridor, messHall, easternmostCorridor, northernmostCorridor, easternmostCorridor, southernmostCorridor, westernmostCorridor, northernmostCorridor };
                             minotaur.Rage = true;
                             minotaur.Time = (minotaur.Path.Count - 1) * 20000;
                             minotaur.Description = "Its fur scorched and smoking, wielding a great sword that streams some spectral fire, and piercing you with its bloodshot red eyes, the looming minotaur thunders a roar as it charges towards you...";
@@ -5610,7 +5634,11 @@ namespace DungeonCrawler
                     if (minotaur.Location == antechamber && !antechamber.Description.Contains("You are struck by the carnage of the monster's obsessive hunt.")) { antechamber.ItemList.Add(breastplate); antechamber.ItemList.Add(helmet); antechamber.ItemList.Add(clunkySabaton); antechamber.Description = "You are struck by the carnage of the monster's obsessive hunt. The once wondrous and spacious antechamber is strewn with smashed breastplates and other detritus from the armoury. The monster also seems to have taken out its rage on the pillars, for you find them hacked with chunks of that fabulous marble scattered everywhere. The unscathed mosaic, high above the double doors, surveys it all.\nGazing northwards you see a heavyset door studded with steel bolts, Above it a bronze plaque has been blackened as though blasted by some spell or fireball. \t\nTo the west you see the brightly illuminated stairway you just ascended.\t\nTurning your gaze to the south wall you find bare patches where once were probably opulent oil-paintings and portraits. Their absence adds to the ominous sense of some recent tragedy befalling this place.\t\nTo the east is another door leading out of the antechamber - this one a far more inviting set of oak-panelled double doors framed by fluted pillars and a grand archway enclosing some strange mosaic.\t\t"; }
                     minotaurAlertedBy = D6.Roll(D6) * 8000;
                     sw = new Stopwatch();
-                    justStalked = false;
+                    if (minotaur.Path.Count == 1 && minotaur.Location != oceanBottom)
+                    {
+                        justStalked = false;
+                    }
+                    else { justStalked = true; }
                     minotaurAlerted = 0;
                     while (!leftWhichRooms[22])//easternmost corridor
                     {
@@ -5625,8 +5653,8 @@ namespace DungeonCrawler
                             Console.WriteLine("It's something furious.");
                             Console.ReadKey(true);
                             Console.WriteLine("And its something out for blood - Yours!");
-                            minotaur.Location = antechamber;
-                            minotaur.Path = new List<Room> { antechamber, westernmostCorridor, southernmostCorridor, easternmostCorridor, northernmostCorridor, broomCloset, northernmostCorridor, westernmostCorridor, northernmostCorridor, easternmostCorridor, messHall, easternmostCorridor, northernmostCorridor, easternmostCorridor, southernmostCorridor, westernmostCorridor, northernmostCorridor };
+                            minotaur.Location = westernmostCorridor;
+                            minotaur.Path = new List<Room> { westernmostCorridor, southernmostCorridor, easternmostCorridor, northernmostCorridor, broomCloset, northernmostCorridor, westernmostCorridor, northernmostCorridor, easternmostCorridor, messHall, easternmostCorridor, northernmostCorridor, easternmostCorridor, southernmostCorridor, westernmostCorridor, northernmostCorridor };
                             minotaur.Rage = true;
                             minotaur.Time = (minotaur.Path.Count - 1) * 20000;
                             minotaur.Description = "Its fur scorched and smoking, wielding a great sword that streams some spectral fire, and piercing you with its bloodshot red eyes, the looming minotaur thunders a roar as it charges towards you...";
@@ -5798,7 +5826,11 @@ namespace DungeonCrawler
                     if (minotaur.Location == antechamber && !antechamber.Description.Contains("You are struck by the carnage of the monster's obsessive hunt.")) { antechamber.ItemList.Add(breastplate); antechamber.ItemList.Add(helmet); antechamber.ItemList.Add(clunkySabaton); antechamber.Description = "You are struck by the carnage of the monster's obsessive hunt. The once wondrous and spacious antechamber is strewn with smashed breastplates and other detritus from the armoury. The monster also seems to have taken out its rage on the pillars, for you find them hacked with chunks of that fabulous marble scattered everywhere. The unscathed mosaic, high above the double doors, surveys it all.\nGazing northwards you see a heavyset door studded with steel bolts, Above it a bronze plaque has been blackened as though blasted by some spell or fireball. \t\nTo the west you see the brightly illuminated stairway you just ascended.\t\nTurning your gaze to the south wall you find bare patches where once were probably opulent oil-paintings and portraits. Their absence adds to the ominous sense of some recent tragedy befalling this place.\t\nTo the east is another door leading out of the antechamber - this one a far more inviting set of oak-panelled double doors framed by fluted pillars and a grand archway enclosing some strange mosaic.\t\t"; }
                     minotaurAlertedBy = D6.Roll(D6) * 8000;
                     sw = new Stopwatch();
-                    justStalked = false;
+                    if (minotaur.Path.Count == 1 && minotaur.Location != oceanBottom)
+                    {
+                        justStalked = false;
+                    }
+                    else { justStalked = true; }
                     minotaurAlerted = 0;
                     while (!leftWhichRooms[23])//south-facing corridor
                     {
@@ -5823,8 +5855,8 @@ namespace DungeonCrawler
                             Console.WriteLine("It's something furious.");
                             Console.ReadKey(true);
                             Console.WriteLine("And its something out for blood - Yours!");
-                            minotaur.Location = antechamber;
-                            minotaur.Path = new List<Room> { antechamber, westernmostCorridor, southernmostCorridor, easternmostCorridor, northernmostCorridor, broomCloset, northernmostCorridor, westernmostCorridor, northernmostCorridor, easternmostCorridor, messHall, easternmostCorridor, northernmostCorridor, easternmostCorridor, southernmostCorridor, westernmostCorridor, northernmostCorridor };
+                            minotaur.Location = westernmostCorridor;
+                            minotaur.Path = new List<Room> { westernmostCorridor, southernmostCorridor, easternmostCorridor, northernmostCorridor, broomCloset, northernmostCorridor, westernmostCorridor, northernmostCorridor, easternmostCorridor, messHall, easternmostCorridor, northernmostCorridor, easternmostCorridor, southernmostCorridor, westernmostCorridor, northernmostCorridor };
                             minotaur.Rage = true;
                             minotaur.Time = (minotaur.Path.Count - 1) * 20000;
                             minotaur.Description = "Its fur scorched and smoking, wielding a great sword that streams some spectral fire, and piercing you with its bloodshot red eyes, the looming minotaur thunders a roar as it charges towards you...";

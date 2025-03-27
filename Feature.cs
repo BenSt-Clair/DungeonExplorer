@@ -763,7 +763,7 @@ namespace DungeonCrawler
                                     Console.ReadKey(true);
                                     room.FirstVisit = false;
                                 }
-                                else
+                                /*else
                                 {
                                     Console.WriteLine("You pull away from the door suddenly!");
                                     Console.ReadKey(true);
@@ -773,12 +773,12 @@ namespace DungeonCrawler
                                     Console.ReadKey(true);
                                     Console.Write("Heart galloping, you're almost sure the beast can hear its febrile tattoo in your all too tight chest for a moment. Then, responding to the urgent yells of the CurseBreaker's forces frenziedly trying to douse the flames somewhere below, it turns. The monster storms down the fiery stairway and into the heart of the inferno...");
                                     Console.ReadKey(true);
-                                    Console.WriteLine("You feel relief flood through you, resting a hand on the table to steady yourself a moment. \nWhatever that thing was,"
+                                    Console.WriteLine("You feel relief flood through you, resting a hand on the table to steady yourself a moment. \nHopefully, Whatever that thing was,"
 
-                                    + " you sense with an icy dread that battling it would be the very last thing you do.");
+                                    + " it will be too preoccupied with the fire to get that close to finding you again.");
                                     Console.ReadKey(true);
                                     room.FirstVisit = false;
-                                }
+                                }*/
                             }
                             Room newRoom = this.CastDoor().Passage(room);
                             

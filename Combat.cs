@@ -859,11 +859,13 @@ namespace DungeonCrawler
             else if (Monster.Stamina > 0)
             {
                 Console.WriteLine($"The {Monster.Name}'s last attack proves fatal. You collapse in shameful defeat, a trickle of blood running from your mouth as your limp body drops to its knees. The {Monster.Name} has proven too much for you. Your adventure ends here...");
+                Console.ReadKey(true);
                 return false;
             }
             else
             {
                 Console.WriteLine("The fire consumes you both!");
+                Console.ReadKey(true);
                 return false;
             }
         }
@@ -2161,6 +2163,7 @@ namespace DungeonCrawler
             else
             {
                 Console.WriteLine("The fire consumes you both!");
+                Console.ReadKey(true);  
                 return false;
             }
         }

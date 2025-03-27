@@ -771,15 +771,31 @@ namespace DungeonCrawler
             this.Patrol.Stop();
             Dice D6 = new Dice(6);
             long time = this.Time - this.Patrol.ElapsedMilliseconds;
-            List<string> enragedHunt = new List<string> 
-            { 
-                $"You overhear the monster crashing through the {Location.Name} in search of you...",
-                $"The sound of the monster tearing the {Location.Name} apart as it hunts you fills you with icy foreboding. \nBetter move quickly...",
-                $"The monster storms the {Location.Name}. You can hear the carnage wrought from the {room.Name}...",
-                $"You hear the beast barrel into the {Location.Name}, ripping the place apart as it attempts to scare up your hiding spot...",
-                $"The din of the beasts furious roars and frenzied hunting continues into the {Location.Name}...",
-                $"You overhear the beast charge into the {Location.Name} as it looks for you..."
-            };
+            List<string> enragedHunt = new List<string>
+                {
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                };
+            try
+            {
+                enragedHunt = new List<string>
+                {
+                $"You overhear the monster crashing through the {Path[1].Name} in search of you...",
+                $"The sound of the monster tearing the {Path[1].Name} apart as it hunts you fills you with icy foreboding. \nBetter move quickly...",
+                $"The monster storms the {Path[1].Name}. You can hear the carnage wrought from the {room.Name}...",
+                $"You hear the beast barrel into the {Path[1].Name}, ripping the place apart as it attempts to scare up your hiding spot...",
+                $"The din of the beasts furious roars and frenzied hunting continues into the {Path[1].Name}...",
+                $"You overhear the beast charge into the {Path[1].Name} as it looks for you..."
+                };
+            }
+            catch
+            {
+                
+            }
             List<Room> adjacentrooms = new List<Room>();
             List<Door> doors = new List<Door>();
             foreach(Feature f in Location.FeatureList)

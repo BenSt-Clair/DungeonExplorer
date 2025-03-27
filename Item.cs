@@ -850,13 +850,17 @@ namespace DungeonCrawler
                     feature.SpecificAttribute = "un" + feature.SpecificAttribute;
                     if (item.Name == "jailor keys" && (feature.Name == "far door" || feature.Name == "near door"))
                     {
-                        Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door unlock.");
+                        int index = feature.SpecificAttribute.IndexOf("ed");
+                        string strand = feature.SpecificAttribute.Substring(0, index);
+                        Console.WriteLine($"The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door {strand}.");
                         Console.ReadKey(true);
                         return true;
                     }
                     else if (item.Name == "brass key" && feature.Name == "double doors")
                     {
-                        Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door unlock.");
+                        int index = feature.SpecificAttribute.IndexOf("ed");
+                        string strand = feature.SpecificAttribute.Substring(0, index);
+                        Console.WriteLine($"The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door {strand}.");
                         Console.ReadKey(true);
                         return true;
                     }
@@ -919,13 +923,14 @@ namespace DungeonCrawler
                     feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
                     if (item.Name == "jailor keys" && (feature.Name == "far door" || feature.Name == "near door"))
                     {
+                        
                         Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door lock.");
                         Console.ReadKey(true);
                         return true;
                     }
                     else if (item.Name == "brass key" && feature.Name == "double doors")
                     {
-                        Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door unlock.");
+                        Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door lock.");
                         Console.ReadKey(true);
                         return true;
                     }
