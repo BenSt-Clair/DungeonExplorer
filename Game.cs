@@ -1087,6 +1087,10 @@ namespace DungeonCrawler
                     choices.Add(action);
                     tie_door[action] = d;
                 }
+                /// choices.add(action) => action = hide behind curtain if in southern corridor
+                /// minotaur sees you and charges chance it falls though window when dodged
+                /// tie_door[action] = d
+                /// 
                 if (choices.Count == 8)
                 {
                     int index = D8.Roll(D8) - 1;
@@ -2359,6 +2363,42 @@ namespace DungeonCrawler
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
                         string reply = Console.ReadLine().ToLower().Trim();
+                        if (!justStalked && minotaurAlerted > minotaurAlertedBy && (minotaur.Location == cellOpposite || minotaur.Location == emptyCell || minotaur.Location == room || minotaur.Location == dungeonChamber || minotaur.Location == antechamber))
+                        {
+
+
+                            if (minotaur.Path.Count > 1)
+                            {
+                                newRoom1 = minotaurApproaches(corridor, minotaur, false, 14000, false, minotaur.Rage);
+                                leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                if (newRoom1 == corridor)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(newRoom1);
+                                    }
+                                    else
+                                    {
+                                        Console.ReadKey(true);
+                                        return;
+                                    }
+                                }
+                                else if (newRoom1 == minotaur.Location)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(newRoom1);
+                                    }
+                                    else
+                                    {
+                                        Console.ReadKey(true);
+                                        return;
+                                    }
+                                }
+
+                            }
+                            continue;
+                        }
                         try
                         {
                             int j = player1.Stamina;
@@ -2822,6 +2862,42 @@ namespace DungeonCrawler
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
                         string reply = Console.ReadLine().ToLower().Trim();
+                        if (!justStalked && minotaurAlerted > minotaurAlertedBy && (minotaur.Location == westernmostCorridor || minotaur.Location == armoury || minotaur.Location == corridor))
+                        {
+
+
+                            if (minotaur.Path.Count > 1)
+                            {
+                                newRoom1 = minotaurApproaches(antechamber, minotaur, false, 14000, false, minotaur.Rage);
+                                leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                if (newRoom1 == antechamber)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(newRoom1);
+                                    }
+                                    else
+                                    {
+                                        Console.ReadKey(true);
+                                        return;
+                                    }
+                                }
+                                else if (newRoom1 == minotaur.Location)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(newRoom1);
+                                    }
+                                    else
+                                    {
+                                        Console.ReadKey(true);
+                                        return;
+                                    }
+                                }
+
+                            }
+                            continue;
+                        }
                         try
                         {
                             int reply1 = int.Parse(reply);
@@ -3358,7 +3434,7 @@ namespace DungeonCrawler
                                                     "The kamikaze-suicide crazies",
                                                     "The knights who say 'ni'",
                                                     "Teh Ordah of deh Mega-Tyrant",
-                                                    "Dee Hooliganz",
+                                                    "Team Rocket",
                                                     "Squad 34529, reporting for duty!"
                                                     
                                                 };
@@ -3728,7 +3804,7 @@ namespace DungeonCrawler
                                                     "The kamikaze-suicide crazies",
                                                     "The knights who say 'ni'",
                                                     "Teh Ordah of deh Mega-Tyrant",
-                                                    "Dee Hooliganz",
+                                                    "Team Rocket",
                                                     "Squad 34529, reporting for duty!"
 
                                                 };
@@ -4029,7 +4105,7 @@ namespace DungeonCrawler
                                                     "The kamikaze-suicide crazies",
                                                     "The knights who say 'ni'",
                                                     "Teh Ordah of deh Mega-Tyrant",
-                                                    "Dee Hooliganz",
+                                                    "Team Rocket",
                                                     "Squad 34529, reporting for duty!"
 
                                                 };
@@ -4329,7 +4405,7 @@ namespace DungeonCrawler
                                                     "The kamikaze-suicide crazies",
                                                     "The knights who say 'ni'",
                                                     "Teh Ordah of deh Mega-Tyrant",
-                                                    "Dee Hooliganz",
+                                                    "Team Rocket",
                                                     "Squad 34529, reporting for duty!"
 
                                                 };
@@ -4629,7 +4705,7 @@ namespace DungeonCrawler
                                                     "The kamikaze-suicide crazies",
                                                     "The knights who say 'ni'",
                                                     "Teh Ordah of deh Mega-Tyrant",
-                                                    "Dee Hooliganz",
+                                                    "Team Rocket",
                                                     "Squad 34529, reporting for duty!"
 
                                                 };
@@ -5365,8 +5441,38 @@ namespace DungeonCrawler
                         minotaurAlerted = sw.ElapsedMilliseconds;
                         if (!justStalked && minotaurAlerted > minotaurAlertedBy && (minotaur.Location == northernmostCorridor || minotaur.Location == southernmostCorridor || minotaur.Location == antechamber))
                         {
-                            
-                            
+
+
+                            if (minotaur.Path.Count > 1)
+                            {
+                                newRoom1 = minotaurApproaches(westernmostCorridor, minotaur, false, 14000, false, minotaur.Rage);
+                                leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                if (newRoom1 == westernmostCorridor)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(newRoom1);
+                                    }
+                                    else
+                                    {
+                                        Console.ReadKey(true);
+                                        return;
+                                    }
+                                }
+                                else if(newRoom1 == minotaur.Location)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(newRoom1);
+                                    }
+                                    else
+                                    {
+                                        Console.ReadKey(true);
+                                        return;
+                                    }
+                                }
+                                
+                            }
                             continue;
                         }
                         sw.Start();
@@ -5553,6 +5659,36 @@ namespace DungeonCrawler
                         sw.Stop();
                         if (!justStalked && sw.ElapsedMilliseconds > minotaurAlertedBy &&(minotaur.Location == westernmostCorridor || minotaur.Location == easternmostCorridor ))
                         {
+                            if (minotaur.Path.Count > 1)
+                            {
+                                newRoom1 = minotaurApproaches(northernmostCorridor, minotaur, false, 14000, false, minotaur.Rage);
+                                leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                if (newRoom1 == northernmostCorridor)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(newRoom1);
+                                    }
+                                    else
+                                    {
+                                        Console.ReadKey(true);
+                                        return;
+                                    }
+                                }
+                                else if (newRoom1 == minotaur.Location)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(newRoom1);
+                                    }
+                                    else
+                                    {
+                                        Console.ReadKey(true);
+                                        return;
+                                    }
+                                }
+
+                            }
                             continue;
                         }
                         sw.Start();
@@ -5745,6 +5881,36 @@ namespace DungeonCrawler
                         sw.Stop();
                         if (!justStalked && sw.ElapsedMilliseconds > minotaurAlertedBy && (minotaur.Location == messHall || minotaur.Location == northernmostCorridor || minotaur.Location == southernmostCorridor))
                         {
+                            if (minotaur.Path.Count > 1)
+                            {
+                                newRoom1 = minotaurApproaches(easternmostCorridor, minotaur, false, 14000, false, minotaur.Rage);
+                                leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                if (newRoom1 == easternmostCorridor)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(newRoom1);
+                                    }
+                                    else
+                                    {
+                                        Console.ReadKey(true);
+                                        return;
+                                    }
+                                }
+                                else if (newRoom1 == minotaur.Location)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(newRoom1);
+                                    }
+                                    else
+                                    {
+                                        Console.ReadKey(true);
+                                        return;
+                                    }
+                                }
+
+                            }
                             continue;
                         }
                         sw.Start();
@@ -5941,6 +6107,36 @@ namespace DungeonCrawler
                         sw.Stop();
                         if (sw.ElapsedMilliseconds > minotaurAlertedBy && !justStalked && (minotaur.Location == easternmostCorridor || minotaur.Location == westernmostCorridor))
                         {
+                            if (minotaur.Path.Count > 1)
+                            {
+                                newRoom1 = minotaurApproaches(southernmostCorridor, minotaur, false, 14000, false, minotaur.Rage);
+                                leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                if (newRoom1 == southernmostCorridor)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(newRoom1);
+                                    }
+                                    else
+                                    {
+                                        Console.ReadKey(true);
+                                        return;
+                                    }
+                                }
+                                else if (newRoom1 == minotaur.Location)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(newRoom1);
+                                    }
+                                    else
+                                    {
+                                        Console.ReadKey(true);
+                                        return;
+                                    }
+                                }
+
+                            }
                             continue;
                         }
                         sw.Start();
