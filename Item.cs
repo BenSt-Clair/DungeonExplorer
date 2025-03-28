@@ -54,7 +54,87 @@ namespace DungeonCrawler
                 item.SpecifyAttribute = "read";
             }
             Console.WriteLine(item.Description);
-            if(item.Name == "book on cursed weapons")
+            if (Name == "Grimhook's Handy How-To on Thievin' and 'stounding Skullduggery")
+            {
+                Console.WriteLine("Would you like to delve deeper into what this book has to say?");
+                Dialogue thievin = new Dialogue(item);
+                if (thievin.getYesNoResponse())
+                {
+
+                    string description = "Your curiosity piqued, you peruse the books rather tatty pages...";
+                    List<string> pages = new List<string>
+                    {
+                        "The page provides a colorful glance into the exciting world and glittering opportunities of skillful shenanigans:" +
+                        "\n\n\t...Yeh, so uh, furst off, wot you gots to learn, right, iz three basic rules." +
+                        "\nRule nambah 1. Don't get caught. It don't bode well." +
+                        "\nRule numba 2. If youse get caught don't give 'em this book or my name, a'right ('cause it's a fake pen name anywayz, but I'll still 'ave yer guts for garters if I find out...)" +
+                        "\nRule number [he hastily scratches out the correctly spelt word] numbahh 3. Do wot I says in thiz book and sum day you'll make it as a master skullduggeror, jus' like me...",
+
+                        "This page delves into the intricacies of lockpicking and the vast trove of finer points aspiring thieves need to know:" +
+                        "\n\n\t...So wot you do, yeh, iz you gets a screwdriver, or sum uther" +
+                        " thin and sharp blade, and yer stick the pointy end in the keyhole. Then you " +
+                        "fiddle around a bit with a bobby pin until it opens. If 'at don't work or nuffin' " +
+                        "then gets a hammer and go to town on the bugger...",
+
+                        "This page is a pensive preponderance upon disguises and their utility in covert chicanery:" +
+                        "\n\n\t... ",
+
+                        "This page delves into one weapon in particular of high renown;" +
+                        "\n\n\t",
+
+                        "The final page you turn to deliberates upon the forces that bring about such curses and from where they are ultimately sourced;" +
+                        "\n\n\t"
+                    };
+                    List<List<string>> playerchoice = new List<List<string>>
+                    {
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn back to the first page?",
+                            "Close the book?"
+                        }
+                    };
+                    Dictionary<string, string> action = new Dictionary<string, string>
+                    {
+                        {"Turn back to the first page?", "You scour the book for the first entry you came across..."},
+                        { "Turn the page?", "You leaf through a page or two more, before your eyes rest on the next intriguing excerpt." },
+                        {"Close the book?", "You decide to stop reading the literature for now." }
+                    };
+                    int x = 0;
+                    while (x == 0)
+                    {
+                        x = thievin.LinearParle(action, pages, playerchoice, description);
+                    }
+                    item.Attribute = true;
+                    item.SpecifyAttribute = "read";
+                }
+                else
+                {
+                    Console.WriteLine("You decide now isn't the time. You close the book.");
+                    Console.ReadKey(true);
+                    return;
+                }
+            }
+            if (item.Name == "book on cursed weapons")
             {
                 Console.WriteLine("Would you like to delve deeper into what this book has to say?");
                 Dialogue cursed_weapons = new Dialogue(item);

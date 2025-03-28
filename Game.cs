@@ -607,7 +607,8 @@ namespace DungeonCrawler
             Door circleDoor = new Door("double doors", "An ornate and set of vast double doors with brass locks and filigreed handles. You reckon something as large as a troll could fit through that door...", true, "locked", null, null, "You open one of the doors open just a fraction and slip your way through...");
             Door emptyCellDoor = new Door("far door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in. You notice the lock has scratches made from the inside. You surmise someone has attempted picking the lock, but unless they had something more than just a bobby pin, it's doubtful they succeeded.", true, "locked", null, null);
             Door magManDoor = new Door("rosewood door");
-            Door messHallDoor = new Door("rosewood door");
+            List<Item> messHallDoorItems = new List<Item> { };
+            Door messHallDoor = new Door("rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", messHallDoorItems, null, "You slip through the door and into the next room...");
             Door broomClosetDoor = new Door("rosewood door");
             
 
@@ -684,9 +685,32 @@ namespace DungeonCrawler
             List<Feature> emptyCellFeatures = new List<Feature> { leftbrazier, emptyCellDoor, rightbrazier, otherBookcase};
             ///
             ///mess hall features and items
-            Item messhallBook1 = new Item("book on thievery", "A rather handy guide to the illicit - *ahem*, excuse me - to the skilled art of pickpocketing, conning, disguises and lockpicking.", false, "unread");
+            Item messhallBook1 = new Item("Grimhook's Handy How-To on Thievin' and 'stounding Skullduggery", "A rather handy guide to the illicit - *ahem*, excuse me - to the skilled art of pickpocketing, conning, disguises and lockpicking.", false, "unread");
+            Item noteForJanitor = new Item("note for janitor", "Found nailed to the pantry door, the note is evidently not recently penned, but has rather, judging from the food stains and soggy texture, been up upon this door for sometime.\n There are notches hewn out of the door, as though the goblins and mercenaries had used it for target practice. \nIt reads, \n\n\tDearest Mungo, I must say that your inability to keep track of the items pertaining to your duties as custodian of my home, is becoming vexing. Keys are quite expensive to duplicate and i simply can't be doing it every time you lose one of them! I've half a mind to just build another golem and have that do the cleaning, save for the fact that my golems have yet to master the subtle difference between opening doors and crashing through the walls next to them. While I work on instructing them of one or two of the finer points of... manoeuvring, shall we say, through  polite society, perhaps you might be so kind as to not lose any more of my keys. The copper ones... [the letter trails off into a smudged scrawl blotted out by food stains]", false, "unread");
+            Item chickenBone = new Item("chicken bone", "They scatter the cobbled floor between benches. This one in particular has been well gnawed...");
+            Item plate = new Item("plate", "Some shattered into pieces, others merely chipped a lot, they litter the floor. It looks like they were used as missiles during a riotous brawl.");
+            Item fork = new Item("fork", "A utensil that hasn't seen much use amongst the motley recruits of the CurseBreaker's private army.");
+            Item knife = new Item("knife", "A utensil that has seen much use amongst the mercenary rogues of the CurseBreaker's private army. Though rarely as intended...");
+            Feature bench = new Feature("bench", "They clutter the floor. Some have been used as barricades during a food fight.", false, "unshattered");
+            Feature diningTable = new Feature("table", "Looking around you can see some tables with the telltale markings of hand roulette, others with muddy bootprints. One has been smashed to smithereens.", false, "unshattered... mostly.");
+            List<Item> dinnerTableItems = new List<Item> {knife, plate, messhallBook1 };
+            Feature diningTable1 = new Feature("table", "Over in the far corner, this table seems to have been used by one of the more studious mercenaries of the CurseBreaker's army. A book of some description is sprawled open upon its surface. By the look of its dogeared pages, it's been well read...", false, "unshattered", dinnerTableItems);
+            List<Item> messHallItems = new List<Item> {chickenBone, plate, fork, plate, knife, chickenBone, fork };
+            
+            List<Feature> messHallFeatures = new List<Feature> { messHallDoor, bench, diningTable, bench, diningTable, diningTable1, bench, bench, diningTable};
             ///The above is for letting the player know that they can combine the bobby pin and the stiletto and that they can use the soot or warpaint to form a disguise
             ///
+            /// Broom Closet Items and features
+            
+            List<Item> bucketItems = new List<Item> ();
+            Feature bucket = new Feature("bucket", "The muddy hue of the water sloshing inside makes you wonder if much cleaning could be done with this...", false, "unbroken", bucketItems);
+            Item mops = new Item("mop", "The bane of dirty floors everywhere...");
+            Item brooms = new Item("broom", "Unlike other famous brooms in sorcerors' abodes, this one seems remarkably unmagical...");
+            Item dustpans = new Item("dustpan", "Helps janitors and maids collect dust so, like all decent custodians, they can hide it where it can't be seen...");
+            Item dusters = new Item("feather duster", "You wonder if your enemies are ticklish... No, nevermind...");
+            Feature shelves = new Feature("shelf", "It's jampacked with exciting janitorial stuff. Seems the mercenaries weren't too bothered about ransacking any of this miscellanea...", false, "unshattered");
+            List<Item> broomClosetItems = new List<Item> {dusters, dustpans, brooms, mops };
+            List<Feature> broomClosetFeatures = new List<Feature> { shelves, shelves, shelves, bucket};
             ///DungeonChamber Items and features
             Item femur = new Item("femur", "Upon closer inspection you find teeth marks denting the bone's length...", false);
             Item jawBone = new Item("jaw bone", "This bone is of disquietingly human origin - and is warm...", false);
@@ -733,7 +757,7 @@ namespace DungeonCrawler
             List<Item> eastCorridorItems = new List<Item> { splinter, looseNail, penny, crumbs, dustBunny };
 
             //Special Items
-            List<Item> stickyItems = new List<Item> { bowlFragments, garment, bobbyPins, clunkySabaton, breastplate, helmet, bracers, splinter, rug, looseNail, penny, crumbs, dustBunny };
+            List<Item> stickyItems = new List<Item> { bowlFragments, garment, bobbyPins, clunkySabaton, breastplate, helmet, bracers, splinter, rug, looseNail, penny, crumbs, dustBunny, mops, dusters, brooms, dustpans };
             List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys, lockpickingSet, bookA1 };
             
             ///Rooms
@@ -744,10 +768,10 @@ namespace DungeonCrawler
             Room oubliette = new Room("oubliette", "~demon pit~", cellInventory, cellfeatures);
             Room emptyCell = new Room("empty cell", "Upon entering this cell you find scratch marks around the lock. The enchanted braziers cast everything in a shimmering ethereal glow, as though the light were reaching this room through some alien ocean or the underside of a glacier\nAhead of you are more garments strewn haphazardly about. Some of them have been piled against the wall, almost as though to form something to sit on.\t\nTurning your gaze left you espy more rusty chains, along with a bookcase that - like the one in your old cell - looks like its seen better days.\t\nFacing the rosewood door you came through you notice bobby pins litter the floor. They must've been something the previous occupant had brought here with them. It looks like they were used to try and unlock the door.\t\nTo the east, just peeping from under the garments, you notice a ball of red thread. It seems to have been collected by the last occupant but you've no idea what for.\t\t", emptyCellItems, emptyCellFeatures);
             Room armoury = new Room("armoury", "The instant you step inside you are greeted with a startled gnoll and goblin. Coins clatter to the table they're gathered around as they stare at you, surrounded by weapon racks and other decidedly sharp furnishings. Your presence has caused them to pause their boisterous clamouring mid-game of coins... It seems you've intruded upon a private party. Their stunned silence has yet to change into hostility, but it won't be long before it does...\nThe high walls of the 'RmorRee' extend to a vaulted ceiling and appear to have been stripped of many ladders and shelves judging by the bare patches and splintered wood panels left behind. The north wall in particular is one of the few that betrays what this room might've been before its spartan refurbishment; a rosewood bookcase, replete with tomes, greets your gaze directly ahead.\t\nThe west wall to your left is where the table is situated where the gnoll and goblin played their game of coins.\t\nFacing south you find the door you just passed through.\t\nTo your right, gazing east, you see racks fully stocked with weapons and armour.\t\t", armouryItems, armouryFeatures);
-            Room messHall = new Room("mess hall", "~mess hall~", cell2Inventory, cell2features);
+            Room messHall = new Room("mess hall", "The vast hall seems to have lived a former life as the servants cafeteria, replete with benches and a communal space for dining. It has since been transformed into a mess hall where the CurseBreaker's private army sates their gluttony and engages in regular bouts of fisticuffs and food fights. Mashed potato has spattered areas of the wall for so long that it has almost ossified. The tables are a raucous assemblage far from the neat aisles you presume they once formed. Meanwhile, you spot the open kitchen has been left in dire need of cleaning with pots and pans strewn over the floor, some sort of gruel congealing within.\nTo the north you can see the open kitchen area behind a counter. The oven is an oldfashioned copper burner, though its been dented somewhat by beer swilling pugilists.\t\nTo the west you can see the through which you entered. From this side it's been studded with knives, seemingly having been aimed at a note that's been nailed there.\t\nTo the south you espy most of the horrendously dishevelled dining area. Bones scatter the cobbled floor from previous feasts. \t\nTo the east you see the far table has an open book one of the mercenaries must've been reading through.\t\t", messHallItems, messHallFeatures);
             Room circularLanding = new Room("circular landing", "~minor tour antics~", cell2Inventory, cell2features);
             Room magicalManufactory = new Room("magical manufactory", "~Merigold the Marvellous~", cell2Inventory, cell2features);
-            Room broomCloset = new Room("broom closet", "~brooms, mops, dusters and other exciting things~", cell2Inventory, cell2features);
+            Room broomCloset = new Room("broom closet", "Your eyes clap sight of an Aladdin's cave of custodian conglomerations, janitorial jumbles and maidly menageries all agglomerated within a cosy 4 foot by 4 foot room. Somewhat ironically, it's a mess. \nYou see a broom.\t\nYou see another broom.\t\nCould that be another broom?\t\nanother br- oh, wait! That's a mop.\t\t", broomClosetItems, broomClosetFeatures);
             Room highestParapet = new Room("highest parapet", "~final boss fight~", cell2Inventory, cell2features);
             Room hugeBarracks = new Room("huge barracks", "~bleh!~", cell2Inventory, cell2features);
             Room desertIsland = new Room("desert island", "~make friends with a coconut named 'Wilson'~", cell2Inventory, cell2features);
@@ -1533,11 +1557,12 @@ namespace DungeonCrawler
             player1.Inventory.Add(elixirFeline);
 
             ///Instantiating monsters to be fought later
+            Item magManKey = new Item("copper key", "Found amongst the minotaur's possessions, this key has a tarnished look about it as though it could do with a good polish. You suppose it must unlock one of the doors in this landing. The question is, which one...", false);
             List<Item> goblinInventory = new List<Item> { scimitar };
             List<Item> gnollInventory = new List<Item> { dagger };
             Item bracelet = new Item("Bracelet embossed MG", "It's a curious item to find, especially in such a place as this. It seems to shimmer with an energy beyond your understanding or ability to unlock.", false);
             Item mercInsignia = new Item("insignia", "The insignia depicts a serpent with feathered wings. In the form of a broach it might look rather fetching on you...");
-            List<Item> minotaurInventory = new List<Item> { vanquisher, armBand, belt, diadem };
+            List<Item> minotaurInventory = new List<Item> { vanquisher, armBand, belt, diadem, magManKey };
             List<Room> minotaurPath = new List<Room> { northernmostCorridor};
             Stopwatch minotaurTimer = new Stopwatch();
             Monster minotaur = new Monster("minotaur", "towering above you at eight feet, the minotaur levels its horns towards you, tenses its powerful muscles, and charges!", minotaurInventory, 120, 10, vanquisher, northernmostCorridor, minotaurPath, false, false, minotaurTimer);
@@ -1931,6 +1956,8 @@ namespace DungeonCrawler
                     player1.FieryEscape = true;
                     minotaur.Location = oceanBottom;
                     minotaur.Path = new List<Room> { northernmostCorridor };
+                    minotaur.Inventory.Remove(magManKey);
+                    
                 }
                 else
                 {
@@ -5184,6 +5211,7 @@ namespace DungeonCrawler
                     
                     while (!leftWhichRooms[6])//mess hall
                     {
+                        messHallDoor.ItemList.Add(noteForJanitor);
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
@@ -5259,6 +5287,36 @@ namespace DungeonCrawler
                         sw.Stop();
                         if (!justStalked && sw.ElapsedMilliseconds > minotaurAlertedBy && minotaur.Location == easternmostCorridor)
                         {
+                            if (minotaur.Path.Count > 1)
+                            {
+                                newRoom1 = minotaurApproaches(messHall, minotaur, false, 14000, false, minotaur.Rage);
+                                leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                if (newRoom1 == messHall)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(newRoom1);
+                                    }
+                                    else
+                                    {
+                                        Console.ReadKey(true);
+                                        return;
+                                    }
+                                }
+                                else if (newRoom1 == minotaur.Location)
+                                {
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    {
+                                        minotaurKafuffle.WonFight(newRoom1);
+                                    }
+                                    else
+                                    {
+                                        Console.ReadKey(true);
+                                        return;
+                                    }
+                                }
+
+                            }
                             continue;
                         }
                         sw.Start();
@@ -5289,9 +5347,17 @@ namespace DungeonCrawler
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
                                 Room newRoom = messHall.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                if (noteForJanitor.SpecifyAttribute == "read")
+                                {
+                                    bucket.ItemList.Add(magManKey);
+                                    bucket.Description += "\nChecking under the bucket, you find nothing. You're about to give up on finding the janitor's lost key when, as you fish through the filthy brown water, your hands clasp hold of something long and metallic.";
+                                    shelves.Description += "\n No matter how much you rummage through the shelves you find nothing a janitor might've misplaced...";
+
+                                }
                                 if (newRoom.Name != messHall.Name)
                                 {
 
+                                    messHallDoor.ItemList.Remove(noteForJanitor);
                                     leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
                                     newRoom1 = newRoom;
                                     continue;
