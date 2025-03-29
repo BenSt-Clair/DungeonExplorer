@@ -54,7 +54,7 @@ namespace DungeonCrawler
                 item.SpecifyAttribute = "read";
             }
             Console.WriteLine(item.Description);
-            if (Name == "Grimhook's Handy How-To on Thievin' and 'stounding Skullduggery")
+            if (Name == "The Rogue's Pocketbook")
             {
                 Console.WriteLine("Would you like to delve deeper into what this book has to say?");
                 Dialogue thievin = new Dialogue(item);
@@ -64,26 +64,36 @@ namespace DungeonCrawler
                     string description = "Your curiosity piqued, you peruse the books rather tatty pages...";
                     List<string> pages = new List<string>
                     {
-                        "The page provides a colorful glance into the exciting world and glittering opportunities of skillful shenanigans:" +
-                        "\n\n\t...Yeh, so uh, furst off, wot you gots to learn, right, iz three basic rules." +
-                        "\nRule nambah 1. Don't get caught. It don't bode well." +
-                        "\nRule numba 2. If youse get caught don't give 'em this book or my name, a'right ('cause it's a fake pen name anywayz, but I'll still 'ave yer guts for garters if I find out...)" +
-                        "\nRule number [he hastily scratches out the correctly spelt word] numbahh 3. Do wot I says in thiz book and sum day you'll make it as a master skullduggeror, jus' like me...",
+                        "This chapter lays bare the underlying rationale for this book:" +
+                        "\n\n\tIf you want to become a great thief for some vainglorious purpose, reader, then " +
+                        "you've entered the wrong profession.\nIf you have ambitions of being portrayed in some gallery of the " +
+                        "notorious and the machiavellian, then you can place back this book now.\n\tLet it instead be found for those" +
+                        "who revel in obscurity, who make the shadows their business, and subterfuge their mistress. Herein lies" +
+                        " those secrets worthy only of those who follow Bhaal or Shar, whether by devoted spirit or inadvertently through deed...",
 
-                        "This page delves into the intricacies of lockpicking and the vast trove of finer points aspiring thieves need to know:" +
-                        "\n\n\t...So wot you do, yeh, iz you gets a screwdriver, or sum uther" +
-                        " thin and sharp blade, and yer stick the pointy end in the keyhole. Then you " +
-                        "fiddle around a bit with a bobby pin until it opens. If 'at don't work or nuffin' " +
-                        "then gets a hammer and go to town on the bugger...",
+                        "This page is a how-to-guide for lockpicking, home invasion and escape artistry:" +
+                        "\n\n\tNo door makes a vault impregnable. No lock can withstand the right tools. For most mundane locks" +
+                        " this is all too evident. All that's needed to crack open a door is more often than not nothing more than a bobby pin to jimmy the tumblers into position and a screwdriver" +
+                        " or any similar edged implement, a narrow thin blade for example, that can lever the inside mechanics within." +
+                        " Combine these two items, use one along with the other, and you'll have your very own lockpicking set" +
+                        " that'll work nine times out of ten...",
 
-                        "This page is a pensive preponderance upon disguises and their utility in covert chicanery:" +
-                        "\n\n\t... ",
+                        "The following excerpt examines first principles upon disguises, camouflage and espionage:" +
+                        "\n\n\t... three quarters of any disguise lies in projecting the behaviour and the gestures that'll " +
+                        "make you blend seamlessly with the crowd you wish to integrate into. Without confidence, if nervousness gnaws your guts, and your eyes glance whiplash quick " +
+                        "at those who might already suspect you, then you're going to get caught no matter how ingenious your disguise or brilliant your plan. " +
+                        "\n\tAs for the other quarter, find the right garb that won't stand out, wear the symbols and trinkets that mark your target for infiltration as one of their own," +
+                        " and if you can't conceal your face, then use something to obscure it or draw attention away from memorable features. " +
+                        "\n\tAs for camouflage, remember the five 'S': Shift, Shape, Shadow, Silhouette and Shine. Where 'shine' is concerned," +
+                        " blacken anything that might be seen, use charcoal to smear your face and make it less visible at night...",
 
-                        "This page delves into one weapon in particular of high renown;" +
-                        "\n\n\t",
+                        "This page goes through a detailed step by step plan on how to pick-pockets;" +
+                        "\n\n1. Find your target and study their routines. Who do they know? Who do they meet? Who is likely to intercede on their behalf if things go wrong?" +
+                        "\n2. Find the best spot to cross their path and perform the deed. You need a place that's public, crowded and away from any of their friends." +
+                        "\n3. You need a trustworthy wingman. One you perform the act, they'll take your stash off of you, so if the militia are alerted they'll find nothing on you." +
+                        "\n4. You'll need to act swiftly. Bump into them. distract them. Do it right and they won't notice you snatch what you want from their pockets, then make your exit. Plan beforehand which street corners you'll turn, which alleys you'll dart through to lose them..."
 
-                        "The final page you turn to deliberates upon the forces that bring about such curses and from where they are ultimately sourced;" +
-                        "\n\n\t"
+                        
                     };
                     List<List<string>> playerchoice = new List<List<string>>
                     {
@@ -102,11 +112,7 @@ namespace DungeonCrawler
                             "Turn the page?",
                             "Close the book?"
                         },
-                        new List<string>
-                        {
-                            "Turn the page?",
-                            "Close the book?"
-                        },
+                        
                         new List<string>
                         {
                             "Turn back to the first page?",
@@ -1120,7 +1126,8 @@ namespace DungeonCrawler
                     else if (feature.Name.Contains("brazier"))
                     {
                         Console.WriteLine($"You peer through the magnifying glass at the {feature.Name}, only to blink and recoil as the magical flame's light focuses into an intense beam.\nExperimentally, you swivel your magnifying glass around," +
-                            $"your eyes following the tight circle of light as it flickers and dances across the opposite wall. Whatever the beam touches is left warm to the touch. \nAn idea begins to form...");
+                            $"your eyes following the tight circle of light as it flickers and dances across the opposite wall. Whatever the beam touches is left warm to the touch.");
+                        if (room.Name == "dank cell") { Console.WriteLine("An idea begins to form..."); }
                     }
                     
                     else { Console.WriteLine($"You inspect the {feature.Name} with your magnifying glass. Were you expecting to find something?"); }

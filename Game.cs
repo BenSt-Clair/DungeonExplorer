@@ -1340,7 +1340,10 @@ namespace DungeonCrawler
                                 Console.WriteLine($"The monster lumbers into the {oldRoom.Name}, whereupon it catches sight of where you dropped the spool of red thread.\nPerhaps heeding some ancient memory it begins following where it leads...");
                                 Console.ReadKey(true);
                                 Console.WriteLine("Hoping whatever plan you have works, you nevertheless now know for certain that the monster is aware you're here. And they're mad...");
-                                oldRoom.ItemList.Remove(redThread);
+                                foreach (Room r in threadPath)
+                                {
+                                    r.ItemList.Remove(redThread);
+                                }
                                 minotaur.Items.Add(redThread);
                                 minotaur.Rage = true;
                                 return newRoom1;
@@ -1358,7 +1361,11 @@ namespace DungeonCrawler
                                 Console.WriteLine($"The monster lumbers into the {oldRoom.Name}, whereupon it catches sight of where you began unravelling the spool of red thread.\nPerhaps now would be a good time to drop it if you haven't already...");
                                 Console.ReadKey(true);
                                 Console.WriteLine("Hoping whatever plan you have works, you nevertheless now know for certain that the monster is aware you're here. And they're mad...");
-                                oldRoom.ItemList.Remove(redThread);
+                                foreach(Room r in threadPath)
+                                {
+                                    r.ItemList.Remove(redThread);
+                                }
+                                
                                 minotaur.Items.Add(redThread);
                                 minotaur.Rage = true;
                                 return newRoom1;
@@ -1380,7 +1387,10 @@ namespace DungeonCrawler
                                     Console.WriteLine($"The monster lumbers into the {oldRoom.Name}, whereupon it catches sight of the unspooled red thread leading left and right.\nThe beast seems to deliberate for a moment, before following it either to where you are or where you dropped it...");
                                     Console.ReadKey(true);
                                     Console.WriteLine("Hoping whatever plan you have works, you nevertheless now know for certain that the monster is aware you're here. And they're mad...");
-                                    oldRoom.ItemList.Remove(redThread);
+                                    foreach (Room r in threadPath)
+                                    {
+                                        r.ItemList.Remove(redThread);
+                                    }
                                     minotaur.Items.Add(redThread);
                                     minotaur.Rage = true;
                                 }
@@ -1423,13 +1433,14 @@ namespace DungeonCrawler
                                         minotaur.Path.Insert(0, oldRoom);
                                         Console.WriteLine("The monster is about to turn back when it notices something. You feel your pulse thumping in double time as you realise you left the double doors unlocked and slightly ajar! Now the beast knows you're here...");
                                         Console.ReadKey(true);
-                                        minotaur.Suspicious = true;
+                                        minotaur.Rage = true;
                                         return minotaurStalks(newRoom1, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
                                     }
                                     else
                                     {
-                                        Console.WriteLine("You hear the monster growl before the double doors close shut and are once again locked. The beast heads back the way it came...");
+                                        Console.WriteLine("The monster is about to turn back when it notices something. You hear the monster growl before the double doors close shut and are once again locked. You sense it's gaze scan the hallway, it's suspicion made palpable by its disquieting stare. Then, abruptly, the terrifying beast heads back the way it came...");
                                         Console.ReadKey(true);
+                                        minotaur.Suspicious = true;
                                         circleDoor.Attribute = true;
                                         circleDoor.SpecificAttribute = "locked";
                                         return newRoom1;
@@ -1660,6 +1671,9 @@ namespace DungeonCrawler
             bool escapedRoom1 = false;
             bool escapedThroughDoor = true;
             bool fieryEscape = false;
+            Stopwatch aq = new Stopwatch();
+            long minotaurdoesnothing = 9999;
+            bool justGrazing = true;
             while (!escapedRoom1)
             {
                 for (int i = room.ItemList.Count - 1; i >= 0; i--)
@@ -1686,8 +1700,8 @@ namespace DungeonCrawler
                     {
                         ///when player discards rusty chains they may appear more than once. 
                         ///fungshui() is present to preempt that and prevent duplicates.
-
-                        room.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                        
+                        room.Investigate(aq, minotaurdoesnothing, justGrazing, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                         b++;
                     }
                     else if (reply1 == 3)
@@ -2225,6 +2239,7 @@ namespace DungeonCrawler
                 fireClock.Start();
                 long fireTimeLapsed = 0;
                 bool visitedCorridor = false;
+                bool showFireMessage = true;
                 while (!victorious)
                 {
                     
@@ -2298,6 +2313,10 @@ namespace DungeonCrawler
                             stairwayToLower.Description = "The steep stone steps, alighted by Merigold's spell, spiral down into the unknown. You still might want to think twice before navigating this slippery and hazardous passage.";
                         }
                         visitedRoom = true;
+                        corridor.ItemList.Add(garment);
+                        corridor.ItemList.Add(rustyChains);
+                        corridor.ItemList.Add(bowlFragments);
+                        corridor.ItemList.Add(looseNail);
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item>{ bobbyPins});
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto});
@@ -2449,8 +2468,11 @@ namespace DungeonCrawler
                             {
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
-
-                                Room newRoom = corridor.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b1, player1, yourRustyChains, stickyItems);
+                                corridor.ItemList.Remove(garment);
+                                corridor.ItemList.Remove(rustyChains);
+                                corridor.ItemList.Remove(bowlFragments);
+                                corridor.ItemList.Remove(looseNail);
+                                Room newRoom = corridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b1, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != corridor.Name)
                                 {
 
@@ -2472,7 +2494,10 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                
+                                corridor.ItemList.Remove(garment);
+                                corridor.ItemList.Remove(rustyChains);
+                                corridor.ItemList.Remove(bowlFragments);
+                                corridor.ItemList.Remove(looseNail);
                                 success = player1.UseItemOutsideCombat(corridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                                 fireProgress = FireProgress(fireProgress, player1, corridor);
                                 if (fireProgress > 999)
@@ -2607,7 +2632,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = room.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = room.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != room.Name)
                                 {
 
@@ -2697,7 +2722,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = oubliette.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = oubliette.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != oubliette.Name)
                                 {
 
@@ -2803,6 +2828,10 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
+                        antechamber.ItemList.Add(clunkySabaton);
+                        antechamber.ItemList.Add(breastplate);
+                        antechamber.ItemList.Add(helmet);
+                        antechamber.ItemList.Add(bracers);
                         if (!usesDictionaryItemFeature.ContainsKey(circleDoorKey))
                         {
                             usesDictionaryItemFeature.Add(circleDoorKey, new List<Feature> { circleDoor });
@@ -2938,6 +2967,7 @@ namespace DungeonCrawler
                                 player1.SearchPack(antechamber.ItemList, newRoom1, threadPath);
                                 a++;
                                 fireProgress = FireProgress(fireProgress, player1, antechamber);
+                                antechamber.FirstVisit = false;
                                 if (fireProgress > 999)
                                 {
                                     return;
@@ -2947,8 +2977,12 @@ namespace DungeonCrawler
                             {
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
-
-                                Room newRoom = antechamber.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                antechamber.ItemList.Remove(clunkySabaton);
+                                antechamber.ItemList.Remove(breastplate);
+                                antechamber.ItemList.Remove(helmet);
+                                antechamber.ItemList.Remove(bracers);
+                                Room newRoom = antechamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                antechamber.FirstVisit = false;
                                 if (newRoom.Name != antechamber.Name)
                                 {
 
@@ -2967,7 +3001,10 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                
+                                antechamber.ItemList.Remove(clunkySabaton);
+                                antechamber.ItemList.Remove(breastplate);
+                                antechamber.ItemList.Remove(helmet);
+                                antechamber.ItemList.Remove(bracers);
                                 success = player1.UseItemOutsideCombat(antechamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                                 fireProgress = FireProgress(fireProgress, player1, antechamber);
                                 if (fireProgress > 999)
@@ -3099,7 +3136,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = cellOpposite.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = cellOpposite.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != cellOpposite.Name)
                                 {
 
@@ -5164,7 +5201,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = armoury.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = armoury.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != armoury.Name)
                                 {
 
@@ -5346,7 +5383,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = messHall.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = messHall.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (noteForJanitor.SpecifyAttribute == "read")
                                 {
                                     bucket.ItemList.Add(magManKey);
@@ -5362,11 +5399,13 @@ namespace DungeonCrawler
                                     newRoom1 = newRoom;
                                     continue;
                                 }
-                                minotaurAlertedBy = D6.Roll(D6) * 1000;
-                                sw = new Stopwatch();
-                                justStalked = false;
-                                minotaurAlerted = 0;
-
+                                if (sw.ElapsedMilliseconds < minotaurAlertedBy)
+                                {
+                                    minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                    sw = new Stopwatch();
+                                    justStalked = false;
+                                    minotaurAlerted = 0;
+                                }
                                 b++;
                             }
                             else
@@ -5429,12 +5468,13 @@ namespace DungeonCrawler
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                         ///red herring in room above
                         ///Specific for each room, tailored.
-                        if (player1.FieryEscape && a == 0 && b == 0)
+                        if (player1.FieryEscape && a == 0 && b == 0 && showFireMessage)
                         {
                             Console.WriteLine("From just beyond the double doors you can hear the CurseBreaker's private army scramble and clamour somewhere below, desperately trying to put out the inferno.\nThe fire should hold off the throng of goblins and gnolls and motley assortment of petty villains for a while. But you best not tarry too long.");
                             Console.ReadKey(true);
                             Console.WriteLine("Soon enough they'll be looking for who started it...");
                             Console.ReadKey(true);
+                            showFireMessage = false;
                         }
                         
                         sw.Stop();
@@ -5567,19 +5607,22 @@ namespace DungeonCrawler
                             {
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
-
-                                Room newRoom = westernmostCorridor.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                
+                                Room newRoom = westernmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, null, minotaur);
                                 if (newRoom.Name != westernmostCorridor.Name)
                                 {
-
+                                    
                                     leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
                                     newRoom1 = newRoom;
                                     continue;
                                 }
-                                minotaurAlertedBy = D6.Roll(D6) * 1000;
-                                sw = new Stopwatch();
-                                justStalked = false;
-                                minotaurAlerted = 0;
+                                if (sw.ElapsedMilliseconds < minotaurAlertedBy)
+                                {
+                                    minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                    sw = new Stopwatch();
+                                    justStalked = false;
+                                    minotaurAlerted = 0;
+                                }
 
                                 b++;
                             }
@@ -5784,7 +5827,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = northernmostCorridor.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = northernmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != northernmostCorridor.Name)
                                 {
 
@@ -5792,10 +5835,13 @@ namespace DungeonCrawler
                                     newRoom1 = newRoom;
                                     continue;
                                 }
-                                minotaurAlertedBy = D6.Roll(D6) * 1000;
-                                sw = new Stopwatch();
-                                justStalked = false;
-                                minotaurAlerted = 0;
+                                if (sw.ElapsedMilliseconds < minotaurAlertedBy)
+                                {
+                                    minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                    sw = new Stopwatch();
+                                    justStalked = false;
+                                    minotaurAlerted = 0;
+                                }
 
                                 b++;
                             }
@@ -6006,7 +6052,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = easternmostCorridor.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = easternmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, null, minotaur);
                                 if (newRoom.Name != easternmostCorridor.Name)
                                 {
 
@@ -6014,10 +6060,13 @@ namespace DungeonCrawler
                                     newRoom1 = newRoom;
                                     continue;
                                 }
-                                minotaurAlertedBy = D6.Roll(D6) * 1000;
-                                sw = new Stopwatch();
-                                justStalked = false;
-                                minotaurAlerted = 0;
+                                if (sw.ElapsedMilliseconds < minotaurAlertedBy)
+                                {
+                                    minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                    sw = new Stopwatch();
+                                    justStalked = false;
+                                    minotaurAlerted = 0;
+                                }
 
                                 b++;
                             }
@@ -6232,7 +6281,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = southernmostCorridor.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = southernmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != southernmostCorridor.Name)
                                 {
 
@@ -6240,10 +6289,13 @@ namespace DungeonCrawler
                                     newRoom1 = newRoom;
                                     continue;
                                 }
-                                minotaurAlertedBy = D6.Roll(D6) * 1000;
-                                sw = new Stopwatch();
-                                justStalked = false;
-                                minotaurAlerted = 0;
+                                if (sw.ElapsedMilliseconds < minotaurAlertedBy)
+                                {
+                                    minotaurAlertedBy = D6.Roll(D6) * 1000;
+                                    sw = new Stopwatch();
+                                    justStalked = false;
+                                    minotaurAlerted = 0;
+                                }
 
                                 b++;
                             }
@@ -6383,7 +6435,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = emptyCell.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = emptyCell.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != emptyCell.Name)
                                 {
 
@@ -6458,7 +6510,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = magicalManufactory.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = magicalManufactory.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != magicalManufactory.Name)
                                 {
 
@@ -6539,7 +6591,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = broomCloset.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = broomCloset.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != broomCloset.Name)
                                 {
 
@@ -6609,7 +6661,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = highestParapet.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = highestParapet.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != highestParapet.Name)
                                 {
 
@@ -6677,7 +6729,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = hugeBarracks.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = hugeBarracks.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != hugeBarracks.Name)
                                 {
 
@@ -6746,7 +6798,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = desertIsland.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = desertIsland.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != desertIsland.Name)
                                 {
 
@@ -6815,7 +6867,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = bankVault.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = bankVault.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != bankVault.Name)
                                 {
 
@@ -6884,7 +6936,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = dragonLair.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = dragonLair.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != dragonLair.Name)
                                 {
 
@@ -7020,7 +7072,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = secretChamber.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = secretChamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != secretChamber.Name)
                                 {
 
@@ -7088,7 +7140,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = prehistoricJungle.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = prehistoricJungle.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != prehistoricJungle.Name)
                                 {
 
@@ -7157,7 +7209,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = astralPlanes.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = astralPlanes.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != astralPlanes.Name)
                                 {
 
@@ -7226,7 +7278,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = oceanBottom.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = oceanBottom.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != oceanBottom.Name)
                                 {
 
@@ -7762,7 +7814,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = dungeonChamber.Investigate(threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = dungeonChamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
                                 if (newRoom.Name != dungeonChamber.Name)
                                 {
 

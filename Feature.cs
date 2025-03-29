@@ -984,7 +984,10 @@ namespace DungeonCrawler
                 }
                 catch
                 {
-                    Console.WriteLine("You open the door but to your surprise, you find nothing the other side but a bare brick wall...");
+                    if (message)
+                    {
+                        Console.WriteLine("You open the door but to your surprise, you find nothing the other side but a bare brick wall...");
+                    }
                     return room;
                 }
                                
