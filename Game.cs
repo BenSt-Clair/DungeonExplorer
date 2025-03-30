@@ -609,7 +609,7 @@ namespace DungeonCrawler
             Door magManDoor = new Door("rosewood door");
             List<Item> messHallDoorItems = new List<Item> { };
             Door messHallDoor = new Door("rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", messHallDoorItems, null, "You slip through the door and into the next room...");
-            Door broomClosetDoor = new Door("rosewood door");
+            Door broomClosetDoor = new Door("rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", null);
             
 
             Item soot = new Item("soot", "It's black. It's burned... Yep, that's soot.", false, "unsmeared", 0, ": ");
@@ -700,6 +700,29 @@ namespace DungeonCrawler
             List<Feature> messHallFeatures = new List<Feature> { messHallDoor, bench, diningTable, bench, diningTable, diningTable1, bench, bench, diningTable};
             ///The above is for letting the player know that they can combine the bobby pin and the stiletto and that they can use the soot or warpaint to form a disguise
             ///
+            /// Secret Chamber Items and features
+            Feature prometheus = new Feature("disturbing statue", "Even up close and in better light this statue would be unsettling. You wonder what on earth it could mean, and why anyone would wish to procure it, though you don't ponder too long on why the ghastly thing was stowed away out of sight. Amongst the eclectic items here it is the most prominent in its sinister aspect.", false, "unshattered");
+            Feature plaquePrometheus = new Feature("plaque", "At the base of the statue, it reads, \n\n\t'Dedicated to the ancient God who brought fire unto man. Punished eternally for his gift, his foresight and the succour he provided'...\n\nScratched in a spidery scrawl underneath, someone clearly saw fit to add their own addendum: 'What Justice is there from gods? From nature? But that which is created by force'...", false, "unread");
+            Feature portrait = new Feature("diabolic portrait", "The description upon the frame tells of the subject's name and deed; 'Azazel; who gifted war to humanity'\n\n\tYou're about to pull away when you notice someone has etched a message upon the frame. As your fingers trace it, helping you decipher the letters in the dark, you sense its acerbic tone; 'A generous gift for those that grasp it - The source for infinite revenues for sellswords, mercenaries and adventurers alike'...", false, "unexamined");
+            Feature mosaic2 = new Feature("strange mosaic", "You glance the mosaic's way, its lustrous tiles are constantly flipping and shuffling like cards in the dextrous hands of some invisible dealer. The magical image they form is ever shifting. They seem to react to your presence.", false, "unstudied");
+            Feature northWall = new Feature("wall", "It's just a bare wall. You can search all you want but there are no secret passages to be found...", false, "unremarkable");
+            Feature southWall = new Feature("wall", "It's just a bare wall. There will never be a door or window here no matter how hard you search...", false, "unremarkable");
+            Feature eastWall = new Feature("wall", "It's just a bare wall. No opening, no way through, not even a single loose brick...", false, "unremarkable");
+            Feature westWall = new Feature("wall", "It's just a bare wall. There's an awful lot of wall here and its pretty darn solid...", false, "unremarkable");
+            Item crystalBall = new Item("crystal ball", "shadows lurk and shift inside like vapours whisked by the eddies of time. The misty glass ball, by its very mystical aspect, promises and invites your gaze to settle on what once was, what is transpired, and what may yet come to pass...", false, "unexamined");
+            Item bookSC1 = new Item("Majesty of the Eldritch Fey", "A self proclaimed traveller to the Faerie Kingdoms recounts their experiences in this strange tome...", false, "unread");
+            Item bookSC2 = new Item("Topics Infernal", "An illustrated rendition of the nine circles of Hell and the infernal city of Dis lay within.", false, "unread");
+            Item bookSC3 = new Item("Paradise Lost", "The apotheosis of all tales that tell of pride, rebellion and a fall from grace.", false, "unread");
+            Item jar = new Item("assorted jars", "They contain all sorts of ingredients that sorcerers presumably everywhere need, from pig trotters, to chiropteric (that means bat-like) wings.", false);
+            Item brassTrinket = new Item("wizardly gizmo", "A whirling artefact of brass cogs and spinning gyroscopes. No matter how long you study it, you cannot divine its purpose...");
+            Item copperTrinket = new Item("sorcerous gadget", "It's a copper sphere with dials and intricate tiny levers. You put it down before your fumbling hands cause it to... uh, do whatever it is it's designed to do.");
+            List<Item> bookcaseSCItems = new List<Item> {bookSC2, bookSC1, bookSC3 };
+            Feature bookcaseSC = new Feature("bookcase", "Judging from the grain and fine burnished finish, this bookcase is elegantly crafted rosewood and feels warm to the touch even within this chilly room. It is replete with books.", false, "unshattered", bookcaseSCItems);
+
+            List<Item> secretChamberItems = new List<Item> { crystalBall, jar, brassTrinket, copperTrinket};
+            List<Feature> secretChamberFeatures = new List<Feature> { holeInCeiling, northWall, prometheus, plaquePrometheus, westWall, bookcaseSC, southWall, portrait, mosaic2, eastWall };
+
+            /// 
             /// Broom Closet Items and features
             
             List<Item> bucketItems = new List<Item> ();
@@ -777,7 +800,7 @@ namespace DungeonCrawler
             Room desertIsland = new Room("desert island", "~make friends with a coconut named 'Wilson'~", cell2Inventory, cell2features);
             Room bankVault = new Room("bank vault", "~you die the richest man in the world~", cell2Inventory, cell2features);
             Room dragonLair = new Room("dragon's lair", "~golden dragon burned to crisp or answer riddle to return~", cell2Inventory, cell2features);
-            Room secretChamber = new Room("secret chamber", "~prometheus statue, Azazel, Topics Infernal, mosaic asking for love, jars of gory hag-related items, 4th wall, adore, cherish, admire, etc~", cell2Inventory, cell2features);
+            Room secretChamber = new Room("secret chamber", "You clamber into an eerie chamber of disquieting shapes imposed upon velvety darkness; a dusky landscape of sinister contours and unknown threats alleviated only slightly from the faint moon-like glow of the strange braziers below. As your eyes adjust to your new surroundings, and you can begin to make out the statues and artefacts within, you feel a cold tot of anxiety tie knots in your stomach as you realise the secret chamber has no doors or windows. Instead, as you'll come to realise, you have stumbled upon a glimpse through a keyhole into the mind of the CurseBreaker. One no one was ever meant to see...\nFacing north is some kind of statue, or perhaps a shrine. Unlit candles are arranged beneath a marble figure. Normally they'd cast it in a fiery glow, but instead the braziers' light through the hole you climbed through toss angular and tortured shadows over the chiselled face of a man crying out in anguish for all eternity. Chained to a rock, an eagle eviscerates and devours his innards as his form, frozen in stone, screams silent screams. A plaque lays at its base, while you can just detect misty jars glinting to its left. \t\nTurning your gaze westward, and squinting your eyes, you can distinguish the shape of a bookcase from within the web of shadows. \t\n To the south you find a portrait hung upon the wall of a man with chiropteric wings. \t\nLooking eastwards you discover something that seems to rattle in the darkness. Investigating further, wading through an agglomeration of arcane baubles and esoteric devices stashed and long forgotten, you find the source of the ominous rattling is a mosaic. It's tiles flip and shuffle like playing cards in the dextrous hands of an invisible dealer. They finally settle on the image of a non-descript face, gazing down upon you...\t\t", secretChamberItems, secretChamberFeatures);
             Room prehistoricJungle = new Room("prehistoric jungle", "~dinosaurs chase you~", cell2Inventory, cell2features);
             Room astralPlanes = new Room("astral planes", "~zero g!~", cell2Inventory, cell2features);
             Room oceanBottom = new Room("ocean bottom", "~under da sea!~", cell2Inventory, cell2features );
