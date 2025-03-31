@@ -53,6 +53,11 @@ namespace DungeonCrawler
                 item.Attribute= true;
                 item.SpecifyAttribute = "read";
             }
+            else if (Name == "note for janitor")
+            {
+                Attribute = true;
+                SpecifyAttribute = "read";
+            }
             Console.WriteLine(item.Description);
             if (Name == "Majesty of the Eldritch Fey")
             {
@@ -671,6 +676,7 @@ namespace DungeonCrawler
                         if (weapon == null)//if item is not a weapon
                         {
                             StudyItem(item);
+                            
                             if (range == 3 || range == 4 || range == 6)
                             {
                                 Console.WriteLine($"\nWould you now like to:\n [1]study the {Name} again \n[2]stash it upon your person \n[3]place it back where you found it?");

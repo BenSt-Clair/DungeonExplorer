@@ -606,7 +606,7 @@ namespace DungeonCrawler
             Door armouryDoor = new Door("RmorRee door", "Its a heavyset door studded with iron bolts and a thoroughly unwelcoming aspect.", false, "unlocked", null, null, "The door swings open with a heave and opens into the next room...");
             Door circleDoor = new Door("double doors", "An ornate and set of vast double doors with brass locks and filigreed handles. You reckon something as large as a troll could fit through that door...", true, "locked", null, null, "You open one of the doors open just a fraction and slip your way through...");
             Door emptyCellDoor = new Door("far door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in. You notice the lock has scratches made from the inside. You surmise someone has attempted picking the lock, but unless they had something more than just a bobby pin, it's doubtful they succeeded.", true, "locked", null, null);
-            Door magManDoor = new Door("rosewood door");
+            Door magManDoor = new Door("rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", true, "locked", null, null);
             List<Item> messHallDoorItems = new List<Item> { };
             Door messHallDoor = new Door("rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", messHallDoorItems, null, "You slip through the door and into the next room...");
             Door broomClosetDoor = new Door("rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", null);
@@ -685,7 +685,7 @@ namespace DungeonCrawler
             List<Feature> emptyCellFeatures = new List<Feature> { leftbrazier, emptyCellDoor, rightbrazier, otherBookcase};
             ///
             ///mess hall features and items
-            Item messhallBook1 = new Item("Grimhook's Handy How-To on Thievin' and 'stounding Skullduggery", "A rather handy guide to the illicit - *ahem*, excuse me - to the skilled art of pickpocketing, conning, disguises and lockpicking.", false, "unread");
+            Item messhallBook1 = new Item("The Rogue's Pocketbook", "A rather handy guide to the illicit - *ahem*, excuse me - to the skilled art of pickpocketing, conning, disguises and lockpicking.", false, "unread");
             Item noteForJanitor = new Item("note for janitor", "Found nailed to the pantry door, the note is evidently not recently penned, but has rather, judging from the food stains and soggy texture, been up upon this door for sometime.\n There are notches hewn out of the door, as though the goblins and mercenaries had used it for target practice. \nIt reads, \n\n\tDearest Mungo, I must say that your inability to keep track of the items pertaining to your duties as custodian of my home, is becoming vexing. Keys are quite expensive to duplicate and i simply can't be doing it every time you lose one of them! I've half a mind to just build another golem and have that do the cleaning, save for the fact that my golems have yet to master the subtle difference between opening doors and crashing through the walls next to them. While I work on instructing them of one or two of the finer points of... manoeuvring, shall we say, through  polite society, perhaps you might be so kind as to not lose any more of my keys. The copper ones... [the letter trails off into a smudged scrawl blotted out by food stains]", false, "unread");
             Item chickenBone = new Item("chicken bone", "They scatter the cobbled floor between benches. This one in particular has been well gnawed...");
             Item plate = new Item("plate", "Some shattered into pieces, others merely chipped a lot, they litter the floor. It looks like they were used as missiles during a riotous brawl.");
@@ -733,7 +733,7 @@ namespace DungeonCrawler
             Item dusters = new Item("feather duster", "You wonder if your enemies are ticklish... No, nevermind...");
             Feature shelves = new Feature("shelf", "It's jampacked with exciting janitorial stuff. Seems the mercenaries weren't too bothered about ransacking any of this miscellanea...", false, "unshattered");
             List<Item> broomClosetItems = new List<Item> {dusters, dustpans, brooms, mops };
-            List<Feature> broomClosetFeatures = new List<Feature> { shelves, shelves, shelves, bucket};
+            List<Feature> broomClosetFeatures = new List<Feature> { broomClosetDoor, shelves, shelves, shelves, bucket};
             ///DungeonChamber Items and features
             Item femur = new Item("femur", "Upon closer inspection you find teeth marks denting the bone's length...", false);
             Item jawBone = new Item("jaw bone", "This bone is of disquietingly human origin - and is warm...", false);
@@ -2398,8 +2398,8 @@ namespace DungeonCrawler
                                         return;
                                     }
                                     leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-                                    continue;
-                                }
+                                if (newRoom1 != corridor) { continue; }
+                            }
                             }
                             else if (minotaur.Location == corridor)
                             {
@@ -2606,8 +2606,8 @@ namespace DungeonCrawler
                                         return;
                                     }
                                     leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-                                    continue;
-                                }
+                                if (newRoom1 != room) { continue; }
+                            }
                             }
                             else if (minotaur.Location == room)
                             {
@@ -2907,8 +2907,8 @@ namespace DungeonCrawler
                                         return;
                                     }
                                     leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-                                    continue;
-                                }
+                                if (newRoom1 != antechamber) { continue; }
+                            }
                             }
                             else if (minotaur.Location == antechamber)
                             {
@@ -3088,37 +3088,10 @@ namespace DungeonCrawler
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (minotaur.Stamina > 0)
                         {
-                            if (!minotaur.MinotaurReturning(cellOpposite, redThread, musicBox, threadPath))
+                        if (!minotaur.MinotaurReturning(cellOpposite, redThread, musicBox, threadPath))
+                        {
+                            if (minotaur.Location == cellOpposite)
                             {
-                                if (minotaur.Location == cellOpposite)
-                                {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, cellOpposite, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
-                                    {
-                                        minotaurKafuffle.WonFight(cellOpposite);
-                                    }
-                                    else
-                                    {
-                                        return;
-                                    }
-                                }
-                                else if (minotaurAlerted > minotaurAlertedBy)
-                                {
-                                    justStalked = true;
-                                    newRoom1 = minotaurStalks(cellOpposite, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
-                                    if (newRoom1 == oceanBottom)
-                                    {
-                                        return;
-                                    }
-                                    leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-                                    continue;
-                                }
-                            }
-                            else if (minotaur.Location == cellOpposite)
-                            {
-                                Console.WriteLine("The hulking monster at last locks eyes with you!");
-                                Console.ReadKey(true);
-                                Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
-                                Console.ReadKey(true);
                                 if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, cellOpposite, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(cellOpposite);
@@ -3128,19 +3101,46 @@ namespace DungeonCrawler
                                     return;
                                 }
                             }
-                            else if (minotaur.Path[1] == cellOpposite)
+                            else if (minotaurAlerted > minotaurAlertedBy)
                             {
-                                if (minotaur.Location.ItemList.Contains(musicBox))
+                                justStalked = true;
+                                newRoom1 = minotaurStalks(cellOpposite, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
+                                if (newRoom1 == oceanBottom)
                                 {
-                                    Console.WriteLine($"You tip-toe as softly as you can while the minotaur is distracted in the {minotaur.Location.Name} by the music box...");
-                                    Console.ReadKey(true);
+                                    return;
                                 }
-                                else
-                                {
-                                    Console.WriteLine($"Up and down the {newRoom1.Name} braziers quiver as the monster approaches!");
-                                    Console.ReadKey(true);
-                                }
+                                leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                if (newRoom1 != cellOpposite) { continue; }
                             }
+                        }
+                        else if (minotaur.Location == cellOpposite)
+                        {
+                            Console.WriteLine("The hulking monster at last locks eyes with you!");
+                            Console.ReadKey(true);
+                            Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
+                            Console.ReadKey(true);
+                            if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, cellOpposite, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                            {
+                                minotaurKafuffle.WonFight(cellOpposite);
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+                        else if (minotaur.Path[1] == cellOpposite)
+                        {
+                            if (minotaur.Location.ItemList.Contains(musicBox))
+                            {
+                                Console.WriteLine($"You tip-toe as softly as you can while the minotaur is distracted in the {minotaur.Location.Name} by the music box...");
+                                Console.ReadKey(true);
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Up and down the {newRoom1.Name} braziers quiver as the monster approaches!");
+                                Console.ReadKey(true);
+                            }
+                        }
                         }
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -3248,8 +3248,8 @@ namespace DungeonCrawler
                                         return;
                                     }
                                     leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-                                    continue;
-                                }
+                                if (newRoom1 != armoury) { continue; }
+                            }
                             }
                             else if (minotaur.Location == armoury)
                             {
@@ -5321,7 +5321,7 @@ namespace DungeonCrawler
                                         return;
                                     }
                                     leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-                                    continue;
+                                    if (newRoom1 != messHall) { continue; }
                                 }
                             }
                             else if (minotaur.Location == messHall)
@@ -5546,8 +5546,8 @@ namespace DungeonCrawler
                                     }
                                     leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                     westernmostCorridor.FirstVisit = false;
-                                    continue;
-                                }
+                                if (newRoom1 != westernmostCorridor) { continue; }
+                            }
                             }
                             else if (minotaur.Location == westernmostCorridor)
                             {
@@ -5766,8 +5766,8 @@ namespace DungeonCrawler
                                         return;
                                     }
                                     leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-                                    continue;
-                                }
+                                if (newRoom1 != northernmostCorridor) { continue; }
+                            }
                             }
                             else if (minotaur.Location == northernmostCorridor)
                             {
@@ -5983,8 +5983,8 @@ namespace DungeonCrawler
                                         return;
                                     }
                                     leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-                                    continue;
-                                }
+                                if (newRoom1 != easternmostCorridor) { continue; }
+                            }
                             }
                             else if (minotaur.Location == easternmostCorridor)
                             {
@@ -6210,8 +6210,8 @@ namespace DungeonCrawler
                                         return;
                                     }
                                     leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-                                    continue;
-                                }
+                                if (newRoom1 != southernmostCorridor) { continue; }
+                            }
                             }
                             else if (minotaur.Location == southernmostCorridor)
                             {
@@ -6409,8 +6409,8 @@ namespace DungeonCrawler
                                         return;
                                     }
                                     leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-                                    continue;
-                                }
+                                if (newRoom1 != emptyCell) { continue; }
+                            }
                             }
                             else if (minotaur.Location == emptyCell)
                             {
@@ -7049,8 +7049,8 @@ namespace DungeonCrawler
                                         return;
                                     }
                                     leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-                                    continue;
-                                }
+                                if (newRoom1 != secretChamber) { continue; }
+                            }
                             }
                             else if (minotaur.Location == secretChamber)
                             {
