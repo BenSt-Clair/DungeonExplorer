@@ -288,7 +288,7 @@ namespace DungeonCrawler
                 }
             }
         }
-        public int LoopParle(Dictionary<string, string> choice_answer, List<string> choices1, string description, string parlance, int y1)
+        public int LoopParle(Dictionary<string, string> choice_answer, List<string> choices1, string description, string parlance, int y1, Player player = null)
         {
             Console.WriteLine($"{description}\n\t{parlance}\nHow will you respond?");
 
@@ -328,12 +328,36 @@ namespace DungeonCrawler
                     else if (answer1 == y)
                     {
                         Console.WriteLine(choice_answer[choices[y]]);
+                        if (player != null)
+                        {
+                            foreach (Item item in player.Inventory)
+                            {
+                                if (choices[answer1].Contains(item.Name))
+                                {
+                                    player.Inventory.Remove(item);
+                                }
+                            }
+
+
+                        }
                         break;
                     }
                     else if (answer1 < y)
                     {
                         y--;
                         Console.WriteLine(choice_answer[choices[answer1]]);
+                        if (player != null) 
+                        {
+                            foreach (Item item in player.Inventory)
+                            {
+                                if (choices[answer1].Contains(item.Name))
+                                {
+                                    player.Inventory.Remove(item);
+                                }
+                            }
+                                               
+                                
+                        }
                         choices.Remove(choices[answer1]);
                         i++;
                         continue;
@@ -341,6 +365,18 @@ namespace DungeonCrawler
                     else
                     {
                         Console.WriteLine(choice_answer[choices[answer1]]);
+                        if (player != null)
+                        {
+                            foreach (Item item in player.Inventory)
+                            {
+                                if (choices[answer1].Contains(item.Name))
+                                {
+                                    player.Inventory.Remove(item);
+                                }
+                            }
+
+
+                        }
                         choices.Remove(choices[answer1]);
                         i++;
                         continue;

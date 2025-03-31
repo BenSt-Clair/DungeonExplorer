@@ -54,6 +54,107 @@ namespace DungeonCrawler
                 item.SpecifyAttribute = "read";
             }
             Console.WriteLine(item.Description);
+            if (Name == "Majesty of the Eldritch Fey")
+            {
+                Console.WriteLine("Would you like to delve deeper into what this book has to say?");
+                Dialogue fey = new Dialogue(item);
+                if (fey.getYesNoResponse())
+                {
+
+                    string description = "Your curiosity piqued, you browse through the books pages...";
+                    List<string> pages = new List<string>
+                    {
+                        "This chapter lays bare the traveller's previous exploits and encounters with magic:" +
+                        "\n\n\tHark, for my name is Caspian. And that be my name upon a thousand strange tongues, " +
+                        "and it be known within hundreds of strange lands. Many moons have passed since my first " +
+                        "voyage of discovery upon the DawnTreader, breaking the horizon of distant shores and exploring" +
+                        " realms far beyond our own. \n\tAnd yet, this latest adventure that i plan will cast my heels " +
+                        "off into still farther and still stranger places. For I find the sum of my experience to be of " +
+                        " discovering worldly kingdoms upon the material planes, and I have yet to embark upon a journey beyond " +
+                        "that. It is known for millennia there lays a world astride ours, like a mirror's reflection it lurks beyond" +
+                        " most mortals grasp. It is a world of fanciful tales and impossible dreams. It is the realm of the Fey." +
+                        "\n\tIt is my ambition to unlock a door into this world, dear reader, and record my findings" +
+                        " for posterity. For if I'm right and the stories are true, then the fair princes and lords of this most" +
+                        " magical of kingdoms will be a place of wonders, where nought exists but revelry and gaiety, " +
+                        "and chalices overflow with elixirs for every possible ailment. What blessed creatures, " +
+                        "so heaped in good fortune and powers, could make this terrific dominion their abode. The fairytales " +
+                        "say creatures of unsurpassed beauty and generosity, fair races who chase each day away with endless" +
+                        " play and delightful conviviality. Are the legends true? My hand even now shakes but to think it. " +
+                        "But before I can know, I must find a passage inside...",
+
+                        "This page details numerous failed and aborted attempts to gain entrance to the Fey Realm until your eye rests on the writer's ultimate success:" +
+                        "\n\n\t...after so long, I've found it! After searching and searching... cursed mirrors that give nought but a taunting glimpse of" +
+                        " the Fey Realms, doors that beckon only children through them, enchanted forests bordering their world but within which mortals cannot help but roam in circles - " +
+                        "Each an alley leading from one frustrating dead-end to the next. Now, finally, I have found a portal through which" +
+                        " i might gain entrance to that enchanted world of which I have received thus far only tantalising glimpses. We are but children of this world " +
+                        "of ours, skirting another: beyond reach it hangs like a forbidden fruit of possibilities beyond our imagining. I have been told so in endless dreams. Dreams sourced, I'm sure now, from the aforementioned mirror. The mirror that i left, but that still lurks within the depths of my mind. " +
+                        "At first they were maddening, these visions; an ecstasy of impossible nightmares both wondrous and haunting. But now I understand that the lords and ladies of the ArchFey weren't tormenting me, they were just helping me this whole time. It's been their way of inviting me, " +
+                        "(me!), to bear witness to their world and court them within the most majestic halls of their kingdom.\n Yes! They chose me... for I am Caspian... this is Caspian's destiny...",
+
+                        "The next few pages are a journal detailing this explorer's foray through the Faerie Realms.\nIt begins as a sober and organised list of dated entries, before tumbling into something more akin to a collage of incoherent thoughts, then a flurry of fever-filled ramblings:" +
+                        "\n\n\tAfter seeing such wonders, after visiting upon my body such titillations and sensations as cannot be dreamt in our mundane world, how can I bear the thought of returning without despair. For I know now that our Faerie friends are so superior to us in every way. " +
+                        "Unlike their cohabitants, the trivial fairies, silly pixies and their sillier warnings, the very words of the eldritch ArchFey weave dreams and visions through my mind like a forest weaves vines through a crumbling wall. Their fragrance sets my heart racing through endless possibilities. Their movements, so seductively fluid and enticing and precise, make me such an oaf by comparison. " +
+                        "Even now I lament for my words do not do their beauty and grace justice. I often question myself: am I truly worthy to be amongst so perfect sleepless creatures, to tread upon their twilight world? At first I thought theirs an innocent realm untouched by the sins that so beleaguer us mortals - yet, with my closed mind (my so inadequate, provincial mind) I'd dared not imagine " +
+                        "the truth: that here there is simply no sin at all. No act that can't be perfected by seeking its apotheosis, no vice that can't be made virtuous by transfiguring it beyond the apex of delight. \nTomorrow I shall try once again to be more like my friends. I mustn't shame them with my presence. My aspiration to make my face as beautiful as theirs has thus far made progress, but success still eludes me. Still the ArchFey titter as I pass. It's " +
+                        "not their fault, of course. I'm only glad my endless shortcomings brings such divine creatures something so delightful as their laughter, instead of the disgust I deserve. For I have yet to become as elegant as they. I shall return tonight to the lakeside whereupon my reflection and desire is clearest. There's still some of my nose I've yet to perfect with the knife they so kindly gifted me...",
+
+                        "The last page's handwriting is fluid, cursive, elegant, a masterpiece in and of itself - and definitely *not* the author's;" +
+                        "\n\nThe lake's a mirror we shatter, " +
+                        "\nWhose splinters are all scattered," +
+                        "\nPiece by piece we make this one's eyes sparkle," +
+                        "\nWith the ravenous hunger of a jackal," +
+                        "\nFor we fed him nought but the melody of our lyre," +
+                        "\nHe feasted upon the fumes of our enchanted fire," +
+                        "\nHe partook of those acts from which he'd never tire," +
+                        "\nThe nightmares born of his heart's desire..."
+
+
+                    };
+                    List<List<string>> playerchoice = new List<List<string>>
+                    {
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+
+                        new List<string>
+                        {
+                            "Turn back to the first page?",
+                            "Close the book?"
+                        }
+                    };
+                    Dictionary<string, string> action = new Dictionary<string, string>
+                    {
+                        {"Turn back to the first page?", "You scour the book for the first entry you came across..."},
+                        { "Turn the page?", "You leaf through a page or two more, before your eyes rest on the next intriguing excerpt." },
+                        {"Close the book?", "You decide to stop reading the literature for now." }
+                    };
+                    int x = 0;
+                    while (x == 0)
+                    {
+                        x = fey.LinearParle(action, pages, playerchoice, description);
+                    }
+                    item.Attribute = true;
+                    item.SpecifyAttribute = "read";
+                }
+                else
+                {
+                    Console.WriteLine("You decide now isn't the time. You close the book.");
+                    Console.ReadKey(true);
+                    return;
+                }
+            }
             if (Name == "The Rogue's Pocketbook")
             {
                 Console.WriteLine("Would you like to delve deeper into what this book has to say?");

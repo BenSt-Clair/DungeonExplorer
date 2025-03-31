@@ -599,7 +599,7 @@ namespace DungeonCrawler
             Feature rosewoodChest = new Feature("rosewood chest", "Its smooth, burnished surface matches the grain and style of the door and like the door its elegance is jarred by the heavy steel lock sealing it. It makes you wonder if this room hadn't always been a dank cell.", true, "locked", inRosewoodChest);
             List<Item> inBookcase = new List<Item> { note };
             Feature bookCase = new Feature("bookcase", "The ostensibly empty bookcase is a little worse for wear. One of it's shelves is lopsided. Another at the bottom has collapsed. Cobwebs span its dusty corners.", true, "searched", inBookcase);
-            Feature holeInCeiling = new Feature("hole in the ceiling", "You gaze from the heap of debris that has buried the creature alive to the hole through the ceiling above. You bet you could climb the heap and enter the room above yours.");
+            Door holeInCeiling = new Door("hole in the ceiling", "You gaze from the heap of debris that has buried the creature alive to the hole through the ceiling above. You bet you could climb the heap and enter the room above yours.", true, "scaled", null, null, "You clamber up the mound of debris and heft yourself through floorboards into a new room...");
             Door stairwayToLower = new Door("dark stairwell", "The steep stone steps descend beyond the light of the braziers and into the unknown murk lurking below. Without some sort of light that can dispel the impenetrable darkness beneath your feet, you might want to think carefully before navigating this slippery and hazardous passage.", false, "unblocked", null, null, "Feeling a knot of dread tighten about your stomach, you make the descent into a shifting web of shadows and silhouettes...", true);
             Door stairwayToUpper = new Door("lit stairway", "The wide flight of stone steps slowly curves around, leading to somewhere unseen but well-lit.", false, "unblocked", null, null, "You embark along the stairs two at a time.");
             Door otherRosewoodDoor = new Door("near door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in.", true, "locked", null, null, "The door creaks ominously as you furtively pace into the next room.");
@@ -704,7 +704,7 @@ namespace DungeonCrawler
             Feature prometheus = new Feature("disturbing statue", "Even up close and in better light this statue would be unsettling. You wonder what on earth it could mean, and why anyone would wish to procure it, though you don't ponder too long on why the ghastly thing was stowed away out of sight. Amongst the eclectic items here it is the most prominent in its sinister aspect.", false, "unshattered");
             Feature plaquePrometheus = new Feature("plaque", "At the base of the statue, it reads, \n\n\t'Dedicated to the ancient God who brought fire unto man. Punished eternally for his gift, his foresight and the succour he provided'...\n\nScratched in a spidery scrawl underneath, someone clearly saw fit to add their own addendum: 'What Justice is there from gods? From nature? But that which is created by force'...", false, "unread");
             Feature portrait = new Feature("diabolic portrait", "The description upon the frame tells of the subject's name and deed; 'Azazel; who gifted war to humanity'\n\n\tYou're about to pull away when you notice someone has etched a message upon the frame. As your fingers trace it, helping you decipher the letters in the dark, you sense its acerbic tone; 'A generous gift for those that grasp it - The source for infinite revenues for sellswords, mercenaries and adventurers alike'...", false, "unexamined");
-            Feature mosaic2 = new Feature("strange mosaic", "You glance the mosaic's way, its lustrous tiles are constantly flipping and shuffling like cards in the dextrous hands of some invisible dealer. The magical image they form is ever shifting. They seem to react to your presence.", false, "unstudied");
+            Door mosaic2 = new Door("strange mosaic", "You glance the mosaic's way, its lustrous tiles are constantly flipping and shuffling like cards in the dextrous hands of some invisible dealer. The magical image they form is ever shifting. They seem to react to your presence.", true, "unexamined", null, new List<Room>());
             Feature northWall = new Feature("wall", "It's just a bare wall. You can search all you want but there are no secret passages to be found...", false, "unremarkable");
             Feature southWall = new Feature("wall", "It's just a bare wall. There will never be a door or window here no matter how hard you search...", false, "unremarkable");
             Feature eastWall = new Feature("wall", "It's just a bare wall. No opening, no way through, not even a single loose brick...", false, "unremarkable");
@@ -712,7 +712,7 @@ namespace DungeonCrawler
             Item crystalBall = new Item("crystal ball", "shadows lurk and shift inside like vapours whisked by the eddies of time. The misty glass ball, by its very mystical aspect, promises and invites your gaze to settle on what once was, what is transpired, and what may yet come to pass...", false, "unexamined");
             Item bookSC1 = new Item("Majesty of the Eldritch Fey", "A self proclaimed traveller to the Faerie Kingdoms recounts their experiences in this strange tome...", false, "unread");
             Item bookSC2 = new Item("Topics Infernal", "An illustrated rendition of the nine circles of Hell and the infernal city of Dis lay within.", false, "unread");
-            Item bookSC3 = new Item("Paradise Lost", "The apotheosis of all tales that tell of pride, rebellion and a fall from grace.", false, "unread");
+            Item bookSC3 = new Item("Paradise Lost", "The apotheosis of all tales that tell of pride, rebellion and a fall from grace. A quote is penned in the margins of the page you opened it at; '...for the mind is itself a place, and can make a heaven out of hell, a hell out of heaven...'", false, "unread");
             Item jar = new Item("assorted jars", "They contain all sorts of ingredients that sorcerers presumably everywhere need, from pig trotters, to chiropteric (that means bat-like) wings.", false);
             Item brassTrinket = new Item("wizardly gizmo", "A whirling artefact of brass cogs and spinning gyroscopes. No matter how long you study it, you cannot divine its purpose...");
             Item copperTrinket = new Item("sorcerous gadget", "It's a copper sphere with dials and intricate tiny levers. You put it down before your fumbling hands cause it to... uh, do whatever it is it's designed to do.");
@@ -827,6 +827,7 @@ namespace DungeonCrawler
             southernmostCorridor.FeatureList = southCorridorFeatures;
             northernmostCorridor.FeatureList = northCorridorFeatures;
 
+            List<Room> holeRooms = new List<Room> {room, secretChamber };
             List<Room> yourCellDoor = new List<Room> {room, corridor };
             List<Room> otherCellDoor = new List<Room> { corridor, cellOpposite };
             List<Room> stairwayUp = new List<Room> { corridor, antechamber};
@@ -842,6 +843,7 @@ namespace DungeonCrawler
             List<Room> magManPassage = new List<Room> {northernmostCorridor, magicalManufactory };
             List<Room> messHallPassage = new List<Room> {easternmostCorridor, messHall };
             List<Room> broomClosetPassage = new List<Room> {northernmostCorridor, broomCloset };
+            List<Room> mosaicPortal = new List<Room> {secretChamber, westernmostCorridor };
             rosewoodDoor.CastDoor().Portal = yourCellDoor;            
             otherRosewoodDoor.CastDoor().Portal = otherCellDoor;            
             stairwayToLower.CastDoor().Portal = stairwellDown;
@@ -856,6 +858,7 @@ namespace DungeonCrawler
             circleDoor.CastDoor().Portal = circleDoorPass;
             broomClosetDoor.CastDoor().Portal = broomClosetPassage;
             messHallDoor.CastDoor().Portal = messHallPassage;
+            holeInCeiling.CastDoor().Portal = holeRooms;
             Test test1 = new Test(room);
             test1.RunForRoom();
 
@@ -1967,21 +1970,22 @@ namespace DungeonCrawler
 
             }
             ///Past this point is the next room 
-            
+
             if (!escapedThroughDoor)
             {
                 Console.WriteLine("Finding yourself in a new room and on a new level of this perplexing (tower?), what will you decide to do next?");
                 Console.ReadKey(true);
-                return;
+
             }
             else if (escapedThroughDoor)
             {
-                if (!rosewoodDoor.Description.Contains("dent")) 
+                if (!rosewoodDoor.Description.Contains("dent"))
                 {
                     rosewoodDoor.Description += " You notice a dent on the other side of the door.";
                 }
                 rosewoodDoor.SpecificAttribute = "unlocked";
                 rosewoodDoor.Attribute = false;
+            }
                 int fireProgress = 0;
                 if (fieryEscape)
                 {
@@ -2253,6 +2257,12 @@ namespace DungeonCrawler
                 true, true, true, true, true, true, true, true, true, true, true, true, true, true, 
                 true, true, true, true};
                 Room newRoom1 = corridor;
+                if (!escapedThroughDoor)
+                {
+                    
+                    newRoom1 = secretChamber;
+                    leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                }
                 bool victorious = false;
                 bool visitedRoom = true;
                 bool visitedArmouryBefore = false;
@@ -2557,6 +2567,9 @@ namespace DungeonCrawler
                     while (!leftWhichRooms[0]) // your cell
                     {
                         visitedRoom = true;
+                    holeInCeiling.Name = "hole in ceiling";
+                        holeInCeiling.Description = "You gaze from the heap of debris that has buried the creature alive to the hole through the ceiling above. You bet you could climb the heap and enter the room above yours.";
+                        holeInCeiling.Passing = "You scramble up the mound of debris, heft yourself up through the hole and into a new room...";
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
@@ -7001,6 +7014,9 @@ namespace DungeonCrawler
                     while (!leftWhichRooms[16])//secret chamber
                     {
                         visitedRoom = true;
+                    holeInCeiling.Name = "hole in floor";
+                        holeInCeiling.Description = "The pale light from the strange braziers of your cell spill through the hole and barely luminate your dark surroundings, like moonbeams cresting a horizon at dusk. It leads to your cell below.";
+                        holeInCeiling.Passing = "You clamber down the hole and into your cell below...";
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
@@ -7095,7 +7111,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = secretChamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems);
+                                Room newRoom = secretChamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mosaicPortal);
                                 if (newRoom.Name != secretChamber.Name)
                                 {
 
@@ -7103,7 +7119,14 @@ namespace DungeonCrawler
                                     newRoom1 = newRoom;
                                     continue;
                                 }
-
+                                if (mosaic2.SpecificAttribute == "unlocked")
+                            {
+                                mosaic2.CastDoor().Name = "ajar mosaic door";
+                                mosaic2.CastDoor().Passing = "You push the strange mosaic and it opens out into an unfamiliar corridor...";
+                                mosaic2.CastDoor().Portal = mosaicPortal;
+                                mosaic2.CastDoor().Attribute = false;
+                                mosaic2.CastDoor().SpecificAttribute = "unlocked";
+                            }
 
                                 b++;
                             }
@@ -7863,19 +7886,11 @@ namespace DungeonCrawler
 
                 }
 
-            }
+            
             
 
 
-            if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems))
-            {
-                trialBattle.WonFight(room);
-                if (tougherBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems))
-                {
-                    tougherBattle.WonFight(circularLanding);
-                    if (toughestBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems)) { tougherBattle.WonFight(highestParapet); }
-                }
-            }
+            
 
             pk = Console.ReadLine();
         }

@@ -45,9 +45,111 @@ namespace DungeonCrawler
         /// investigate feature prints its description to the console.
         /// </summary>
         /// <returns></returns>
-        public void investigateFeature(List<Item> specialItems, Monster minotaur)
+        public void investigateFeature(List<Item> specialItems, Monster minotaur, Player player, List<Room> mosaicPortal)
         {
-            
+            if (Name == "strange mosaic")
+            {
+                Console.WriteLine("The tiles form and reform the image of a face, gazing down upon you. As you are about to inquire something, it speaks, as though in answer to the question that wasn't on your lips...\n\n\t'To fulfil what you desire most from this place, then your quest is easy;\n\tBestow upon me that which I love, steer away from all that makes me uneasy... '\n\nDo you have something in mind to show the mosaic?");
+                Dialogue mosaicPuzzle = new Dialogue(this);
+                if (mosaicPuzzle.getYesNoResponse())
+                {
+                    if (specialItems[6].SpecifyAttribute == "read")
+                    {
+                        Console.WriteLine("The excerpt from that book on cur'sed weapons leaps to mind. It seems you've discovered one of the cursed mosaics - probably the one Merigold said conferred only madness by giving answers to questions you didn't know you wanted answered...");
+                    }
+                    Dice D6 = new Dice(6);
+                    string description = "You ponder the mosaic's riddle for a moment, then look through your backpack for something the mosaic desires...";
+                    string parlance = "";
+                    List<string> choices = new List<string>();
+                    int option = 1;
+                    int y = -1;
+                    foreach (Item item in player.Inventory) 
+                    {
+                        choices.Add($"Gift the mosaic your {item.Name}?");
+                        if (item.Name == "assorted jars")
+                        {
+                            y = option;
+                        }
+                        option++;
+                    }
+                    if (y != -1)
+                    {
+                        if (player.Inventory.Count > 4)
+                        {
+                            string answer = choices[y - 1];
+                            choices.Remove(choices[y - 1]);
+                            choices.Insert(3, answer);
+                            
+                        }
+                        else
+                        {
+                            string answer = choices[y - 1];
+                            choices.Remove(choices[y - 1]);
+                            choices.Insert(0, answer);
+                            
+                        }
+                    }
+                    choices.Add("Step away from the mosaic for now...");
+                    option = choices.Count - 1;
+                    Dictionary<string, string> choice_answers = new Dictionary<string, string>();
+                    List<string> randomResponse = new List<string>
+                    {
+                        "'I accept your gift, given so freely, but while I am grateful, it is not something I can bring myself to love...' ",
+                        "'This gift you clearly wish to make me cherish, yet I'm still not quite comfortable enough to be used as furniture, if you follow my meaning...'",
+                        "'This I accept, but it is not that for which my desire shall return your own...'",
+                        "'Such a gift can so inspire! But what does it sew? Alas, this is no steeple, and so not your desire...'",
+                        "'Is this what I must crave to grant your desire? I think not...'",
+                        "'What is it that must be open to adoration? That'll grant your wish? Alas, 'tis not this...'"
+                    };
+                    foreach (string choice in choices)
+                    {
+                        choice_answers[choice] = randomResponse[D6.Roll(D6) - 1];
+                    }
+                    choice_answers["Gift the mosaic your assorted jars?"] = "You make the mosaic adore a jar. Now all it needs is a little push...";
+                    choice_answers["Gift the mosaic your Topics Infernal?"] = "The mosaic will admire Topics Infernal, but adding swamps to those diabolical pictures scarcely improves them... or your situation.";
+                    choice_answers["Gift the mosaic your Paradise Lost?"] = "You wish the mosaic to share - to lionize characters within the book, that it might give in return. But if it shared both its lion eyes then it'd no longer be able to watch you rack your brains over this puzzle...";
+                    choice_answers["Step away from the mosaic for now..."] = "The mosaic watches you leave impassively...";
+                    if (player.Inventory.Count > 4 && y!=-1)
+                    {
+                        switch (mosaicPuzzle.LoopParle(choice_answers, choices, description, parlance, 3, option))
+                        {
+                            case 3:
+                                this.CastDoor().Name = "ajar mosaic door";
+                                this.CastDoor().Passing = "You push the strange mosaic and it opens out into an unfamiliar corridor...";
+                                this.CastDoor().Portal = mosaicPortal;
+                                this.CastDoor().Attribute = false;
+                                this.CastDoor().SpecificAttribute = "unlocked";
+                                
+                                break;
+                            default:
+                                Console.WriteLine("You step away. Is it just you or does your backpack feel significantly lighter?");
+                                break;
+                        }
+                    }
+                    else if (y!=-1)
+                    {
+                        switch (mosaicPuzzle.LoopParle(choice_answers, choices, description, parlance, 0, option))
+                        {
+                            case 0:
+                                this.CastDoor().Name = "ajar mosaic door";
+                                this.CastDoor().Passing = "You push the strange mosaic and it opens out into an unfamiliar corridor...";
+                                this.CastDoor().Portal = mosaicPortal;
+                                this.CastDoor().Attribute = false;
+                                this.CastDoor().SpecificAttribute = "unlocked";
+                                break;
+                            default:
+                                Console.WriteLine("You step away. Is it just you or does your backpack feel significantly lighter?");
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        mosaicPuzzle.LoopParle(choice_answers, choices, description, parlance, option);
+                        Console.WriteLine("You step away. Is it just you or does your backpack feel significantly lighter?");
+                    }
+                }
+                return;
+            }
             if (Name == "peculiar mosaic")
             {
                 Console.WriteLine("The tiles finally settle and form the image of a vast non-descript face gazing placidly down at you. It's open features almost seems to invite questions from you...\n\tDo you wish to see if you can get a response out of the kaleidoscopic mosaic?");
@@ -777,7 +879,7 @@ namespace DungeonCrawler
                     {
                         Console.WriteLine($"{Description} \nTry as hard as you might, you find no items hidden about the {Name}. It remains {SpecificAttribute}.");
                     }
-                    if ((Name.Contains("door") || Name.Contains("stair") || Name.Contains("corner")) && (SpecificAttribute == "unlocked" || SpecificAttribute == "unblocked") && !Description.Contains("smouldering"))
+                    if ((Name.Contains("door") || Name.Contains("stair") || Name.Contains("corner") || Name.Contains("hole")) && (SpecificAttribute == "unlocked" || SpecificAttribute == "unblocked" || SpecificAttribute == "scaled") && !Description.Contains("smouldering"))
                     {
                         List<Room> upOrDown = this.CastDoor().Portal;
                         if (Name.Contains("door") || Name.Contains("portal"))
