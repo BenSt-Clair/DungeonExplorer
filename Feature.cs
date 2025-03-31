@@ -111,24 +111,7 @@ namespace DungeonCrawler
                     choice_answers["Step away from the mosaic for now..."] = "The mosaic watches you leave impassively...";
                     if (player.Inventory.Count > 4 && y!=-1)
                     {
-                        switch (mosaicPuzzle.LoopParle(choice_answers, choices, description, parlance, 3, option))
-                        {
-                            case 3:
-                                this.CastDoor().Name = "ajar mosaic door";
-                                this.CastDoor().Passing = "You push the strange mosaic and it opens out into an unfamiliar corridor...";
-                                this.CastDoor().Portal = mosaicPortal;
-                                this.CastDoor().Attribute = false;
-                                this.CastDoor().SpecificAttribute = "unlocked";
-                                
-                                break;
-                            default:
-                                Console.WriteLine("You step away. Is it just you or does your backpack feel significantly lighter?");
-                                break;
-                        }
-                    }
-                    else if (y!=-1)
-                    {
-                        switch (mosaicPuzzle.LoopParle(choice_answers, choices, description, parlance, 0, option))
+                        switch (mosaicPuzzle.LoopParle(choice_answers, choices, description, parlance, 3, option, player))
                         {
                             case 0:
                                 this.CastDoor().Name = "ajar mosaic door";
@@ -136,7 +119,45 @@ namespace DungeonCrawler
                                 this.CastDoor().Portal = mosaicPortal;
                                 this.CastDoor().Attribute = false;
                                 this.CastDoor().SpecificAttribute = "unlocked";
+                                return;
+                            case 1:
+                                this.CastDoor().Name = "ajar mosaic door";
+                                this.CastDoor().Passing = "You push the strange mosaic and it opens out into an unfamiliar corridor...";
+                                this.CastDoor().Portal = mosaicPortal;
+                                this.CastDoor().Attribute = false;
+                                this.CastDoor().SpecificAttribute = "unlocked";
+                                return;
+                            case 2:
+                                this.CastDoor().Name = "ajar mosaic door";
+                                this.CastDoor().Passing = "You push the strange mosaic and it opens out into an unfamiliar corridor...";
+                                this.CastDoor().Portal = mosaicPortal;
+                                this.CastDoor().Attribute = false;
+                                this.CastDoor().SpecificAttribute = "unlocked";
+                                return;
+                            case 3:
+                                this.CastDoor().Name = "ajar mosaic door";
+                                this.CastDoor().Passing = "You push the strange mosaic and it opens out into an unfamiliar corridor...";
+                                this.CastDoor().Portal = mosaicPortal;
+                                this.CastDoor().Attribute = false;
+                                this.CastDoor().SpecificAttribute = "unlocked";
+                                
+                                return;
+                            default:
+                                Console.WriteLine("You step away. Is it just you or does your backpack feel significantly lighter?");
                                 break;
+                        }
+                    }
+                    else if (y!=-1)
+                    {
+                        switch (mosaicPuzzle.LoopParle(choice_answers, choices, description, parlance, 0, option, player))
+                        {
+                            case 0:
+                                this.CastDoor().Name = "ajar mosaic door";
+                                this.CastDoor().Passing = "You push the strange mosaic and it opens out into an unfamiliar corridor...";
+                                this.CastDoor().Portal = mosaicPortal;
+                                this.CastDoor().Attribute = false;
+                                this.CastDoor().SpecificAttribute = "unlocked";
+                                return;
                             default:
                                 Console.WriteLine("You step away. Is it just you or does your backpack feel significantly lighter?");
                                 break;
@@ -144,7 +165,7 @@ namespace DungeonCrawler
                     }
                     else
                     {
-                        mosaicPuzzle.LoopParle(choice_answers, choices, description, parlance, option);
+                        mosaicPuzzle.LoopParle(choice_answers, choices, description, parlance, option, player);
                         Console.WriteLine("You step away. Is it just you or does your backpack feel significantly lighter?");
                     }
                 }

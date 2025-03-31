@@ -599,7 +599,7 @@ namespace DungeonCrawler
             Feature rosewoodChest = new Feature("rosewood chest", "Its smooth, burnished surface matches the grain and style of the door and like the door its elegance is jarred by the heavy steel lock sealing it. It makes you wonder if this room hadn't always been a dank cell.", true, "locked", inRosewoodChest);
             List<Item> inBookcase = new List<Item> { note };
             Feature bookCase = new Feature("bookcase", "The ostensibly empty bookcase is a little worse for wear. One of it's shelves is lopsided. Another at the bottom has collapsed. Cobwebs span its dusty corners.", true, "searched", inBookcase);
-            Door holeInCeiling = new Door("hole in the ceiling", "You gaze from the heap of debris that has buried the creature alive to the hole through the ceiling above. You bet you could climb the heap and enter the room above yours.", true, "scaled", null, null, "You clamber up the mound of debris and heft yourself through floorboards into a new room...");
+            Door holeInCeiling = new Door("hole in the ceiling", "You gaze from the heap of debris that has buried the creature alive to the hole through the ceiling above. You bet you could climb the heap and enter the room above yours.", false, "unblocked", null, null, "You clamber up the mound of debris and heft yourself through floorboards into a new room...");
             Door stairwayToLower = new Door("dark stairwell", "The steep stone steps descend beyond the light of the braziers and into the unknown murk lurking below. Without some sort of light that can dispel the impenetrable darkness beneath your feet, you might want to think carefully before navigating this slippery and hazardous passage.", false, "unblocked", null, null, "Feeling a knot of dread tighten about your stomach, you make the descent into a shifting web of shadows and silhouettes...", true);
             Door stairwayToUpper = new Door("lit stairway", "The wide flight of stone steps slowly curves around, leading to somewhere unseen but well-lit.", false, "unblocked", null, null, "You embark along the stairs two at a time.");
             Door otherRosewoodDoor = new Door("near door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in.", true, "locked", null, null, "The door creaks ominously as you furtively pace into the next room.");
@@ -709,7 +709,7 @@ namespace DungeonCrawler
             Feature southWall = new Feature("wall", "It's just a bare wall. There will never be a door or window here no matter how hard you search...", false, "unremarkable");
             Feature eastWall = new Feature("wall", "It's just a bare wall. No opening, no way through, not even a single loose brick...", false, "unremarkable");
             Feature westWall = new Feature("wall", "It's just a bare wall. There's an awful lot of wall here and its pretty darn solid...", false, "unremarkable");
-            Item crystalBall = new Item("crystal ball", "shadows lurk and shift inside like vapours whisked by the eddies of time. The misty glass ball, by its very mystical aspect, promises and invites your gaze to settle on what once was, what is transpired, and what may yet come to pass...", false, "unexamined");
+            Item crystalBall = new Item("crystal ball", "shadows lurk and shift inside like vapours whisked by the eddies of time. The misty glass ball, by its very mystical aspect, promises and invites your gaze to settle on what once was, what transpires, and what may yet come to pass...", false, "unexamined");
             Item bookSC1 = new Item("Majesty of the Eldritch Fey", "A self proclaimed traveller to the Faerie Kingdoms recounts their experiences in this strange tome...", false, "unread");
             Item bookSC2 = new Item("Topics Infernal", "An illustrated rendition of the nine circles of Hell and the infernal city of Dis lay within.", false, "unread");
             Item bookSC3 = new Item("Paradise Lost", "The apotheosis of all tales that tell of pride, rebellion and a fall from grace. A quote is penned in the margins of the page you opened it at; '...for the mind is itself a place, and can make a heaven out of hell, a hell out of heaven...'", false, "unread");
@@ -2000,7 +2000,7 @@ namespace DungeonCrawler
                     minotaur.Inventory.Remove(magManKey);
                     
                 }
-                else
+                else if (escapedThroughDoor)
                 {
                     Console.WriteLine("With the way ahead clear, what will you do?");                    
                     Console.ReadKey(true);

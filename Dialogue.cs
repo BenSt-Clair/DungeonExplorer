@@ -330,11 +330,11 @@ namespace DungeonCrawler
                         Console.WriteLine(choice_answer[choices[y]]);
                         if (player != null)
                         {
-                            foreach (Item item in player.Inventory)
+                            for (int j = player.Inventory.Count - 1; j >= 0; j--)
                             {
-                                if (choices[answer1].Contains(item.Name))
+                                if (choices[answer1].Contains(player.Inventory[j].Name))
                                 {
-                                    player.Inventory.Remove(item);
+                                    player.Inventory.Remove(player.Inventory[j]);
                                 }
                             }
 
@@ -346,17 +346,17 @@ namespace DungeonCrawler
                     {
                         y--;
                         Console.WriteLine(choice_answer[choices[answer1]]);
-                        if (player != null) 
+                        if (player != null)
                         {
-                            foreach (Item item in player.Inventory)
+                            for (int j = player.Inventory.Count - 1; j >= 0; j--)
                             {
-                                if (choices[answer1].Contains(item.Name))
+                                if (choices[answer1].Contains(player.Inventory[j].Name))
                                 {
-                                    player.Inventory.Remove(item);
+                                    player.Inventory.Remove(player.Inventory[j]);
                                 }
                             }
-                                               
-                                
+
+
                         }
                         choices.Remove(choices[answer1]);
                         i++;
@@ -367,11 +367,11 @@ namespace DungeonCrawler
                         Console.WriteLine(choice_answer[choices[answer1]]);
                         if (player != null)
                         {
-                            foreach (Item item in player.Inventory)
+                            for (int j = player.Inventory.Count - 1; j >= 0; j--)
                             {
-                                if (choices[answer1].Contains(item.Name))
+                                if (choices[answer1].Contains(player.Inventory[j].Name))
                                 {
-                                    player.Inventory.Remove(item);
+                                    player.Inventory.Remove(player.Inventory[j]);
                                 }
                             }
 
@@ -391,7 +391,7 @@ namespace DungeonCrawler
             }
             return y;
         }
-        public int LoopParle(Dictionary<string, string> choice_answer, List<string> choices, string description, string parlance, int y1, int x1)
+        public int LoopParle(Dictionary<string, string> choice_answer, List<string> choices, string description, string parlance, int y1, int x1, Player player = null)
         {
             Console.WriteLine($"{description}\n\t{parlance}\nHow will you respond?");
             int x = x1;
@@ -430,6 +430,18 @@ namespace DungeonCrawler
                     else if (answer1 == y)
                     {
                         Console.WriteLine(choice_answer[choices[y]]);
+                        if (player != null)
+                        {
+                            for (int j = player.Inventory.Count - 1; j >= 0; j--)
+                            {
+                                if (choices[answer1].Contains(player.Inventory[j].Name))
+                                {
+                                    player.Inventory.Remove(player.Inventory[j]);
+                                }
+                            }
+
+
+                        }
                         return y;
                     }
                     else if (answer1 == x)
@@ -442,6 +454,18 @@ namespace DungeonCrawler
                         y--;
                         x--;
                         Console.WriteLine(choice_answer[choices[answer1]]);
+                        if (player != null)
+                        {
+                            for(int j = player.Inventory.Count - 1; j>= 0; j--)
+                            {
+                                if (choices[answer1].Contains(player.Inventory[j].Name))
+                                {
+                                    player.Inventory.Remove(player.Inventory[j]);
+                                }
+                            }
+
+
+                        }
                         choices.Remove(choices[answer1]);
                         i++;
                         continue;
@@ -450,6 +474,18 @@ namespace DungeonCrawler
                     {
                         y--;
                         Console.WriteLine(choice_answer[choices[answer1]]);
+                        if (player != null)
+                        {
+                            for (int j = player.Inventory.Count - 1; j >= 0; j--)
+                            {
+                                if (choices[answer1].Contains(player.Inventory[j].Name))
+                                {
+                                    player.Inventory.Remove(player.Inventory[j]);
+                                }
+                            }
+
+
+                        }
                         choices.Remove(choices[answer1]);
                         i++;
                         continue;
@@ -458,6 +494,18 @@ namespace DungeonCrawler
                     {
                         x--;
                         Console.WriteLine(choice_answer[choices[answer1]]);
+                        if (player != null)
+                        {
+                            for (int j = player.Inventory.Count - 1; j >= 0; j--)
+                            {
+                                if (choices[answer1].Contains(player.Inventory[j].Name))
+                                {
+                                    player.Inventory.Remove(player.Inventory[j]);
+                                }
+                            }
+
+
+                        }
                         choices.Remove(choices[answer1]);
                         i++;
                         continue;
@@ -465,6 +513,18 @@ namespace DungeonCrawler
                     else
                     {
                         Console.WriteLine(choice_answer[choices[answer1]]);
+                        if (player != null)
+                        {
+                            for (int j = player.Inventory.Count - 1; j >= 0; j--)
+                            {
+                                if (choices[answer1].Contains(player.Inventory[j].Name))
+                                {
+                                    player.Inventory.Remove(player.Inventory[j]);
+                                }
+                            }
+
+
+                        }
                         choices.Remove(choices[answer1]);
                         i++;
                         continue;
