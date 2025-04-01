@@ -686,7 +686,7 @@ namespace DungeonCrawler
             ///
             ///mess hall features and items
             Item messhallBook1 = new Item("The Rogue's Pocketbook", "A rather handy guide to the illicit - *ahem*, excuse me - to the skilled art of pickpocketing, conning, disguises and lockpicking.", false, "unread");
-            Item noteForJanitor = new Item("note for janitor", "Found nailed to the pantry door, the note is evidently not recently penned, but has rather, judging from the food stains and soggy texture, been up upon this door for sometime.\n There are notches hewn out of the door, as though the goblins and mercenaries had used it for target practice. \nIt reads, \n\n\tDearest Mungo, I must say that your inability to keep track of the items pertaining to your duties as custodian of my home, is becoming vexing. Keys are quite expensive to duplicate and i simply can't be doing it every time you lose one of them! I've half a mind to just build another golem and have that do the cleaning, save for the fact that my golems have yet to master the subtle difference between opening doors and crashing through the walls next to them. While I work on instructing them of one or two of the finer points of... manoeuvring, shall we say, through  polite society, perhaps you might be so kind as to not lose any more of my keys. The copper ones... [the letter trails off into a smudged scrawl blotted out by food stains]", false, "unread");
+            Item noteForJanitor = new Item("note for janitor", "Found nailed to the pantry door, the note is evidently not recently penned, but has rather, judging from the food stains and soggy texture, been up upon this door for sometime.\n There are notches hewn out of the door, as though the goblins and mercenaries had used it for target practice. \nIt reads, \n\n\tDearest Mungo, I must say that your inability to keep track of the items pertaining to your duties as custodian of my home, is becoming vexing. Keys are quite expensive to duplicate and i simply can't be doing it every time you lose one of them! I've half a mind to just build another golem and have that do the cleaning, save for the fact that my golems have yet to master the subtle difference between opening doors and crashing through the walls next to them. While I work on instructing them of one or two of the finer points of... shall we say, manoeuvring through  polite society, perhaps you might be so kind as to not lose any more of my keys. \nP.S. And FYI I've enchanted this note so even *you* can't accidentally-on-purpose lose it... [the letter trails off into a smudged scrawl blotted out by food stains]", false, "unread");
             Item chickenBone = new Item("chicken bone", "They scatter the cobbled floor between benches. This one in particular has been well gnawed...");
             Item plate = new Item("plate", "Some shattered into pieces, others merely chipped a lot, they litter the floor. It looks like they were used as missiles during a riotous brawl.");
             Item fork = new Item("fork", "A utensil that hasn't seen much use amongst the motley recruits of the CurseBreaker's private army.");
@@ -695,13 +695,17 @@ namespace DungeonCrawler
             Feature diningTable = new Feature("table", "Looking around you can see some tables with the telltale markings of hand roulette, others with muddy bootprints. One has been smashed to smithereens.", false, "unshattered... mostly.");
             List<Item> dinnerTableItems = new List<Item> {knife, plate, messhallBook1 };
             Feature diningTable1 = new Feature("table", "Over in the far corner, this table seems to have been used by one of the more studious mercenaries of the CurseBreaker's army. A book of some description is sprawled open upon its surface. By the look of its dogeared pages, it's been well read...", false, "unshattered", dinnerTableItems);
-            List<Item> messHallItems = new List<Item> {chickenBone, plate, fork, plate, knife, chickenBone, fork };
+            Item knifeMG = new Item("knife", "A utensil that has seen... wait, are they the letters 'M' and 'G' embossed in gold upon its rosewood handle?\n Huh...", false, "unbroken");
+            List<Item> messHallItems = new List<Item> {chickenBone,knife, plate, fork, plate, knife, chickenBone, plate, knifeMG, fork };
             
             List<Feature> messHallFeatures = new List<Feature> { messHallDoor, bench, diningTable, bench, diningTable, diningTable1, bench, bench, diningTable};
             ///The above is for letting the player know that they can combine the bobby pin and the stiletto and that they can use the soot or warpaint to form a disguise
             ///
             /// Secret Chamber Items and features
-            Feature prometheus = new Feature("disturbing statue", "Even up close and in better light this statue would be unsettling. You wonder what on earth it could mean, and why anyone would wish to procure it, though you don't ponder too long on why the ghastly thing was stowed away out of sight. Amongst the eclectic items here it is the most prominent in its sinister aspect.", false, "unshattered");
+            List<Dice> whacking = new List<Dice> { D4 };
+            Weapon staffMG = new Weapon("Marvellous Merigold's Magical Staff of Whacking", "It is a very fine, very well polished rosewood quarterstaff with the letters 'M' and 'G' cursively and elegantly embossed in gold upon it. It seems to shimmer with some kind of force for a moment, but when your eye catches it properly you conclude you were maybe imagining it... ", whacking, defaultCritHits, defaultGoodHits, 0, false);
+            List<Item> prometheusList = new List<Item> {staffMG };
+            Feature prometheus = new Feature("disturbing statue", "Even up close and in better light this statue would be unsettling. You wonder what on earth it could mean, and why anyone would wish to procure it, though you don't ponder too long on why the ghastly thing was stowed away out of sight. Amongst the eclectic items here it is the most prominent in its sinister aspect.\nYou're about to turn away when, just behind the statue, you spy something else...", false, "unshattered", prometheusList);
             Feature plaquePrometheus = new Feature("plaque", "At the base of the statue, it reads, \n\n\t'Dedicated to the ancient God who brought fire unto man. Punished eternally for his gift, his foresight and the succour he provided'...\n\nScratched in a spidery scrawl underneath, someone clearly saw fit to add their own addendum: 'What Justice is there from gods? From nature? But that which is created by force'...", false, "unread");
             Feature portrait = new Feature("diabolic portrait", "The description upon the frame tells of the subject's name and deed; 'Azazel; who gifted war to humanity'\n\n\tYou're about to pull away when you notice someone has etched a message upon the frame. As your fingers trace it, helping you decipher the letters in the dark, you sense its acerbic tone; 'A generous gift for those that grasp it - The source for infinite revenues for sellswords, mercenaries and adventurers alike'...", false, "unexamined");
             Door mosaic2 = new Door("strange mosaic", "You glance the mosaic's way, its lustrous tiles are constantly flipping and shuffling like cards in the dextrous hands of some invisible dealer. The magical image they form is ever shifting. They seem to react to your presence.", true, "unexamined", null, new List<Room>());
@@ -718,7 +722,7 @@ namespace DungeonCrawler
             Item copperTrinket = new Item("sorcerous gadget", "It's a copper sphere with dials and intricate tiny levers. You put it down before your fumbling hands cause it to... uh, do whatever it is it's designed to do.");
             List<Item> bookcaseSCItems = new List<Item> {bookSC2, bookSC1, bookSC3 };
             Feature bookcaseSC = new Feature("bookcase", "Judging from the grain and fine burnished finish, this bookcase is elegantly crafted rosewood and feels warm to the touch even within this chilly room. It is replete with books.", false, "unshattered", bookcaseSCItems);
-
+            
             List<Item> secretChamberItems = new List<Item> { crystalBall, jar, brassTrinket, copperTrinket};
             List<Feature> secretChamberFeatures = new List<Feature> { holeInCeiling, northWall, prometheus, plaquePrometheus, westWall, bookcaseSC, southWall, portrait, mosaic2, eastWall };
 
@@ -1323,6 +1327,63 @@ namespace DungeonCrawler
                     newRoom1 = minotaurApproaches(oldRoom, minotaur, westernmostCorridor.FirstVisit, 10000, false, minotaur.Rage);
                     if (oldRoom.Name == newRoom1.Name)
                     {
+                        if (player1.Traits.ContainsKey("friends with fairies"))
+                        {
+                            Console.WriteLine("Barrelling towards you is a minotaur flailing a greatSword, smashing everything in its path. You have but a moment to act before it's upon you.\nWill you:\n[1] Try to assure it your fairy friends and you have its best interests at heart?\n[2] Try to explain your presence here before it decapitates you?\n[3] Command your fairy friends to attack!\n[4] Brace yourself for combat!");
+                            switch (getIntResponse(5))
+                            {
+                                case 1:
+                                    Console.WriteLine("The minotaur seems to not hear you - judging by its continued wanton carnage as it closes in...\nOh well, here goes nothing...");
+                                    break;
+                                case 2:
+                                    Console.WriteLine("The beast roars as it builds momentum into a thunderous charge\nWhatever you say, it best be good...\n[1] I just want to take a leisurely stroll through the corridors...\n[2] I only want to make a little trip around the tower... \n[3] I just want to take a minor tour of the grounds...\n[4] I only wish to take an insignificant peregrination of your accommodation...\n[5] uh... I'm looking for the bathroom..?");
+                                    switch (getIntResponse(6))
+                                    {
+                                        case 1:
+                                            Console.WriteLine("Yeah, no. The beast doesn't feel like chatting...");
+                                            break;
+                                        case 2:
+                                            Console.WriteLine("Yeah, no. The beast doesn't feel like chatting...");
+                                            break;
+                                        case 3:
+                                            Console.WriteLine("The minotaur abruptly freezes in front of you, its sword moments from lopping off your head.");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("It seems befuddled for a moment, blinks, then is hurled upwards into the air and through some interdimensional portal. The portal burps the minotaur's effects back, then closes as abruptly as it opened.");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("You dust your hands. Sometimes its all about finding the right words...");
+                                            Console.ReadKey(true);
+                                            minotaur.Stamina = 0;
+                                            minotaur.Location = astralPlanes;
+                                            minotaur.Path.Clear();
+                                            minotaur.Path.Add(astralPlanes);
+                                            minotaur.Rage = false;
+                                            minotaur.Suspicious = false;
+                                            foreach(Item item in minotaur.Items)
+                                            {
+                                                newRoom1.ItemList.Add(item);
+                                            }
+                                            
+                                            return newRoom1;
+                                        case 4:
+                                            Console.WriteLine("Yeah, no. The beast doesn't feel like chatting...");
+                                            break;
+                                        case 5:
+                                            Console.WriteLine("Yeah, no. The beast doesn't feel like chatting...");
+                                            break;
+                                        default:
+                                            break;
+                                        }
+                                    break;
+                                case 3:
+                                    Console.WriteLine("You gallantly order the attack, imagining they'll swoop in like a squad of valkyries to your rescue. When no such glorious flanking manoeuvre materialises, you look about you... uh, fairy friends? ...Anyone?\nHuh, looks like they have full confidence that you've got this one covered...");
+                                    break;
+                                case 4:
+                                    break;
+                                default:
+                                    Console.WriteLine("Error in switch case, check parameters of getIntResponse...");
+                                    break;
+                            }
+                        }
                         if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, oldRoom, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
                         {
                             minotaurKafuffle.WonFight(newRoom1);
@@ -1337,6 +1398,62 @@ namespace DungeonCrawler
                     }
                     else if (minotaur.Location.Name == newRoom1.Name)
                     {
+                        if (player1.Traits.ContainsKey("friends with fairies"))
+                        {
+                            Console.WriteLine("Barrelling towards you is a minotaur flailing a greatSword, smashing everything in its path. You have but a moment to act before it's upon you.\nWill you:\n[1] Try to assure it your fairy friends and you have its best interests at heart?\n[2] Try to explain your presence here before it decapitates you?\n[3] Command your fairy friends to attack!\n[4] Brace yourself for combat!");
+                            switch (getIntResponse(5))
+                            {
+                                case 1:
+                                    Console.WriteLine("The minotaur seems to not hear you - judging by its continued wanton carnage as it closes in...\nOh well, here goes nothing...");
+                                    break;
+                                case 2:
+                                    Console.WriteLine("The beast roars as it builds momentum into a thunderous charge\nWhatever you say, it best be good...\n[1] I just want to take a leisurely stroll through the corridors...\n[2] I only want to make a little trip around the tower... \n[3] I just want to take a minor tour of the grounds...\n[4] I only wish to take an insignificant peregrination of your accommodation...\n[5] uh... I'm looking for the bathroom..?");
+                                    switch (getIntResponse(6))
+                                    {
+                                        case 1:
+                                            Console.WriteLine("Yeah, no. The beast doesn't feel like chatting...");
+                                            break;
+                                        case 2:
+                                            Console.WriteLine("Yeah, no. The beast doesn't feel like chatting...");
+                                            break;
+                                        case 3:
+                                            Console.WriteLine("The minotaur abruptly freezes in front of you, its sword moments from lopping off your head.");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("It seems befuddled for a moment, blinks, then is hurled upwards into the air and through some interdimensional portal. The portal burps the minotaur's effects back, then closes as abruptly as it opened.");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("You dust your hands. Sometimes its all about finding the right words...");
+                                            Console.ReadKey(true);
+                                            minotaur.Stamina = 0;
+                                            minotaur.Location = astralPlanes;
+                                            minotaur.Path.Clear();
+                                            minotaur.Path.Add(astralPlanes);
+                                            minotaur.Rage = false;
+                                            minotaur.Suspicious = false;
+                                            foreach (Item item in minotaur.Items)
+                                            {
+                                                newRoom1.ItemList.Add(item);
+                                            }
+                                            return newRoom1;
+                                        case 4:
+                                            Console.WriteLine("Yeah, no. The beast doesn't feel like chatting...");
+                                            break;
+                                        case 5:
+                                            Console.WriteLine("Yeah, no. The beast doesn't feel like chatting...");
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    break;
+                                case 3:
+                                    Console.WriteLine("You gallantly order the attack, imagining they'll swoop in like a squad of valkyries to your rescue. When no such glorious flanking manoeuvre materialises, you look about you... uh, fairy friends? ...Anyone?\nHuh, looks like they have full confidence that you've got this one covered...");
+                                    break;
+                                case 4:
+                                    break;
+                                default:
+                                    Console.WriteLine("Error in switch case, check parameters of getIntResponse...");
+                                    break;
+                            }
+                        }
                         if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, minotaur.Location, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, true, player1.Masked))
                         {
                             minotaurKafuffle.WonFight(newRoom1);
@@ -5288,7 +5405,10 @@ namespace DungeonCrawler
                     
                     while (!leftWhichRooms[6])//mess hall
                     {
-                        messHallDoor.ItemList.Add(noteForJanitor);
+                        if (messHallDoor.ItemList.Count == 0 && !player1.Inventory.Contains(noteForJanitor))
+                        {
+                            messHallDoor.ItemList.Add(noteForJanitor);
+                        }
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
@@ -5424,7 +5544,7 @@ namespace DungeonCrawler
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
                                 Room newRoom = messHall.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
-                                if (noteForJanitor.SpecifyAttribute == "read")
+                                if (noteForJanitor.SpecifyAttribute == "read" && bucket.ItemList.Count == 0)
                                 {
                                     bucket.ItemList.Add(magManKey);
                                     bucket.Description += "\nChecking under the bucket, you find nothing. You're about to give up on finding the janitor's lost key when, as you fish through the filthy brown water, your hands clasp hold of something long and metallic.";
@@ -5504,6 +5624,17 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
+                        if (usesDictionaryItemFeature.ContainsKey(magManKey))
+                        {
+                            if (!usesDictionaryItemFeature[magManKey].Contains(circleDoor))
+                            {
+                                usesDictionaryItemFeature[magManKey].Add(circleDoor);
+                            }
+                        }
+                        else
+                        {
+                            usesDictionaryItemFeature[magManKey] = new List<Feature> {circleDoor, magManDoor };
+                        }
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                         ///red herring in room above
@@ -5717,9 +5848,14 @@ namespace DungeonCrawler
                         northeastCorner.Description = "The corner turns sharply right...";
                         northeastCorner.Passing = "You follow the corner around and into the easternmost corridor.";
                         usesDictionaryItemItem.Clear();
+                   
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
+                        if (!usesDictionaryItemFeature.ContainsKey(magManKey))
+                        {
+                            usesDictionaryItemFeature[magManKey] = new List<Feature>{ magManDoor};
+                        }
 
                         if (minotaur.Location == oceanBottom && circleDoor.SpecificAttribute == "unlocked")
                         {
@@ -7124,13 +7260,13 @@ namespace DungeonCrawler
                                     continue;
                                 }
                                 if (mosaic2.SpecificAttribute == "unlocked")
-                            {
-                                mosaic2.CastDoor().Name = "ajar mosaic door";
-                                mosaic2.CastDoor().Passing = "You push the strange mosaic and it opens out into an unfamiliar corridor...";
-                                mosaic2.CastDoor().Portal = mosaicPortal;
-                                mosaic2.CastDoor().Attribute = false;
-                                mosaic2.CastDoor().SpecificAttribute = "unlocked";
-                            }
+                                {
+                                    mosaic2.CastDoor().Name = "ajar mosaic door";
+                                    mosaic2.CastDoor().Passing = "You push the strange mosaic and it opens out into an unfamiliar corridor, when you turn back around you find it has disappeared...";
+                                    mosaic2.CastDoor().Portal = mosaicPortal;
+                                    mosaic2.CastDoor().Attribute = false;
+                                    mosaic2.CastDoor().SpecificAttribute = "unlocked";
+                                }
 
                                 b++;
                             }

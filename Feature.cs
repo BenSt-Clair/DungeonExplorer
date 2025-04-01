@@ -335,6 +335,10 @@ namespace DungeonCrawler
             }
             if (ItemList != null)
             {
+                if (Name == "disturbing statue" && ItemList.Count == 0 && Description.Contains("You're about to turn away when, just behind the statue, you spy something else..."))
+                {
+                    Description = Description.Substring(0, Description.IndexOf("\n"));
+                }
                 if (Name == "rosewood chest")
                 {
                     if (ItemList.Count != 0 && !Attribute)
@@ -800,7 +804,7 @@ namespace DungeonCrawler
                                     }
                                 }
                             }
-                            if ((Name.Contains("door") || Name.Contains("stair") || Name.Contains("corner")) && (SpecificAttribute == "unlocked" || SpecificAttribute == "unblocked") && !Description.Contains("smouldering"))
+                            if ((Name.Contains("door") || Name.Contains("stair") || Name.Contains("corner") || Name.Contains("hole")) && (SpecificAttribute == "unlocked" || SpecificAttribute == "unblocked") && !Description.Contains("smouldering"))
                             {
                                 List<Room> upOrDown = this.CastDoor().Portal;
                                 if (Name.Contains("door") || Name.Contains("portal"))
@@ -994,7 +998,7 @@ namespace DungeonCrawler
                 {
                     Console.WriteLine($"{Description} \nTry as hard as you might, you find no items hidden about the {Name}. It remains {SpecificAttribute}.");
                 }
-                if ((Name.Contains("door") || Name.Contains("stair") || Name.Contains("corner")) && (SpecificAttribute == "unlocked"|| SpecificAttribute == "unblocked") && !Description.Contains("smouldering"))
+                if ((Name.Contains("door") || Name.Contains("stair") || Name.Contains("corner") || Name.Contains("hole")) && (SpecificAttribute == "unlocked"|| SpecificAttribute == "unblocked") && !Description.Contains("smouldering"))
                 {
                     List<Room> upOrDown = this.CastDoor().Portal;
                     if (Name.Contains("door") || Name.Contains("portal"))

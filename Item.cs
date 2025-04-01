@@ -58,6 +58,7 @@ namespace DungeonCrawler
                 Attribute = true;
                 SpecifyAttribute = "read";
             }
+            
             Console.WriteLine(item.Description);
             if (Name == "Majesty of the Eldritch Fey")
             {
@@ -91,9 +92,9 @@ namespace DungeonCrawler
                         "\n\n\t...after so long, I've found it! After searching and searching... cursed mirrors that give nought but a taunting glimpse of" +
                         " the Fey Realms, doors that beckon only children through them, enchanted forests bordering their world but within which mortals cannot help but roam in circles - " +
                         "Each an alley leading from one frustrating dead-end to the next. Now, finally, I have found a portal through which" +
-                        " i might gain entrance to that enchanted world of which I have received thus far only tantalising glimpses. We are but children of this world " +
-                        "of ours, skirting another: beyond reach it hangs like a forbidden fruit of possibilities transcending our imagination. I have been told so in endless dreams. Dreams sourced, I'm sure now, from the aforementioned mirror. The mirror that i left, but that still lurks within the depths of my mind. " +
-                        "At first they were maddening, these visions; an ecstasy of impossible nightmares both wondrous and haunting. But now I understand that the lords and ladies of the ArchFey weren't tormenting me, they were just helping me this whole time. It's been their way of inviting me, " +
+                        " i might gain entrance to that enchanted world of which I have received thus far only tantalising glimpses. We are so very young within this world " +
+                        "of ours, and yet we find ourselves skirting another: beyond reach it hangs like a forbidden fruit of possibilities transcending our imagination. I have been told so in endless dreams. Dreams sourced, I'm sure now, from the aforementioned mirror. The mirror that i left, but that still lurks within the depths of my mind. " +
+                        "At first they were maddening, these visions; an ecstasy of impossible nightmares both wondrous and haunting. But now I understand that the lords and ladies of the ArchFey weren't tormenting me, they were just helping me this whole time. It's been their way, their ancient custom, of inviting me, " +
                         "(me!), to bear witness to their world and court them within the most majestic halls of their kingdom.\n Yes! They chose me... for I am Caspian... this is Caspian's destiny...",
 
                         "The next few pages are a journal detailing this explorer's foray through the Faerie Realms.\nIt begins as a sober and organised list of dated entries, before tumbling into something more akin to a collage of incoherent thoughts, then a flurry of fever-filled ramblings:" +
@@ -101,7 +102,7 @@ namespace DungeonCrawler
                         "Unlike their cohabitants, the trivial fairies, silly pixies and their sillier warnings, the very words of the eldritch ArchFey weave dreams and visions through my mind like a forest weaves vines through a crumbling wall. Their fragrance sets my heart racing through endless possibilities. Their movements, so seductively fluid and enticing and precise, make me such an oaf by comparison. " +
                         "Even now I lament for my words do not do their beauty and grace justice. I often question myself: am I truly worthy to be amongst so perfect sleepless creatures, to tread upon their twilight world? At first I thought theirs an innocent realm untouched by the sins that so beleaguer us mortals - yet, with my closed mind (my so inadequate, provincial mind) I'd dared not imagine " +
                         "the truth: that here there is simply no sin at all. No act that can't be perfected by seeking its apotheosis, no vice that can't be made virtuous by transfiguring it beyond the apex of delight. \nTomorrow I shall try once again to be more like my friends. I mustn't shame them with my presence. My aspiration to make myself as beautiful as they are has thus far made progress, but success still eludes me. Still the ArchFey titter as I pass. It's " +
-                        "not their fault, of course. I'm only glad my endless shortcomings brings such divine creatures something so delightful as their laughter, instead of the disgust I deserve. For I have yet to become as elegant as they. I shall return tonight to the lakeside whereupon I shall study my reflection. If I can just starve myself a little more, perhaps I too will be as slender and fine-featured as they...",
+                        "not their fault, of course. I'm only glad my endless shortcomings brings such innocent creatures something so delightful as their divine laughter, instead of the disgust I deserve. For I have yet to become as elegant as they. I shall return tonight to the lakeside whereupon I shall study my reflection. \nIf I can just starve myself a little more, perhaps I too will be almost as slender and fine-featured as they...",
 
                         "The last page's handwriting is fluid, cursive, elegant, a masterpiece in and of itself - and definitely *not* the author's;" +
                         "\n\nThe lake's a mirror we shatter, " +
@@ -1063,6 +1064,12 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         return true;
                     }
+                    else if (item.Name == "copper key")
+                    {
+                        Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door unlock");
+                        Console.ReadKey(true);
+                        return true;
+                    }
                     else if (item.Name == "steel key" && feature.Name == "rosewood chest")
                     {
                         Console.WriteLine("The key slides easily into the lock. With one sharp twist the clasp comes undone");
@@ -1124,6 +1131,12 @@ namespace DungeonCrawler
                     else if (item.Name == "brass key" && feature.Name == "double doors")
                     {
                         Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door lock.");
+                        Console.ReadKey(true);
+                        return true;
+                    }
+                    else if (item.Name == "copper key")
+                    {
+                        Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door lock");
                         Console.ReadKey(true);
                         return true;
                     }
