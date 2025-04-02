@@ -569,7 +569,7 @@ namespace DungeonCrawler
             Item jailorKeys = new Item("jailor keys", "Such cast iron, heavy-duty keys and the ring they're found on seem typical of any prison worthy of the name - not that you'd know, of course.");
             List<Item> cellInventory = new List<Item> { rustyChains, halfOfCrackedBowl, otherHalfOfCrackedBowl, bowlFragments, garment };
             Item bobbyPins = new Item("bobby pin", "This is one of the few bobby pins that haven't been bent out of shape through frantic heavy-handedness.", true, "unbent");
-
+            Item speedPotion = new Item("potion of alacrity", "It gloops up and down in its vial like a lava lamp. Upon the label it reads, 'Are you stuck in your very own wonderland? Are you tired of always running late for those very important dates? Do you wish there was a way you could make time every time and beat the clock? Well now you can! Merigold's marvellous antidote for tardiness rests in YOUR hand. With one quick sip, you'll be whizzing ahead of the crowds in no time! ~ Merigold would like to note that there are absolutely no downsides to this potion whatsoever. Nope. None. No matter what those lowlifes in the Independent Wizarding Authority have to say. They're great dirty liars and their claims that Merigold doesn't meet the code of standards for hygiene is pure liberal scaremongering, and I'll see you in wizard court!, \nYours sincerely,\n\tMerigold.'", true, "unshattered", 0, "speed: hullabaloo!");
             Item journal = new Item("worn journal", "Opening it up you find detailed accounts of various escape attempts, but only one entry in particular catches your eye;\n\n" +
                 "'\tDay 6:\nI managed to purloin some artefact from one of the mercenaries when they dished out my gruel. I know it must be Merigold's because its embossed with his seal (an 'M' enveloped within a cursive capital 'G') - that means it'll be enchanted somehow. Still only an apprentice cleric, so i had to work hard to get the " +
                 "damn thing to do something. Eventually I used it to cast fireballs at the two braziers. Didn't work on the door though. \nI know what this Curse-Breaker is using them for. They won't subdue me with eldritch Fey enchantments. If they" +
@@ -1710,6 +1710,7 @@ namespace DungeonCrawler
             // player1.Inventory.Add(healPotion);
             player1.Inventory.Add(FelixFelicis);
             player1.Inventory.Add(elixirFeline);
+            player1.Inventory.Add(speedPotion);
 
             ///Instantiating monsters to be fought later
             Item magManKey = new Item("copper key", "Found amongst the minotaur's possessions, this key has a tarnished look about it as though it could do with a good polish. You suppose it must unlock one of the doors in this landing. The question is, which one...", false);
@@ -1777,7 +1778,7 @@ namespace DungeonCrawler
 
             usesDictionaryItemItem[magnifyingGlass].Add(garment);
 
-            Dictionary<Item, List<Player>> usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [soot] = new List<Player> { player1} };
+            Dictionary<Item, List<Player>> usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [soot] = new List<Player> { player1}, [speedPotion] = new List<Player> { player1} };
             List<Feature> features = new List<Feature>();
             /*
             Combat tester = new Combat(goblin, gnoll, player1, null);

@@ -58,8 +58,9 @@ namespace DungeonCrawler
         public bool Masked { get; set; }
         public int CarryCapacity { get; set; }
         public bool FieryEscape { get; set; }
+        public bool Speedy { get; set; }
 
-        public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits, bool masked = false, bool fieryEscape = false)
+        public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits, bool masked = false, bool fieryEscape = false, bool speedy = false)
         {
             Name = name;
             Skill = skill;
@@ -71,6 +72,7 @@ namespace DungeonCrawler
             Masked = masked;
             CarryCapacity = 12;
             FieryEscape = fieryEscape;
+            Speedy = speedy;
         }
         public string DisplayName() { return Name; }
         public int DisplaySkill() { return Skill; }
@@ -439,6 +441,10 @@ namespace DungeonCrawler
                                 else if (chosenItem.Name.Trim().ToLower() == "elixir of feline guile")
                                 {
                                     Console.WriteLine("You glug the potent elixir down. Your stomach ties itself in knots for a moment, before you feel your instincts and reflexes sharpen.");
+                                }
+                                else if (chosenItem.Name.Trim().ToLower() == "potion of alacrity")
+                                {
+                                    Console.WriteLine("The potion tastes as bad as it looks. However, you instantly discover the rest of the world looks as though it couldn't catch up with a snail.\n You fly into action...");
                                 }
                                 else if (chosenItem.Name.Trim().ToLower() == "felix felicis") // luck potion grants boon to all weapons.
                                 {

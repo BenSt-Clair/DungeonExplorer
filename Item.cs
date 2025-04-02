@@ -2231,9 +2231,13 @@ namespace DungeonCrawler
                     //PropertyInfo boost = typeof(int).GetProperty(propString);
                     //object value = boost.GetValue(player, null);
                     //int CharacterAttribute = Convert.ToInt32(value);
-
-
-                    if (propString == "Stamina")
+                    if (propString == "speed")
+                    {
+                        player.Speedy = true;
+                        player.Inventory.Remove(item1);
+                        return true;
+                    }
+                    else if (propString == "Stamina")
                     {
                         if (player.Traits.ContainsKey("medicine man"))
                         {
