@@ -60,6 +60,105 @@ namespace DungeonCrawler
             }
             
             Console.WriteLine(item.Description);
+            if (Name == "crystal ball")
+            {
+                Console.WriteLine("You have the unnerving sense that something within wishes to draw your focus. Will you permit yourself to see what the orb wishes to show you?");
+                Dialogue crystal = new Dialogue(item);
+                if (crystal.getYesNoResponse())
+                {
+                    string description = "You bring all of your focus upon the swirling tendrils of mist, ever shifting within the crystal ball. Suddenly, its as though your gaze is consumed by the roiling fog inside." +
+                        " Your sight plummets deeper within, bearing witness to smoky figures yet unknown, past deeds as yet undiscovered, and secrets that, for now, are so nebulous they seem to luminate your mind like vast and distant constellations of meaning.";
+                    List<string> parlances = new List<string> 
+                    { 
+                        "You're bewildered to find yourself within what you can only hope to divine must be some other quarter of this tower, if " +
+                        "the rosewood decor and elegant furnishings are anything to go by. Surrounding you are a colonnade of fluted marble pillars flanking the length of a hall" +
+                        " and the long rosewood table therein. Seated about the table, are blurry figures. Unlike the features of the room that are crisp and clear in their detail, the figures are spectres of fog and mist, " +
+                        "their ghostly faces moulded it seems out of the vapours of the crystal ball. You catch them all in a moment of crackling silence. Though you've only just 'arrived', you sense you could cut through the suspense " +
+                        "with a blade, for there is scarcely a murmur amongst the company, their nervous gazes flitting about each of the others, and their attention never far away from fixing upon a lone, imposing silhouette at the head" +
+                        " of the ornate table, his back towards them all.\nSomeone, you sense with a gnawing dread, that can be none other than the CurseBreaker...",
+
+                        "Suddenly, one of those seated phantoms bangs their fist upon the table, chair scraping as they rise belligerently from it. " +
+                        "\n\t'This is an outrage!' he blusters. He looks around, what you can discern of their visage beseeching the others, 'Are you all seriously going to take this from... from *him*?' " +
+                        "\nThe aggressive phantom jabs a finger at the lone silhouette of the CurseBreaker. Their back is still faced to them all, and they scarcely stir as the other man launches into his tirade." +
+                        "\n\t'Only three moons ago we were the unquestioned powers that held sway over these blasted lands. Now I find you all bowing and scraping to this conjuror, this warlock's apprentice, this... this... motherless cur!'" +
+                        "\n  The other spectres around you shift uneasily, their nervous gaze flitting from the angry spirit to the imposing silhouette, held captive between their fear of being seen as weak and their even greater terror of speaking out. \n" +
+                        "The raging spectre scoffs in disgust. 'You, the lords of estates, mayors of powerful cities, mercenary captains and guildmasters? You would all be blackmailed by him?' In response to their stony silence, the angry spirit turns to face the focus of his fury, the CurseBreaker who's not so much as shifted the whole time. \n\t'Well, I tell you this,' the angry spirit hisses as he abruptly stalks the length of the table. " +
+                        " His fist curls tight about his sword. 'You may think you can compromise *them*, but I won't be made to live my days with some sorceror's sword of Damocles hanging over my head!'\n" +
+                        "Each of his footfalls punctuates the crackling silence as a full stop punctuates a sentence.His thunderous tirade builds into a martial flourish as he unsheathes his sword. He charges forward. The silhouette does not stir. It does not face them at all. In a breathless moment the charging phantom is almost upon him. \nThen he's stopped...",
+
+                        "You watch, transfixed, as the warrior's sword clatters to the ground. They splutter, their ghostly form of vapours and mist scrabbling at their throat as they drown in their own blood. \nAnother guest, having risen from his seat, withdraws the blade from the warrior's neck and plunges it into their gut.\n" +
+                        "\t'I'm sorry,' the intercedent whispers with each stab of the knife, tears gritting their eyes, 'I'm sorry... I'm sorry...'\nThey stab them over and over again, until at last their body dissolves into vapour, their form released of life.\n\t'I can't be exposed. I can't run that risk. I'm sorry...'" +
+                        " \n  The murky form of the knife-wielder stands there for a moment, seemingly distraught by their own actions. The silence is only broken once their knife clatters to the floor and they slump back into their chair." +
+                        "\n\t'I believe that concludes our business, gentlemen,' the lone silhouette intones at last, their voice as smooth and even as moonlit lakes with treacherous depths. It was the even voice of a man who'd never expected any different outcome. It was as though he had them all under his thrall. 'Those leaders of the Vespasian Mercenary Company who are inclined to" +
+                        " see reason and adapt to their new reality will now answer to me. You will have plenty of work and pay in the months ahead to keep you satisfied...'",
+
+                        "You watch as the guests, rather unsteadily, rise from their seats and take their leave. One of the last to do so is a figure who stirs within you some disquieting unease; an unwelcome, nauseating deja vu. The ghostly apparition is more tremulous than most as he heads for the door..." +
+                        "\n\t'Not you, *mayor*' the CurseBreaker's voice is soft, but you can sense an acerbic edge to it - one that seems to mock the very title the man holds. 'I still have a request to make of you.'" +
+                        "\n\t'What...' he gulps, 'what more do you require of me?' And suddenly you recognise the man's voice. Behind the veil of mist and vapours that compose the quivering man's face is the identity of your kidnapper, or at least, the first one. \nThe phantom before you is the Innkeeper in Myrovia, the one that had you abducted. " +
+                        "\nYou sense a humorless smile slip upon the CurseBreaker's lips as he continues addressing the man, still not deigning to turn and face him. 'I find myself in need of resources. Breaking your curse shall prove no small feat without the proper means for exorcising it.' his tone drops an octave. 'I need subjects for my experiments.'" +
+                        "\n  You can sense, in spite of the veil of vapours obscuring his features, the mayor's face go as white as a sheet. \nThe Cursebreaker seems to sense this too, because they huff before saying, 'No need to worry yourself, mayor. The townspeople of Myrovia are innocents caught up in our dealings. You know I'm only ruthless to the wicked and unjust." +
+                        " I am *merciful* to those who do no wrong. As you know...' he states the last pointedly and with some hint of an unspoken threat." +
+                        "\n\t'So if not the villagers, then who...'" +
+                        "\n\t'You shall make a call for adventurers,' the CurseBreaker intones, 'a call for aid against your curse. When they arrive you shall give them lodgings for the night, along with a tonic that will knock them unconscious. These shall be the subjects I will use.' His voice lowers to a deadly soft tone, 'and I shall be their justice...'",
+
+                        "Your avid gaze is transfixed as you feel the pieces of why and how you came to be in this predicament are on the cusp of tumbling into place. Your feeling of epiphany almost pulls you from the crystal ball's vision before you jolt your focus back on the innkeeper, this mayor of Myrovia and his interlocutor, the CurseBreaker.\n" +
+                        "\t'I'll do as you require,' the frightened mayor tries his best to muster a defiant edge to his tone, but falters as the CurseBreaker's back stiffens. 'I- I mean... for the good of my people, for Myrovia, I'll do anything...'" +
+                        "\n\t'Have you already forgotten, *mayor*,' the CurseBreaker's voice turns deadly soft once again, 'the powers that I already possess...'\n" +
+                        " The CurseBreaker turns for the first time, and you catch your breath as you behold eyes that are anything but human.\n" +
+                        "You clasp sight of smouldering eyes, with a frightful clarity that seems out of place in this world of vapours and mist and memory. They are as pitilessly black as the void between stars, devouring any and all light that touches them. And as they fix upon the Innkeeper, you can feel their scorching stare running through him, seeing beyond him and grasping so much more." +
+                        "\n\t'I see your past mayor,' the CurseBreaker breathes contemptuously, 'I clasp sight of every foetid deed of yours as though they were conducted before me in this very hall. I know all of your secrets. I can read each of them as though they were fiery runes etched under your skin." +
+                        "\n\t'Don't forget, there is another way I can break this curse of yours. An older way. The traditional way. And it's a rite that's a whole lot easier to perform...'" +
+                        "\n\t'No...please...' the mayor staggers backwards, all at once terrified. 'anything but that... anything...'" +
+                        "\n\t'Then,' the CurseBreaker eyes him appraisingly, 'it seems your choice is clear. You will deliver unto me these adventurers and mercenaries. I shall be their justice." +
+                        " And, when all is done, you shall be free of your curse, for as long as you serve my vision of a new world order...'" +
+                        "\n  With that the CurseBreaker turns and begins to stride away. He dismisses the innkeeper with an imperious gesture of the hand. " +
+                        "\n\t'Thank you, my master,' the mayor stammers. 'It's an honour to serve, master...'" +
+                        "The CurseBreaker halts in his tracks. Slowly his head pivots and he fixes the quivering mayor with a sidelong, inscrutable look. \n" +
+                        "\t'Yes...' he says with a silky voice as smooth as dark lakes with unseen currents. You feel a fever of gooseflesh creep up your arms. 'I suppose I am just a master. For now...'"
+                    };
+                    List<List<string>> playerchoice = new List<List<string>>
+                    {
+                        new List<string>
+                        {
+                            "Keep watching?",
+                            "Pull away?"
+                        },
+                        new List<string>
+                        {
+                            "Keep watching?",
+                            "Pull away?"
+                        },
+                        new List<string>
+                        {
+                            "Keep watching?",
+                            "Pull away?"
+                        },
+                        new List<string>
+                        {
+                            "Keep watching?",
+                            "Pull away?"
+                        },
+                        new List<string>
+                        {
+                            "Pull away?"
+                        }
+                    };
+                    Dictionary<string, string> choice_visions = new Dictionary<string, string>
+                    {
+                        {"Keep watching?", "" },
+                        {"Pull away?", "You tear yourself away from the vision, seemingly lurching out of a world of fog and vapours and long shadows cast by events out of place and time. You find yourself back in the secret chamber. It takes a moment of inertia and vertigo before you quite feel yourself again and you can piece together what all that you witnessed means..." }
+                    };
+
+                    crystal.LinearParle(choice_visions, parlances, playerchoice, description);
+                    
+                }
+                else
+                {
+                    Console.WriteLine("Feeling a touch of foreboding you tear your gaze from the orb and the long shadows cast by events out of place and time...");
+                    Console.ReadKey(true);
+                    return;
+                }
+            }
             if (Name == "Majesty of the Eldritch Fey")
             {
                 Console.WriteLine("Would you like to delve deeper into what this book has to say?");
