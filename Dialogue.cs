@@ -229,6 +229,12 @@ namespace DungeonCrawler
                             Console.ReadKey(true);
                             return -1;
                         }
+                        else if (choice_CustomResponse[playerChoices[node][answer1]] == "You tear yourself away from the vision, seemingly lurching out of a world of fog and vapours and long shadows cast by events out of place and time. You find yourself back in the secret chamber. It takes a moment of inertia and vertigo before you quite feel yourself again and you can piece together what all that you witnessed means...")
+                        {
+                            Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]]);
+                            Console.ReadKey(true);
+                            return -1;
+                        }
                         
                         Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]] + " " + parlances[node + 1]);
                         
