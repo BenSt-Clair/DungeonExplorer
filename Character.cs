@@ -772,11 +772,15 @@ namespace DungeonCrawler
             Patrol = patrol;
             Time = (Path.Count - 1) * 20000;
         }
-        public bool MinotaurReturning(Room room, Item redThread, Item musicBox, List<Room> threadPath)
+        public bool MinotaurReturning(Room room, Item redThread, Item musicBox, List<Room> threadPath, Player player)
         {
             this.Patrol.Stop();
             Dice D6 = new Dice(6);
             long time = this.Time - this.Patrol.ElapsedMilliseconds;
+            if (player.Speedy)
+            {
+                time = this.Time - this.Patrol.ElapsedMilliseconds / 2;
+            }
             List<string> enragedHunt = new List<string>
                 {
                     "",

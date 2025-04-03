@@ -1095,14 +1095,22 @@ namespace DungeonCrawler
                 {
                     timeLimit = 3*timeLimit/5;
                 }
+                if (player1.Speedy && !oops)
+                {
+                    timeLimit *= 2; 
+                }
                 string strand = "";
                 if (!oops)
                 {
-                    strand = "to decide!";
+                    strand = "to decide";
                 }
                 else
                 {
-                    strand = "left...";
+                    strand = "left";
+                }
+                if (player1.Speedy)
+                {
+                    strand += " (thanks to your potion of alacrity)";
                 }
                 Console.WriteLine($"What will you do?\n[You have only {timeLimit/1000} seconds {strand} after you press any key...]");
                 Console.ReadKey(true);
@@ -1581,7 +1589,7 @@ namespace DungeonCrawler
                                     }
                                     else
                                     {
-                                        Console.WriteLine("The monster is about to turn back when it notices something. You hear the monster growl before the double doors close shut and are once again locked. You sense it's gaze scan the hallway, it's suspicion made palpable by its disquieting stare. Then, abruptly, the terrifying beast heads back the way it came...");
+                                        Console.WriteLine("The monster is about to turn back when it notices something. You hear the monster growl before the double doors close shut and are once again locked. You sense it's gaze scan the hallway, it's suspicion made palpable by its disquieting stare. Then, abruptly, the terrifying beast begins heading back the way it came...");
                                         Console.ReadKey(true);
                                         minotaur.Suspicious = true;
                                         circleDoor.Attribute = true;
@@ -1594,7 +1602,7 @@ namespace DungeonCrawler
                                     
                                     Console.WriteLine("The monster pauses. Has it noticed something out of place?");
                                     Console.ReadKey(true);
-                                    Console.WriteLine("Finally, the beast heads back the way it came...");
+                                    Console.WriteLine("Finally, the beast begins heading back the way it came...");
                                     minotaur.Suspicious = true;
                                     circleDoor.Attribute = true;
                                     circleDoor.SpecificAttribute = "locked";
@@ -1606,7 +1614,7 @@ namespace DungeonCrawler
                                 
                                 Console.WriteLine("Back pressed against the door you realise you've left it unlocked! \nYour heart knocks against your chest as you hear the monster pass by. It pauses a moment, seemingly scanning the corridor...");
                                 Console.ReadKey(true);
-                                Console.WriteLine("Finally, you hear the monster's heavy footfalls as it returns from whence it came. It seems it didn't notice the door was left slightly ajar...");
+                                Console.WriteLine("Finally, you hear the monster's heavy footfalls as it begins returning from whence it came. It seems it didn't notice the door was left slightly ajar...");
                                 return newRoom1;
                             }
 
@@ -1631,7 +1639,7 @@ namespace DungeonCrawler
                                 }
                                 else
                                 {
-                                    Console.WriteLine("The beast growls as it scans for any sign of you. Finally, you hear the monster's heavy footfalls as it returns from whence it came.");
+                                    Console.WriteLine("The beast growls as it scans for any sign of you. Finally, you hear the monster's heavy footfalls as it begins returning from whence it came.");
                                     minotaur.Time = (minotaur.Path.Count-1) * 20000;
                                     return newRoom1;
                                 }
@@ -1640,7 +1648,7 @@ namespace DungeonCrawler
                             {
                                 Console.WriteLine("The monster sniffs the air, as though to catch some unfamiliar scent...");
                                 Console.ReadKey(true);
-                                Console.WriteLine("Finally, you hear the beast's heavy footfalls as it returns from whence it came.");
+                                Console.WriteLine("Finally, you hear the beast's heavy footfalls as it begins returning from whence it came.");
                                 minotaur.Time = (minotaur.Path.Count - 1) * 20000;
                                 return newRoom1;
                             }
@@ -2487,7 +2495,7 @@ namespace DungeonCrawler
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (minotaur.Stamina > 0)
                         {
-                            if (!minotaur.MinotaurReturning(corridor, redThread, musicBox, threadPath))
+                            if (!minotaur.MinotaurReturning(corridor, redThread, musicBox, threadPath, player1))
                             {
                                 if (minotaur.Path.Count > 1) 
                                 { 
@@ -2702,7 +2710,7 @@ namespace DungeonCrawler
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (minotaur.Stamina > 0)
                         {
-                            if (!minotaur.MinotaurReturning(room, redThread, musicBox, threadPath))
+                            if (!minotaur.MinotaurReturning(room, redThread, musicBox, threadPath, player1))
                             {
                                 if (minotaur.Location == room)
                                 {
@@ -2996,7 +3004,7 @@ namespace DungeonCrawler
                         }
                         if (minotaur.Stamina > 0)
                         {
-                            if (!minotaur.MinotaurReturning(antechamber, redThread, musicBox, threadPath))
+                            if (!minotaur.MinotaurReturning(antechamber, redThread, musicBox, threadPath, player1))
                             {
                                 if (minotaur.Path.Count > 1)
                                 {
@@ -3206,7 +3214,7 @@ namespace DungeonCrawler
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (minotaur.Stamina > 0)
                         {
-                        if (!minotaur.MinotaurReturning(cellOpposite, redThread, musicBox, threadPath))
+                        if (!minotaur.MinotaurReturning(cellOpposite, redThread, musicBox, threadPath, player1))
                         {
                             if (minotaur.Location == cellOpposite)
                             {
@@ -3344,7 +3352,7 @@ namespace DungeonCrawler
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (minotaur.Stamina > 0)
                         {
-                            if (!minotaur.MinotaurReturning(armoury, redThread, musicBox, threadPath))
+                            if (!minotaur.MinotaurReturning(armoury, redThread, musicBox, threadPath, player1))
                             {
                                 if (minotaur.Location == armoury)
                                 {
@@ -5420,7 +5428,7 @@ namespace DungeonCrawler
                         sw.Start();
                         if (minotaur.Stamina > 0)
                         {
-                            if (!minotaur.MinotaurReturning(messHall, redThread, musicBox, threadPath))
+                            if (!minotaur.MinotaurReturning(messHall, redThread, musicBox, threadPath, player1))
                             {
                                 if (minotaur.Location == messHall)
                                 {
@@ -5655,7 +5663,7 @@ namespace DungeonCrawler
                         if (minotaur.Stamina > 0)
                         {
                             
-                            if (!minotaur.MinotaurReturning(westernmostCorridor, redThread, musicBox, threadPath))
+                            if (!minotaur.MinotaurReturning(westernmostCorridor, redThread, musicBox, threadPath, player1))
                             {
                                 if (minotaur.Location == westernmostCorridor)
                                 {
@@ -5881,7 +5889,7 @@ namespace DungeonCrawler
                         sw.Start();
                         if (minotaur.Stamina > 0)
                         {
-                            if (!minotaur.MinotaurReturning(northernmostCorridor, redThread, musicBox, threadPath))
+                            if (!minotaur.MinotaurReturning(northernmostCorridor, redThread, musicBox, threadPath, player1))
                             {
                                 if (minotaur.Location == northernmostCorridor)
                                 {
@@ -6098,7 +6106,7 @@ namespace DungeonCrawler
                         sw.Start();
                         if (minotaur.Stamina > 0)
                         {
-                            if (!minotaur.MinotaurReturning(easternmostCorridor, redThread, musicBox, threadPath))
+                            if (!minotaur.MinotaurReturning(easternmostCorridor, redThread, musicBox, threadPath, player1))
                             {
                                 if (minotaur.Location == easternmostCorridor)
                                 {
@@ -6325,7 +6333,7 @@ namespace DungeonCrawler
                         sw.Start();
                         if (minotaur.Stamina > 0)
                         {
-                            if (!minotaur.MinotaurReturning(southernmostCorridor, redThread, musicBox, threadPath))
+                            if (!minotaur.MinotaurReturning(southernmostCorridor, redThread, musicBox, threadPath, player1))
                             {
                                 if (minotaur.Location == southernmostCorridor)
                                 {
@@ -6524,7 +6532,7 @@ namespace DungeonCrawler
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (minotaur.Stamina > 0)
                         {
-                            if (!minotaur.MinotaurReturning(emptyCell, redThread, musicBox, threadPath))
+                            if (!minotaur.MinotaurReturning(emptyCell, redThread, musicBox, threadPath, player1))
                             {
                                 if (minotaur.Location == emptyCell)
                                 {
@@ -7164,7 +7172,7 @@ namespace DungeonCrawler
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (minotaur.Stamina > 0)
                         {
-                            if (!minotaur.MinotaurReturning(secretChamber, redThread, musicBox, threadPath))
+                            if (!minotaur.MinotaurReturning(secretChamber, redThread, musicBox, threadPath, player1))
                             {
                                 if (minotaur.Location == secretChamber)
                                 {
