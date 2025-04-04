@@ -1627,13 +1627,13 @@ namespace DungeonCrawler
                             {
                                 Dice D8 = new Dice(8);
                                 int searching = D8.Roll(D8);
-                                if (minotaur.Rage && searching > 4)
+                                if (minotaur.Rage && searching > 3)
                                 {
                                     
                                     return minotaurStalks(newRoom1, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
                                     ///make into recursive function
                                 }
-                                else if (minotaur.Suspicious && searching > 6)
+                                else if (minotaur.Suspicious && searching > 5)
                                 {
                                     return minotaurStalks(newRoom1, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
                                 }
@@ -2121,13 +2121,13 @@ namespace DungeonCrawler
                 {
                     Console.WriteLine("Looking back, the door will only hold for so long against the flames and time is not your friend. What will you do?");
                     corridor.FeatureList[2].Description = "The smouldering rosewood door radiates intense heat as a fiery glow ominously flickers through the gap underneath. Tendrils of smoke cascade upwards and the cast iron hinges are scolding to the touch.\nYou best get away from here post haste!";                    
-                    corridor.FeatureList[2].CastDoor().Portal = null;
+                    corridor.FeatureList[2].CastDoor().Portal = new List<Room> { corridor, corridor};
                     fireProgress = 1;
                     Console.ReadKey(true);
                     player1.FieryEscape = true;
                     minotaur.Location = oceanBottom;
                     minotaur.Path = new List<Room> { northernmostCorridor };
-                    minotaur.Inventory.Remove(magManKey);
+                    minotaur.Items.Remove(magManKey);
                     
                 }
                 else if (escapedThroughDoor)
