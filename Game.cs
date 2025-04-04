@@ -708,8 +708,8 @@ namespace DungeonCrawler
             Door merigoldPortal = new Door("magic portal", "It crackles and sparks with unstable magical force. It's so large you can peer through it from where you're stood, your gaze encountering distant landscapes, foreign wonders, exotic lands and the armies of the CurseBreaker, all visions flitting from one to the next - a different delivery point for each order of elixirs...", true, "blocked", null, null, "Placing your trust in Merigold's dubious calculations and whatever magic he can muster, you take a deep breath and plunge through the swirling vortex of chaotic energy...");
             Feature teslaCoil = new Feature("tesla coil", "Crackling and sparking with tame lightning you wonder if they power this whole th- youch! You shake off the jolt you received, your zapped finger smarting. Best steer clear of that thing...");
             Feature magicalBookcase = new Feature("magic bookcase", "You can scarcely grab a book from its shelves before the entire edifice whisks up at alarming speed, more shelves rising from through the floor, and books fly from the shelves, flapping their way to the wizard at the manufactory's centre; the conductor to this mad orchestra of glooping pipes and whirling cacophony.");
-            Item crumpledMissive = new Item();
-            Item emptyBottles = new Item();
+            Item crumpledMissive = new Item("crumpled missives");
+            Item emptyBottles = new Item("empty bottles");
             Feature worktop = new Feature("laboratory", " Aisles of haphazardly arranged worktops, replete with conical flasks, distillation tubes, alchemical devices and round-bottom retorts bubbling with strange essences form a mismanaged maze of meticulous mayhem, presided over by a lone elderly figure in loose fitting wizardly attire...");
             Item cork = new Item("stoppers");
             
