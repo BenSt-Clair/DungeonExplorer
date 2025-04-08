@@ -23,6 +23,11 @@ namespace DungeonCrawler
             _combat = combat;
             _room = room;
         }
+        public Dialogue(Player player, Room room)
+        {
+            _player = player;
+            _room = room;
+        }
         public Dialogue(Player player, Monster monster) 
         {
             _player = player; 
@@ -61,7 +66,7 @@ namespace DungeonCrawler
             }
         }
 
-        public int getIntResponse(int option)
+        public int getIntResponse(int option, int min = 1)
         {
             int answer1 = 0;
             while (true)
@@ -77,9 +82,9 @@ namespace DungeonCrawler
                     {
 
                         answer1 = int.Parse(answer);
-                        if (answer1 < 1 || answer1 >= option)
+                        if (answer1 < min || answer1 >= option)
                         {
-                            Console.WriteLine($"Please enter a number between 1 and {option - 1}!");
+                            Console.WriteLine($"Please enter a number between {min} and {option - 1}!");
                         }
                         else { break; }
                     }
@@ -92,7 +97,7 @@ namespace DungeonCrawler
             }
             return answer1;
         }
-        public List<long> getTimedIntResponse(int option)
+        public List<long> getTimedIntResponse(int option, int min = 1)
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -111,9 +116,9 @@ namespace DungeonCrawler
                     {
 
                         answer1 = int.Parse(answer);
-                        if (answer1 < 1 || answer1 >= option)
+                        if (answer1 < min || answer1 >= option)
                         {
-                            Console.WriteLine($"Please enter a number between 1 and {option - 1}!");
+                            Console.WriteLine($"Please enter a number between {min} and {option - 1}!");
                         }
                         else { sw.Stop(); timeLapsed = sw.ElapsedMilliseconds; break; }
                     }
@@ -234,6 +239,12 @@ namespace DungeonCrawler
                             Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]]);
                             Console.ReadKey(true);
                             return -1;
+                        }
+                        else if (choice_CustomResponse[playerChoices[node][answer1]] == "Merigold's face darkens the moment he realises you're not joking. 'I don't know who you are, stranger,' he visibly shakes with fury, 'but you're about to find out first hand why you should never cross a wizard. It's going to be your first lesson upon the subject, and I daresay your last...'\n You leer as you relish the fight to come. Oh this is going to be fun...")
+                        {
+                            Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]]);
+                            Console.ReadKey(true);
+                            return -50;
                         }
                         
                         Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]] + " " + parlances[node + 1]);
@@ -445,15 +456,16 @@ namespace DungeonCrawler
                                     player.Inventory.Remove(player.Inventory[j]);
                                 }
                             }
-
+                            
 
                         }
-                        return y;
+                        return 1;
                     }
                     else if (answer1 == x)
                     {
                         Console.WriteLine(choice_answer[choices[x]]);
-                        return x;
+                        
+                        return 2;
                     }
                     else if (answer1 < x && answer1 < y)
                     {
@@ -585,17 +597,17 @@ namespace DungeonCrawler
                     else if (answer1 == y)
                     {
                         Console.WriteLine(choice_answer[choices[y]]);
-                        return y;
+                        return 1;
                     }
                     else if (answer1 == x)
                     {
                         Console.WriteLine(choice_answer[choices[x]]);
-                        return x;
+                        return 2;
                     }
                     else if (answer1 == z)
                     {
-                        Console.WriteLine(choice_answer[choices[x]]);
-                        return z;
+                        Console.WriteLine(choice_answer[choices[z]]);
+                        return 3;
                     }
                     else if (answer1 < x && answer1 < y && answer1 < z)
                     {
@@ -671,26 +683,7 @@ namespace DungeonCrawler
             }
 
         }
-        /// <summary>
-        /// outcomes
-        /// (false, true, true, false) ~ normal dialogue strand engenders response
-        /// (false, false, true, true) ~ player ends dialogue
-        /// (true, false, false, false) ~ player successfully uses item during dialogue
-        /// (false, false, false, false) ~ player unsuccessfully uses item
-        /// (true, true, false, false) ~ player successfully starts fire wins combat
-        /// (false, true, false, false) ~ player starts fire and dies
-        /// (false, false, true, false) ~ player starts fight takes initiative, wins
-        /// (false, false, false, true) ~ player starts fight and dies
-        /// </summary>
-        /// <param name="response"></param>
-        /// <param name="usesDictionaryItemItem"></param>
-        /// <param name="usesDictionaryItemFeature"></param>
-        /// <param name="usesDictionaryItemChar"></param>
-        /// <param name="holeInCeiling"></param>
-        /// <param name="specialItems"></param>
-        /// <param name="rosewoodChest"></param>
-        /// <returns></returns>
-        /// <exception cref="InvalidOperationException"></exception>
+        
         
     }
 }

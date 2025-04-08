@@ -708,13 +708,13 @@ namespace DungeonCrawler
             Door merigoldPortal = new Door("magic portal", "It crackles and sparks with unstable magical force. It's so large you can peer through it from where you're stood, your gaze encountering distant landscapes, foreign wonders, exotic lands and the armies of the CurseBreaker, all visions flitting from one to the next - a different delivery point for each order of elixirs...", true, "blocked", null, null, "Placing your trust in Merigold's dubious calculations and whatever magic he can muster, you take a deep breath and plunge through the swirling vortex of chaotic energy...");
             Feature teslaCoil = new Feature("tesla coil", "Crackling and sparking with tame lightning you wonder if they power this whole th- youch! You shake off the jolt you received, your zapped finger smarting. Best steer clear of that thing...");
             Feature magicalBookcase = new Feature("magic bookcase", "You can scarcely grab a book from its shelves before the entire edifice whisks up at alarming speed, more shelves rising from through the floor, and books fly from the shelves, flapping their way to the wizard at the manufactory's centre; the conductor to this mad orchestra of glooping pipes and whirling cacophony.");
-            Item crumpledMissive = new Item("crumpled missives");
-            Item emptyBottles = new Item("empty bottles");
-            Feature worktop = new Feature("laboratory", " Aisles of haphazardly arranged worktops, replete with conical flasks, distillation tubes, alchemical devices and round-bottom retorts bubbling with strange essences form a mismanaged maze of meticulous mayhem, presided over by a lone elderly figure in loose fitting wizardly attire...");
-            Item cork = new Item("stoppers");
+            Item crumpledMissive = new Item("crumpled missives", "Littering the ground, they still seem to try and flap their way around with crumpled dishevelled page-wings. It seems they were erroneous orders...");
+            Item emptyBottles = new Item("empty bottles", "stacked for the conveyer belts to shuttle away, they are waiting to be filled with any number of ointments, elixirs and potions...");
+            Feature worktop = new Feature("laboratory", " Aisles of haphazardly arranged worktops, replete with conical flasks, distillation tubes, alchemical devices and round-bottom retorts bubbling with strange essences form a mismanaged maze of meticulous mayhem, presided over by a lone elderly figure in loose fitting wizardly attire, ostensibly too busy to notice your presence...", false, "unapproached");
+            Item cork = new Item("stoppers", "across the floor cork stoppers are strewn here and there, a spillage from one of the many crates it seems...");
             
-            List<Item> magicalManufactoryItems = new List<Item>();
-            List<Feature> magicalManufactoryFeatures = new List<Feature>();
+            
+            
             /// Secret Chamber Items and features
             List<Dice> whacking = new List<Dice> { D4 };
             Weapon staffMG = new Weapon("Marvellous Merigold's Magical Staff of Whacking", "It is a very fine, very well polished rosewood quarterstaff with the letters 'M' and 'G' cursively and elegantly embossed in gold upon it. It seems to shimmer with some kind of force for a moment, but when your eye catches it properly you conclude you were maybe imagining it... ", whacking, defaultCritHits, defaultGoodHits, 0, false);
@@ -780,7 +780,10 @@ namespace DungeonCrawler
             Item penny = new Item("loose change", "You found yourself a lucky penny!");
             Item crumbs = new Item("crumbs", "The careless remains of someone's meal, these crumbs pepper the floor here and there...");
             List<Item> southCorridorItems = new List<Item> {splinter, rug, looseNail, penny, crumbs, dustBunny};
-
+            
+            ///magical manufactory lists
+            List<Item> magicalManufactoryItems = new List<Item> { crumpledMissive, emptyBottles, cork, penny };
+            List<Feature> magicalManufactoryFeatures = new List<Feature> { circleDoor, copperPipes, brassTanks, conveyorBelts, merigoldPortal, teslaCoil, magicalBookcase, worktop };
             ///
             /// NorthCorridor Items and Features
             Door northeastCorner = new Door("northeastern corner", "The corner turns sharply right...", false, "unblocked", null, null, "You follow the corner around and into the easternmost corridor.");
@@ -796,11 +799,18 @@ namespace DungeonCrawler
             /// East corridor
             List<Feature> eastCorridorFeatures = new List<Feature> {northeastCorner, alcove, messHallDoor, alcove, southeastCorner };
             List<Item> eastCorridorItems = new List<Item> { splinter, looseNail, penny, crumbs, dustBunny };
+            Item merigoldBroach = new Item("broach embossed MG", "There's a shimmer to it that draws the eye, but the moment your gaze focuses on it the shimmer is gone and you are left looking at an altogether unprepossessing broach.");
+            Item merigoldMedallion = new Item("medallion embossed MG", "The medallion catches the light as you examine itt. It looks utterly worthless to your untrained eyes.");
+            Item bracelet = new Item("Bracelet embossed MG", "It's a curious item to find, especially in such a place as this. It seems to shimmer with an energy beyond your understanding or ability to unlock.", false);
+            Item belt = new Item("belt", "It's been made with corinthian leather. It seems altogether too affluent an effect to find upon these mercenaries. You find the letters M and G fashioned upon the gold buckle.");
+            Item diadem = new Item("fancy diadem", "It's encrusted with diamonds, peppered with pearls and... hey, is that an M and G engraved on the back?");
+            Item armBand = new Item("golden armband", "It's rather garish and flashy, especially with that large M and G fashioned upon it. You don't think you'll be wearing it anytime soon, even if it is solid gold...");
 
             //Special Items
-            List<Item> stickyItems = new List<Item> { bowlFragments, garment, bobbyPins, clunkySabaton, breastplate, helmet, bracers, splinter, rug, looseNail, penny, crumbs, dustBunny, mops, dusters, brooms, dustpans };
-            List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys, lockpickingSet, bookA1 };
-            
+            List<Item> stickyItems = new List<Item> { bowlFragments, garment, bobbyPins, clunkySabaton, breastplate, helmet, bracers, splinter, rug, looseNail, penny, crumbs, dustBunny, mops, dusters, brooms, dustpans, crumpledMissive, emptyBottles, cork };
+            List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys, lockpickingSet, bookA1, journal };
+            List<Item> MGItems = new List<Item> { knifeMG, staffMG, merigoldRing, pocketWatch, bracelet, merigoldMedallion, merigoldBroach, belt, diadem, armBand, box, bookA2 };
+
             ///Rooms
             Room room = new Room("dank cell", "The foreboding cell is bathed in the earthy glow of lit braziers, barely lighting cold stony walls, a heavy rosewood door studded with iron hinges, and only the sparsest of furnishings.\nThe door is set within the north wall, two flickering braziers casting orbs of low light either side of it so as to look like great fiery eyes watching you from the murk.\t\nTo the west wall there is a large chest, mingled with a cascade of rusted and disused iron shackles.\t\nTo the south wall is a small bookcase and some garments haphazardly strewn about you.\t\nTo the east wall is the last occupant; a skeleton with a permanent grin, bound fast to the wall by many interlocking heavy chains. It almost seems to watch you from dark wells where once there were its eyes. It holds something in its bony fist and something else glimmers from a place out of reach behind it.\t\t", cellInventory, cellfeatures);
             Room corridor = new Room("long corridor", "More of those strange braziers cast pools of frosty light within the dark corridor. Here and there they alleviate the murk within the passage of grim stone walls and rickety floorboards. It extends to the left into darkness and to the right towards a wide flight of stone stairs. \nTo the north you face another door similar to the ornate rosewood door behind you.\t\nTurning your gaze west down the shadowy passage you see the flickering braziers leading towards a dark stairwell, descending beyond the inky blackness to unknown depths.\t\nTurning your head south the ornate rosewood door to your own former cell meets your gaze.\t\nTo the east the passageway leads past more doors up to a flight of stairs, ascending to the next level of whatever building or (tower?) you find yourself in.\t\t", corridorItems, corridorFeatures);
@@ -1724,9 +1734,6 @@ namespace DungeonCrawler
             Weapon scimitar = new Weapon("rusty scimitar", "The scimitar's blade is flecked with rust. Crude and brittle, you doubt it'd last long parrying a better sword.", damage1, defaultCritHits, defaultGoodHits);
             Weapon bite = new Weapon("gnashing maw", "Sharp hook-like fangs lathered with drooling saliva, nestle within this creatures jaw, ready to draw blood.", damage1, defaultCritHits, defaultGoodHits);
             Weapon dagger = new Weapon("dagger", "The dagger's blade gleams like a crooked smile in some dubious tavern.", damage1, defaultCritHits, defaultGoodHits);
-            Item belt = new Item("belt", "It's been made with corinthian leather. It seems altogether too affluent an effect to find upon these mercenaries. You find the letters M and G fashioned upon the gold buckle.");
-            Item diadem = new Item("fancy diadem", "It's encrusted with diamonds, peppered with pearls and... hey, is that an M and G engraved on the back?");
-            Item armBand = new Item("golden armband", "It's rather garish and flashy, especially with that large M and G fashioned upon it. You don't think you'll be wearing it anytime soon, even if it is solid gold...");
             
             // player1.WeaponInventory.Add(breadKnife);
             // player1.Inventory.Add(healPotion);
@@ -1738,15 +1745,18 @@ namespace DungeonCrawler
             Item magManKey = new Item("copper key", "Found amongst the minotaur's possessions, this key has a tarnished look about it as though it could do with a good polish. You suppose it must unlock one of the doors in this landing. The question is, which one...", false);
             List<Item> goblinInventory = new List<Item> { scimitar };
             List<Item> gnollInventory = new List<Item> { dagger };
-            Item bracelet = new Item("Bracelet embossed MG", "It's a curious item to find, especially in such a place as this. It seems to shimmer with an energy beyond your understanding or ability to unlock.", false);
+            
             Item mercInsignia = new Item("insignia", "The insignia depicts a serpent with feathered wings. In the form of a broach it might look rather fetching on you...");
             List<Item> minotaurInventory = new List<Item> { vanquisher, armBand, belt, diadem, magManKey };
             List<Room> minotaurPath = new List<Room> { northernmostCorridor};
             Stopwatch minotaurTimer = new Stopwatch();
+            List<Item> mageinventory = new List<Item> { dagger };
+            Weapon lethalspell = new Weapon("magic missile", "", stilettoDamage, defaultCritHits, defaultGoodHits, 10);
             Monster minotaur = new Monster("minotaur", "towering above you at eight feet, the minotaur levels its horns towards you, tenses its powerful muscles, and charges!", minotaurInventory, 120, 10, vanquisher, northernmostCorridor, minotaurPath, false, false, minotaurTimer);
             Monster goblin = new Monster("goblin", "The goblin's swarthy, pock-marked skin does little to lessen the effect of its ugly snarl.", goblinInventory, 50, 2, scimitar);
             Monster ghoul2 = new Monster("ghoul engaged to Willow", "", gnollInventory, 1, 1, bite);
             Monster ghoul1 = new Monster("ghoul with paladin garb", "", gnollInventory, 1, 1, bite);
+            Monster mage = new Monster("elderly mage", "He totters menacingly towards you...", mageinventory, 3, 20, lethalspell);
             goblin.Items.Add(bracelet);
             goblin.Items.Add(mercInsignia);
             goblin.Items.Add(jailorKeys);
@@ -1755,6 +1765,7 @@ namespace DungeonCrawler
             Combat trialBattle = new Combat(goblin, player1);
             Combat toughestBattle = new Combat(minotaur, player1);
             Combat tougherBattle = new Combat(gnoll, player1);
+            Combat mageBattle = new Combat(mage, player1);
             Test test3 = new Test(player1, room, trialBattle);
             // Dictionaries for items used on other effects (items or features)
             List<Dice> rustyDamage = new List<Dice> { D6 };
@@ -1806,16 +1817,20 @@ namespace DungeonCrawler
             Combat tester = new Combat(goblin, gnoll, player1, null);
             tester.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, true, holeInCeiling, false, false);
             */
-            Item merigoldBroach = new Item("broach embossed MG", "There's a shimmer to it that draws the eye, but the moment your gaze focuses on it the shimmer is gone and you are left looking at an altogether unprepossessing broach.");
-            Item merigoldMedallion = new Item("medallion embossed MG", "The medallion catches the light as you examine itt. It looks utterly worthless to your untrained eyes.");
+            
             List<Item> goblin2Inventory = new List<Item> { breadKnife, merigoldBroach};
             gnollInventory.Add(merigoldMedallion);
             
             Monster goblinCaptain = new Monster("goblin", "The goblin's swarthy, pock-marked skin does little to lessen the effect of its ugly snarl.", goblin2Inventory, 60, 0, breadKnife);
             Combat dualDuel = new Combat(goblinCaptain, gnoll, player1);
             Combat minotaurKafuffle = new Combat(minotaur, player1);
-
-
+            /*
+            Merigold m = new Merigold(player1, room);
+            foreach (Dice d in m.MerigoldPlotPoint(specialItems, tougherBattle, secretChamber, goblin, gnoll, MGItems))
+            {
+                Console.WriteLine(d.Roll(d));
+            }
+            */
             Console.WriteLine($"You rouse yourself from your self-reflection. " +
                 $"Who knows who, or what, this dubious curse-breaker is? Who knows what they have in store for you - or how their twisted designs might alleviate whatever Myrovia's curse is?");
             if (player1.Traits.ContainsKey("thespian"))
@@ -1868,7 +1883,7 @@ namespace DungeonCrawler
                         ///when player discards rusty chains they may appear more than once. 
                         ///fungshui() is present to preempt that and prevent duplicates.
                         
-                        room.Investigate(aq, minotaurdoesnothing, justGrazing, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                        room.Investigate(aq, minotaurdoesnothing, justGrazing, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                         b++;
                     }
                     else if (reply1 == 3)
@@ -2649,7 +2664,7 @@ namespace DungeonCrawler
                                 corridor.ItemList.Remove(rustyChains);
                                 corridor.ItemList.Remove(bowlFragments);
                                 corridor.ItemList.Remove(looseNail);
-                                Room newRoom = corridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b1, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = corridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b1, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != corridor.Name)
                                 {
 
@@ -2812,7 +2827,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = room.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = room.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != room.Name)
                                 {
 
@@ -2902,7 +2917,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = oubliette.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = oubliette.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != oubliette.Name)
                                 {
 
@@ -3161,7 +3176,7 @@ namespace DungeonCrawler
                                 antechamber.ItemList.Remove(breastplate);
                                 antechamber.ItemList.Remove(helmet);
                                 antechamber.ItemList.Remove(bracers);
-                                Room newRoom = antechamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = antechamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 antechamber.FirstVisit = false;
                                 if (newRoom.Name != antechamber.Name)
                                 {
@@ -3316,7 +3331,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = cellOpposite.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = cellOpposite.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != cellOpposite.Name)
                                 {
 
@@ -5381,7 +5396,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = armoury.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = armoury.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != armoury.Name)
                                 {
 
@@ -5566,7 +5581,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = messHall.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = messHall.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (noteForJanitor.SpecifyAttribute == "read" && bucket.ItemList.Count == 0)
                                 {
                                     bucket.ItemList.Add(magManKey);
@@ -5802,7 +5817,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
                                 
-                                Room newRoom = westernmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, null, minotaur);
+                                Room newRoom = westernmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, null, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != westernmostCorridor.Name)
                                 {
                                     
@@ -6026,7 +6041,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = northernmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = northernmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != northernmostCorridor.Name)
                                 {
 
@@ -6251,7 +6266,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = easternmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, null, minotaur);
+                                Room newRoom = easternmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, null, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != easternmostCorridor.Name)
                                 {
 
@@ -6480,7 +6495,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = southernmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = southernmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != southernmostCorridor.Name)
                                 {
 
@@ -6634,7 +6649,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = emptyCell.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = emptyCell.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != emptyCell.Name)
                                 {
 
@@ -6709,7 +6724,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = magicalManufactory.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = magicalManufactory.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != magicalManufactory.Name)
                                 {
 
@@ -6790,7 +6805,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = broomCloset.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = broomCloset.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != broomCloset.Name)
                                 {
 
@@ -6860,7 +6875,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = highestParapet.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = highestParapet.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != highestParapet.Name)
                                 {
 
@@ -6928,7 +6943,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = hugeBarracks.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = hugeBarracks.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != hugeBarracks.Name)
                                 {
 
@@ -6997,7 +7012,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = desertIsland.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = desertIsland.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != desertIsland.Name)
                                 {
 
@@ -7066,7 +7081,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = bankVault.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = bankVault.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != bankVault.Name)
                                 {
 
@@ -7135,7 +7150,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = dragonLair.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = dragonLair.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != dragonLair.Name)
                                 {
 
@@ -7274,7 +7289,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = secretChamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mosaicPortal);
+                                Room newRoom = secretChamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, mosaicPortal);
                                 if (newRoom.Name != secretChamber.Name)
                                 {
 
@@ -7349,7 +7364,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = prehistoricJungle.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = prehistoricJungle.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != prehistoricJungle.Name)
                                 {
 
@@ -7418,7 +7433,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = astralPlanes.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = astralPlanes.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != astralPlanes.Name)
                                 {
 
@@ -7487,7 +7502,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = oceanBottom.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = oceanBottom.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != oceanBottom.Name)
                                 {
 
@@ -8023,7 +8038,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = dungeonChamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur);
+                                Room newRoom = dungeonChamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems);
                                 if (newRoom.Name != dungeonChamber.Name)
                                 {
 

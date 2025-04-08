@@ -148,7 +148,8 @@ namespace DungeonCrawler
                         {"Keep watching?", "" },
                         {"Pull away?", "You tear yourself away from the vision, seemingly lurching out of a world of fog and vapours and long shadows cast by events out of place and time. You find yourself back in the secret chamber. It takes a moment of inertia and vertigo before you quite feel yourself again and you can piece together what all that you witnessed means..." }
                     };
-
+                    this.Attribute = true;
+                    this.SpecifyAttribute = "examined";
                     crystal.LinearParle(choice_visions, parlances, playerchoice, description);
                     
                 }
@@ -1183,7 +1184,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape);
+                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -1265,7 +1266,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape);
+                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -1320,7 +1321,7 @@ namespace DungeonCrawler
                                     }
                                     else if (answer == "yes" || answer == "y")
                                     {
-                                        feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape);
+                                        feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null);
                                         break;
                                     }
                                     else if (answer == "no" || answer == "n")

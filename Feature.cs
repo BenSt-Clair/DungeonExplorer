@@ -113,13 +113,7 @@ namespace DungeonCrawler
                     {
                         switch (mosaicPuzzle.LoopParle(choice_answers, choices, description, parlance, 3, option, player))
                         {
-                            case 0:
-                                this.CastDoor().Name = "ajar mosaic door";
-                                this.CastDoor().Passing = "You push the strange mosaic and it opens out into an unfamiliar corridor...";
-                                this.CastDoor().Portal = mosaicPortal;
-                                this.CastDoor().Attribute = false;
-                                this.CastDoor().SpecificAttribute = "unlocked";
-                                return;
+                            
                             case 1:
                                 this.CastDoor().Name = "ajar mosaic door";
                                 this.CastDoor().Passing = "You push the strange mosaic and it opens out into an unfamiliar corridor...";
@@ -127,21 +121,7 @@ namespace DungeonCrawler
                                 this.CastDoor().Attribute = false;
                                 this.CastDoor().SpecificAttribute = "unlocked";
                                 return;
-                            case 2:
-                                this.CastDoor().Name = "ajar mosaic door";
-                                this.CastDoor().Passing = "You push the strange mosaic and it opens out into an unfamiliar corridor...";
-                                this.CastDoor().Portal = mosaicPortal;
-                                this.CastDoor().Attribute = false;
-                                this.CastDoor().SpecificAttribute = "unlocked";
-                                return;
-                            case 3:
-                                this.CastDoor().Name = "ajar mosaic door";
-                                this.CastDoor().Passing = "You push the strange mosaic and it opens out into an unfamiliar corridor...";
-                                this.CastDoor().Portal = mosaicPortal;
-                                this.CastDoor().Attribute = false;
-                                this.CastDoor().SpecificAttribute = "unlocked";
-                                
-                                return;
+                            
                             default:
                                 Console.WriteLine("You step away. Is it just you or does your backpack feel significantly lighter?");
                                 break;
@@ -151,7 +131,7 @@ namespace DungeonCrawler
                     {
                         switch (mosaicPuzzle.LoopParle(choice_answers, choices, description, parlance, 0, option, player))
                         {
-                            case 0:
+                            case 1:
                                 this.CastDoor().Name = "ajar mosaic door";
                                 this.CastDoor().Passing = "You push the strange mosaic and it opens out into an unfamiliar corridor...";
                                 this.CastDoor().Portal = mosaicPortal;
@@ -243,6 +223,8 @@ namespace DungeonCrawler
                             {"Step away from the mosaic...", "You ponder the answers you received a moment, before pensively deciding on a new course of action..." }
 
                         };
+                        this.Attribute = true;
+                        this.SpecificAttribute = "studied";
                         mosaicTalk.LoopParle(choice_answer, choices, description, parlance, 0);
                         return;
                     }
@@ -303,7 +285,7 @@ namespace DungeonCrawler
         /// </summary>
         /// <param name="inventory"></param>
         /// <param name="weaponInventory"></param>
-        public Room Search(int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, Room room, bool fieryEscape)
+        public Room Search(int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, Room room, bool fieryEscape, Player player, List<Item> specialItems = null, Combat battle = null, Room secretChamber = null, Monster goblin = null, Monster gnoll = null, List<Item> MGItems = null)
         {
             Console.WriteLine($"Rummaging about the {Name}, you find the following;");
             int r = 1;
@@ -989,6 +971,23 @@ namespace DungeonCrawler
             // In the case of features with no itemlist
             else
             {
+                if (Name == "laboratory" && SpecificAttribute == "unapproached")
+                {
+                    Console.WriteLine("Would you like to, perhaps, clear your throat and alert the bespectacled wizard to your presence?");
+                    Merigold merigold = new Merigold(player, room);
+
+                    if (merigold.getYesNoResponse())
+                    {
+                        List<Dice> endOfMidGameChoice = merigold.MerigoldPlotPoint(specialItems, battle, secretChamber, goblin, gnoll, MGItems);
+                        Attribute = true;
+                        SpecificAttribute = "dishevelled";
+                    }
+                    else
+                    {
+                        Console.WriteLine("You decide you'd better leave him to focus on what he's doing. It looks important...");
+                        return room;
+                    }
+                }
                 if (Name == "bookcase" || Name == "rosewood chest")
                 {
                     Console.WriteLine($"{Description} \nTry as hard as you might, you find no more items hidden about the {Name}. It has been thoroughly {SpecificAttribute}.");
