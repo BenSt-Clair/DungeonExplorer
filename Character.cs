@@ -952,13 +952,19 @@ namespace DungeonCrawler
             Console.WriteLine(message);
             int i = 0;
             int turn = 0;
+            string strand = "";
+            if (Name == "backpack")
+            {
+                strand += " to give to Merigold";
+            }
             if (continueSearch && plunder.Count() > 1)
             {
-                Console.WriteLine("Would you like to select one of these artefacts?");
+                
+                Console.WriteLine($"Would you like to select one of these artefacts{strand}?");
             }
             else if (continueSearch)
             {
-                Console.WriteLine("Would you like to select this item?");
+                Console.WriteLine($"Would you like to select this item{strand}?");
             }
             bool alreadyStashed = false;
             bool skip = false;
@@ -1031,19 +1037,19 @@ namespace DungeonCrawler
                 if (!continueSearch)
                 {
                     Console.WriteLine($"You finish rummaging through the {Name}'s effects.");
-                    continue;
+                    return;
                 }
                 alreadyStashed = false;
                 foreach (Item z in inventory)
                 {
-                    if (z.Name.ToLower() == answer)
+                    if (z.Name.ToLower() == answer && Name != "backpack")
                     {
                         alreadyStashed = true;
                     }
                 }
                 foreach (Weapon z in weaponInventory)
                 {
-                    if (z.Name.ToLower() == answer)
+                    if (z.Name.ToLower() == answer && Name != "backpack")
                     {
                         alreadyStashed = true;
                     }
@@ -1128,11 +1134,11 @@ namespace DungeonCrawler
                 if (Items.Count == 0)
                 {
                     Console.WriteLine($"You finish searching the {Name} for items.");
-                    break;
+                    return;
                 }
                 else if (!checkWeapon.Contains(answer))
                 {
-                    Console.WriteLine($"Please type in an item or weapon name listed above or else answer 'no' to finish your search of the {Name}.");
+                    Console.WriteLine($"Please type in an item or weapon name listed above or it's corresponding number or else answer 'no' to finish your search of the {Name}.");
 
                 }
             }

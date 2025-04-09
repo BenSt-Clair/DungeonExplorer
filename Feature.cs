@@ -998,7 +998,7 @@ namespace DungeonCrawler
                         {
                             player.midnightClock = new System.Diagnostics.Stopwatch();
                             player.midnightClock.Start();
-                            if (endOfMidGameChoice[0] == D1)
+                            if (endOfMidGameChoice[0].faces == D1.faces)
                             {
                                 Console.ReadKey(true);
                                 Console.WriteLine("You figure your best bet is to find the route through the subterranean levels of the tower and confront this Eldritch ArchFey the CurseBreaker needs for his sordid ritual to be complete." +
@@ -1015,9 +1015,9 @@ namespace DungeonCrawler
                         else
                         {
                             Merigold m = new Merigold(player, room);
-                            if (endOfMidGameChoice[0] == D120)
+                            if (endOfMidGameChoice[0].faces == D120.faces)
                             {
-                                Console.ReadKey(true);
+                                
                                 Console.WriteLine("Taking no heed of Merigold's warnings you stride gallantly to the portal. You spy landscapes and settings flit past your vision through its crackling whorl of sorcery, too fast to more than glimpse as the scenes rapidly shuffle before you. \nYou tense your muscles, trust in lady luck, then gallantly dive forward...");
                                 destination = 0;
                                 endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
@@ -1077,7 +1077,7 @@ namespace DungeonCrawler
                                     return destinations[0];
                                 }
                             }
-                            else if (endOfMidGameChoice[0] == D60)
+                            else if (endOfMidGameChoice[0].faces == D60.faces)
                             {
                                 Console.WriteLine("Merigold watches as you produce the artefacts you wish him to use. Though he makes an outward show of being phlegmatic, you can sense his anxiety radiating off of him." +
                                     "\nAfter you're done he peers up at you. 'Is that all?' " +
@@ -1089,7 +1089,7 @@ namespace DungeonCrawler
                                     Console.WriteLine("You tell Merigold you're prepared to take the risks...");
                                     Console.ReadKey(true);
                                     Console.WriteLine("\t'Very well then,' Merigold replies heavily, 'Where is it you'd like to go?'");
-                                    if (endOfMidGameChoice[2] == D1)//use portal to defeat CB
+                                    if (endOfMidGameChoice[2].faces == D1.faces)//use portal to defeat CB
                                     {
                                         Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
                                             "\n[2] Tell him you need one of those two weapons to combat the CurseBreaker's magic, and Merigold's staff sounds like the safest bet. You want the portal to trace it's location and whisk you there..." +
@@ -1562,7 +1562,7 @@ namespace DungeonCrawler
                                 }
                                     
                             }
-                            else if (endOfMidGameChoice[0] == D40)
+                            else if (endOfMidGameChoice[0].faces == D40.faces)
                             {
                                 Console.WriteLine("Merigold watches as you produce the artefacts you wish him to use. Though he makes an outward show of being phlegmatic, you can sense his anxiety radiating off of him." +
                                     "\nAfter you're done he peers up at you. 'Well, it could be worse... Are you sure that's all you have?' " +
@@ -1574,7 +1574,7 @@ namespace DungeonCrawler
                                     Console.WriteLine("You tell Merigold you're prepared to take the risks...");
                                     Console.ReadKey(true);
                                     Console.WriteLine("\t'Very well then,' Merigold replies heavily, 'Where is it you'd like to go?'");
-                                    if (endOfMidGameChoice[endOfMidGameChoice.Count - 1] == D1)//use portal to defeat CB
+                                    if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)//use portal to defeat CB
                                     {
                                         Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
                                             "\n[2] Tell him you need one of those two weapons to combat the CurseBreaker's magic, and Merigold's staff sounds like the safest bet. You want the portal to trace it's location and whisk you there..." +
@@ -2046,7 +2046,7 @@ namespace DungeonCrawler
 
                                 }
                             }
-                            else if (endOfMidGameChoice[0] == D30)
+                            else if (endOfMidGameChoice[0].faces == D30.faces)
                             {
                                 Console.WriteLine("Merigold watches as you produce the artefacts you wish him to use. At first he seems nervous, but the more items you display before him the more evident is his relief." +
                                     "\nAfter you're done he peers up at you. 'Good... This is a good haul. Not ideal, perhaps, but I believe you have an excellent chance with this. Are you sure that's all you have?' " +
@@ -2058,7 +2058,7 @@ namespace DungeonCrawler
                                     Console.WriteLine("You tell Merigold you're prepared to take the risks...");
                                     Console.ReadKey(true);
                                     Console.WriteLine("\t'Very well then,' Merigold replies heavily, 'Where is it you'd like to go?'");
-                                    if (endOfMidGameChoice[endOfMidGameChoice.Count - 1] == D1)//use portal to defeat CB
+                                    if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)//use portal to defeat CB
                                     {
                                         Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
                                             "\n[2] Tell him you need one of those two weapons to combat the CurseBreaker's magic, and Merigold's staff sounds like the safest bet. You want the portal to trace it's location and whisk you there..." +
@@ -2601,7 +2601,7 @@ namespace DungeonCrawler
 
                                 }
                             }
-                            else if (endOfMidGameChoice[0] == D24)
+                            else if (endOfMidGameChoice[0].faces == D24.faces)
                             {
                                 Console.WriteLine("Merigold watches as you produce the artefacts you wish him to use. At first he seems nervous, but the more items you display before him the more evident is his relief." +
                                     "\nAfter you're done he peers up at you. 'Good... This is a good haul. Not ideal, perhaps, but I believe you have an excellent chance with this. Are you sure that's all you have?' " +
@@ -2613,7 +2613,7 @@ namespace DungeonCrawler
                                     Console.WriteLine("You tell Merigold you're prepared to take the risks...");
                                     Console.ReadKey(true);
                                     Console.WriteLine("\t'Very well then,' Merigold replies heavily, 'Where is it you'd like to go?'");
-                                    if (endOfMidGameChoice[endOfMidGameChoice.Count - 1] == D1)//use portal to defeat CB
+                                    if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)//use portal to defeat CB
                                     {
                                         Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
                                             "\n[2] Tell him you need one of those two weapons to combat the CurseBreaker's magic, and Merigold's staff sounds like the safest bet. You want the portal to trace it's location and whisk you there..." +
@@ -3150,12 +3150,12 @@ namespace DungeonCrawler
 
                                 }
                             }
-                            else if (endOfMidGameChoice[0] == D20)
+                            else if (endOfMidGameChoice[0].faces == D20.faces)
                             {
                                 Console.WriteLine("You display no less than ten artefacts before Merigold's astonished eyes...");
                                 Console.ReadKey(true);
                                 Console.WriteLine("\t'Very well then,' Merigold replies elatedly, 'Where is it you'd like to go?'");
-                                if (endOfMidGameChoice[endOfMidGameChoice.Count - 1] == D1)//use portal to defeat CB
+                                if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)//use portal to defeat CB
                                 {
                                     Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
                                         "\n[2] Tell him you need one of those two weapons to combat the CurseBreaker's magic, and Merigold's staff sounds like the safest bet. You want the portal to trace it's location and whisk you there..." +
@@ -3681,12 +3681,12 @@ namespace DungeonCrawler
                                     }
                                 }
                             }
-                            else if (endOfMidGameChoice[0] == D15)
+                            else if (endOfMidGameChoice[0].faces == D15.faces)
                             {
                                 Console.WriteLine("You display no less than eleven artefacts before Merigold's astonished eyes...");
                                 Console.ReadKey(true);
                                 Console.WriteLine("\t'Very well then,' Merigold replies elatedly, 'Where is it you'd like to go?'");
-                                if (endOfMidGameChoice[endOfMidGameChoice.Count - 1] == D1)//use portal to defeat CB
+                                if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)//use portal to defeat CB
                                 {
                                     Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
                                         "\n[2] Tell him you need one of those two weapons to combat the CurseBreaker's magic, and Merigold's staff sounds like the safest bet. You want the portal to trace it's location and whisk you there..." +
@@ -4212,12 +4212,12 @@ namespace DungeonCrawler
                                     }
                                 }
                             }
-                            else if (endOfMidGameChoice[0] == D10)
+                            else if (endOfMidGameChoice[0].faces == D10.faces)
                             {
                                 Console.WriteLine("You display all of the artefacts before Merigold's astonished eyes... 'My goodness,' he breathes disbelievingly, 'My dear fellow how did you do it? No. Don't answer. We haven't time to waste...'");
                                 Console.ReadKey(true);
                                 Console.WriteLine("\t'Where is it you'd like to go?'");
-                                if (endOfMidGameChoice[endOfMidGameChoice.Count - 1] == D1)
+                                if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)
                                 {
                                     Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
                                         "\n[2] Tell him you want to stop any chance of this ritual from happening. With some knot of foreboding you instruct Merigold to deliver you to the oubliette and the creature lurking therein...");

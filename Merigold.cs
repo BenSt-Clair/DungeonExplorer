@@ -526,12 +526,12 @@ namespace DungeonCrawler
 
                                         Console.ReadKey(true);
                                         Console.WriteLine("Which artefacts are you willing to give to Merigold?");
-                                        numOfMGItems += 1;
+                                        
 
 
                                         backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
                                         numOfMGItems = numOfMGItems - backpack.Items.Count;
-                                        switch (getIntResponse(numOfMGItems, 0))
+                                        switch (numOfMGItems)
                                         {
                                             case 0:
                                                 Console.WriteLine("'Nothing?!' Merigold blurts. Were he drinking tea at that moment you suspect he'd have sprayed it over your face. 'Have you been listening to a word I've said? I can't control that portal without magic! You'd be playing roulette with your life!" +
@@ -617,12 +617,12 @@ namespace DungeonCrawler
 
                                     Console.ReadKey(true);
                                     Console.WriteLine("Which artefacts are you willing to give to Merigold?");
-                                    numOfMGItems += 1;
+                                    
 
 
                                     backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
                                     numOfMGItems = numOfMGItems - backpack.Items.Count;
-                                    switch (getIntResponse(numOfMGItems, 0))
+                                    switch (numOfMGItems)
                                     {
                                         case 0:
                                             Console.WriteLine("'Nothing?!' Merigold blurts. Were he drinking tea at that moment you suspect he'd have sprayed it over your face. 'Have you been listening to a word I've said? I can't control that portal without magic! You'd be playing roulette with your life!" +
@@ -688,13 +688,13 @@ namespace DungeonCrawler
                                 
                                 Console.ReadKey(true);
                                 Console.WriteLine("Which artefacts are you willing to give to Merigold?");
-                                numOfMGItems += 1;
+                                
                                 
                                 
 
                                 backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
                                 numOfMGItems = numOfMGItems - backpack.Items.Count;
-                                switch (getIntResponse(numOfMGItems, 0))
+                                switch (numOfMGItems)
                                 {
                                     case 0:
                                         Console.WriteLine("'Nothing?!' Merigold blurts. Were he drinking tea at that moment you suspect he'd have sprayed it over your face. 'Have you been listening to a word I've said? I can't control that portal without magic! You'd be playing roulette with your life!" +
@@ -791,14 +791,14 @@ namespace DungeonCrawler
                                             }
                                         }
                                         
-                                        numOfMGItems += 1;
+                                        
                                         Console.ReadKey(true);
                                         Console.WriteLine("Which artefacts are you willing to give to Merigold?");
                                         
 
                                         backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
                                         numOfMGItems = numOfMGItems - backpack.Items.Count;
-                                        switch (getIntResponse(numOfMGItems, 0))
+                                        switch (numOfMGItems)
                                         {
                                             case 0:
                                                 Console.WriteLine("'Nothing?!' Merigold blurts. Were he drinking tea at that moment you suspect he'd have sprayed it over your face. 'Have you been listening to a word I've said? I can't control that portal without magic! You'd be playing roulette with your life!" +
@@ -881,14 +881,14 @@ namespace DungeonCrawler
                                         }
                                     }
                                     
-                                    numOfMGItems += 1;
+                                    
                                     Console.ReadKey(true);
                                     Console.WriteLine("Which artefacts are you willing to give to Merigold?");
                                     
 
                                     backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
                                     numOfMGItems = numOfMGItems - backpack.Items.Count;
-                                    switch (getIntResponse(numOfMGItems, 0))
+                                    switch (numOfMGItems)
                                     {
                                         case 0:
                                             Console.WriteLine("'Nothing?!' Merigold blurts. Were he drinking tea at that moment you suspect he'd have sprayed it over your face. 'Have you been listening to a word I've said? I can't control that portal without magic! You'd be playing roulette with your life!" +
@@ -953,14 +953,14 @@ namespace DungeonCrawler
                                 {
                                     Console.WriteLine("You have none of Merigold's artefacts!");
                                 }
-                                numOfMGItems += 1;
+                                
                                 Console.ReadKey(true);
                                 Console.WriteLine("How many are you willing to give to Merigold?");
                                 
 
                                 backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
                                 numOfMGItems = numOfMGItems - backpack.Items.Count;
-                                switch (getIntResponse(numOfMGItems, 0))
+                                switch (numOfMGItems)
                                 {
                                     case 0:
                                         Console.WriteLine("'Nothing?!' Merigold blurts. Were he drinking tea at that moment you suspect he'd have sprayed it over your face. 'Have you been listening to a word I've said? I can't control that portal without magic! You'd be playing roulette with your life!" +

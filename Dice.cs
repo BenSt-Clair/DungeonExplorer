@@ -16,7 +16,7 @@ namespace DungeonCrawler
     /// </summary>
     public class Dice
     {
-        int faces { get; set; }
+        public int faces { get; set; }
         public Dice(int face)
         {
             faces = face;
