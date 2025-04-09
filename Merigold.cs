@@ -15,9 +15,10 @@ namespace DungeonCrawler
             _player = player;
             _room = room;
         }
-        public List<Dice> MerigoldPlotPoint(List<Item> specialItems, Combat battle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems)
+        public List<Dice> MerigoldPlotPoint(List<Item> specialItems, Combat battle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, Door stairwayToLower)
         {
             Dice D1 = new Dice(1);
+            string message = "";
             string strand = "";
             if (_player.Traits.ContainsKey("thespian"))
             {
@@ -487,6 +488,8 @@ namespace DungeonCrawler
                     int numOfMGItems = 0;
                     Dice D2 = new Dice(2);
                     Dice D3 = new Dice(3);
+                    Weapon flap = new Weapon("", "", new List<Dice> { D120 }, new List<string>(), new List<string>());
+                    Monster backpack = new Monster("backpack", "", MGItems, 1, 1, flap);
                     if (!_player.FieryEscape)
                     {
                         switch (LoopParle(choice_answer, playerchoices1, description1, parlance, 8, 9, 10))
@@ -506,14 +509,27 @@ namespace DungeonCrawler
                                     {
                                         Console.WriteLine("'Then, I must ask,' Merigold inquires nervously, 'just how many of my artefacts have you collected?'");
                                         numOfMGItems = 0;
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("You search through your pack for the artefacts you happened to pick up during your escapades...");
+
+                                        message = "";
                                         foreach (Item item in MGItems)
                                         {
                                             if (_player.Inventory.Contains(item))
                                             {
                                                 numOfMGItems++;
+                                                message += $"[{numOfMGItems}] {item.Name}\n";
                                             }
                                         }
+
+
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Which artefacts are you willing to give to Merigold?");
                                         numOfMGItems += 1;
+
+
+                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                        numOfMGItems = numOfMGItems - backpack.Items.Count;
                                         switch (getIntResponse(numOfMGItems, 0))
                                         {
                                             case 0:
@@ -565,11 +581,16 @@ namespace DungeonCrawler
                                         Console.WriteLine("'Then,' Merigold concludes, 'I have helped you the best I can. " +
                                             "If you do not wish to pass through this portal, then the only exit is the door. " +
                                             "However you dealt with the minotaur before you got here... well, I can only wish " +
-                                            "you the best of luck. If you change your mind, of course, you know where to find " +
+                                            "you the best of luck. Oh! And before I forget...' He waves his arms in the forms of some esoteric" +
+                                            " incantation. 'There! I believe I had just enough magic to light the stairway down to the lowest levels. " +
+                                            " It should no longer be quite so treacherous to traverse, but if you do change your mind, you know where to find " +
                                             "me...'\n\nYou begin to stride purposefully away your gaze set on the task at hand," +
                                             " when Merigold calls out to you one last time. \n\t'And remember this above all, " +
                                             "you have only until the clock strikes twelve! All the gods help you if you don't " +
                                             "stop him before then...'");
+                                        stairwayToLower.Name = "bright stairwell";
+                                        stairwayToLower.Description = "Merigold's incantaition has illuminated these stairs. At last you can see just how dangerous they really are with jutting uneven steps, crumbling masonry and little if any handholds. Descending these stairs may still prove dangerous even when lit...";
+                                        stairwayToLower.Dark = false;
                                         return new List<Dice> { D1 };
 
                                     }
@@ -578,14 +599,27 @@ namespace DungeonCrawler
                                 {
                                     Console.WriteLine("Merigold cannot hide how crestfallen he is. \n\t'Then I suppose all that is left for me to do is use the portal to deliver you to wherever you wish to go... \n\t'How many artefacts do you have?'");
                                     numOfMGItems = 0;
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("You search through your pack for the artefacts you happened to pick up during your escapades...");
+
+                                    message = "";
                                     foreach (Item item in MGItems)
                                     {
                                         if (_player.Inventory.Contains(item))
                                         {
                                             numOfMGItems++;
+                                            message += $"[{numOfMGItems}] {item.Name}\n";
                                         }
                                     }
+
+
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("Which artefacts are you willing to give to Merigold?");
                                     numOfMGItems += 1;
+
+
+                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                    numOfMGItems = numOfMGItems - backpack.Items.Count;
                                     switch (getIntResponse(numOfMGItems, 0))
                                     {
                                         case 0:
@@ -635,14 +669,28 @@ namespace DungeonCrawler
                             case 2: // use the portal to defeat CurseBreaker
 
                                 numOfMGItems = 0;
+                                Console.ReadKey(true);
+                                Console.WriteLine("You search through your pack for the artefacts you happened to pick up during your escapades...");
+
+                                message = "";
                                 foreach (Item item in MGItems)
                                 {
                                     if (_player.Inventory.Contains(item))
                                     {
                                         numOfMGItems++;
+                                        message += $"[{numOfMGItems}] {item.Name}\n";
                                     }
                                 }
+
+                                
+                                Console.ReadKey(true);
+                                Console.WriteLine("Which artefacts are you willing to give to Merigold?");
                                 numOfMGItems += 1;
+                                
+                                
+
+                                backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                numOfMGItems = numOfMGItems - backpack.Items.Count;
                                 switch (getIntResponse(numOfMGItems, 0))
                                 {
                                     case 0:
@@ -689,6 +737,19 @@ namespace DungeonCrawler
                                         return new List<Dice> { D1 };
                                 }
                             case 3: // find your own way forward
+                                Console.WriteLine("'Then,' Merigold concludes, 'I have helped you the best I can. " +
+                                            "If you do not wish to pass through this portal, then the only exit is the door. " +
+                                            "However you dealt with the minotaur before you got here... well, I can only wish " +
+                                            "you the best of luck. Oh! And before I forget...' He waves his arms in the forms of some esoteric" +
+                                            " incantation. 'There! I believe I had just enough magic to light the stairway down to the lowest levels. " +
+                                            " It should no longer be quite so treacherous to traverse, but if you do change your mind, you know where to find " +
+                                            "me...'\n\nYou begin to stride purposefully away your gaze set on the task at hand," +
+                                            " when Merigold calls out to you one last time. \n\t'And remember this above all, " +
+                                            "you have only until the clock strikes twelve! All the gods help you if you don't " +
+                                            "stop him before then...'");
+                                stairwayToLower.Name = "bright stairwell";
+                                stairwayToLower.Description = "Merigold's incantaition has illuminated these stairs. At last you can see just how dangerous they really are with jutting uneven steps, crumbling masonry and little if any handholds. Descending these stairs may still prove dangerous even when lit...";
+                                stairwayToLower.Dark = false;
                                 return new List<Dice> { D1 };
                             default:
                                 return new List<Dice> { D1 };
@@ -713,14 +774,26 @@ namespace DungeonCrawler
                                     {
                                         Console.WriteLine("'Then, I must ask,' Merigold inquires nervously, 'just how many of my artefacts have you collected?'");
                                         numOfMGItems = 0;
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("You search through your pack for the artefacts you happened to pick up during your escapades...");
+                                        
+                                        message = "";
                                         foreach (Item item in MGItems)
                                         {
                                             if (_player.Inventory.Contains(item))
                                             {
                                                 numOfMGItems++;
+                                                message += $"[{numOfMGItems}] {item.Name}\n";
                                             }
                                         }
+                                        
                                         numOfMGItems += 1;
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Which artefacts are you willing to give to Merigold?");
+                                        
+
+                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                        numOfMGItems = numOfMGItems - backpack.Items.Count;
                                         switch (getIntResponse(numOfMGItems, 0))
                                         {
                                             case 0:
@@ -772,11 +845,16 @@ namespace DungeonCrawler
                                         Console.WriteLine("'Then,' Merigold concludes, 'I have helped you the best I can. " +
                                             "If you do not wish to pass through this portal, then the only exit is the door. " +
                                             "However you dealt with the minotaur before you got here... well, I can only wish " +
-                                            "you the best of luck. If you change your mind, of course, you know where to find " +
+                                            "you the best of luck. Oh! And before I forget...' He waves his arms in the forms of some esoteric" +
+                                            " incantation. 'There! I believe I had just enough magic to light the stairway down to the lowest levels. " +
+                                            " It should no longer be quite so treacherous to traverse, but if you do change your mind, you know where to find " +
                                             "me...'\n\nYou begin to stride purposefully away your gaze set on the task at hand," +
                                             " when Merigold calls out to you one last time. \n\t'And remember this above all, " +
                                             "you have only until the clock strikes twelve! All the gods help you if you don't " +
                                             "stop him before then...'");
+                                        stairwayToLower.Name = "bright stairwell";
+                                        stairwayToLower.Description = "Merigold's incantaition has illuminated these stairs. At last you can see just how dangerous they really are with jutting uneven steps, crumbling masonry and little if any handholds. Descending these stairs may still prove dangerous even when lit...";
+                                        stairwayToLower.Dark = false;
                                         return new List<Dice> { D1 };
 
                                     }
@@ -785,14 +863,26 @@ namespace DungeonCrawler
                                 {
                                     Console.WriteLine("Merigold cannot hide how crestfallen he is. \n\t'Then I suppose all that is left for me to do is use the portal to deliver you to wherever you wish to go... \n\t'How many artefacts do you have?'");
                                     numOfMGItems = 0;
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("You search through your pack for the artefacts you happened to pick up during your escapades...");
+                                    
+                                    message = "";
                                     foreach (Item item in MGItems)
                                     {
                                         if (_player.Inventory.Contains(item))
                                         {
                                             numOfMGItems++;
+                                            message += $"[{numOfMGItems}] {item.Name}\n";
                                         }
                                     }
+                                    
                                     numOfMGItems += 1;
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("Which artefacts are you willing to give to Merigold?");
+                                    
+
+                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                    numOfMGItems = numOfMGItems - backpack.Items.Count;
                                     switch (getIntResponse(numOfMGItems, 0))
                                     {
                                         case 0:
@@ -840,14 +930,30 @@ namespace DungeonCrawler
                                 }
                             default://face CB
                                 numOfMGItems = 0;
+                                Console.ReadKey(true);
+                                Console.WriteLine("You search through your pack for the artefacts you happened to pick up during your escapades...");
+                                Console.WriteLine("You find the following:");
+                                message = "";
                                 foreach (Item item in MGItems)
                                 {
                                     if (_player.Inventory.Contains(item))
                                     {
                                         numOfMGItems++;
+                                        message += $"[{numOfMGItems}] {item.Name}\n";
                                     }
                                 }
+                                Console.WriteLine(message);
+                                if (message == "")
+                                {
+                                    Console.WriteLine("You have none of Merigold's artefacts!");
+                                }
                                 numOfMGItems += 1;
+                                Console.ReadKey(true);
+                                Console.WriteLine("How many are you willing to give to Merigold?");
+                                
+
+                                backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                numOfMGItems = numOfMGItems - backpack.Items.Count;
                                 switch (getIntResponse(numOfMGItems, 0))
                                 {
                                     case 0:

@@ -1136,8 +1136,11 @@ namespace DungeonCrawler
         /// <returns></returns>
         public bool UseItem1(Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Monster monster, Combat battle, bool fieryEscape, Item binkySkull = null, Item musicBox = null, Item note = null, Item jailorKeys = null)
         {
+            Door door1 = new Door();
+            List<Room> roomlist = new List<Room>(); // empty lists for filling in Search function unused parameters
             if (usesDictionary[item].Contains(feature))
             {
+                
                 feature.Attribute = !feature.Attribute; // key lock unlock, weapon intact broken, magical charm uncharmed charmed, etc
                 if (feature.Attribute == false)
                 {
@@ -1184,7 +1187,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null);
+                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -1266,7 +1269,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null);
+                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -1321,7 +1324,7 @@ namespace DungeonCrawler
                                     }
                                     else if (answer == "yes" || answer == "y")
                                     {
-                                        feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null);
+                                        feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
                                         break;
                                     }
                                     else if (answer == "no" || answer == "n")

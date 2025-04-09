@@ -59,8 +59,9 @@ namespace DungeonCrawler
         public int CarryCapacity { get; set; }
         public bool FieryEscape { get; set; }
         public bool Speedy { get; set; }
+        public Stopwatch midnightClock { get; set; }
 
-        public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits, bool masked = false, bool fieryEscape = false, bool speedy = false)
+        public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits, bool masked = false, bool fieryEscape = false, bool speedy = false, Stopwatch midnightClock = null)
         {
             Name = name;
             Skill = skill;
@@ -73,6 +74,7 @@ namespace DungeonCrawler
             CarryCapacity = 12;
             FieryEscape = fieryEscape;
             Speedy = speedy;
+            this.midnightClock = midnightClock;
         }
         public string DisplayName() { return Name; }
         public int DisplaySkill() { return Skill; }
@@ -934,9 +936,14 @@ namespace DungeonCrawler
                 message += $"\n[{number}] {x.Name}";
                 number++;
             }
-
-            
-            message += $"\nupon the {Name}.";
+            if (Name == "backpack")
+            {
+                message += $"\nwithin your pack.";
+            }
+            else
+            {
+                message += $"\nupon the {Name}.";
+            }
             if (Items.Count() == 0)
             {
                 message = "You find nothing of note";
@@ -947,11 +954,11 @@ namespace DungeonCrawler
             int turn = 0;
             if (continueSearch && plunder.Count() > 1)
             {
-                Console.WriteLine("Would you like to pick up one of these artefacts?");
+                Console.WriteLine("Would you like to select one of these artefacts?");
             }
             else if (continueSearch)
             {
-                Console.WriteLine("Would you like to pick up this item?");
+                Console.WriteLine("Would you like to select this item?");
             }
             bool alreadyStashed = false;
             bool skip = false;
@@ -968,8 +975,14 @@ namespace DungeonCrawler
                         number++;
                     }
 
-
-                    message += $"\nupon the {Name}.";
+                    if (Name == "backpack")
+                    {
+                        message += $"\nwithin your pack.";
+                    }
+                    else
+                    {
+                        message += $"\nupon the {Name}.";
+                    }
                     Console.WriteLine(message, "\nWould you like to pick up another one of the above items?");
                 }
                 turn++;
@@ -1062,10 +1075,19 @@ namespace DungeonCrawler
                     }
                     else if (x.Name.Trim().ToLower() == answer)
                     {
-
-                        x.PickUpItem(carryCapacity, inventory, weaponInventory, 3, 0, null, x, null, null, null, null, this);
-                        answer = "";
-                        skip = true;
+                        if (Name == "backpack")
+                        {
+                            inventory.Remove(x);
+                            Items.Remove(x);
+                            answer = "";
+                            skip = true;
+                        }
+                        else
+                        {
+                            x.PickUpItem(carryCapacity, inventory, weaponInventory, 3, 0, null, x, null, null, null, null, this);
+                            answer = "";
+                            skip = true;
+                        }
 
                         
 
@@ -1087,8 +1109,17 @@ namespace DungeonCrawler
 
                     else if (x.Name.Trim().ToLower() == answer)
                     {
-                        x.PickUpItem(carryCapacity, inventory, weaponInventory, 3, 0, x, null,null,null, null,null, this);
-                        
+                        if (Name == "backpack")
+                        {
+                            inventory.Remove(x);
+                            Items.Remove(x);
+                            answer = "";
+                            skip = true;
+                        }
+                        else
+                        {
+                            x.PickUpItem(carryCapacity, inventory, weaponInventory, 3, 0, x, null, null, null, null, null, this);
+                        }
                         break;
                     }
 
