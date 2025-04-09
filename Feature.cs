@@ -973,6 +973,7 @@ namespace DungeonCrawler
             {
                 if (Name == "laboratory" && SpecificAttribute == "unapproached")
                 {
+                    Console.WriteLine(Description);
                     Dice D120 = new Dice(120);
                     Dice D60 = new Dice(60);
                     Dice D40 = new Dice(40);

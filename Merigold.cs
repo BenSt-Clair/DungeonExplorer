@@ -489,7 +489,7 @@ namespace DungeonCrawler
                     Dice D2 = new Dice(2);
                     Dice D3 = new Dice(3);
                     Weapon flap = new Weapon("", "", new List<Dice> { D120 }, new List<string>(), new List<string>());
-                    Monster backpack = new Monster("backpack", "", MGItems, 1, 1, flap);
+                    Monster backpack = new Monster("backpack", "", new List<Item>(), 1, 1, flap);
                     if (!_player.FieryEscape)
                     {
                         switch (LoopParle(choice_answer, playerchoices1, description1, parlance, 8, 9, 10))
@@ -518,6 +518,7 @@ namespace DungeonCrawler
                                             if (_player.Inventory.Contains(item))
                                             {
                                                 numOfMGItems++;
+                                                backpack.Items.Add(item);
                                                 message += $"[{numOfMGItems}] {item.Name}\n";
                                             }
                                         }
@@ -608,6 +609,7 @@ namespace DungeonCrawler
                                         if (_player.Inventory.Contains(item))
                                         {
                                             numOfMGItems++;
+                                            backpack.Items.Add(item);
                                             message += $"[{numOfMGItems}] {item.Name}\n";
                                         }
                                     }
@@ -678,6 +680,7 @@ namespace DungeonCrawler
                                     if (_player.Inventory.Contains(item))
                                     {
                                         numOfMGItems++;
+                                        backpack.Items.Add(item);
                                         message += $"[{numOfMGItems}] {item.Name}\n";
                                     }
                                 }
@@ -783,6 +786,7 @@ namespace DungeonCrawler
                                             if (_player.Inventory.Contains(item))
                                             {
                                                 numOfMGItems++;
+                                                backpack.Items.Add(item);
                                                 message += $"[{numOfMGItems}] {item.Name}\n";
                                             }
                                         }
@@ -872,6 +876,7 @@ namespace DungeonCrawler
                                         if (_player.Inventory.Contains(item))
                                         {
                                             numOfMGItems++;
+                                            backpack.Items.Add(item);
                                             message += $"[{numOfMGItems}] {item.Name}\n";
                                         }
                                     }
@@ -939,6 +944,7 @@ namespace DungeonCrawler
                                     if (_player.Inventory.Contains(item))
                                     {
                                         numOfMGItems++;
+                                        backpack.Items.Add(item);
                                         message += $"[{numOfMGItems}] {item.Name}\n";
                                     }
                                 }
