@@ -60,8 +60,8 @@ namespace DungeonCrawler
         public bool FieryEscape { get; set; }
         public bool Speedy { get; set; }
         public Stopwatch midnightClock { get; set; }
-
-        public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits, bool masked = false, bool fieryEscape = false, bool speedy = false, Stopwatch midnightClock = null)
+        public int MGItemsDonated { get; set; }
+        public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits, bool masked = false, bool fieryEscape = false, bool speedy = false, Stopwatch midnightClock = null, int MGItemsDonated = 0)
         {
             Name = name;
             Skill = skill;
@@ -75,6 +75,7 @@ namespace DungeonCrawler
             FieryEscape = fieryEscape;
             Speedy = speedy;
             this.midnightClock = midnightClock;
+            this.MGItemsDonated = MGItemsDonated;
         }
         public string DisplayName() { return Name; }
         public int DisplaySkill() { return Skill; }

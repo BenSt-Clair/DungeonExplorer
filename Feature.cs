@@ -1092,7 +1092,7 @@ namespace DungeonCrawler
                                     if (endOfMidGameChoice[2].faces == D1.faces)//use portal to defeat CB
                                     {
                                         Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
-                                            "\n[2] Tell him you need one of those two weapons to combat the CurseBreaker's magic, and Merigold's staff sounds like the safest bet. You want the portal to trace it's location and whisk you there..." +
+                                            "\n[2] Tell him you want the portal to trace where the CurseBreaker hid Merigold's staff and for it to whisk you there..." +
                                             "\n[3] Tell him you want to stop any chance of this ritual from happening. With some knot of foreboding you instruct Merigold to deliver you to the oubliette and the creature lurking therein...");
                                         switch (m.getIntResponse(4))
                                         {
@@ -1577,7 +1577,7 @@ namespace DungeonCrawler
                                     if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)//use portal to defeat CB
                                     {
                                         Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
-                                            "\n[2] Tell him you need one of those two weapons to combat the CurseBreaker's magic, and Merigold's staff sounds like the safest bet. You want the portal to trace it's location and whisk you there..." +
+                                            "\n[2] Tell him you want the portal to trace where the CurseBreaker hid Merigold's staff and for it to whisk you there..." +
                                             "\n[3] Tell him you want to stop any chance of this ritual from happening. With some knot of foreboding you instruct Merigold to deliver you to the oubliette and the creature lurking therein...");
                                         switch (m.getIntResponse(4))
                                         {
@@ -1606,39 +1606,39 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 105 || destination < 16)
                                                 {
-                                                    return destinations[11];
+                                                    return destinations[8];
                                                 }
                                                 else if (destination > 100 || destination < 21)
                                                 {
-                                                    return destinations[8];
+                                                    return destinations[5];
                                                 }
                                                 else if (destination > 95 || destination < 26)
                                                 {
-                                                    return destinations[5];//dragon's lair
+                                                    return destinations[6];//dragon's lair
                                                 }
                                                 else if (destination > 90 || destination < 31)
                                                 {
-                                                    return destinations[6];//bank vault
+                                                    return destinations[7];//bank vault
                                                 }
                                                 else if (destination > 85 || destination < 36)
                                                 {
-                                                    return destinations[7];// desert island
+                                                    return destinations[4];// desert island
                                                 }
                                                 else if (destination > 80 || destination < 41)
                                                 {
-                                                    return destinations[4];//huge barracks
+                                                    return destinations[1];//huge barracks
                                                 }
                                                 else if (destination > 75 || destination < 46)
                                                 {
-                                                    return destinations[1];//oubliette
+                                                    return destinations[3];//oubliette
                                                 }
                                                 else if (destination > 70 || destination < 51)
                                                 {
-                                                    return destinations[3];//secret chamber
+                                                    return destinations[2];//secret chamber
                                                 }
                                                 else if (destination > 65 || destination < 56)
                                                 {
-                                                    return destinations[2];// broom closet
+                                                    return destinations[0];// broom closet
                                                 }
                                                 else
                                                 {
@@ -1669,39 +1669,39 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 105 || destination < 16)
                                                 {
-                                                    return destinations[11];
+                                                    return destinations[8];
                                                 }
                                                 else if (destination > 100 || destination < 21)
                                                 {
-                                                    return destinations[8];
+                                                    return destinations[5];
                                                 }
                                                 else if (destination > 95 || destination < 26)
                                                 {
-                                                    return destinations[5];//dragon's lair
+                                                    return destinations[6];//dragon's lair
                                                 }
                                                 else if (destination > 90 || destination < 31)
                                                 {
-                                                    return destinations[6];//bank vault
+                                                    return destinations[7];//bank vault
                                                 }
                                                 else if (destination > 85 || destination < 36)
                                                 {
-                                                    return destinations[7];// desert island
+                                                    return destinations[4];// desert island
                                                 }
                                                 else if (destination > 80 || destination < 41)
                                                 {
-                                                    return destinations[4];//huge barracks
+                                                    return destinations[0];//huge barracks
                                                 }
                                                 else if (destination > 75 || destination < 46)
                                                 {
-                                                    return destinations[0];// highest parapet
+                                                    return destinations[1];// highest parapet
                                                 }
                                                 else if (destination > 70 || destination < 51)
                                                 {
-                                                    return destinations[1];// oubliette
+                                                    return destinations[2];// oubliette
                                                 }
                                                 else if (destination > 65 || destination < 56)
                                                 {
-                                                    return destinations[2];// broom closet
+                                                    return destinations[3];// broom closet
                                                 }
                                                 else
                                                 {
@@ -1732,39 +1732,39 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 105 || destination < 16)
                                                 {
-                                                    return destinations[11];
+                                                    return destinations[8];
                                                 }
                                                 else if (destination > 100 || destination < 21)
                                                 {
-                                                    return destinations[8];
+                                                    return destinations[5];
                                                 }
                                                 else if (destination > 95 || destination < 26)
                                                 {
-                                                    return destinations[5];//dragon's lair
+                                                    return destinations[6];//dragon's lair
                                                 }
                                                 else if (destination > 90 || destination < 31)
                                                 {
-                                                    return destinations[6];//bank vault
+                                                    return destinations[7];//bank vault
                                                 }
                                                 else if (destination > 85 || destination < 36)
                                                 {
-                                                    return destinations[7];// desert island
+                                                    return destinations[4];// desert island
                                                 }
                                                 else if (destination > 80 || destination < 41)
                                                 {
-                                                    return destinations[4];//huge barracks
+                                                    return destinations[0];//huge barracks
                                                 }
                                                 else if (destination > 75 || destination < 46)
                                                 {
-                                                    return destinations[0];//highest parapet
+                                                    return destinations[3];//highest parapet
                                                 }
                                                 else if (destination > 70 || destination < 51)
                                                 {
-                                                    return destinations[3];//secret chamber
+                                                    return destinations[2];//secret chamber
                                                 }
                                                 else if (destination > 65 || destination < 56)
                                                 {
-                                                    return destinations[2];// broom closet
+                                                    return destinations[1];// broom closet
                                                 }
                                                 else
                                                 {
@@ -1821,23 +1821,23 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 85 || destination < 36)
                                                 {
-                                                    return destinations[11];// desert island
+                                                    return destinations[4];// desert island
                                                 }
                                                 else if (destination > 80 || destination < 41)
                                                 {
-                                                    return destinations[4];//huge barracks
+                                                    return destinations[5];//huge barracks
                                                 }
                                                 else if (destination > 75 || destination < 46)
                                                 {
-                                                    return destinations[5];//highest parapet
+                                                    return destinations[6];//highest parapet
                                                 }
                                                 else if (destination > 70 || destination < 51)
                                                 {
-                                                    return destinations[6];//secret chamber
+                                                    return destinations[7];//secret chamber
                                                 }
                                                 else if (destination > 65 || destination < 56)
                                                 {
-                                                    return destinations[7];// broom closet
+                                                    return destinations[8];// broom closet
                                                 }
                                                 else
                                                 {
@@ -1872,35 +1872,35 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 100 || destination < 21)
                                                 {
-                                                    return destinations[11];
+                                                    return destinations[9];
                                                 }
                                                 else if (destination > 95 || destination < 26)
                                                 {
-                                                    return destinations[9];//dragon's lair
+                                                    return destinations[10];//dragon's lair
                                                 }
                                                 else if (destination > 90 || destination < 31)
                                                 {
-                                                    return destinations[10];//bank vault
+                                                    return destinations[8];//bank vault
                                                 }
                                                 else if (destination > 85 || destination < 36)
                                                 {
-                                                    return destinations[8];// desert island
+                                                    return destinations[7];// desert island
                                                 }
                                                 else if (destination > 80 || destination < 41)
                                                 {
-                                                    return destinations[7];//huge barracks
+                                                    return destinations[4];//huge barracks
                                                 }
                                                 else if (destination > 75 || destination < 46)
                                                 {
-                                                    return destinations[4];//highest parapet
+                                                    return destinations[2];//highest parapet
                                                 }
                                                 else if (destination > 70 || destination < 51)
                                                 {
-                                                    return destinations[2];//secret chamber
+                                                    return destinations[5];//secret chamber
                                                 }
                                                 else if (destination > 65 || destination < 56)
                                                 {
-                                                    return destinations[5];// broom closet
+                                                    return destinations[6];// broom closet
                                                 }
                                                 else
                                                 {
@@ -1951,19 +1951,19 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 80 || destination < 41)
                                                 {
-                                                    return destinations[11];//huge barracks
+                                                    return destinations[10];//huge barracks
                                                 }
                                                 else if (destination > 75 || destination < 46)
                                                 {
-                                                    return destinations[10];//highest parapet
+                                                    return destinations[8];//highest parapet
                                                 }
                                                 else if (destination > 70 || destination < 51)
                                                 {
-                                                    return destinations[8];//secret chamber
+                                                    return destinations[9];//secret chamber
                                                 }
                                                 else if (destination > 65 || destination < 56)
                                                 {
-                                                    return destinations[9];// broom closet
+                                                    return destinations[7];// broom closet
                                                 }
                                                 else
                                                 {
@@ -2018,15 +2018,15 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 75 || destination < 46)
                                                 {
-                                                    return destinations[11];//highest parapet
+                                                    return destinations[2];//highest parapet
                                                 }
                                                 else if (destination > 70 || destination < 51)
                                                 {
-                                                    return destinations[2];//secret chamber
+                                                    return destinations[6];//secret chamber
                                                 }
                                                 else if (destination > 65 || destination < 56)
                                                 {
-                                                    return destinations[6];// broom closet
+                                                    return destinations[5];// broom closet
                                                 }
                                                 else
                                                 {
@@ -2061,7 +2061,7 @@ namespace DungeonCrawler
                                     if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)//use portal to defeat CB
                                     {
                                         Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
-                                            "\n[2] Tell him you need one of those two weapons to combat the CurseBreaker's magic, and Merigold's staff sounds like the safest bet. You want the portal to trace it's location and whisk you there..." +
+                                            "\n[2] Tell him you want the portal to trace where the CurseBreaker hid Merigold's staff and for it to whisk you there..." +
                                             "\n[3] Tell him you want to stop any chance of this ritual from happening. With some knot of foreboding you instruct Merigold to deliver you to the oubliette and the creature lurking therein...");
                                         switch (m.getIntResponse(4))
                                         {
@@ -2101,39 +2101,39 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 106 || destination < 17)
                                                 {
-                                                    return destinations[11];
+                                                    return destinations[8];
                                                 }
                                                 else if (destination > 101 || destination < 22)
                                                 {
-                                                    return destinations[8];
+                                                    return destinations[5];
                                                 }
                                                 else if (destination > 96 || destination < 27)
                                                 {
-                                                    return destinations[5];//dragon's lair
+                                                    return destinations[6];//dragon's lair
                                                 }
                                                 else if (destination > 91 || destination < 32)
                                                 {
-                                                    return destinations[6];//bank vault
+                                                    return destinations[7];//bank vault
                                                 }
                                                 else if (destination > 86 || destination < 37)
                                                 {
-                                                    return destinations[7];// desert island
+                                                    return destinations[4];// desert island
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
-                                                    return destinations[4];//huge barracks
+                                                    return destinations[1];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
-                                                    return destinations[1];//oubliette
+                                                    return destinations[3];//oubliette
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
-                                                    return destinations[3];//secret chamber
+                                                    return destinations[2];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
-                                                    return destinations[2];// broom closet
+                                                    return destinations[0];// broom closet
                                                 }
                                                 else
                                                 {
@@ -2174,39 +2174,39 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 106 || destination < 17)
                                                 {
-                                                    return destinations[11];
+                                                    return destinations[8];
                                                 }
                                                 else if (destination > 101 || destination < 22)
                                                 {
-                                                    return destinations[8];
+                                                    return destinations[5];
                                                 }
                                                 else if (destination > 96 || destination < 27)
                                                 {
-                                                    return destinations[5];//dragon's lair
+                                                    return destinations[6];//dragon's lair
                                                 }
                                                 else if (destination > 91 || destination < 32)
                                                 {
-                                                    return destinations[6];//bank vault
+                                                    return destinations[7];//bank vault
                                                 }
                                                 else if (destination > 86 || destination < 37)
                                                 {
-                                                    return destinations[7];// desert island
+                                                    return destinations[4];// desert island
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
-                                                    return destinations[4];//huge barracks
+                                                    return destinations[0];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
-                                                    return destinations[0];// highest parapet
+                                                    return destinations[1];// highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
-                                                    return destinations[1];// oubliette
+                                                    return destinations[2];// oubliette
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
-                                                    return destinations[2];// broom closet
+                                                    return destinations[3];// broom closet
                                                 }
                                                 else
                                                 {
@@ -2247,39 +2247,39 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 106 || destination < 17)
                                                 {
-                                                    return destinations[11];
+                                                    return destinations[8];
                                                 }
                                                 else if (destination > 101 || destination < 22)
                                                 {
-                                                    return destinations[8];
+                                                    return destinations[5];
                                                 }
                                                 else if (destination > 96 || destination < 27)
                                                 {
-                                                    return destinations[5];//dragon's lair
+                                                    return destinations[6];//dragon's lair
                                                 }
                                                 else if (destination > 91 || destination < 32)
                                                 {
-                                                    return destinations[6];//bank vault
+                                                    return destinations[7];//bank vault
                                                 }
                                                 else if (destination > 86 || destination < 37)
                                                 {
-                                                    return destinations[7];// desert island
+                                                    return destinations[4];// desert island
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
-                                                    return destinations[4];//huge barracks
+                                                    return destinations[0];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
-                                                    return destinations[0];//highest parapet
+                                                    return destinations[3];//highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
-                                                    return destinations[3];//secret chamber
+                                                    return destinations[2];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
-                                                    return destinations[2];// broom closet
+                                                    return destinations[1];// broom closet
                                                 }
                                                 else
                                                 {
@@ -2346,23 +2346,23 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 86 || destination < 37)
                                                 {
-                                                    return destinations[11];// desert island
+                                                    return destinations[4];// desert island
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
-                                                    return destinations[4];//huge barracks
+                                                    return destinations[5];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
-                                                    return destinations[5];//highest parapet
+                                                    return destinations[6];//highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
-                                                    return destinations[6];//secret chamber
+                                                    return destinations[7];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
-                                                    return destinations[7];// broom closet
+                                                    return destinations[8];// broom closet
                                                 }
                                                 else
                                                 {
@@ -2407,35 +2407,35 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 101 || destination < 22)
                                                 {
-                                                    return destinations[11];
+                                                    return destinations[9];
                                                 }
                                                 else if (destination > 96 || destination < 27)
                                                 {
-                                                    return destinations[9];//dragon's lair
+                                                    return destinations[10];//dragon's lair
                                                 }
                                                 else if (destination > 91 || destination < 32)
                                                 {
-                                                    return destinations[10];//bank vault
+                                                    return destinations[8];//bank vault
                                                 }
                                                 else if (destination > 86 || destination < 37)
                                                 {
-                                                    return destinations[8];// desert island
+                                                    return destinations[7];// desert island
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
-                                                    return destinations[7];//huge barracks
+                                                    return destinations[4];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
-                                                    return destinations[4];//highest parapet
+                                                    return destinations[2];//highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
-                                                    return destinations[2];//secret chamber
+                                                    return destinations[5];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
-                                                    return destinations[5];// broom closet
+                                                    return destinations[6];// broom closet
                                                 }
                                                 else
                                                 {
@@ -2496,19 +2496,19 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
-                                                    return destinations[11];//huge barracks
+                                                    return destinations[10];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
-                                                    return destinations[10];//highest parapet
+                                                    return destinations[8];//highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
-                                                    return destinations[8];//secret chamber
+                                                    return destinations[9];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
-                                                    return destinations[9];// broom closet
+                                                    return destinations[7];// broom closet
                                                 }
                                                 else
                                                 {
@@ -2573,15 +2573,15 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
-                                                    return destinations[11];//highest parapet
+                                                    return destinations[2];//highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
-                                                    return destinations[2];//secret chamber
+                                                    return destinations[6];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
-                                                    return destinations[6];// broom closet
+                                                    return destinations[5];// broom closet
                                                 }
                                                 else
                                                 {
@@ -2616,7 +2616,7 @@ namespace DungeonCrawler
                                     if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)//use portal to defeat CB
                                     {
                                         Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
-                                            "\n[2] Tell him you need one of those two weapons to combat the CurseBreaker's magic, and Merigold's staff sounds like the safest bet. You want the portal to trace it's location and whisk you there..." +
+                                            "\n[2] Tell him you want the portal to trace where the CurseBreaker hid Merigold's staff and for it to whisk you there..." +
                                             "\n[3] Tell him you want to stop any chance of this ritual from happening. With some knot of foreboding you instruct Merigold to deliver you to the oubliette and the creature lurking therein...");
                                         switch (m.getIntResponse(4))
                                         {
@@ -2656,39 +2656,39 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 106 || destination < 17)
                                                 {
-                                                    return destinations[11];
+                                                    return destinations[5];
                                                 }
                                                 else if (destination > 101 || destination < 22)
                                                 {
-                                                    return destinations[8];
+                                                    return destinations[6];
                                                 }
                                                 else if (destination > 96 || destination < 27)
                                                 {
-                                                    return destinations[5];//dragon's lair
+                                                    return destinations[7];//dragon's lair
                                                 }
                                                 else if (destination > 91 || destination < 32)
                                                 {
-                                                    return destinations[6];//bank vault
+                                                    return destinations[4];//bank vault
                                                 }
                                                 else if (destination > 86 || destination < 37)
                                                 {
-                                                    return destinations[7];// desert island
+                                                    return destinations[1];// desert island
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
-                                                    return destinations[4];//huge barracks
+                                                    return destinations[3];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
-                                                    return destinations[1];//oubliette
+                                                    return destinations[2];//oubliette
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
-                                                    return destinations[3];//secret chamber
+                                                    return destinations[0];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
-                                                    return destinations[2];// broom closet
+                                                    return destinations[0];// broom closet
                                                 }
                                                 else
                                                 {
@@ -2728,39 +2728,39 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 106 || destination < 17)
                                                 {
-                                                    return destinations[11];
+                                                    return destinations[5];
                                                 }
                                                 else if (destination > 101 || destination < 22)
                                                 {
-                                                    return destinations[8];
+                                                    return destinations[6];
                                                 }
                                                 else if (destination > 96 || destination < 27)
                                                 {
-                                                    return destinations[5];//dragon's lair
+                                                    return destinations[7];//dragon's lair
                                                 }
                                                 else if (destination > 91 || destination < 32)
                                                 {
-                                                    return destinations[6];//bank vault
+                                                    return destinations[4];//bank vault
                                                 }
                                                 else if (destination > 86 || destination < 37)
                                                 {
-                                                    return destinations[7];// desert island
+                                                    return destinations[0];// desert island
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
-                                                    return destinations[4];//huge barracks
+                                                    return destinations[1];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
-                                                    return destinations[0];// highest parapet
+                                                    return destinations[2];// highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
-                                                    return destinations[1];// oubliette
+                                                    return destinations[3];// oubliette
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
-                                                    return destinations[2];// broom closet
+                                                    return destinations[3];// broom closet
                                                 }
                                                 else
                                                 {
@@ -2800,39 +2800,39 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 106 || destination < 17)
                                                 {
-                                                    return destinations[11];
+                                                    return destinations[5];
                                                 }
                                                 else if (destination > 101 || destination < 22)
                                                 {
-                                                    return destinations[8];
+                                                    return destinations[6];
                                                 }
                                                 else if (destination > 96 || destination < 27)
                                                 {
-                                                    return destinations[5];//dragon's lair
+                                                    return destinations[7];//dragon's lair
                                                 }
                                                 else if (destination > 91 || destination < 32)
                                                 {
-                                                    return destinations[6];//bank vault
+                                                    return destinations[4];//bank vault
                                                 }
                                                 else if (destination > 86 || destination < 37)
                                                 {
-                                                    return destinations[7];// desert island
+                                                    return destinations[0];// desert island
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
-                                                    return destinations[4];//huge barracks
+                                                    return destinations[3];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
-                                                    return destinations[0];//highest parapet
+                                                    return destinations[2];//highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
-                                                    return destinations[3];//secret chamber
+                                                    return destinations[1];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
-                                                    return destinations[2];// broom closet
+                                                    return destinations[1];// broom closet
                                                 }
                                                 else
                                                 {
@@ -2898,23 +2898,23 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 86 || destination < 37)
                                                 {
-                                                    return destinations[11];// desert island
+                                                    return destinations[5];// desert island
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
-                                                    return destinations[4];//huge barracks
+                                                    return destinations[6];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
-                                                    return destinations[5];//highest parapet
+                                                    return destinations[7];//highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
-                                                    return destinations[6];//secret chamber
+                                                    return destinations[8];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
-                                                    return destinations[7];// broom closet
+                                                    return destinations[8];// broom closet
                                                 }
                                                 else
                                                 {
@@ -2958,35 +2958,35 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 101 || destination < 22)
                                                 {
-                                                    return destinations[11];
+                                                    return destinations[10];
                                                 }
                                                 else if (destination > 96 || destination < 27)
                                                 {
-                                                    return destinations[9];//dragon's lair
+                                                    return destinations[8];//dragon's lair
                                                 }
                                                 else if (destination > 91 || destination < 32)
                                                 {
-                                                    return destinations[10];//bank vault
+                                                    return destinations[7];//bank vault
                                                 }
                                                 else if (destination > 86 || destination < 37)
                                                 {
-                                                    return destinations[8];// desert island
+                                                    return destinations[4];// desert island
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
-                                                    return destinations[7];//huge barracks
+                                                    return destinations[2];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
-                                                    return destinations[4];//highest parapet
+                                                    return destinations[5];//highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
-                                                    return destinations[2];//secret chamber
+                                                    return destinations[6];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
-                                                    return destinations[5];// broom closet
+                                                    return destinations[6];// broom closet
                                                 }
                                                 else
                                                 {
@@ -3046,19 +3046,19 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
-                                                    return destinations[11];//huge barracks
+                                                    return destinations[8];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
-                                                    return destinations[10];//highest parapet
+                                                    return destinations[9];//highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
-                                                    return destinations[8];//secret chamber
+                                                    return destinations[7];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
-                                                    return destinations[9];// broom closet
+                                                    return destinations[7];// broom closet
                                                 }
                                                 else
                                                 {
@@ -3118,19 +3118,19 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
-                                                    return destinations[10];//huge barracks
+                                                    return destinations[2];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
-                                                    return destinations[11];//highest parapet
+                                                    return destinations[6];//highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
-                                                    return destinations[2];//secret chamber
+                                                    return destinations[5];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
-                                                    return destinations[6];// broom closet
+                                                    return destinations[5];// broom closet
                                                 }
                                                 else
                                                 {
@@ -3158,7 +3158,7 @@ namespace DungeonCrawler
                                 if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)//use portal to defeat CB
                                 {
                                     Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
-                                        "\n[2] Tell him you need one of those two weapons to combat the CurseBreaker's magic, and Merigold's staff sounds like the safest bet. You want the portal to trace it's location and whisk you there..." +
+                                        "\n[2] Tell him you want the portal to trace where the CurseBreaker hid Merigold's staff and for it to whisk you there..." +
                                         "\n[3] Tell him you want to stop any chance of this ritual from happening. With some knot of foreboding you instruct Merigold to deliver you to the oubliette and the creature lurking therein...");
                                     switch (m.getIntResponse(4))
                                     {
@@ -3206,31 +3206,31 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 97 || destination < 28)
                                             {
-                                                return destinations[5];//dragon's lair
+                                                return destinations[4];//dragon's lair
                                             }
                                             else if (destination > 92 || destination < 33)
                                             {
-                                                return destinations[6];//bank vault
+                                                return destinations[1];//bank vault
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
-                                                return destinations[7];// desert island
+                                                return destinations[3];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
-                                                return destinations[4];//huge barracks
+                                                return destinations[2];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
-                                                return destinations[1];//oubliette
+                                                return destinations[0];//oubliette
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
-                                                return destinations[3];//secret chamber
+                                                return destinations[0];//secret chamber
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
-                                                return destinations[2];// broom closet
+                                                return destinations[0];// broom closet
                                             }
                                             else
                                             {
@@ -3278,31 +3278,31 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 97 || destination < 28)
                                             {
-                                                return destinations[5];//dragon's lair
+                                                return destinations[4];//dragon's lair
                                             }
                                             else if (destination > 92 || destination < 33)
                                             {
-                                                return destinations[6];//bank vault
+                                                return destinations[0];//bank vault
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
-                                                return destinations[7];// desert island
+                                                return destinations[1];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
-                                                return destinations[4];//huge barracks
+                                                return destinations[2];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
-                                                return destinations[0];// highest parapet
+                                                return destinations[3];// highest parapet
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
-                                                return destinations[1];// oubliette
+                                                return destinations[3];// oubliette
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
-                                                return destinations[2];// broom closet
+                                                return destinations[3];// broom closet
                                             }
                                             else
                                             {
@@ -3350,31 +3350,31 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 97 || destination < 28)
                                             {
-                                                return destinations[5];//dragon's lair
+                                                return destinations[4];//dragon's lair
                                             }
                                             else if (destination > 92 || destination < 33)
                                             {
-                                                return destinations[6];//bank vault
+                                                return destinations[0];//bank vault
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
-                                                return destinations[7];// desert island
+                                                return destinations[3];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
-                                                return destinations[4];//huge barracks
+                                                return destinations[2];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
-                                                return destinations[0];//highest parapet
+                                                return destinations[1];//highest parapet
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
-                                                return destinations[3];//secret chamber
+                                                return destinations[1];//secret chamber
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
-                                                return destinations[2];// broom closet
+                                                return destinations[1];// broom closet
                                             }
                                             else
                                             {
@@ -3424,39 +3424,39 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 107 || destination < 18)
                                             {
-                                                return destinations[1];
+                                                return destinations[10];
                                             }
                                             else if (destination > 102 || destination < 23)
                                             {
-                                                return destinations[0];
+                                                return destinations[11];
                                             }
                                             else if (destination > 97 || destination < 28)
                                             {
-                                                return destinations[9];//dragon's lair
+                                                return destinations[4];//dragon's lair
                                             }
                                             else if (destination > 92 || destination < 33)
                                             {
-                                                return destinations[10];//bank vault
+                                                return destinations[5];//bank vault
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
-                                                return destinations[11];// desert island
+                                                return destinations[6];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
-                                                return destinations[4];//huge barracks
+                                                return destinations[7];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
-                                                return destinations[5];//highest parapet
+                                                return destinations[8];//highest parapet
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
-                                                return destinations[6];//secret chamber
+                                                return destinations[8];//secret chamber
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
-                                                return destinations[7];// broom closet
+                                                return destinations[8];// broom closet
                                             }
                                             else
                                             {
@@ -3492,43 +3492,43 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 112 || destination < 13)
                                             {
-                                                return destinations[3];
+                                                return destinations[9];
                                             }
                                             else if (destination > 107 || destination < 18)
                                             {
-                                                return destinations[1];
+                                                return destinations[10];
                                             }
                                             else if (destination > 102 || destination < 23)
                                             {
-                                                return destinations[11];
+                                                return destinations[8];
                                             }
                                             else if (destination > 97 || destination < 28)
                                             {
-                                                return destinations[9];//dragon's lair
+                                                return destinations[7];//dragon's lair
                                             }
                                             else if (destination > 92 || destination < 33)
                                             {
-                                                return destinations[10];//bank vault
+                                                return destinations[4];//bank vault
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
-                                                return destinations[8];// desert island
+                                                return destinations[2];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
-                                                return destinations[7];//huge barracks
+                                                return destinations[5];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
-                                                return destinations[4];//highest parapet
+                                                return destinations[6];//highest parapet
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
-                                                return destinations[2];//secret chamber
+                                                return destinations[6];//secret chamber
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
-                                                return destinations[5];// broom closet
+                                                return destinations[6];// broom closet
                                             }
                                             else
                                             {
@@ -3580,27 +3580,27 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 92 || destination < 33)
                                             {
-                                                return destinations[5];//bank vault
+                                                return destinations[10];//bank vault
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
-                                                return destinations[6];// desert island
+                                                return destinations[8];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
-                                                return destinations[11];//huge barracks
+                                                return destinations[9];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
-                                                return destinations[10];//highest parapet
+                                                return destinations[7];//highest parapet
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
-                                                return destinations[8];//secret chamber
+                                                return destinations[7];//secret chamber
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
-                                                return destinations[9];// broom closet
+                                                return destinations[7];// broom closet
                                             }
                                             else
                                             {
@@ -3656,23 +3656,23 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
-                                                return destinations[9];// desert island
+                                                return destinations[2];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
-                                                return destinations[10];//huge barracks
+                                                return destinations[6];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
-                                                return destinations[11];//highest parapet
+                                                return destinations[5];//highest parapet
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
-                                                return destinations[2];//secret chamber
+                                                return destinations[5];//secret chamber
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
-                                                return destinations[6];// broom closet
+                                                return destinations[5];// broom closet
                                             }
                                             else
                                             {
@@ -3689,7 +3689,7 @@ namespace DungeonCrawler
                                 if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)//use portal to defeat CB
                                 {
                                     Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
-                                        "\n[2] Tell him you need one of those two weapons to combat the CurseBreaker's magic, and Merigold's staff sounds like the safest bet. You want the portal to trace it's location and whisk you there..." +
+                                        "\n[2] Tell him you want the portal to trace where the CurseBreaker hid Merigold's staff and for it to whisk you there..." +
                                         "\n[3] Tell him you want to stop any chance of this ritual from happening. With some knot of foreboding you instruct Merigold to deliver you to the oubliette and the creature lurking therein...");
                                     switch (m.getIntResponse(4))
                                     {
@@ -3737,31 +3737,31 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 97 || destination < 28)
                                             {
-                                                return destinations[5];//dragon's lair
+                                                return destinations[4];//dragon's lair
                                             }
                                             else if (destination > 92 || destination < 33)
                                             {
-                                                return destinations[6];//bank vault
+                                                return destinations[1];//bank vault
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
-                                                return destinations[7];// desert island
+                                                return destinations[3];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
-                                                return destinations[4];//huge barracks
+                                                return destinations[2];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
-                                                return destinations[1];//oubliette
+                                                return destinations[0];//oubliette
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
-                                                return destinations[3];//secret chamber
+                                                return destinations[0];//secret chamber
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
-                                                return destinations[2];// broom closet
+                                                return destinations[0];// broom closet
                                             }
                                             else
                                             {
@@ -3805,35 +3805,35 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 102 || destination < 23)
                                             {
-                                                return destinations[8];
+                                                return destinations[5];
                                             }
                                             else if (destination > 97 || destination < 28)
                                             {
-                                                return destinations[5];//dragon's lair
+                                                return destinations[4];//dragon's lair
                                             }
                                             else if (destination > 92 || destination < 33)
                                             {
-                                                return destinations[6];//bank vault
+                                                return destinations[0];//bank vault
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
-                                                return destinations[7];// desert island
+                                                return destinations[1];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
-                                                return destinations[4];//huge barracks
+                                                return destinations[2];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
-                                                return destinations[0];// highest parapet
+                                                return destinations[3];// highest parapet
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
-                                                return destinations[1];// oubliette
+                                                return destinations[3];// oubliette
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
-                                                return destinations[2];// broom closet
+                                                return destinations[3];// broom closet
                                             }
                                             else
                                             {
@@ -3881,31 +3881,31 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 97 || destination < 28)
                                             {
-                                                return destinations[5];//dragon's lair
+                                                return destinations[4];//dragon's lair
                                             }
                                             else if (destination > 92 || destination < 33)
                                             {
-                                                return destinations[6];//bank vault
+                                                return destinations[0];//bank vault
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
-                                                return destinations[7];// desert island
+                                                return destinations[3];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
-                                                return destinations[4];//huge barracks
+                                                return destinations[2];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
-                                                return destinations[0];//highest parapet
+                                                return destinations[1];//highest parapet
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
-                                                return destinations[3];//secret chamber
+                                                return destinations[1];//secret chamber
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
-                                                return destinations[2];// broom closet
+                                                return destinations[1];// broom closet
                                             }
                                             else
                                             {
@@ -3963,31 +3963,31 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 97 || destination < 28)
                                             {
-                                                return destinations[9];//dragon's lair
+                                                return destinations[4];//dragon's lair
                                             }
                                             else if (destination > 92 || destination < 33)
                                             {
-                                                return destinations[10];//bank vault
+                                                return destinations[5];//bank vault
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
-                                                return destinations[11];// desert island
+                                                return destinations[6];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
-                                                return destinations[4];//huge barracks
+                                                return destinations[7];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
-                                                return destinations[5];//highest parapet
+                                                return destinations[8];//highest parapet
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
-                                                return destinations[6];//secret chamber
+                                                return destinations[8];//secret chamber
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
-                                                return destinations[7];// broom closet
+                                                return destinations[8];// broom closet
                                             }
                                             else
                                             {
@@ -4039,27 +4039,27 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 92 || destination < 33)
                                             {
-                                                return destinations[10];//bank vault
+                                                return destinations[4];//bank vault
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
-                                                return destinations[8];// desert island
+                                                return destinations[2];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
-                                                return destinations[7];//huge barracks
+                                                return destinations[5];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
-                                                return destinations[4];//highest parapet
+                                                return destinations[6];//highest parapet
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
-                                                return destinations[2];//secret chamber
+                                                return destinations[6];//secret chamber
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
-                                                return destinations[5];// broom closet
+                                                return destinations[6];// broom closet
                                             }
                                             else
                                             {
@@ -4111,27 +4111,27 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 92 || destination < 33)
                                             {
-                                                return destinations[5];//bank vault
+                                                return destinations[10];//bank vault
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
-                                                return destinations[6];// desert island
+                                                return destinations[8];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
-                                                return destinations[11];//huge barracks
+                                                return destinations[9];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
-                                                return destinations[10];//highest parapet
+                                                return destinations[7];//highest parapet
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
-                                                return destinations[8];//secret chamber
+                                                return destinations[7];//secret chamber
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
-                                                return destinations[9];// broom closet
+                                                return destinations[7];// broom closet
                                             }
                                             else
                                             {
@@ -4187,23 +4187,23 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
-                                                return destinations[9];// desert island
+                                                return destinations[2];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
-                                                return destinations[10];//huge barracks
+                                                return destinations[6];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
-                                                return destinations[11];//highest parapet
+                                                return destinations[5];//highest parapet
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
-                                                return destinations[2];//secret chamber
+                                                return destinations[5];//secret chamber
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
-                                                return destinations[6];// broom closet
+                                                return destinations[5];// broom closet
                                             }
                                             else
                                             {

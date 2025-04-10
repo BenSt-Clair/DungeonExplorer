@@ -219,7 +219,7 @@ namespace DungeonCrawler
                 {"You let your fairy friends explain everything while you bunny-hop on the spot - the two halves, the jar-loving mosaic, the whole shebang...", "Merigold waits patiently for you to answer, but as your fairy friends explain everything in such lurid detail that their words transport your verdant imagination into new and wondrous vistas, it seems Merigold himself has little patience for them. It's almost as if he can't hear them... \n  He also reacts a bit peculiarly to your rather idiosyncratic, leporid antics. The wizard seems to seriously consider multiple courses of action, as you nibble on a lettuce leaf, before finally settling on categorising the incident as one of those awkward faux pas' that evade rational explanation. Letting it slide, he decides to simply hope for the best..." },
                 {"You tell him you see dead people...", "\t'Dead people?' He responds cautiously.\n You nod your head emphatically. You have a magical friend named Binky who lives in your backpack. He tells you skeleton jokes...\n Merigold studies you warily for a moment, taking in your protuberant eyes. He seems to consider multiple possible courses of action very carefully, before finally settling on (and perhaps against his better judgement) just hoping for the best..." },
                 {"Graagh! You did what's best in life; you crushed your enemies, saw them driven before you, and heard the lamentation of their women...", "\t'Well,' Merigold responds nervously, 'perhaps your method of barbar- uh, rough justice is what this situation calls for...'" },
-                {"♪ Oh, you gave them the old razzle dazzle, you razzle-dazzled them!♫ You gave them an act with lots of *flash* in it, and their reaction was oh so pash-sionate... ♪", "Merigold asks where you heard that catchy song before. He could've sworn he heard a shanty like it sung by a sailor, but it's been ages since he ordered any Sea Cargo..." },
+                {" Oh, you gave them the old razzle dazzle, you razzle-dazzled them!\n    You gave them an act with lots of *flash* in it, and their reaction was oh so pash-sionate... ", "Merigold asks where you heard that catchy song before. He could've sworn he heard a shanty like it sung by a sailor, but it's been ages since he ordered any Sea Cargo..." },
                 {"You just kept persisting until you found something that succeeded...", "Merigold states that your persistence is not only relatable but inspiring. 'But,' he gravely intones, 'you'll need more than that to face what comes next...'" }
             };
             switch (LinearParle(choice_customresponse, parlances, playerchoices, description))
@@ -531,6 +531,7 @@ namespace DungeonCrawler
 
                                         backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
                                         numOfMGItems = numOfMGItems - backpack.Items.Count;
+                                        _player.MGItemsDonated = numOfMGItems;
                                         switch (numOfMGItems)
                                         {
                                             case 0:
@@ -622,6 +623,7 @@ namespace DungeonCrawler
 
                                     backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
                                     numOfMGItems = numOfMGItems - backpack.Items.Count;
+                                    _player.MGItemsDonated = numOfMGItems;
                                     switch (numOfMGItems)
                                     {
                                         case 0:
@@ -694,6 +696,7 @@ namespace DungeonCrawler
 
                                 backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
                                 numOfMGItems = numOfMGItems - backpack.Items.Count;
+                                _player.MGItemsDonated = numOfMGItems;
                                 switch (numOfMGItems)
                                 {
                                     case 0:
@@ -798,6 +801,8 @@ namespace DungeonCrawler
 
                                         backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
                                         numOfMGItems = numOfMGItems - backpack.Items.Count;
+                                        _player.MGItemsDonated = numOfMGItems;
+                                        
                                         switch (numOfMGItems)
                                         {
                                             case 0:
@@ -888,6 +893,7 @@ namespace DungeonCrawler
 
                                     backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
                                     numOfMGItems = numOfMGItems - backpack.Items.Count;
+                                    _player.MGItemsDonated = numOfMGItems;
                                     switch (numOfMGItems)
                                     {
                                         case 0:
@@ -960,6 +966,7 @@ namespace DungeonCrawler
 
                                 backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
                                 numOfMGItems = numOfMGItems - backpack.Items.Count;
+                                _player.MGItemsDonated = numOfMGItems;
                                 switch (numOfMGItems)
                                 {
                                     case 0:
