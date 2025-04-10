@@ -784,7 +784,7 @@ namespace DungeonCrawler
             
             ///magical manufactory lists
             List<Item> magicalManufactoryItems = new List<Item> { crumpledMissive, emptyBottles, cork, penny };
-            List<Feature> magicalManufactoryFeatures = new List<Feature> { circleDoor, copperPipes, brassTanks, conveyorBelts, merigoldPortal, teslaCoil, magicalBookcase, worktop };
+            List<Feature> magicalManufactoryFeatures = new List<Feature> { magManDoor, copperPipes, brassTanks, conveyorBelts, merigoldPortal, teslaCoil, magicalBookcase, worktop };
             ///
             /// NorthCorridor Items and Features
             Door northeastCorner = new Door("northeastern corner", "The corner turns sharply right...", false, "unblocked", null, null, "You follow the corner around and into the easternmost corridor.");

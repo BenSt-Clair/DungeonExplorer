@@ -971,6 +971,7 @@ namespace DungeonCrawler
             // In the case of features with no itemlist
             else
             {
+                Merigold merigold = new Merigold(player, room);
                 if (Name == "laboratory" && SpecificAttribute == "unapproached")
                 {
                     Console.WriteLine(Description);
@@ -985,8 +986,9 @@ namespace DungeonCrawler
                     Dice D1 = new Dice(1);
                     Dice D2 = new Dice(2);
                     Dice D3 = new Dice(3);
+                    Dice D4 = new Dice(4);
                     Console.WriteLine("Would you like to, perhaps, clear your throat and alert the bespectacled wizard to your presence?");
-                    Merigold merigold = new Merigold(player, room);
+                    
 
                     if (merigold.getYesNoResponse())
                     {
@@ -1003,6 +1005,12 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("You figure your best bet is to find the route through the subterranean levels of the tower and confront this Eldritch ArchFey the CurseBreaker needs for his sordid ritual to be complete." +
                                     "\n  Without a moment to lose, and midnight fast approaching, you do what you've got to do - and quickly!");
+                                return room;
+                            }
+                            else if (endOfMidGameChoice[0].faces == D4.faces)
+                            {
+                                Console.ReadKey(true);
+                                Console.WriteLine("Confident for now that you can find your own way towards your goal, you leave Merigold behind...");
                                 return room;
                             }
                             else
@@ -4271,8 +4279,3297 @@ namespace DungeonCrawler
                 }
                 else if (Name == "laboratory")
                 {
+                    Dice D120 = new Dice(120);
+                    Dice D60 = new Dice(60);
+                    Dice D40 = new Dice(40);
+                    Dice D30 = new Dice(30);
+                    Dice D24 = new Dice(24);
+                    Dice D20 = new Dice(20);
+                    Dice D15 = new Dice(15);
+                    Dice D10 = new Dice(10);
+                    Dice D1 = new Dice(1);
+                    Dice D2 = new Dice(2);
+                    Dice D3 = new Dice(3);
+                    Dice D4 = new Dice(4);
+                    List<Dice> endOfMidGameChoice = merigold.ReturnToMerigoldDialogue(specialItems, battle, secretChamber, goblin, gnoll, MGItems, stairwayToLower);
+                    int destination = 0;
+                    if (endOfMidGameChoice.Count == 1)
+                    {
+                        player.midnightClock = new System.Diagnostics.Stopwatch();
+                        player.midnightClock.Start();
+                        if (endOfMidGameChoice[0].faces == D1.faces)
+                        {
+                            Console.ReadKey(true);
+                            Console.WriteLine("You figure your best bet is to find the route through the subterranean levels of the tower and confront this Eldritch ArchFey the CurseBreaker needs for his sordid ritual to be complete." +
+                                "\n  Without a moment to lose, and midnight fast approaching, you do what you've got to do - and quickly!");
+                            return room;
+                        }
+                        else if (endOfMidGameChoice[0].faces == D4.faces)
+                        {
+                            Console.ReadKey(true);
+                            Console.WriteLine("Confident for now that you can find your own way towards your goal, you leave Merigold behind...");
+                            return room;
+                        }
+                        else
+                        {
+                            Console.ReadKey(true);
+                            Console.WriteLine("You feverishly turn Merigold's words over and over in your mind, 'twelve artefacts... twelve...'\n Do you know where to start looking for them? Because if not then you're going to have to begin frantically searching very, very quickly!");
+                            return room;
+                        }
+                    }
+                    else
+                    {
+                        Merigold m = new Merigold(player, room);
+                        if (endOfMidGameChoice[0].faces == D120.faces)
+                        {
 
+                            Console.WriteLine("Taking no heed of Merigold's warnings you stride gallantly to the portal. You spy landscapes and settings flit past your vision through its crackling whorl of sorcery, too fast to more than glimpse as the scenes rapidly shuffle before you. \nYou tense your muscles, trust in lady luck, then gallantly dive forward...");
+                            destination = 0;
+                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                            foreach (Dice d in endOfMidGameChoice)
+                            {
+                                Console.ReadKey(true);
+                                int x = d.Roll(d);
+                                Console.WriteLine($"You rolled {x}");
+                                destination += x;
+                            }
+                            if (destination > 115 || destination < 6)
+                            {
+                                return destinations[10];
+                            }
+                            else if (destination > 110 || destination < 11)
+                            {
+                                return destinations[9];
+                            }
+                            else if (destination > 105 || destination < 16)
+                            {
+                                return destinations[11];
+                            }
+                            else if (destination > 100 || destination < 21)
+                            {
+                                return destinations[8];
+                            }
+                            else if (destination > 95 || destination < 26)
+                            {
+                                return destinations[7];
+                            }
+                            else if (destination > 90 || destination < 31)
+                            {
+                                return destinations[6];
+                            }
+                            else if (destination > 85 || destination < 36)
+                            {
+                                return destinations[5];
+                            }
+                            else if (destination > 80 || destination < 41)
+                            {
+                                return destinations[4];
+                            }
+                            else if (destination > 75 || destination < 46)
+                            {
+                                return destinations[3];
+                            }
+                            else if (destination > 70 || destination < 51)
+                            {
+                                return destinations[2];
+                            }
+                            else if (destination > 65 || destination < 56)
+                            {
+                                return destinations[1];
+                            }
+                            else
+                            {
+                                return destinations[0];
+                            }
+                        }
+                        else if (endOfMidGameChoice[0].faces == D60.faces)
+                        {
+                            Console.WriteLine("Merigold watches as you produce the artefacts you wish him to use. Though he makes an outward show of being phlegmatic, you can sense his anxiety radiating off of him." +
+                                "\nAfter you're done he peers up at you. 'Is that all?' " +
+                                "\n\n You return a tight and solemn nod." +
+                                "\n\n  The aged wizard runs a nervous hand through his wispy hair. 'I can't lie, it's less than I expected. I may not be able to steer the portal very easily with this. Are you sure you don't want to hunt for any more artefacts first?'");
+
+                            if (m.getYesNoResponse())
+                            {
+                                Console.WriteLine("You tell Merigold you're prepared to take the risks...");
+                                Console.ReadKey(true);
+                                Console.WriteLine("\t'Very well then,' Merigold replies heavily, 'Where is it you'd like to go?'");
+                                if (endOfMidGameChoice[2].faces == D1.faces)//use portal to defeat CB
+                                {
+                                    Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
+                                        "\n[2] Tell him you want the portal to trace where the CurseBreaker hid Merigold's staff and for it to whisk you there..." +
+                                        "\n[3] Tell him you want to stop any chance of this ritual from happening. With some knot of foreboding you instruct Merigold to deliver you to the oubliette and the creature lurking therein...");
+                                    switch (m.getIntResponse(4))
+                                    {
+                                        case 1:
+                                            Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Roll two D60...\n[you need your dice rolls to sum up to as close to 61 as possible...");
+                                            destination = 0;
+                                            Console.ReadKey(true);
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 115 || destination < 6)
+                                            {
+                                                return destinations[10];
+                                            }
+                                            else if (destination > 110 || destination < 11)
+                                            {
+                                                return destinations[9];
+                                            }
+                                            else if (destination > 105 || destination < 16)
+                                            {
+                                                return destinations[11];
+                                            }
+                                            else if (destination > 100 || destination < 21)
+                                            {
+                                                return destinations[8];
+                                            }
+                                            else if (destination > 95 || destination < 26)
+                                            {
+                                                return destinations[5];//dragon's lair
+                                            }
+                                            else if (destination > 90 || destination < 31)
+                                            {
+                                                return destinations[6];//bank vault
+                                            }
+                                            else if (destination > 85 || destination < 36)
+                                            {
+                                                return destinations[7];// desert island
+                                            }
+                                            else if (destination > 80 || destination < 41)
+                                            {
+                                                return destinations[4];//huge barracks
+                                            }
+                                            else if (destination > 75 || destination < 46)
+                                            {
+                                                return destinations[1];//oubliette
+                                            }
+                                            else if (destination > 70 || destination < 51)
+                                            {
+                                                return destinations[3];//secret chamber
+                                            }
+                                            else if (destination > 65 || destination < 56)
+                                            {
+                                                return destinations[2];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[0];// highest parapet
+                                            }
+                                        case 2:
+                                            Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Roll two D60...\n[you need your dice rolls to sum up to as close to 61 as possible...");
+                                            destination = 0;
+                                            Console.ReadKey(true);
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 115 || destination < 6)
+                                            {
+                                                return destinations[10];
+                                            }
+                                            else if (destination > 110 || destination < 11)
+                                            {
+                                                return destinations[9];
+                                            }
+                                            else if (destination > 105 || destination < 16)
+                                            {
+                                                return destinations[11];
+                                            }
+                                            else if (destination > 100 || destination < 21)
+                                            {
+                                                return destinations[8];
+                                            }
+                                            else if (destination > 95 || destination < 26)
+                                            {
+                                                return destinations[5];//dragon's lair
+                                            }
+                                            else if (destination > 90 || destination < 31)
+                                            {
+                                                return destinations[6];//bank vault
+                                            }
+                                            else if (destination > 85 || destination < 36)
+                                            {
+                                                return destinations[7];// desert island
+                                            }
+                                            else if (destination > 80 || destination < 41)
+                                            {
+                                                return destinations[4];//huge barracks
+                                            }
+                                            else if (destination > 75 || destination < 46)
+                                            {
+                                                return destinations[0];// highest parapet
+                                            }
+                                            else if (destination > 70 || destination < 51)
+                                            {
+                                                return destinations[1];// oubliette
+                                            }
+                                            else if (destination > 65 || destination < 56)
+                                            {
+                                                return destinations[2];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[3];// secret chamber
+                                            }
+                                        default:
+                                            Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Roll two D60...\n[you need your dice rolls to sum up to as close to 61 as possible...");
+                                            destination = 0;
+                                            Console.ReadKey(true);
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 115 || destination < 6)
+                                            {
+                                                return destinations[10];
+                                            }
+                                            else if (destination > 110 || destination < 11)
+                                            {
+                                                return destinations[9];
+                                            }
+                                            else if (destination > 105 || destination < 16)
+                                            {
+                                                return destinations[11];
+                                            }
+                                            else if (destination > 100 || destination < 21)
+                                            {
+                                                return destinations[8];
+                                            }
+                                            else if (destination > 95 || destination < 26)
+                                            {
+                                                return destinations[5];//dragon's lair
+                                            }
+                                            else if (destination > 90 || destination < 31)
+                                            {
+                                                return destinations[6];//bank vault
+                                            }
+                                            else if (destination > 85 || destination < 36)
+                                            {
+                                                return destinations[7];// desert island
+                                            }
+                                            else if (destination > 80 || destination < 41)
+                                            {
+                                                return destinations[4];//huge barracks
+                                            }
+                                            else if (destination > 75 || destination < 46)
+                                            {
+                                                return destinations[0];//highest parapet
+                                            }
+                                            else if (destination > 70 || destination < 51)
+                                            {
+                                                return destinations[3];//secret chamber
+                                            }
+                                            else if (destination > 65 || destination < 56)
+                                            {
+                                                return destinations[2];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[1];// oubliette
+                                            }
+                                    }
+                                }
+                                else//use portal to flee
+                                {
+                                    Console.WriteLine("[1] Tell Merigold you wish the portal to take you to somewhere the CurseBreaker can never reach you..." +
+                                        "\n[2] Tell Merigold you want to escape to a place where you can be filthy rich to the end of your days..." +
+                                        "\n[3] Tell Merigold you want to flee to a paradise where the CurseBreaker will never look for you..." +
+                                        "\n[4] Tell Merigold you want to escape to some place with enough treasure to bargain your way out of any trouble...");
+                                    switch (m.getIntResponse(5))
+                                    {
+                                        case 1:
+                                            Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Roll two D60...\n[you need your dice rolls to sum up to as close to 61 as possible...");
+                                            destination = 0;
+                                            Console.ReadKey(true);
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 115 || destination < 6)
+                                            {
+                                                return destinations[3];
+                                            }
+                                            else if (destination > 110 || destination < 11)
+                                            {
+                                                return destinations[2];
+                                            }
+                                            else if (destination > 105 || destination < 16)
+                                            {
+                                                return destinations[1];
+                                            }
+                                            else if (destination > 100 || destination < 21)
+                                            {
+                                                return destinations[0];
+                                            }
+                                            else if (destination > 95 || destination < 26)
+                                            {
+                                                return destinations[9];//dragon's lair
+                                            }
+                                            else if (destination > 90 || destination < 31)
+                                            {
+                                                return destinations[10];//bank vault
+                                            }
+                                            else if (destination > 85 || destination < 36)
+                                            {
+                                                return destinations[11];// desert island
+                                            }
+                                            else if (destination > 80 || destination < 41)
+                                            {
+                                                return destinations[4];//huge barracks
+                                            }
+                                            else if (destination > 75 || destination < 46)
+                                            {
+                                                return destinations[5];//highest parapet
+                                            }
+                                            else if (destination > 70 || destination < 51)
+                                            {
+                                                return destinations[6];//secret chamber
+                                            }
+                                            else if (destination > 65 || destination < 56)
+                                            {
+                                                return destinations[7];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[8];// oubliette
+                                            }
+                                        case 2:
+                                            Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Roll two D60...\n[you need your dice rolls to sum up to as close to 61 as possible...");
+                                            destination = 0;
+                                            Console.ReadKey(true);
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 115 || destination < 6)
+                                            {
+                                                return destinations[0];
+                                            }
+                                            else if (destination > 110 || destination < 11)
+                                            {
+                                                return destinations[3];
+                                            }
+                                            else if (destination > 105 || destination < 16)
+                                            {
+                                                return destinations[1];
+                                            }
+                                            else if (destination > 100 || destination < 21)
+                                            {
+                                                return destinations[11];
+                                            }
+                                            else if (destination > 95 || destination < 26)
+                                            {
+                                                return destinations[9];//dragon's lair
+                                            }
+                                            else if (destination > 90 || destination < 31)
+                                            {
+                                                return destinations[10];//bank vault
+                                            }
+                                            else if (destination > 85 || destination < 36)
+                                            {
+                                                return destinations[8];// desert island
+                                            }
+                                            else if (destination > 80 || destination < 41)
+                                            {
+                                                return destinations[7];//huge barracks
+                                            }
+                                            else if (destination > 75 || destination < 46)
+                                            {
+                                                return destinations[4];//highest parapet
+                                            }
+                                            else if (destination > 70 || destination < 51)
+                                            {
+                                                return destinations[2];//secret chamber
+                                            }
+                                            else if (destination > 65 || destination < 56)
+                                            {
+                                                return destinations[5];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[6];// oubliette
+                                            }
+                                        case 3:
+                                            Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Roll two D60...\n[you need your dice rolls to sum up to as close to 61 as possible...");
+                                            destination = 0;
+                                            Console.ReadKey(true);
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 115 || destination < 6)
+                                            {
+                                                return destinations[0];
+                                            }
+                                            else if (destination > 110 || destination < 11)
+                                            {
+                                                return destinations[2];
+                                            }
+                                            else if (destination > 105 || destination < 16)
+                                            {
+                                                return destinations[1];
+                                            }
+                                            else if (destination > 100 || destination < 21)
+                                            {
+                                                return destinations[3];
+                                            }
+                                            else if (destination > 95 || destination < 26)
+                                            {
+                                                return destinations[4];//dragon's lair
+                                            }
+                                            else if (destination > 90 || destination < 31)
+                                            {
+                                                return destinations[5];//bank vault
+                                            }
+                                            else if (destination > 85 || destination < 36)
+                                            {
+                                                return destinations[6];// desert island
+                                            }
+                                            else if (destination > 80 || destination < 41)
+                                            {
+                                                return destinations[11];//huge barracks
+                                            }
+                                            else if (destination > 75 || destination < 46)
+                                            {
+                                                return destinations[10];//highest parapet
+                                            }
+                                            else if (destination > 70 || destination < 51)
+                                            {
+                                                return destinations[8];//secret chamber
+                                            }
+                                            else if (destination > 65 || destination < 56)
+                                            {
+                                                return destinations[9];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[7];// oubliette
+                                            }
+                                        default:
+                                            Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Roll two D60...\n[you need your dice rolls to sum up to as close to 61 as possible...");
+                                            destination = 0;
+                                            Console.ReadKey(true);
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 115 || destination < 6)
+                                            {
+                                                return destinations[3];
+                                            }
+                                            else if (destination > 110 || destination < 11)
+                                            {
+                                                return destinations[4];
+                                            }
+                                            else if (destination > 105 || destination < 16)
+                                            {
+                                                return destinations[1];
+                                            }
+                                            else if (destination > 100 || destination < 21)
+                                            {
+                                                return destinations[0];
+                                            }
+                                            else if (destination > 95 || destination < 26)
+                                            {
+                                                return destinations[7];//dragon's lair
+                                            }
+                                            else if (destination > 90 || destination < 31)
+                                            {
+                                                return destinations[8];//bank vault
+                                            }
+                                            else if (destination > 85 || destination < 36)
+                                            {
+                                                return destinations[9];// desert island
+                                            }
+                                            else if (destination > 80 || destination < 41)
+                                            {
+                                                return destinations[10];//huge barracks
+                                            }
+                                            else if (destination > 75 || destination < 46)
+                                            {
+                                                return destinations[11];//highest parapet
+                                            }
+                                            else if (destination > 70 || destination < 51)
+                                            {
+                                                return destinations[2];//secret chamber
+                                            }
+                                            else if (destination > 65 || destination < 56)
+                                            {
+                                                return destinations[6];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[5];// oubliette
+                                            }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                endOfMidGameChoice = new List<Dice> { D2 };
+                                player.midnightClock = new System.Diagnostics.Stopwatch();
+                                player.midnightClock.Start();
+                                Console.ReadKey(true);
+                                Console.WriteLine("You feverishly turn Merigold's words over and over in your mind, 'twelve artefacts... twelve...'\n Do you know where to start looking for them? Because if not then you're going to have to begin frantically searching very, very quickly!");
+                                return room;
+
+                            }
+
+                        }
+                        else if (endOfMidGameChoice[0].faces == D40.faces)
+                        {
+                            Console.WriteLine("Merigold watches as you produce the artefacts you wish him to use. Though he makes an outward show of being phlegmatic, you can sense his anxiety radiating off of him." +
+                                "\nAfter you're done he peers up at you. 'Well, it could be worse... Are you sure that's all you have?' " +
+                                "\n\n You return a tight and solemn nod." +
+                                "\n\n  The aged wizard runs a nervous hand through his wispy hair. 'I'm not going to tell you that you've the best chances in the world, but with a bit of luck, even if I don't quite manage to send you to your destination, you should end up somewhere nearby. Are you sure you don't want to hunt for any more artefacts first?'");
+
+                            if (m.getYesNoResponse())
+                            {
+                                Console.WriteLine("You tell Merigold you're prepared to take the risks...");
+                                Console.ReadKey(true);
+                                Console.WriteLine("\t'Very well then,' Merigold replies heavily, 'Where is it you'd like to go?'");
+                                if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)//use portal to defeat CB
+                                {
+                                    Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
+                                        "\n[2] Tell him you want the portal to trace where the CurseBreaker hid Merigold's staff and for it to whisk you there..." +
+                                        "\n[3] Tell him you want to stop any chance of this ritual from happening. With some knot of foreboding you instruct Merigold to deliver you to the oubliette and the creature lurking therein...");
+                                    switch (m.getIntResponse(4))
+                                    {
+                                        case 1:
+                                            Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Roll three D40...\n[you need your dice rolls to sum up to as close to 61 as possible...");
+                                            destination = 0;
+                                            Console.ReadKey(true);
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 115 || destination < 6)
+                                            {
+                                                return destinations[10];
+                                            }
+                                            else if (destination > 110 || destination < 11)
+                                            {
+                                                return destinations[9];
+                                            }
+                                            else if (destination > 105 || destination < 16)
+                                            {
+                                                return destinations[8];
+                                            }
+                                            else if (destination > 100 || destination < 21)
+                                            {
+                                                return destinations[5];
+                                            }
+                                            else if (destination > 95 || destination < 26)
+                                            {
+                                                return destinations[6];//dragon's lair
+                                            }
+                                            else if (destination > 90 || destination < 31)
+                                            {
+                                                return destinations[7];//bank vault
+                                            }
+                                            else if (destination > 85 || destination < 36)
+                                            {
+                                                return destinations[4];// desert island
+                                            }
+                                            else if (destination > 80 || destination < 41)
+                                            {
+                                                return destinations[1];//huge barracks
+                                            }
+                                            else if (destination > 75 || destination < 46)
+                                            {
+                                                return destinations[3];//oubliette
+                                            }
+                                            else if (destination > 70 || destination < 51)
+                                            {
+                                                return destinations[2];//secret chamber
+                                            }
+                                            else if (destination > 65 || destination < 56)
+                                            {
+                                                return destinations[0];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[0];// highest parapet
+                                            }
+                                        case 2:
+                                            Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Roll three D40...\n[you need your dice rolls to sum up to as close to 61 as possible...");
+                                            destination = 0;
+                                            Console.ReadKey(true);
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 115 || destination < 6)
+                                            {
+                                                return destinations[10];
+                                            }
+                                            else if (destination > 110 || destination < 11)
+                                            {
+                                                return destinations[9];
+                                            }
+                                            else if (destination > 105 || destination < 16)
+                                            {
+                                                return destinations[8];
+                                            }
+                                            else if (destination > 100 || destination < 21)
+                                            {
+                                                return destinations[5];
+                                            }
+                                            else if (destination > 95 || destination < 26)
+                                            {
+                                                return destinations[6];//dragon's lair
+                                            }
+                                            else if (destination > 90 || destination < 31)
+                                            {
+                                                return destinations[7];//bank vault
+                                            }
+                                            else if (destination > 85 || destination < 36)
+                                            {
+                                                return destinations[4];// desert island
+                                            }
+                                            else if (destination > 80 || destination < 41)
+                                            {
+                                                return destinations[0];//huge barracks
+                                            }
+                                            else if (destination > 75 || destination < 46)
+                                            {
+                                                return destinations[1];// highest parapet
+                                            }
+                                            else if (destination > 70 || destination < 51)
+                                            {
+                                                return destinations[2];// oubliette
+                                            }
+                                            else if (destination > 65 || destination < 56)
+                                            {
+                                                return destinations[3];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[3];// secret chamber
+                                            }
+                                        default:
+                                            Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Roll three D40...\n[you need your dice rolls to sum up to as close to 61 as possible...");
+                                            destination = 0;
+                                            Console.ReadKey(true);
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 115 || destination < 6)
+                                            {
+                                                return destinations[10];
+                                            }
+                                            else if (destination > 110 || destination < 11)
+                                            {
+                                                return destinations[9];
+                                            }
+                                            else if (destination > 105 || destination < 16)
+                                            {
+                                                return destinations[8];
+                                            }
+                                            else if (destination > 100 || destination < 21)
+                                            {
+                                                return destinations[5];
+                                            }
+                                            else if (destination > 95 || destination < 26)
+                                            {
+                                                return destinations[6];//dragon's lair
+                                            }
+                                            else if (destination > 90 || destination < 31)
+                                            {
+                                                return destinations[7];//bank vault
+                                            }
+                                            else if (destination > 85 || destination < 36)
+                                            {
+                                                return destinations[4];// desert island
+                                            }
+                                            else if (destination > 80 || destination < 41)
+                                            {
+                                                return destinations[0];//huge barracks
+                                            }
+                                            else if (destination > 75 || destination < 46)
+                                            {
+                                                return destinations[3];//highest parapet
+                                            }
+                                            else if (destination > 70 || destination < 51)
+                                            {
+                                                return destinations[2];//secret chamber
+                                            }
+                                            else if (destination > 65 || destination < 56)
+                                            {
+                                                return destinations[1];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[1];// oubliette
+                                            }
+                                    }
+                                }
+                                else//use portal to flee
+                                {
+                                    Console.WriteLine("[1] Tell Merigold you wish the portal to take you to somewhere the CurseBreaker can never reach you..." +
+                                        "\n[2] Tell Merigold you want to escape to a place where you can be filthy rich to the end of your days..." +
+                                        "\n[3] Tell Merigold you want to flee to a paradise where the CurseBreaker will never look for you..." +
+                                        "\n[4] Tell Merigold you want to escape to some place with enough treasure to bargain your way out of any trouble...");
+                                    switch (m.getIntResponse(5))
+                                    {
+                                        case 1:
+                                            Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Roll three D40...\n[you need your dice rolls to sum up to as close to 61 as possible...");
+                                            destination = 0;
+                                            Console.ReadKey(true);
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 115 || destination < 6)
+                                            {
+                                                return destinations[3];
+                                            }
+                                            else if (destination > 110 || destination < 11)
+                                            {
+                                                return destinations[2];
+                                            }
+                                            else if (destination > 105 || destination < 16)
+                                            {
+                                                return destinations[1];
+                                            }
+                                            else if (destination > 100 || destination < 21)
+                                            {
+                                                return destinations[0];
+                                            }
+                                            else if (destination > 95 || destination < 26)
+                                            {
+                                                return destinations[9];//dragon's lair
+                                            }
+                                            else if (destination > 90 || destination < 31)
+                                            {
+                                                return destinations[10];//bank vault
+                                            }
+                                            else if (destination > 85 || destination < 36)
+                                            {
+                                                return destinations[4];// desert island
+                                            }
+                                            else if (destination > 80 || destination < 41)
+                                            {
+                                                return destinations[5];//huge barracks
+                                            }
+                                            else if (destination > 75 || destination < 46)
+                                            {
+                                                return destinations[6];//highest parapet
+                                            }
+                                            else if (destination > 70 || destination < 51)
+                                            {
+                                                return destinations[7];//secret chamber
+                                            }
+                                            else if (destination > 65 || destination < 56)
+                                            {
+                                                return destinations[8];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[8];// oubliette
+                                            }
+                                        case 2:
+                                            Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Roll three D40...\n[you need your dice rolls to sum up to as close to 61 as possible...");
+                                            destination = 0;
+                                            Console.ReadKey(true);
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 115 || destination < 6)
+                                            {
+                                                return destinations[0];
+                                            }
+                                            else if (destination > 110 || destination < 11)
+                                            {
+                                                return destinations[3];
+                                            }
+                                            else if (destination > 105 || destination < 16)
+                                            {
+                                                return destinations[1];
+                                            }
+                                            else if (destination > 100 || destination < 21)
+                                            {
+                                                return destinations[9];
+                                            }
+                                            else if (destination > 95 || destination < 26)
+                                            {
+                                                return destinations[10];//dragon's lair
+                                            }
+                                            else if (destination > 90 || destination < 31)
+                                            {
+                                                return destinations[8];//bank vault
+                                            }
+                                            else if (destination > 85 || destination < 36)
+                                            {
+                                                return destinations[7];// desert island
+                                            }
+                                            else if (destination > 80 || destination < 41)
+                                            {
+                                                return destinations[4];//huge barracks
+                                            }
+                                            else if (destination > 75 || destination < 46)
+                                            {
+                                                return destinations[2];//highest parapet
+                                            }
+                                            else if (destination > 70 || destination < 51)
+                                            {
+                                                return destinations[5];//secret chamber
+                                            }
+                                            else if (destination > 65 || destination < 56)
+                                            {
+                                                return destinations[6];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[6];// oubliette
+                                            }
+                                        case 3:
+                                            Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Roll three D40...\n[you need your dice rolls to sum up to as close to 61 as possible...");
+                                            destination = 0;
+                                            Console.ReadKey(true);
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 115 || destination < 6)
+                                            {
+                                                return destinations[0];
+                                            }
+                                            else if (destination > 110 || destination < 11)
+                                            {
+                                                return destinations[2];
+                                            }
+                                            else if (destination > 105 || destination < 16)
+                                            {
+                                                return destinations[1];
+                                            }
+                                            else if (destination > 100 || destination < 21)
+                                            {
+                                                return destinations[3];
+                                            }
+                                            else if (destination > 95 || destination < 26)
+                                            {
+                                                return destinations[4];//dragon's lair
+                                            }
+                                            else if (destination > 90 || destination < 31)
+                                            {
+                                                return destinations[5];//bank vault
+                                            }
+                                            else if (destination > 85 || destination < 36)
+                                            {
+                                                return destinations[6];// desert island
+                                            }
+                                            else if (destination > 80 || destination < 41)
+                                            {
+                                                return destinations[10];//huge barracks
+                                            }
+                                            else if (destination > 75 || destination < 46)
+                                            {
+                                                return destinations[8];//highest parapet
+                                            }
+                                            else if (destination > 70 || destination < 51)
+                                            {
+                                                return destinations[9];//secret chamber
+                                            }
+                                            else if (destination > 65 || destination < 56)
+                                            {
+                                                return destinations[7];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[7];// oubliette
+                                            }
+                                        default:
+                                            Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Roll three D40...\n[you need your dice rolls to sum up to as close to 61 as possible...");
+                                            destination = 0;
+                                            Console.ReadKey(true);
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 115 || destination < 6)
+                                            {
+                                                return destinations[3];
+                                            }
+                                            else if (destination > 110 || destination < 11)
+                                            {
+                                                return destinations[4];
+                                            }
+                                            else if (destination > 105 || destination < 16)
+                                            {
+                                                return destinations[1];
+                                            }
+                                            else if (destination > 100 || destination < 21)
+                                            {
+                                                return destinations[0];
+                                            }
+                                            else if (destination > 95 || destination < 26)
+                                            {
+                                                return destinations[7];//dragon's lair
+                                            }
+                                            else if (destination > 90 || destination < 31)
+                                            {
+                                                return destinations[8];//bank vault
+                                            }
+                                            else if (destination > 85 || destination < 36)
+                                            {
+                                                return destinations[9];// desert island
+                                            }
+                                            else if (destination > 80 || destination < 41)
+                                            {
+                                                return destinations[10];//huge barracks
+                                            }
+                                            else if (destination > 75 || destination < 46)
+                                            {
+                                                return destinations[2];//highest parapet
+                                            }
+                                            else if (destination > 70 || destination < 51)
+                                            {
+                                                return destinations[6];//secret chamber
+                                            }
+                                            else if (destination > 65 || destination < 56)
+                                            {
+                                                return destinations[5];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[5];// oubliette
+                                            }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                endOfMidGameChoice = new List<Dice> { D2 };
+                                player.midnightClock = new System.Diagnostics.Stopwatch();
+                                player.midnightClock.Start();
+                                Console.ReadKey(true);
+                                Console.WriteLine("You tell Merigold you'll head back when you're ready, all the while feverishly turning his words over and over in your mind, 'twelve artefacts... twelve...'\n Do you know where to start looking for them? Because if not then you're going to have to begin frantically searching very, very quickly!");
+                                return room;
+
+                            }
+                        }
+                        else if (endOfMidGameChoice[0].faces == D30.faces)
+                        {
+                            Console.WriteLine("Merigold watches as you produce the artefacts you wish him to use. At first he seems nervous, but the more items you display before him the more evident is his relief." +
+                                "\nAfter you're done he peers up at you. 'Good... This is a good haul. Not ideal, perhaps, but I believe you have an excellent chance with this. Are you sure that's all you have?' " +
+                                "\n\n You return a confident nod." +
+                                "\n\n  The aged wizard rubs his hands together. 'With a bit of luck, even if I don't quite manage to send you to your destination, you should end up somewhere nearby. Are you sure you don't want to hunt for any more artefacts first?'");
+
+                            if (m.getYesNoResponse())
+                            {
+                                Console.WriteLine("You tell Merigold you're prepared to take the risks...");
+                                Console.ReadKey(true);
+                                Console.WriteLine("\t'Very well then,' Merigold replies heavily, 'Where is it you'd like to go?'");
+                                if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)//use portal to defeat CB
+                                {
+                                    Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
+                                        "\n[2] Tell him you want the portal to trace where the CurseBreaker hid Merigold's staff and for it to whisk you there..." +
+                                        "\n[3] Tell him you want to stop any chance of this ritual from happening. With some knot of foreboding you instruct Merigold to deliver you to the oubliette and the creature lurking therein...");
+                                    switch (m.getIntResponse(4))
+                                    {
+                                        case 1:
+                                            Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                                "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Suddenly you lurch backwards!");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                                "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                            Console.ReadKey
+                                                (true);
+                                            Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                                "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                            Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Roll four D30...\n[you need your dice rolls to sum up to as close to 62 as possible...");
+                                            destination = 0;
+                                            Console.ReadKey(true);
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 116 || destination < 7)
+                                            {
+                                                return destinations[10];
+                                            }
+                                            else if (destination > 111 || destination < 12)
+                                            {
+                                                return destinations[9];
+                                            }
+                                            else if (destination > 106 || destination < 17)
+                                            {
+                                                return destinations[8];
+                                            }
+                                            else if (destination > 101 || destination < 22)
+                                            {
+                                                return destinations[5];
+                                            }
+                                            else if (destination > 96 || destination < 27)
+                                            {
+                                                return destinations[6];//dragon's lair
+                                            }
+                                            else if (destination > 91 || destination < 32)
+                                            {
+                                                return destinations[7];//bank vault
+                                            }
+                                            else if (destination > 86 || destination < 37)
+                                            {
+                                                return destinations[4];// desert island
+                                            }
+                                            else if (destination > 81 || destination < 42)
+                                            {
+                                                return destinations[1];//huge barracks
+                                            }
+                                            else if (destination > 76 || destination < 47)
+                                            {
+                                                return destinations[3];//oubliette
+                                            }
+                                            else if (destination > 71 || destination < 52)
+                                            {
+                                                return destinations[2];//secret chamber
+                                            }
+                                            else if (destination > 66 || destination < 57)
+                                            {
+                                                return destinations[0];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[0];// highest parapet
+                                            }
+                                        case 2:
+                                            Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                                "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Suddenly you lurch backwards!");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                                "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                            Console.ReadKey
+                                                (true);
+                                            Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                                "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                            Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                            Console.ReadKey(true);
+                                            destination = 0;
+                                            Console.WriteLine("Roll four D30...\n[you need your dice rolls to sum up to as close to 62 as possible...");
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 116 || destination < 7)
+                                            {
+                                                return destinations[10];
+                                            }
+                                            else if (destination > 111 || destination < 12)
+                                            {
+                                                return destinations[9];
+                                            }
+                                            else if (destination > 106 || destination < 17)
+                                            {
+                                                return destinations[8];
+                                            }
+                                            else if (destination > 101 || destination < 22)
+                                            {
+                                                return destinations[5];
+                                            }
+                                            else if (destination > 96 || destination < 27)
+                                            {
+                                                return destinations[6];//dragon's lair
+                                            }
+                                            else if (destination > 91 || destination < 32)
+                                            {
+                                                return destinations[7];//bank vault
+                                            }
+                                            else if (destination > 86 || destination < 37)
+                                            {
+                                                return destinations[4];// desert island
+                                            }
+                                            else if (destination > 81 || destination < 42)
+                                            {
+                                                return destinations[0];//huge barracks
+                                            }
+                                            else if (destination > 76 || destination < 47)
+                                            {
+                                                return destinations[1];// highest parapet
+                                            }
+                                            else if (destination > 71 || destination < 52)
+                                            {
+                                                return destinations[2];// oubliette
+                                            }
+                                            else if (destination > 66 || destination < 57)
+                                            {
+                                                return destinations[3];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[3];// secret chamber
+                                            }
+                                        default:
+                                            Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                                "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Suddenly you lurch backwards!");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                                "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                            Console.ReadKey
+                                                (true);
+                                            Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                                "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                            Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                            Console.ReadKey(true);
+                                            destination = 0;
+                                            Console.WriteLine("Roll four D30...\n[you need your dice rolls to sum up to as close to 62 as possible...");
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 116 || destination < 7)
+                                            {
+                                                return destinations[10];
+                                            }
+                                            else if (destination > 111 || destination < 12)
+                                            {
+                                                return destinations[9];
+                                            }
+                                            else if (destination > 106 || destination < 17)
+                                            {
+                                                return destinations[8];
+                                            }
+                                            else if (destination > 101 || destination < 22)
+                                            {
+                                                return destinations[5];
+                                            }
+                                            else if (destination > 96 || destination < 27)
+                                            {
+                                                return destinations[6];//dragon's lair
+                                            }
+                                            else if (destination > 91 || destination < 32)
+                                            {
+                                                return destinations[7];//bank vault
+                                            }
+                                            else if (destination > 86 || destination < 37)
+                                            {
+                                                return destinations[4];// desert island
+                                            }
+                                            else if (destination > 81 || destination < 42)
+                                            {
+                                                return destinations[0];//huge barracks
+                                            }
+                                            else if (destination > 76 || destination < 47)
+                                            {
+                                                return destinations[3];//highest parapet
+                                            }
+                                            else if (destination > 71 || destination < 52)
+                                            {
+                                                return destinations[2];//secret chamber
+                                            }
+                                            else if (destination > 66 || destination < 57)
+                                            {
+                                                return destinations[1];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[1];// oubliette
+                                            }
+                                    }
+                                }
+                                else//use portal to flee
+                                {
+                                    Console.WriteLine("[1] Tell Merigold you wish the portal to take you to somewhere the CurseBreaker can never reach you..." +
+                                        "\n[2] Tell Merigold you want to escape to a place where you can be filthy rich to the end of your days..." +
+                                        "\n[3] Tell Merigold you want to flee to a paradise where the CurseBreaker will never look for you..." +
+                                        "\n[4] Tell Merigold you want to escape to some place with enough treasure to bargain your way out of any trouble...");
+                                    switch (m.getIntResponse(5))
+                                    {
+                                        case 1:
+                                            Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                                "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Suddenly you lurch backwards!");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                                "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                            Console.ReadKey
+                                                (true);
+                                            Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                                "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                            Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                            Console.ReadKey(true);
+                                            destination = 0;
+                                            Console.WriteLine("Roll four D30...\n[you need your dice rolls to sum up to as close to 62 as possible...");
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 116 || destination < 7)
+                                            {
+                                                return destinations[3];
+                                            }
+                                            else if (destination > 111 || destination < 12)
+                                            {
+                                                return destinations[2];
+                                            }
+                                            else if (destination > 106 || destination < 17)
+                                            {
+                                                return destinations[1];
+                                            }
+                                            else if (destination > 101 || destination < 22)
+                                            {
+                                                return destinations[0];
+                                            }
+                                            else if (destination > 96 || destination < 27)
+                                            {
+                                                return destinations[9];//dragon's lair
+                                            }
+                                            else if (destination > 91 || destination < 32)
+                                            {
+                                                return destinations[10];//bank vault
+                                            }
+                                            else if (destination > 86 || destination < 37)
+                                            {
+                                                return destinations[4];// desert island
+                                            }
+                                            else if (destination > 81 || destination < 42)
+                                            {
+                                                return destinations[5];//huge barracks
+                                            }
+                                            else if (destination > 76 || destination < 47)
+                                            {
+                                                return destinations[6];//highest parapet
+                                            }
+                                            else if (destination > 71 || destination < 52)
+                                            {
+                                                return destinations[7];//secret chamber
+                                            }
+                                            else if (destination > 66 || destination < 57)
+                                            {
+                                                return destinations[8];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[8];// oubliette
+                                            }
+                                        case 2:
+                                            Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                                "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Suddenly you lurch backwards!");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                                "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                            Console.ReadKey
+                                                (true);
+                                            Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                                "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                            Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                            Console.ReadKey(true);
+                                            destination = 0;
+                                            Console.WriteLine("Roll four D30...\n[you need your dice rolls to sum up to as close to 62 as possible...");
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 116 || destination < 7)
+                                            {
+                                                return destinations[0];
+                                            }
+                                            else if (destination > 111 || destination < 12)
+                                            {
+                                                return destinations[3];
+                                            }
+                                            else if (destination > 106 || destination < 17)
+                                            {
+                                                return destinations[1];
+                                            }
+                                            else if (destination > 101 || destination < 22)
+                                            {
+                                                return destinations[9];
+                                            }
+                                            else if (destination > 96 || destination < 27)
+                                            {
+                                                return destinations[10];//dragon's lair
+                                            }
+                                            else if (destination > 91 || destination < 32)
+                                            {
+                                                return destinations[8];//bank vault
+                                            }
+                                            else if (destination > 86 || destination < 37)
+                                            {
+                                                return destinations[7];// desert island
+                                            }
+                                            else if (destination > 81 || destination < 42)
+                                            {
+                                                return destinations[4];//huge barracks
+                                            }
+                                            else if (destination > 76 || destination < 47)
+                                            {
+                                                return destinations[2];//highest parapet
+                                            }
+                                            else if (destination > 71 || destination < 52)
+                                            {
+                                                return destinations[5];//secret chamber
+                                            }
+                                            else if (destination > 66 || destination < 57)
+                                            {
+                                                return destinations[6];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[6];// oubliette
+                                            }
+                                        case 3:
+                                            Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                                "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Suddenly you lurch backwards!");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                                "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                            Console.ReadKey
+                                                (true);
+                                            Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                                "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                            Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                            Console.ReadKey(true);
+                                            destination = 0;
+                                            Console.WriteLine("Roll four D30...\n[you need your dice rolls to sum up to as close to 62 as possible...");
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 116 || destination < 7)
+                                            {
+                                                return destinations[0];
+                                            }
+                                            else if (destination > 111 || destination < 12)
+                                            {
+                                                return destinations[2];
+                                            }
+                                            else if (destination > 106 || destination < 17)
+                                            {
+                                                return destinations[1];
+                                            }
+                                            else if (destination > 101 || destination < 22)
+                                            {
+                                                return destinations[3];
+                                            }
+                                            else if (destination > 96 || destination < 27)
+                                            {
+                                                return destinations[4];//dragon's lair
+                                            }
+                                            else if (destination > 91 || destination < 32)
+                                            {
+                                                return destinations[5];//bank vault
+                                            }
+                                            else if (destination > 86 || destination < 37)
+                                            {
+                                                return destinations[6];// desert island
+                                            }
+                                            else if (destination > 81 || destination < 42)
+                                            {
+                                                return destinations[10];//huge barracks
+                                            }
+                                            else if (destination > 76 || destination < 47)
+                                            {
+                                                return destinations[8];//highest parapet
+                                            }
+                                            else if (destination > 71 || destination < 52)
+                                            {
+                                                return destinations[9];//secret chamber
+                                            }
+                                            else if (destination > 66 || destination < 57)
+                                            {
+                                                return destinations[7];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[7];// oubliette
+                                            }
+                                        default:
+                                            Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                                "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Suddenly you lurch backwards!");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                                "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                            Console.ReadKey
+                                                (true);
+                                            Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                                "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                            Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                            Console.ReadKey(true);
+                                            destination = 0;
+                                            Console.WriteLine("Roll four D30...\n[you need your dice rolls to sum up to as close to 62 as possible...");
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 116 || destination < 7)
+                                            {
+                                                return destinations[3];
+                                            }
+                                            else if (destination > 111 || destination < 12)
+                                            {
+                                                return destinations[4];
+                                            }
+                                            else if (destination > 106 || destination < 17)
+                                            {
+                                                return destinations[1];
+                                            }
+                                            else if (destination > 101 || destination < 22)
+                                            {
+                                                return destinations[0];
+                                            }
+                                            else if (destination > 96 || destination < 27)
+                                            {
+                                                return destinations[7];//dragon's lair
+                                            }
+                                            else if (destination > 91 || destination < 32)
+                                            {
+                                                return destinations[8];//bank vault
+                                            }
+                                            else if (destination > 86 || destination < 37)
+                                            {
+                                                return destinations[9];// desert island
+                                            }
+                                            else if (destination > 81 || destination < 42)
+                                            {
+                                                return destinations[10];//huge barracks
+                                            }
+                                            else if (destination > 76 || destination < 47)
+                                            {
+                                                return destinations[2];//highest parapet
+                                            }
+                                            else if (destination > 71 || destination < 52)
+                                            {
+                                                return destinations[6];//secret chamber
+                                            }
+                                            else if (destination > 66 || destination < 57)
+                                            {
+                                                return destinations[5];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[5];// oubliette
+                                            }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                endOfMidGameChoice = new List<Dice> { D2 };
+                                player.midnightClock = new System.Diagnostics.Stopwatch();
+                                player.midnightClock.Start();
+                                Console.ReadKey(true);
+                                Console.WriteLine("You tell Merigold you'll head back when you're ready, all the while feverishly turning his words over and over in your mind, 'twelve artefacts... twelve...'\n Do you know where to start looking for them? Because if not then you're going to have to begin frantically searching very, very quickly!");
+                                return room;
+
+                            }
+                        }
+                        else if (endOfMidGameChoice[0].faces == D24.faces)
+                        {
+                            Console.WriteLine("Merigold watches as you produce the artefacts you wish him to use. At first he seems nervous, but the more items you display before him the more evident is his relief." +
+                                "\nAfter you're done he peers up at you. 'Good... This is a good haul. Not ideal, perhaps, but I believe you have an excellent chance with this. Are you sure that's all you have?' " +
+                                "\n\n You return a confident nod." +
+                                "\n\n  The aged wizard rubs his hands together. 'With a bit of luck, even if I don't quite manage to send you to your destination, you should end up somewhere nearby. Are you sure you don't want to hunt for any more artefacts first?'");
+
+                            if (m.getYesNoResponse())
+                            {
+                                Console.WriteLine("You tell Merigold you're prepared to take the risks...");
+                                Console.ReadKey(true);
+                                Console.WriteLine("\t'Very well then,' Merigold replies heavily, 'Where is it you'd like to go?'");
+                                if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)//use portal to defeat CB
+                                {
+                                    Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
+                                        "\n[2] Tell him you want the portal to trace where the CurseBreaker hid Merigold's staff and for it to whisk you there..." +
+                                        "\n[3] Tell him you want to stop any chance of this ritual from happening. With some knot of foreboding you instruct Merigold to deliver you to the oubliette and the creature lurking therein...");
+                                    switch (m.getIntResponse(4))
+                                    {
+                                        case 1:
+                                            Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                                "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Suddenly you lurch backwards!");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                                "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                            Console.ReadKey
+                                                (true);
+                                            Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                                "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                            Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Roll five D24...\n[you need your dice rolls to sum up to as close to 62 as possible...");
+                                            destination = 0;
+                                            Console.ReadKey(true);
+                                            endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 116 || destination < 7)
+                                            {
+                                                return destinations[10];
+                                            }
+                                            else if (destination > 111 || destination < 12)
+                                            {
+                                                return destinations[9];
+                                            }
+                                            else if (destination > 106 || destination < 17)
+                                            {
+                                                return destinations[5];
+                                            }
+                                            else if (destination > 101 || destination < 22)
+                                            {
+                                                return destinations[6];
+                                            }
+                                            else if (destination > 96 || destination < 27)
+                                            {
+                                                return destinations[7];//dragon's lair
+                                            }
+                                            else if (destination > 91 || destination < 32)
+                                            {
+                                                return destinations[4];//bank vault
+                                            }
+                                            else if (destination > 86 || destination < 37)
+                                            {
+                                                return destinations[1];// desert island
+                                            }
+                                            else if (destination > 81 || destination < 42)
+                                            {
+                                                return destinations[3];//huge barracks
+                                            }
+                                            else if (destination > 76 || destination < 47)
+                                            {
+                                                return destinations[2];//oubliette
+                                            }
+                                            else if (destination > 71 || destination < 52)
+                                            {
+                                                return destinations[0];//secret chamber
+                                            }
+                                            else if (destination > 66 || destination < 57)
+                                            {
+                                                return destinations[0];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[0];// highest parapet
+                                            }
+                                        case 2:
+                                            Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                                "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Suddenly you lurch backwards!");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                                "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                            Console.ReadKey
+                                                (true);
+                                            Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                                "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                            Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                            Console.ReadKey(true);
+                                            destination = 0;
+                                            Console.WriteLine("Roll five D24...\n[you need your dice rolls to sum up to as close to 62 as possible..."); endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 116 || destination < 7)
+                                            {
+                                                return destinations[10];
+                                            }
+                                            else if (destination > 111 || destination < 12)
+                                            {
+                                                return destinations[9];
+                                            }
+                                            else if (destination > 106 || destination < 17)
+                                            {
+                                                return destinations[5];
+                                            }
+                                            else if (destination > 101 || destination < 22)
+                                            {
+                                                return destinations[6];
+                                            }
+                                            else if (destination > 96 || destination < 27)
+                                            {
+                                                return destinations[7];//dragon's lair
+                                            }
+                                            else if (destination > 91 || destination < 32)
+                                            {
+                                                return destinations[4];//bank vault
+                                            }
+                                            else if (destination > 86 || destination < 37)
+                                            {
+                                                return destinations[0];// desert island
+                                            }
+                                            else if (destination > 81 || destination < 42)
+                                            {
+                                                return destinations[1];//huge barracks
+                                            }
+                                            else if (destination > 76 || destination < 47)
+                                            {
+                                                return destinations[2];// highest parapet
+                                            }
+                                            else if (destination > 71 || destination < 52)
+                                            {
+                                                return destinations[3];// oubliette
+                                            }
+                                            else if (destination > 66 || destination < 57)
+                                            {
+                                                return destinations[3];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[3];// secret chamber
+                                            }
+                                        default:
+                                            Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                                "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Suddenly you lurch backwards!");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                                "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                            Console.ReadKey
+                                                (true);
+                                            Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                                "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                            Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                            Console.ReadKey(true);
+                                            destination = 0;
+                                            Console.WriteLine("Roll five D24...\n[you need your dice rolls to sum up to as close to 62 as possible..."); endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 116 || destination < 7)
+                                            {
+                                                return destinations[10];
+                                            }
+                                            else if (destination > 111 || destination < 12)
+                                            {
+                                                return destinations[9];
+                                            }
+                                            else if (destination > 106 || destination < 17)
+                                            {
+                                                return destinations[5];
+                                            }
+                                            else if (destination > 101 || destination < 22)
+                                            {
+                                                return destinations[6];
+                                            }
+                                            else if (destination > 96 || destination < 27)
+                                            {
+                                                return destinations[7];//dragon's lair
+                                            }
+                                            else if (destination > 91 || destination < 32)
+                                            {
+                                                return destinations[4];//bank vault
+                                            }
+                                            else if (destination > 86 || destination < 37)
+                                            {
+                                                return destinations[0];// desert island
+                                            }
+                                            else if (destination > 81 || destination < 42)
+                                            {
+                                                return destinations[3];//huge barracks
+                                            }
+                                            else if (destination > 76 || destination < 47)
+                                            {
+                                                return destinations[2];//highest parapet
+                                            }
+                                            else if (destination > 71 || destination < 52)
+                                            {
+                                                return destinations[1];//secret chamber
+                                            }
+                                            else if (destination > 66 || destination < 57)
+                                            {
+                                                return destinations[1];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[1];// oubliette
+                                            }
+                                    }
+                                }
+                                else//use portal to flee
+                                {
+                                    Console.WriteLine("[1] Tell Merigold you wish the portal to take you to somewhere the CurseBreaker can never reach you..." +
+                                        "\n[2] Tell Merigold you want to escape to a place where you can be filthy rich to the end of your days..." +
+                                        "\n[3] Tell Merigold you want to flee to a paradise where the CurseBreaker will never look for you..." +
+                                        "\n[4] Tell Merigold you want to escape to some place with enough treasure to bargain your way out of any trouble...");
+                                    switch (m.getIntResponse(5))
+                                    {
+                                        case 1:
+                                            Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                                "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Suddenly you lurch backwards!");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                                "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                            Console.ReadKey
+                                                (true);
+                                            Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                                "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                            Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                            Console.ReadKey(true);
+                                            destination = 0;
+                                            Console.WriteLine("Roll five D24...\n[you need your dice rolls to sum up to as close to 62 as possible..."); endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 116 || destination < 7)
+                                            {
+                                                return destinations[3];
+                                            }
+                                            else if (destination > 111 || destination < 12)
+                                            {
+                                                return destinations[2];
+                                            }
+                                            else if (destination > 106 || destination < 17)
+                                            {
+                                                return destinations[1];
+                                            }
+                                            else if (destination > 101 || destination < 22)
+                                            {
+                                                return destinations[0];
+                                            }
+                                            else if (destination > 96 || destination < 27)
+                                            {
+                                                return destinations[9];//dragon's lair
+                                            }
+                                            else if (destination > 91 || destination < 32)
+                                            {
+                                                return destinations[10];//bank vault
+                                            }
+                                            else if (destination > 86 || destination < 37)
+                                            {
+                                                return destinations[5];// desert island
+                                            }
+                                            else if (destination > 81 || destination < 42)
+                                            {
+                                                return destinations[6];//huge barracks
+                                            }
+                                            else if (destination > 76 || destination < 47)
+                                            {
+                                                return destinations[7];//highest parapet
+                                            }
+                                            else if (destination > 71 || destination < 52)
+                                            {
+                                                return destinations[8];//secret chamber
+                                            }
+                                            else if (destination > 66 || destination < 57)
+                                            {
+                                                return destinations[8];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[8];// oubliette
+                                            }
+                                        case 2:
+                                            Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                                "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Suddenly you lurch backwards!");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                                "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                            Console.ReadKey
+                                                (true);
+                                            Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                                "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                            Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                            Console.ReadKey(true);
+                                            destination = 0;
+                                            Console.WriteLine("Roll five D24...\n[you need your dice rolls to sum up to as close to 62 as possible..."); endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 116 || destination < 7)
+                                            {
+                                                return destinations[0];
+                                            }
+                                            else if (destination > 111 || destination < 12)
+                                            {
+                                                return destinations[3];
+                                            }
+                                            else if (destination > 106 || destination < 17)
+                                            {
+                                                return destinations[1];
+                                            }
+                                            else if (destination > 101 || destination < 22)
+                                            {
+                                                return destinations[10];
+                                            }
+                                            else if (destination > 96 || destination < 27)
+                                            {
+                                                return destinations[8];//dragon's lair
+                                            }
+                                            else if (destination > 91 || destination < 32)
+                                            {
+                                                return destinations[7];//bank vault
+                                            }
+                                            else if (destination > 86 || destination < 37)
+                                            {
+                                                return destinations[4];// desert island
+                                            }
+                                            else if (destination > 81 || destination < 42)
+                                            {
+                                                return destinations[2];//huge barracks
+                                            }
+                                            else if (destination > 76 || destination < 47)
+                                            {
+                                                return destinations[5];//highest parapet
+                                            }
+                                            else if (destination > 71 || destination < 52)
+                                            {
+                                                return destinations[6];//secret chamber
+                                            }
+                                            else if (destination > 66 || destination < 57)
+                                            {
+                                                return destinations[6];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[6];// oubliette
+                                            }
+                                        case 3:
+                                            Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                                "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Suddenly you lurch backwards!");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                                "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                            Console.ReadKey
+                                                (true);
+                                            Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                                "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                            Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                            Console.ReadKey(true);
+                                            destination = 0;
+                                            Console.WriteLine("Roll five D24...\n[you need your dice rolls to sum up to as close to 62 as possible..."); endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 116 || destination < 7)
+                                            {
+                                                return destinations[0];
+                                            }
+                                            else if (destination > 111 || destination < 12)
+                                            {
+                                                return destinations[2];
+                                            }
+                                            else if (destination > 106 || destination < 17)
+                                            {
+                                                return destinations[1];
+                                            }
+                                            else if (destination > 101 || destination < 22)
+                                            {
+                                                return destinations[3];
+                                            }
+                                            else if (destination > 96 || destination < 27)
+                                            {
+                                                return destinations[4];//dragon's lair
+                                            }
+                                            else if (destination > 91 || destination < 32)
+                                            {
+                                                return destinations[5];//bank vault
+                                            }
+                                            else if (destination > 86 || destination < 37)
+                                            {
+                                                return destinations[6];// desert island
+                                            }
+                                            else if (destination > 81 || destination < 42)
+                                            {
+                                                return destinations[8];//huge barracks
+                                            }
+                                            else if (destination > 76 || destination < 47)
+                                            {
+                                                return destinations[9];//highest parapet
+                                            }
+                                            else if (destination > 71 || destination < 52)
+                                            {
+                                                return destinations[7];//secret chamber
+                                            }
+                                            else if (destination > 66 || destination < 57)
+                                            {
+                                                return destinations[7];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[7];// oubliette
+                                            }
+                                        default:
+                                            Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                                "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Suddenly you lurch backwards!");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                                "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                            Console.ReadKey
+                                                (true);
+                                            Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                                "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                            Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                            Console.ReadKey(true);
+                                            destination = 0;
+                                            Console.WriteLine("Roll five D24...\n[you need your dice rolls to sum up to as close to 62 as possible..."); endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                            foreach (Dice d in endOfMidGameChoice)
+                                            {
+
+                                                int x = d.Roll(d);
+                                                Console.WriteLine($"You rolled {x}");
+                                                Console.ReadKey(true);
+                                                destination += x;
+                                            }
+                                            if (destination > 116 || destination < 7)
+                                            {
+                                                return destinations[3];
+                                            }
+                                            else if (destination > 111 || destination < 12)
+                                            {
+                                                return destinations[4];
+                                            }
+                                            else if (destination > 106 || destination < 17)
+                                            {
+                                                return destinations[1];
+                                            }
+                                            else if (destination > 101 || destination < 22)
+                                            {
+                                                return destinations[0];
+                                            }
+                                            else if (destination > 96 || destination < 27)
+                                            {
+                                                return destinations[7];//dragon's lair
+                                            }
+                                            else if (destination > 91 || destination < 32)
+                                            {
+                                                return destinations[8];//bank vault
+                                            }
+                                            else if (destination > 86 || destination < 37)
+                                            {
+                                                return destinations[9];// desert island
+                                            }
+                                            else if (destination > 81 || destination < 42)
+                                            {
+                                                return destinations[2];//huge barracks
+                                            }
+                                            else if (destination > 76 || destination < 47)
+                                            {
+                                                return destinations[6];//highest parapet
+                                            }
+                                            else if (destination > 71 || destination < 52)
+                                            {
+                                                return destinations[5];//secret chamber
+                                            }
+                                            else if (destination > 66 || destination < 57)
+                                            {
+                                                return destinations[5];// broom closet
+                                            }
+                                            else
+                                            {
+                                                return destinations[5];// oubliette
+                                            }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                endOfMidGameChoice = new List<Dice> { D2 };
+                                player.midnightClock = new System.Diagnostics.Stopwatch();
+                                player.midnightClock.Start();
+                                Console.ReadKey(true);
+                                Console.WriteLine("You tell Merigold you'll head back when you're ready, all the while feverishly turning his words over and over in your mind, 'twelve artefacts... twelve...'\n Do you know where to start looking for them? Because if not then you're going to have to begin frantically searching very, very quickly!");
+                                return room;
+
+                            }
+                        }
+                        else if (endOfMidGameChoice[0].faces == D20.faces)
+                        {
+                            Console.WriteLine("You display no less than ten artefacts before Merigold's astonished eyes...");
+                            Console.ReadKey(true);
+                            Console.WriteLine("\t'Very well then,' Merigold replies elatedly, 'Where is it you'd like to go?'");
+                            if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)//use portal to defeat CB
+                            {
+                                Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
+                                    "\n[2] Tell him you want the portal to trace where the CurseBreaker hid Merigold's staff and for it to whisk you there..." +
+                                    "\n[3] Tell him you want to stop any chance of this ritual from happening. With some knot of foreboding you instruct Merigold to deliver you to the oubliette and the creature lurking therein...");
+                                switch (m.getIntResponse(4))
+                                {
+                                    case 1:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Suddenly you lurch backwards!");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                            "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                        Console.ReadKey
+                                            (true);
+                                        Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                            "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                        Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Roll six D20...\n[you need your dice rolls to sum up to as close to 63 as possible...");
+                                        destination = 0;
+                                        Console.ReadKey(true);
+                                        endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                        foreach (Dice d in endOfMidGameChoice)
+                                        {
+
+                                            int x = d.Roll(d);
+                                            Console.WriteLine($"You rolled {x}");
+                                            Console.ReadKey(true);
+                                            destination += x;
+                                        }
+                                        if (destination > 117 || destination < 8)
+                                        {
+                                            return destinations[10];
+                                        }
+                                        else if (destination > 112 || destination < 13)
+                                        {
+                                            return destinations[9];
+                                        }
+                                        else if (destination > 107 || destination < 18)
+                                        {
+                                            return destinations[11];
+                                        }
+                                        else if (destination > 102 || destination < 23)
+                                        {
+                                            return destinations[8];
+                                        }
+                                        else if (destination > 97 || destination < 28)
+                                        {
+                                            return destinations[4];//dragon's lair
+                                        }
+                                        else if (destination > 92 || destination < 33)
+                                        {
+                                            return destinations[1];//bank vault
+                                        }
+                                        else if (destination > 87 || destination < 38)
+                                        {
+                                            return destinations[3];// desert island
+                                        }
+                                        else if (destination > 82 || destination < 43)
+                                        {
+                                            return destinations[2];//huge barracks
+                                        }
+                                        else if (destination > 77 || destination < 48)
+                                        {
+                                            return destinations[0];//oubliette
+                                        }
+                                        else if (destination > 72 || destination < 53)
+                                        {
+                                            return destinations[0];//secret chamber
+                                        }
+                                        else if (destination > 67 || destination < 58)
+                                        {
+                                            return destinations[0];// broom closet
+                                        }
+                                        else
+                                        {
+                                            return destinations[0];// highest parapet
+                                        }
+                                    case 2:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Suddenly you lurch backwards!");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                            "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                        Console.ReadKey
+                                            (true);
+                                        Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                            "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                        Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                        Console.ReadKey(true);
+                                        destination = 0;
+                                        Console.WriteLine("Roll six D20...\n[you need your dice rolls to sum up to as close to 63 as possible...");
+                                        foreach (Dice d in endOfMidGameChoice)
+                                        {
+
+                                            int x = d.Roll(d);
+                                            Console.WriteLine($"You rolled {x}");
+                                            Console.ReadKey(true);
+                                            destination += x;
+                                        }
+                                        if (destination > 117 || destination < 8)
+                                        {
+                                            return destinations[10];
+                                        }
+                                        else if (destination > 112 || destination < 13)
+                                        {
+                                            return destinations[9];
+                                        }
+                                        else if (destination > 107 || destination < 18)
+                                        {
+                                            return destinations[11];
+                                        }
+                                        else if (destination > 102 || destination < 23)
+                                        {
+                                            return destinations[8];
+                                        }
+                                        else if (destination > 97 || destination < 28)
+                                        {
+                                            return destinations[4];//dragon's lair
+                                        }
+                                        else if (destination > 92 || destination < 33)
+                                        {
+                                            return destinations[0];//bank vault
+                                        }
+                                        else if (destination > 87 || destination < 38)
+                                        {
+                                            return destinations[1];// desert island
+                                        }
+                                        else if (destination > 82 || destination < 43)
+                                        {
+                                            return destinations[2];//huge barracks
+                                        }
+                                        else if (destination > 77 || destination < 48)
+                                        {
+                                            return destinations[3];// highest parapet
+                                        }
+                                        else if (destination > 72 || destination < 53)
+                                        {
+                                            return destinations[3];// oubliette
+                                        }
+                                        else if (destination > 67 || destination < 58)
+                                        {
+                                            return destinations[3];// broom closet
+                                        }
+                                        else
+                                        {
+                                            return destinations[3];// secret chamber
+                                        }
+                                    default:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Suddenly you lurch backwards!");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                            "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                        Console.ReadKey
+                                            (true);
+                                        Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                            "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                        Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                        Console.ReadKey(true);
+                                        destination = 0;
+                                        Console.WriteLine("Roll six D20...\n[you need your dice rolls to sum up to as close to 63 as possible...");
+                                        foreach (Dice d in endOfMidGameChoice)
+                                        {
+
+                                            int x = d.Roll(d);
+                                            Console.WriteLine($"You rolled {x}");
+                                            Console.ReadKey(true);
+                                            destination += x;
+                                        }
+                                        if (destination > 117 || destination < 8)
+                                        {
+                                            return destinations[10];
+                                        }
+                                        else if (destination > 112 || destination < 13)
+                                        {
+                                            return destinations[9];
+                                        }
+                                        else if (destination > 107 || destination < 18)
+                                        {
+                                            return destinations[11];
+                                        }
+                                        else if (destination > 102 || destination < 23)
+                                        {
+                                            return destinations[8];
+                                        }
+                                        else if (destination > 97 || destination < 28)
+                                        {
+                                            return destinations[4];//dragon's lair
+                                        }
+                                        else if (destination > 92 || destination < 33)
+                                        {
+                                            return destinations[0];//bank vault
+                                        }
+                                        else if (destination > 87 || destination < 38)
+                                        {
+                                            return destinations[3];// desert island
+                                        }
+                                        else if (destination > 82 || destination < 43)
+                                        {
+                                            return destinations[2];//huge barracks
+                                        }
+                                        else if (destination > 77 || destination < 48)
+                                        {
+                                            return destinations[1];//highest parapet
+                                        }
+                                        else if (destination > 72 || destination < 53)
+                                        {
+                                            return destinations[1];//secret chamber
+                                        }
+                                        else if (destination > 67 || destination < 58)
+                                        {
+                                            return destinations[1];// broom closet
+                                        }
+                                        else
+                                        {
+                                            return destinations[1];// oubliette
+                                        }
+                                }
+                            }
+                            else//use portal to flee
+                            {
+                                Console.WriteLine("[1] Tell Merigold you wish the portal to take you to somewhere the CurseBreaker can never reach you..." +
+                                    "\n[2] Tell Merigold you want to escape to a place where you can be filthy rich to the end of your days..." +
+                                    "\n[3] Tell Merigold you want to flee to a paradise where the CurseBreaker will never look for you..." +
+                                    "\n[4] Tell Merigold you want to escape to some place with enough treasure to bargain your way out of any trouble...");
+                                switch (m.getIntResponse(5))
+                                {
+                                    case 1:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Suddenly you lurch backwards!");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                            "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                        Console.ReadKey
+                                            (true);
+                                        Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                            "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                        Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                        Console.ReadKey(true);
+                                        destination = 0;
+                                        Console.WriteLine("Roll six D20...\n[you need your dice rolls to sum up to as close to 63 as possible...");
+                                        foreach (Dice d in endOfMidGameChoice)
+                                        {
+
+                                            int x = d.Roll(d);
+                                            Console.WriteLine($"You rolled {x}");
+                                            Console.ReadKey(true);
+                                            destination += x;
+                                        }
+                                        if (destination > 117 || destination < 8)
+                                        {
+                                            return destinations[3];
+                                        }
+                                        else if (destination > 112 || destination < 13)
+                                        {
+                                            return destinations[2];
+                                        }
+                                        else if (destination > 107 || destination < 18)
+                                        {
+                                            return destinations[10];
+                                        }
+                                        else if (destination > 102 || destination < 23)
+                                        {
+                                            return destinations[11];
+                                        }
+                                        else if (destination > 97 || destination < 28)
+                                        {
+                                            return destinations[4];//dragon's lair
+                                        }
+                                        else if (destination > 92 || destination < 33)
+                                        {
+                                            return destinations[5];//bank vault
+                                        }
+                                        else if (destination > 87 || destination < 38)
+                                        {
+                                            return destinations[6];// desert island
+                                        }
+                                        else if (destination > 82 || destination < 43)
+                                        {
+                                            return destinations[7];//huge barracks
+                                        }
+                                        else if (destination > 77 || destination < 48)
+                                        {
+                                            return destinations[8];//highest parapet
+                                        }
+                                        else if (destination > 72 || destination < 53)
+                                        {
+                                            return destinations[8];//secret chamber
+                                        }
+                                        else if (destination > 67 || destination < 58)
+                                        {
+                                            return destinations[8];// broom closet
+                                        }
+                                        else
+                                        {
+                                            return destinations[8];// oubliette
+                                        }
+                                    case 2:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Suddenly you lurch backwards!");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                            "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                        Console.ReadKey
+                                            (true);
+                                        Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                            "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                        Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                        Console.ReadKey(true);
+                                        destination = 0;
+                                        Console.WriteLine("Roll six D20...\n[you need your dice rolls to sum up to as close to 63 as possible...");
+                                        foreach (Dice d in endOfMidGameChoice)
+                                        {
+
+                                            int x = d.Roll(d);
+                                            Console.WriteLine($"You rolled {x}");
+                                            Console.ReadKey(true);
+                                            destination += x;
+                                        }
+                                        if (destination > 117 || destination < 8)
+                                        {
+                                            return destinations[0];
+                                        }
+                                        else if (destination > 112 || destination < 13)
+                                        {
+                                            return destinations[9];
+                                        }
+                                        else if (destination > 107 || destination < 18)
+                                        {
+                                            return destinations[10];
+                                        }
+                                        else if (destination > 102 || destination < 23)
+                                        {
+                                            return destinations[8];
+                                        }
+                                        else if (destination > 97 || destination < 28)
+                                        {
+                                            return destinations[7];//dragon's lair
+                                        }
+                                        else if (destination > 92 || destination < 33)
+                                        {
+                                            return destinations[4];//bank vault
+                                        }
+                                        else if (destination > 87 || destination < 38)
+                                        {
+                                            return destinations[2];// desert island
+                                        }
+                                        else if (destination > 82 || destination < 43)
+                                        {
+                                            return destinations[5];//huge barracks
+                                        }
+                                        else if (destination > 77 || destination < 48)
+                                        {
+                                            return destinations[6];//highest parapet
+                                        }
+                                        else if (destination > 72 || destination < 53)
+                                        {
+                                            return destinations[6];//secret chamber
+                                        }
+                                        else if (destination > 67 || destination < 58)
+                                        {
+                                            return destinations[6];// broom closet
+                                        }
+                                        else
+                                        {
+                                            return destinations[6];// oubliette
+                                        }
+                                    case 3:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Suddenly you lurch backwards!");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                            "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                        Console.ReadKey
+                                            (true);
+                                        Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                            "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                        Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                        Console.ReadKey(true);
+                                        destination = 0;
+                                        Console.WriteLine("Roll six D20...\n[you need your dice rolls to sum up to as close to 63 as possible...");
+                                        foreach (Dice d in endOfMidGameChoice)
+                                        {
+
+                                            int x = d.Roll(d);
+                                            Console.WriteLine($"You rolled {x}");
+                                            Console.ReadKey(true);
+                                            destination += x;
+                                        }
+                                        if (destination > 117 || destination < 8)
+                                        {
+                                            return destinations[0];
+                                        }
+                                        else if (destination > 112 || destination < 13)
+                                        {
+                                            return destinations[2];
+                                        }
+                                        else if (destination > 107 || destination < 18)
+                                        {
+                                            return destinations[1];
+                                        }
+                                        else if (destination > 102 || destination < 23)
+                                        {
+                                            return destinations[3];
+                                        }
+                                        else if (destination > 97 || destination < 28)
+                                        {
+                                            return destinations[4];//dragon's lair
+                                        }
+                                        else if (destination > 92 || destination < 33)
+                                        {
+                                            return destinations[10];//bank vault
+                                        }
+                                        else if (destination > 87 || destination < 38)
+                                        {
+                                            return destinations[8];// desert island
+                                        }
+                                        else if (destination > 82 || destination < 43)
+                                        {
+                                            return destinations[9];//huge barracks
+                                        }
+                                        else if (destination > 77 || destination < 48)
+                                        {
+                                            return destinations[7];//highest parapet
+                                        }
+                                        else if (destination > 72 || destination < 53)
+                                        {
+                                            return destinations[7];//secret chamber
+                                        }
+                                        else if (destination > 67 || destination < 58)
+                                        {
+                                            return destinations[7];// broom closet
+                                        }
+                                        else
+                                        {
+                                            return destinations[7];// oubliette
+                                        }
+                                    default:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Suddenly you lurch backwards!");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                            "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                        Console.ReadKey
+                                            (true);
+                                        Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                            "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                        Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                        Console.ReadKey(true);
+                                        destination = 0;
+                                        Console.WriteLine("Roll six D20...\n[you need your dice rolls to sum up to as close to 63 as possible...");
+                                        foreach (Dice d in endOfMidGameChoice)
+                                        {
+
+                                            int x = d.Roll(d);
+                                            Console.WriteLine($"You rolled {x}");
+                                            Console.ReadKey(true);
+                                            destination += x;
+                                        }
+                                        if (destination > 117 || destination < 8)
+                                        {
+                                            return destinations[3];
+                                        }
+                                        else if (destination > 112 || destination < 13)
+                                        {
+                                            return destinations[4];
+                                        }
+                                        else if (destination > 107 || destination < 18)
+                                        {
+                                            return destinations[1];
+                                        }
+                                        else if (destination > 102 || destination < 23)
+                                        {
+                                            return destinations[0];
+                                        }
+                                        else if (destination > 97 || destination < 28)
+                                        {
+                                            return destinations[7];//dragon's lair
+                                        }
+                                        else if (destination > 92 || destination < 33)
+                                        {
+                                            return destinations[8];//bank vault
+                                        }
+                                        else if (destination > 87 || destination < 38)
+                                        {
+                                            return destinations[2];// desert island
+                                        }
+                                        else if (destination > 82 || destination < 43)
+                                        {
+                                            return destinations[6];//huge barracks
+                                        }
+                                        else if (destination > 77 || destination < 48)
+                                        {
+                                            return destinations[5];//highest parapet
+                                        }
+                                        else if (destination > 72 || destination < 53)
+                                        {
+                                            return destinations[5];//secret chamber
+                                        }
+                                        else if (destination > 67 || destination < 58)
+                                        {
+                                            return destinations[5];// broom closet
+                                        }
+                                        else
+                                        {
+                                            return destinations[5];// oubliette
+                                        }
+                                }
+                            }
+                        }
+                        else if (endOfMidGameChoice[0].faces == D15.faces)
+                        {
+                            Console.WriteLine("You display no less than eleven artefacts before Merigold's astonished eyes...");
+                            Console.ReadKey(true);
+                            Console.WriteLine("\t'Very well then,' Merigold replies elatedly, 'Where is it you'd like to go?'");
+                            if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)//use portal to defeat CB
+                            {
+                                Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
+                                    "\n[2] Tell him you want the portal to trace where the CurseBreaker hid Merigold's staff and for it to whisk you there..." +
+                                    "\n[3] Tell him you want to stop any chance of this ritual from happening. With some knot of foreboding you instruct Merigold to deliver you to the oubliette and the creature lurking therein...");
+                                switch (m.getIntResponse(4))
+                                {
+                                    case 1:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Suddenly you lurch backwards!");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                            "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                        Console.ReadKey
+                                            (true);
+                                        Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                            "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                        Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Roll eight D15...\n[you need your dice rolls to sum up to as close to 63 as possible...");
+                                        destination = 0;
+                                        Console.ReadKey(true);
+                                        endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                                        foreach (Dice d in endOfMidGameChoice)
+                                        {
+
+                                            int x = d.Roll(d);
+                                            Console.WriteLine($"You rolled {x}");
+                                            Console.ReadKey(true);
+                                            destination += x;
+                                        }
+                                        if (destination > 117 || destination < 8)
+                                        {
+                                            return destinations[10];
+                                        }
+                                        else if (destination > 112 || destination < 13)
+                                        {
+                                            return destinations[9];
+                                        }
+                                        else if (destination > 107 || destination < 18)
+                                        {
+                                            return destinations[11];
+                                        }
+                                        else if (destination > 102 || destination < 23)
+                                        {
+                                            return destinations[8];
+                                        }
+                                        else if (destination > 97 || destination < 28)
+                                        {
+                                            return destinations[4];//dragon's lair
+                                        }
+                                        else if (destination > 92 || destination < 33)
+                                        {
+                                            return destinations[1];//bank vault
+                                        }
+                                        else if (destination > 87 || destination < 38)
+                                        {
+                                            return destinations[3];// desert island
+                                        }
+                                        else if (destination > 82 || destination < 43)
+                                        {
+                                            return destinations[2];//huge barracks
+                                        }
+                                        else if (destination > 77 || destination < 48)
+                                        {
+                                            return destinations[0];//oubliette
+                                        }
+                                        else if (destination > 72 || destination < 53)
+                                        {
+                                            return destinations[0];//secret chamber
+                                        }
+                                        else if (destination > 67 || destination < 58)
+                                        {
+                                            return destinations[0];// broom closet
+                                        }
+                                        else
+                                        {
+                                            return destinations[0];// highest parapet
+                                        }
+                                    case 2:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Suddenly you lurch backwards!");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                            "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                        Console.ReadKey
+                                            (true);
+                                        Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                            "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                        Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                        Console.ReadKey(true);
+                                        destination = 0;
+                                        Console.WriteLine("Roll eight D15...\n[you need your dice rolls to sum up to as close to 63 as possible...");
+                                        foreach (Dice d in endOfMidGameChoice)
+                                        {
+
+                                            int x = d.Roll(d);
+                                            Console.WriteLine($"You rolled {x}");
+                                            Console.ReadKey(true);
+                                            destination += x;
+                                        }
+                                        if (destination > 117 || destination < 8)
+                                        {
+                                            return destinations[10];
+                                        }
+                                        else if (destination > 112 || destination < 13)
+                                        {
+                                            return destinations[9];
+                                        }
+                                        else if (destination > 107 || destination < 18)
+                                        {
+                                            return destinations[11];
+                                        }
+                                        else if (destination > 102 || destination < 23)
+                                        {
+                                            return destinations[5];
+                                        }
+                                        else if (destination > 97 || destination < 28)
+                                        {
+                                            return destinations[4];//dragon's lair
+                                        }
+                                        else if (destination > 92 || destination < 33)
+                                        {
+                                            return destinations[0];//bank vault
+                                        }
+                                        else if (destination > 87 || destination < 38)
+                                        {
+                                            return destinations[1];// desert island
+                                        }
+                                        else if (destination > 82 || destination < 43)
+                                        {
+                                            return destinations[2];//huge barracks
+                                        }
+                                        else if (destination > 77 || destination < 48)
+                                        {
+                                            return destinations[3];// highest parapet
+                                        }
+                                        else if (destination > 72 || destination < 53)
+                                        {
+                                            return destinations[3];// oubliette
+                                        }
+                                        else if (destination > 67 || destination < 58)
+                                        {
+                                            return destinations[3];// broom closet
+                                        }
+                                        else
+                                        {
+                                            return destinations[3];// secret chamber
+                                        }
+                                    default:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Suddenly you lurch backwards!");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                            "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                        Console.ReadKey
+                                            (true);
+                                        Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                            "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                        Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                        Console.ReadKey(true);
+                                        destination = 0;
+                                        Console.WriteLine("Roll eight D15...\n[you need your dice rolls to sum up to as close to 63 as possible...");
+                                        foreach (Dice d in endOfMidGameChoice)
+                                        {
+
+                                            int x = d.Roll(d);
+                                            Console.WriteLine($"You rolled {x}");
+                                            Console.ReadKey(true);
+                                            destination += x;
+                                        }
+                                        if (destination > 117 || destination < 8)
+                                        {
+                                            return destinations[10];
+                                        }
+                                        else if (destination > 112 || destination < 13)
+                                        {
+                                            return destinations[9];
+                                        }
+                                        else if (destination > 107 || destination < 18)
+                                        {
+                                            return destinations[11];
+                                        }
+                                        else if (destination > 102 || destination < 23)
+                                        {
+                                            return destinations[8];
+                                        }
+                                        else if (destination > 97 || destination < 28)
+                                        {
+                                            return destinations[4];//dragon's lair
+                                        }
+                                        else if (destination > 92 || destination < 33)
+                                        {
+                                            return destinations[0];//bank vault
+                                        }
+                                        else if (destination > 87 || destination < 38)
+                                        {
+                                            return destinations[3];// desert island
+                                        }
+                                        else if (destination > 82 || destination < 43)
+                                        {
+                                            return destinations[2];//huge barracks
+                                        }
+                                        else if (destination > 77 || destination < 48)
+                                        {
+                                            return destinations[1];//highest parapet
+                                        }
+                                        else if (destination > 72 || destination < 53)
+                                        {
+                                            return destinations[1];//secret chamber
+                                        }
+                                        else if (destination > 67 || destination < 58)
+                                        {
+                                            return destinations[1];// broom closet
+                                        }
+                                        else
+                                        {
+                                            return destinations[1];// oubliette
+                                        }
+                                }
+                            }
+                            else//use portal to flee
+                            {
+                                Console.WriteLine("[1] Tell Merigold you wish the portal to take you to somewhere the CurseBreaker can never reach you..." +
+                                    "\n[2] Tell Merigold you want to escape to a place where you can be filthy rich to the end of your days..." +
+                                    "\n[3] Tell Merigold you want to flee to a paradise where the CurseBreaker will never look for you..." +
+                                    "\n[4] Tell Merigold you want to escape to some place with enough treasure to bargain your way out of any trouble...");
+                                switch (m.getIntResponse(5))
+                                {
+                                    case 1:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Suddenly you lurch backwards!");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                            "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                        Console.ReadKey
+                                            (true);
+                                        Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                            "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                        Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                        Console.ReadKey(true);
+                                        destination = 0;
+                                        Console.WriteLine("Roll eight D15...\n[you need your dice rolls to sum up to as close to 63 as possible...");
+                                        foreach (Dice d in endOfMidGameChoice)
+                                        {
+
+                                            int x = d.Roll(d);
+                                            Console.WriteLine($"You rolled {x}");
+                                            Console.ReadKey(true);
+                                            destination += x;
+                                        }
+                                        if (destination > 117 || destination < 8)
+                                        {
+                                            return destinations[3];
+                                        }
+                                        else if (destination > 112 || destination < 13)
+                                        {
+                                            return destinations[2];
+                                        }
+                                        else if (destination > 107 || destination < 18)
+                                        {
+                                            return destinations[1];
+                                        }
+                                        else if (destination > 102 || destination < 23)
+                                        {
+                                            return destinations[0];
+                                        }
+                                        else if (destination > 97 || destination < 28)
+                                        {
+                                            return destinations[4];//dragon's lair
+                                        }
+                                        else if (destination > 92 || destination < 33)
+                                        {
+                                            return destinations[5];//bank vault
+                                        }
+                                        else if (destination > 87 || destination < 38)
+                                        {
+                                            return destinations[6];// desert island
+                                        }
+                                        else if (destination > 82 || destination < 43)
+                                        {
+                                            return destinations[7];//huge barracks
+                                        }
+                                        else if (destination > 77 || destination < 48)
+                                        {
+                                            return destinations[8];//highest parapet
+                                        }
+                                        else if (destination > 72 || destination < 53)
+                                        {
+                                            return destinations[8];//secret chamber
+                                        }
+                                        else if (destination > 67 || destination < 58)
+                                        {
+                                            return destinations[8];// broom closet
+                                        }
+                                        else
+                                        {
+                                            return destinations[8];// oubliette
+                                        }
+                                    case 2:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Suddenly you lurch backwards!");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                            "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                        Console.ReadKey
+                                            (true);
+                                        Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                            "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                        Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                        Console.ReadKey(true);
+                                        destination = 0;
+                                        Console.WriteLine("Roll eight D15...\n[you need your dice rolls to sum up to as close to 63 as possible...");
+                                        foreach (Dice d in endOfMidGameChoice)
+                                        {
+
+                                            int x = d.Roll(d);
+                                            Console.WriteLine($"You rolled {x}");
+                                            Console.ReadKey(true);
+                                            destination += x;
+                                        }
+                                        if (destination > 117 || destination < 8)
+                                        {
+                                            return destinations[0];
+                                        }
+                                        else if (destination > 112 || destination < 13)
+                                        {
+                                            return destinations[3];
+                                        }
+                                        else if (destination > 107 || destination < 18)
+                                        {
+                                            return destinations[1];
+                                        }
+                                        else if (destination > 102 || destination < 23)
+                                        {
+                                            return destinations[11];
+                                        }
+                                        else if (destination > 97 || destination < 28)
+                                        {
+                                            return destinations[9];//dragon's lair
+                                        }
+                                        else if (destination > 92 || destination < 33)
+                                        {
+                                            return destinations[4];//bank vault
+                                        }
+                                        else if (destination > 87 || destination < 38)
+                                        {
+                                            return destinations[2];// desert island
+                                        }
+                                        else if (destination > 82 || destination < 43)
+                                        {
+                                            return destinations[5];//huge barracks
+                                        }
+                                        else if (destination > 77 || destination < 48)
+                                        {
+                                            return destinations[6];//highest parapet
+                                        }
+                                        else if (destination > 72 || destination < 53)
+                                        {
+                                            return destinations[6];//secret chamber
+                                        }
+                                        else if (destination > 67 || destination < 58)
+                                        {
+                                            return destinations[6];// broom closet
+                                        }
+                                        else
+                                        {
+                                            return destinations[6];// oubliette
+                                        }
+                                    case 3:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Suddenly you lurch backwards!");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                            "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                        Console.ReadKey
+                                            (true);
+                                        Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                            "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                        Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                        Console.ReadKey(true);
+                                        destination = 0;
+                                        Console.WriteLine("Roll eight D15...\n[you need your dice rolls to sum up to as close to 63 as possible...");
+                                        foreach (Dice d in endOfMidGameChoice)
+                                        {
+
+                                            int x = d.Roll(d);
+                                            Console.WriteLine($"You rolled {x}");
+                                            Console.ReadKey(true);
+                                            destination += x;
+                                        }
+                                        if (destination > 117 || destination < 8)
+                                        {
+                                            return destinations[0];
+                                        }
+                                        else if (destination > 112 || destination < 13)
+                                        {
+                                            return destinations[2];
+                                        }
+                                        else if (destination > 107 || destination < 18)
+                                        {
+                                            return destinations[1];
+                                        }
+                                        else if (destination > 102 || destination < 23)
+                                        {
+                                            return destinations[3];
+                                        }
+                                        else if (destination > 97 || destination < 28)
+                                        {
+                                            return destinations[4];//dragon's lair
+                                        }
+                                        else if (destination > 92 || destination < 33)
+                                        {
+                                            return destinations[10];//bank vault
+                                        }
+                                        else if (destination > 87 || destination < 38)
+                                        {
+                                            return destinations[8];// desert island
+                                        }
+                                        else if (destination > 82 || destination < 43)
+                                        {
+                                            return destinations[9];//huge barracks
+                                        }
+                                        else if (destination > 77 || destination < 48)
+                                        {
+                                            return destinations[7];//highest parapet
+                                        }
+                                        else if (destination > 72 || destination < 53)
+                                        {
+                                            return destinations[7];//secret chamber
+                                        }
+                                        else if (destination > 67 || destination < 58)
+                                        {
+                                            return destinations[7];// broom closet
+                                        }
+                                        else
+                                        {
+                                            return destinations[7];// oubliette
+                                        }
+                                    default:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("Suddenly you lurch backwards!");
+                                        Console.ReadKey(true);
+                                        Console.WriteLine("From somewhere beyond the portal there's a hideous roar as a tentacle takes a swipe at you!" +
+                                            "\n\t'Sorry!' Merigold cries, 'Sorry! I forgot to carry the two... here we go, this should do it...'");
+                                        Console.ReadKey
+                                            (true);
+                                        Console.WriteLine("He repeats some incantations as you shake your head admonishingly at him. You yell back over the roar of the portal, asking him if he's *sure* he knows what he's doing..." +
+                                            "\n\n\t'Not to worry, my dear fellow!' he calls back, 'I'm almost 66% certain  you've got a 9 in ten chance of not being spaghettified by the portals tidal forces!'");
+                                        Console.WriteLine("Feeling more than a knot of foreboding you face the fiercely crackling portal, brace yourself, then take the plunge...");
+                                        Console.ReadKey(true);
+                                        destination = 0;
+                                        Console.WriteLine("Roll eight D15...\n[you need your dice rolls to sum up to as close to 63 as possible...");
+                                        foreach (Dice d in endOfMidGameChoice)
+                                        {
+
+                                            int x = d.Roll(d);
+                                            Console.WriteLine($"You rolled {x}");
+                                            Console.ReadKey(true);
+                                            destination += x;
+                                        }
+                                        if (destination > 117 || destination < 8)
+                                        {
+                                            return destinations[3];
+                                        }
+                                        else if (destination > 112 || destination < 13)
+                                        {
+                                            return destinations[4];
+                                        }
+                                        else if (destination > 107 || destination < 18)
+                                        {
+                                            return destinations[1];
+                                        }
+                                        else if (destination > 102 || destination < 23)
+                                        {
+                                            return destinations[0];
+                                        }
+                                        else if (destination > 97 || destination < 28)
+                                        {
+                                            return destinations[7];//dragon's lair
+                                        }
+                                        else if (destination > 92 || destination < 33)
+                                        {
+                                            return destinations[8];//bank vault
+                                        }
+                                        else if (destination > 87 || destination < 38)
+                                        {
+                                            return destinations[2];// desert island
+                                        }
+                                        else if (destination > 82 || destination < 43)
+                                        {
+                                            return destinations[6];//huge barracks
+                                        }
+                                        else if (destination > 77 || destination < 48)
+                                        {
+                                            return destinations[5];//highest parapet
+                                        }
+                                        else if (destination > 72 || destination < 53)
+                                        {
+                                            return destinations[5];//secret chamber
+                                        }
+                                        else if (destination > 67 || destination < 58)
+                                        {
+                                            return destinations[5];// broom closet
+                                        }
+                                        else
+                                        {
+                                            return destinations[5];// oubliette
+                                        }
+                                }
+                            }
+                        }
+                        else if (endOfMidGameChoice[0].faces == D10.faces)
+                        {
+                            Console.WriteLine("You display all of the artefacts before Merigold's astonished eyes... 'My goodness,' he breathes disbelievingly, 'My dear fellow how did you do it? No. Don't answer. We haven't time to waste...'");
+                            Console.ReadKey(true);
+                            Console.WriteLine("\t'Where is it you'd like to go?'");
+                            if (endOfMidGameChoice[endOfMidGameChoice.Count - 1].faces == D1.faces)
+                            {
+                                Console.WriteLine("[1] Tell him you've decided to take on the CurseBreaker immediately. You wish to go to the highest parapet of this tower..." +
+                                    "\n[2] Tell him you want to stop any chance of this ritual from happening. With some knot of foreboding you instruct Merigold to deliver you to the oubliette and the creature lurking therein...");
+                                switch (m.getIntResponse(3))
+                                {
+                                    case 1:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        return destinations[0];
+                                    default:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        return destinations[1];
+
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("[1] Tell Merigold you wish the portal to take you to somewhere the CurseBreaker can never reach you..." +
+                                    "\n[2] Tell Merigold you want to escape to a place where you can be filthy rich to the end of your days..." +
+                                    "\n[3] Tell Merigold you want to flee to a paradise where the CurseBreaker will never look for you..." +
+                                    "\n[4] Tell Merigold you want to escape to some place with enough treasure to bargain your way out of any trouble...");
+                                switch (m.getIntResponse(5))
+                                {
+                                    case 1:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        return destinations[8];
+                                    case 2:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        return destinations[6];
+                                    case 3:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        return destinations[7];
+                                    default:
+                                        Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
+                                            "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
+                                        return destinations[5];
+                                }
+                            }
+                        }
+                    }
                 }
+                
+            
                 if (Name == "bookcase" || Name == "rosewood chest")
                 {
                     Console.WriteLine($"{Description} \nTry as hard as you might, you find no more items hidden about the {Name}. It has been thoroughly {SpecificAttribute}.");
