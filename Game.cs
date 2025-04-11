@@ -1878,7 +1878,7 @@ namespace DungeonCrawler
                     }
                     else if (reply1 == 1)
                     {
-                        player1.SearchPack(room.ItemList, room, threadPath);
+                        player1.SearchPack(room.ItemList, room, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                         a++;
                     }
                     else if (reply1 == 2)
@@ -2651,7 +2651,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(corridor.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(corridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
                                 fireProgress = FireProgress(fireProgress, player1, corridor);
                                 if (fireProgress > 999)
@@ -2821,7 +2821,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(room.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(room.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
                                 
                             }
@@ -2911,7 +2911,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(oubliette.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(oubliette.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
 
                             }
@@ -3162,7 +3162,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(antechamber.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(antechamber.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
                                 fireProgress = FireProgress(fireProgress, player1, antechamber);
                                 antechamber.FirstVisit = false;
@@ -3325,7 +3325,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(cellOpposite.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(cellOpposite.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
 
                             }
@@ -3381,6 +3381,10 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
+                        if (!usesDictionaryItemFeature.ContainsKey(magManKey))
+                        {
+                            usesDictionaryItemFeature.Add(magManKey, new List<Feature> { emptyCellDoor, otherRosewoodDoor, circleDoor, goodWeaponRack, magManDoor });
+                        }
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (minotaur.Stamina > 0)
                         {
@@ -5390,7 +5394,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(armoury.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(armoury.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
 
                             }
@@ -5572,7 +5576,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(messHall.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(messHall.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
                                 minotaurAlertedBy = D6.Roll(D6) * 1000;
                                 sw = new Stopwatch();
@@ -5808,7 +5812,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(westernmostCorridor.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(westernmostCorridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
                                 minotaurAlertedBy = D6.Roll(D6) * 1000;
                                 sw = new Stopwatch();
@@ -6032,7 +6036,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(northernmostCorridor.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(northernmostCorridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
                                 minotaurAlertedBy = D6.Roll(D6) * 1000;
                                 sw = new Stopwatch();
@@ -6257,7 +6261,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(easternmostCorridor.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(easternmostCorridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
                                 minotaurAlertedBy = D6.Roll(D6) * 1000;
                                 sw = new Stopwatch();
@@ -6486,7 +6490,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(southernmostCorridor.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(southernmostCorridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
                                 minotaurAlertedBy = D6.Roll(D6) * 1000;
                                 sw = new Stopwatch();
@@ -6643,7 +6647,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(emptyCell.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(emptyCell.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
 
                             }
@@ -6718,7 +6722,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(magicalManufactory.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(magicalManufactory.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
 
                             }
@@ -6799,7 +6803,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(broomCloset.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(broomCloset.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
 
                             }
@@ -6869,7 +6873,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(highestParapet.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(highestParapet.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
 
                             }
@@ -6937,7 +6941,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(hugeBarracks.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(hugeBarracks.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
 
                             }
@@ -7006,7 +7010,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(desertIsland.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(desertIsland.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
 
                             }
@@ -7075,7 +7079,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(bankVault.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(bankVault.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
 
                             }
@@ -7144,7 +7148,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(dragonLair.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(dragonLair.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
 
                             }
@@ -7283,7 +7287,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(secretChamber.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(secretChamber.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
 
                             }
@@ -7358,7 +7362,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(prehistoricJungle.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(prehistoricJungle.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
 
                             }
@@ -7427,7 +7431,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(astralPlanes.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(astralPlanes.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
 
                             }
@@ -7496,7 +7500,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(oceanBottom.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(oceanBottom.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
 
                             }
@@ -8032,7 +8036,7 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(dungeonChamber.ItemList, newRoom1, threadPath);
+                                player1.SearchPack(dungeonChamber.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
 
                             }

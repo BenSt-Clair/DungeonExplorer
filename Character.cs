@@ -188,7 +188,7 @@ namespace DungeonCrawler
         /// the formula for this code is very similar to searchfeature.
         /// </summary>
         /// <param name="roomItems"></param>
-        public void SearchPack(List<Item> roomItems, Room room, List<Room> threadPath)
+        public void SearchPack(List<Item> roomItems, Room room, List<Room> threadPath, Dictionary<Item, List<Item>>usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar)
         {
             Console.WriteLine("Rummaging through your effects you find the following;");
             int r = 1;
@@ -216,14 +216,20 @@ namespace DungeonCrawler
                 message += $"[{r}] Try something else...";
             }
             
-            Console.WriteLine(message);
 
             bool continueLoop = true;
             int a = 0;
-            Console.WriteLine("\nWhich of these items will you take a closer look at?");
+            
             while (continueLoop)
             {
-                if (a > 0) { Console.WriteLine(message); Console.WriteLine("Select another item from the list above."); }
+                Console.WriteLine($"[A] Show all personal effects...\n[W] Show WEAPONS only...\n[I] Show ITEMS only...\n[U] Order by USEFULNESS within {room.Name}...");
+                Console.WriteLine(message);
+                if (a > 0) 
+                { 
+                    
+                    Console.WriteLine("Select another item from the list above."); 
+                }
+                else { Console.WriteLine("\nWhich of these items will you take a closer look at?"); }
                 string reply = Console.ReadLine().Trim().ToLower();
 
                 try
@@ -286,8 +292,143 @@ namespace DungeonCrawler
                 }
                 catch
                 {
-                    Console.WriteLine("Please enter a number corresponding to your choice of action.");
-                    continue;
+                    if (reply == "a")
+                    {
+                        r = 1;
+                        message = "";
+                        foreach (Weapon w in WeaponInventory)
+                        {
+                            message += $"[{r}] {w.Name}\n";
+                            r++;
+                        }
+                        foreach (Item item in Inventory)
+                        {
+                            message += $"[{r}] {item.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        continue;
+                    }
+                    else if (reply == "w")
+                    {
+                        r = 1;
+                        message = "";
+                        foreach (Weapon w in WeaponInventory)
+                        {
+                            message += $"[{r}] {w.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        if (r == 1)
+                        {
+                            message = "";
+                            Console.WriteLine("You possess no weapons! You feel as vulnerable as a wizard without his staff, a rogue without his tools or... well, an adventurer without a sword");
+                            foreach (Item item in Inventory)
+                            {
+                                message += $"[{r}] {item.Name}\n";
+                                r++;
+                            }
+                            message += $"[{r}] Try something else...";
+                            Console.ReadKey(true);
+                            
+                        }
+                        continue;
+                    }
+                    else if (reply == "i")
+                    {
+                        r = 1;
+                        message = "";
+                        foreach (Item item in Inventory)
+                        {
+                            message += $"[{r}] {item.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        if (r == 1)
+                        {
+                            message = "";
+                            Console.WriteLine("You possess no items!");
+                            foreach (Weapon w in WeaponInventory)
+                            {
+                                message += $"[{r}] {w.Name}\n";
+                                r++;
+                            }
+                            message += $"[{r}] Try something else...";
+                            Console.ReadKey(true);
+                            
+                        }
+                        continue;
+                    }
+                    else if (reply == "u")
+                    {
+                        List<Item> usefulList = new List<Item>();
+                        
+                        foreach(Item w in WeaponInventory)
+                        {
+                            usefulList.Add((Item)w);
+                        }
+                        foreach (Item i in Inventory)
+                        {
+                            usefulList.Add(i);
+                        }
+                        Dictionary<Item, int> usefulness = new Dictionary<Item, int>();
+                        foreach (Item item in usefulList)
+                        {
+                            int count = 0;
+                            try
+                            {
+                                foreach(Item i in usesDictionaryItemItem[item])
+                                {
+                                    if (room.ItemList.Contains(i))
+                                    {
+                                        count++;
+                                    }
+                                    else if (Inventory.Contains(i))
+                                    {
+                                        count++;
+                                    }
+                                    
+                                }
+
+                            }
+                            catch { }
+                            try
+                            {
+                                foreach (Feature f in usesDictionaryItemFeature[item])
+                                {
+                                    if (room.FeatureList.Contains(f))
+                                    {
+                                        count++;
+                                    }
+
+                                }
+                            }
+                            catch { }
+                            try
+                            {
+                                count += usesDictionaryItemChar[item].Count;
+                            }
+                            catch { }
+                            usefulness[item] = count;
+                        }
+                        IEnumerable<Item> query = from item in usefulList
+                                                  orderby usefulness[item] descending
+                                                  select item;
+                        message = "";
+                        r = 1;
+                        foreach (Item item in query)
+                        {
+                            message += $"[{r}] {item.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        continue;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please enter a number or letter corresponding to your choice of action.");
+                        continue;
+                    }
                 }
 
             }
