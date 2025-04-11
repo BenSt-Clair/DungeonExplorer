@@ -211,6 +211,11 @@ namespace DungeonCrawler
                 Console.ReadKey(true);
                 return;
             }
+            else
+            {
+                message += $"[{r}] Try something else...";
+            }
+            
             Console.WriteLine(message);
 
             bool continueLoop = true;
@@ -224,13 +229,19 @@ namespace DungeonCrawler
                 try
                 {
                     int reply1 = int.Parse(reply);
-                    if (reply1 < 1 || reply1 > r - 1)
+                    if (reply1 < 1 || reply1 > r)
                     {
-                        Console.WriteLine($"Please enter a number between 1 and {r - 1}.");
+                        Console.WriteLine($"Please enter a number between 1 and {r}.");
                         continue;
                     }
                     else
                     {
+                        if (reply1 == r)
+                        {
+                            Console.WriteLine("closing your backpack you turn your attention elsewhere...");
+                            Console.ReadKey(true);
+                            return;
+                        }
                         try
                         {
                             bool success = false;
