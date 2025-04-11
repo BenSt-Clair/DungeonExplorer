@@ -2522,7 +2522,7 @@ namespace DungeonCrawler
                         }
                         if (!usesDictionaryItemFeature.ContainsKey(lockpickingSet))
                         {
-                            usesDictionaryItemFeature.Add(lockpickingSet, new List<Feature> { emptyCellDoor, otherRosewoodDoor, circleDoor, goodWeaponRack, magManDoor });
+                            usesDictionaryItemFeature.Add(lockpickingSet, new List<Feature> { emptyCellDoor, otherRosewoodDoor, circleDoor, magManDoor });
                         }
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (minotaur.Stamina > 0)
@@ -2737,7 +2737,7 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         if (!usesDictionaryItemFeature.ContainsKey(lockpickingSet))
                         {
-                            usesDictionaryItemFeature.Add(lockpickingSet, new List<Feature> { emptyCellDoor, otherRosewoodDoor, circleDoor, goodWeaponRack, magManDoor });
+                            usesDictionaryItemFeature.Add(lockpickingSet, new List<Feature> { emptyCellDoor, otherRosewoodDoor, circleDoor, magManDoor });
                         }
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (minotaur.Stamina > 0)
@@ -2883,7 +2883,7 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         if (!usesDictionaryItemFeature.ContainsKey(lockpickingSet))
                         {
-                            usesDictionaryItemFeature.Add(lockpickingSet, new List<Feature> { emptyCellDoor, otherRosewoodDoor, circleDoor, goodWeaponRack, magManDoor });
+                            usesDictionaryItemFeature.Add(lockpickingSet, new List<Feature> { emptyCellDoor, otherRosewoodDoor, circleDoor, magManDoor });
                         }
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
@@ -3381,10 +3381,7 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        if (!usesDictionaryItemFeature.ContainsKey(magManKey))
-                        {
-                            usesDictionaryItemFeature.Add(magManKey, new List<Feature> { emptyCellDoor, otherRosewoodDoor, circleDoor, goodWeaponRack, magManDoor });
-                        }
+                        
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (minotaur.Stamina > 0)
                         {
@@ -5420,6 +5417,10 @@ namespace DungeonCrawler
                                 List<bool> success = new List<bool>();
                                 
                                 success = player1.UseItemOutsideCombat(armoury, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                if (player1.Stamina < 1)
+                                {
+                                    return;
+                                }
                             }
                         }
                         catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }

@@ -1288,7 +1288,47 @@ namespace DungeonCrawler
                     return true; }
             }
             else 
-            { 
+            {
+                if (feature.Description == "Replete with weapons of all descriptions, their oiled and well-polished blades gleam at you.\nIt's a shame someone was foresighted enough to lock them all behind an enchanted glass panel...")
+                {
+                    if (Name == "lockpicking set" || Name.Contains(" key"))
+                    {
+                        Console.WriteLine("You try opening the display case, wary of the magical forcefield surrounding it but unable to resist the temptation of the glittering weapons on the other side of the glass. \n If you could just twist it a little more - YOUCH!");
+                        List<string> magicRebuke = new List<string> 
+                        { 
+                            $"The enchanted lock flings your {item.Name} back in your face!",
+                            $"You get zapped by a fierce blue bolt of magic!",
+                            $"While you're distracted the enchanted display case wallops you with one it's door before quickly snapping shut again!",
+                            $"The display case burns your fingers with a cantrip of frost!",
+                            $"The lock suddenly comes to life and nips at your fingers!"
+                        };
+                        Dice D5 = new Dice(5);
+                        int damage = D5.Roll(D5) * 2;
+                        Console.WriteLine(magicRebuke[D5.Roll(D5) - 1] + $" You lose {damage} stamina!");
+                        player.Stamina -= damage;   
+                        if (player.Stamina < 1)
+                        {
+                            Console.WriteLine("Though you were on death's door, you nevertheless tarried on anyway. However, with this injury you have finally passed beyond its threshold...");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Your adventure ends here...");
+                            Console.ReadKey(true);
+                            return false;
+                        }
+                        Console.ReadKey(true);
+                        Console.WriteLine($"You retrieve your {item.Name} and recoil.\n This display case has got some serious attitude!");
+                        Console.ReadKey(true);
+                        return false;
+                    }
+                    else if(item is Weapon)
+                    {
+                        Console.WriteLine("You heave your {item.Name}, ready to smash the display case to smithereens only to find it does not comply. With uncanny cunning it casts a freezing hex on you the moment you raise your weapon above your head. No sooner has your entire body frozen to an icicle than your weapon slips from your grip and shatters you into a thousand pieces...");
+                        Console.ReadKey(true);
+                        player.Stamina = -1;
+                        Console.WriteLine("Your adventure ends here...");
+                        Console.ReadKey(true);
+                        return false;
+                    }
+                }
                 if (item.Name=="magnifying glass")
                 {
                     if (feature.Name == "skeleton" && feature.SpecificAttribute == "unshattered")
