@@ -825,16 +825,16 @@ namespace DungeonCrawler
             Room magicalManufactory = new Room("magical manufactory", "The moment you clasp sight of what's beyond the door, you stare about you in stunned disbelief. The first thing that strikes you is the impossibility of the vast chamber's dimensions. You're striding within a vast manufactory of some kind, one so prodigious you can scarcely see the end of it, and yet the corridor you've been circling can't possibly have run around the exterior of this whole compound. Great brass pistons boom and pump some way off to your left, conveyor belts rattle overhead in all dizzying directions, notes imbued with strange blue tinted magic flutter about your head like pixies. You manage to grab one of them and discover that they are orders for the production of more formulas, elixirs and potions; '21 bottles of Merigold's finest healing potion for the west barracks, 39 vials of Felix Felicis for some place you've never heard of, 6 jugs of god knows what for yet another far off place...' The list is endless. You gaze about you at the churning clockwork machinery, the brass tanks bubbling, the copper tubes whistling steam, the general chaos of an enchanted lab run riot. And at the centre of it all, an aged bespectacled man with long wispy silver hair and an absently vexed if not wizardly demeanour has yet to notice your stumbling upon his solitude...\nLooking back north you find the door you passed through still in place. It seems to have locked itself the moment it closed behind you, but at least it hasn't been magicked away like you'd half expected...\t\nTurning west you look past a labyrinth of copper pipes and conical flasks to a distant wall replete with rosewood bookshelves and seemingly endless troves of tomes and books and journals. The many shelves trail away and out of sight towards a ceiling that seems more distant than any horizon.\t\nDirectly ahead of you, to the south, you espy more of those enchanted orders and missives fluttering about, appearing from one lone vast crackling magic portal spanning the far wall. These enchanted missives flying into the manufactory seem to circle and zero in on the wizardly figure at their centre, distracted as he mumbles to himself and causes various flasks and vials to erupt in puffs of technicolour smoke. You sense a certain air of dottiness about this man. \t\nTo the east your gaze settles on... uh, no, it can't. There's too much going on for it to settle on anything... You take in a Gordian knot of conveyer belts, then the whooshing missives flitting between them, then the general chaos of rumbling brass tanks with dials spinning out of control and jets of steam and books soaring back and forth from the shelves. They all agglomerate into some kind of orchestrated pandemonium, one whose symphony somehow transcends the din and discord and seamlessly, almost melodically, rises and resonates towards a crescendo of mad genius efficiency.\t\t", magicalManufactoryItems, magicalManufactoryFeatures);
             Room broomCloset = new Room("broom closet", "Your eyes clap sight of an Aladdin's cave of custodian conglomerations, janitorial jumbles and maidly menageries all agglomerated within a cosy 4 foot by 4 foot room. Somewhat ironically, it's a mess. \nYou see a broom.\t\nYou see another broom.\t\nCould that be another broom?\t\nanother br- oh, wait! That's a mop.\t\t", broomClosetItems, broomClosetFeatures);
             Room highestParapet = new Room("highest parapet", "~final boss fight~", cell2Inventory, cell2features);
-            Room hugeBarracks = new Room("huge barracks", "~bleh!~", cell2Inventory, cell2features);
-            Room desertIsland = new Room("desert island", "~make friends with a coconut named 'Wilson'~", cell2Inventory, cell2features);
-            Room bankVault = new Room("bank vault", "~you die the richest man in the world~", cell2Inventory, cell2features);
-            Room dragonLair = new Room("dragon's lair", "~golden dragon burned to crisp or answer riddle to return~", cell2Inventory, cell2features);
+            Room hugeBarracks = new Room("huge barracks", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features);
+            Room desertIsland = new Room("desert island", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features);
+            Room bankVault = new Room("bank vault", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features);
+            Room dragonLair = new Room("dragon's lair", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features);
             Room secretChamber = new Room("secret chamber", "You clamber into an eerie chamber of disquieting shapes imposed upon velvety darkness; a dusky landscape of sinister contours and unknown threats alleviated only slightly from the faint moon-like glow of the strange braziers below. As your eyes adjust to your new surroundings, and you can begin to make out the statues and artefacts within, you feel a cold tot of anxiety tie knots in your stomach as you realise the secret chamber has no doors or windows. Instead, as you'll come to realise, you have stumbled upon a glimpse through a keyhole into the mind of the CurseBreaker. One no one was ever meant to see...\nFacing north is some kind of statue, or perhaps a shrine. Unlit candles are arranged beneath a marble figure. Normally they'd cast it in a fiery glow, but instead the braziers' light through the hole you climbed through toss angular and tortured shadows over the chiselled face of a man crying out in anguish for all eternity. Chained to a rock, an eagle eviscerates and devours his innards as his form, frozen in stone, screams silent screams. A plaque lays at its base, while you can just detect misty jars glinting to its left. \t\nTurning your gaze westward, and squinting your eyes, you can distinguish the shape of a bookcase from within the web of shadows. \t\n To the south you find a portrait hung upon the wall of a man with chiropteric wings. \t\nLooking eastwards you discover something that seems to rattle in the darkness. Investigating further, wading through an agglomeration of arcane baubles and esoteric devices stashed and long forgotten, you find the source of the ominous rattling is a mosaic. It's tiles flip and shuffle like playing cards in the dextrous hands of an invisible dealer. They finally settle on the image of a non-descript face, gazing down upon you...\t\t", secretChamberItems, secretChamberFeatures);
-            Room prehistoricJungle = new Room("prehistoric jungle", "~dinosaurs chase you~", cell2Inventory, cell2features);
-            Room astralPlanes = new Room("astral planes", "~zero g!~", cell2Inventory, cell2features);
-            Room oceanBottom = new Room("ocean bottom", "~under da sea!~", cell2Inventory, cell2features );
+            Room prehistoricJungle = new Room("prehistoric jungle", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features);
+            Room astralPlanes = new Room("astral planes", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features);
+            Room oceanBottom = new Room("ocean bottom", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features );
             Room dungeonChamber = new Room("dungeon chamber", "The light of a single brazier casts an eerie glow over this claustrophobic, airless dungeon and its damp stone walls. Like the faint light reaching the fathomless depths of an ocean floor, it swims over scattered bones and barely illuminates twin hulking silhouettes lurking within shadow just beyond a solitary hatch leading somewhere deeper still. You feel the hairs on the back of your neck stand on end, as from somewhere within those shadows, chains clink and scrape along the granite floor...\nTurning your gaze right to look north you see the granite wall curve away from you and into blackness. It is studded with bolts that hold chains in place, most of which dangle limply to the stone floor below.\t\nDirectly ahead, some distance before the wall of darkness, lies a heavy trapdoor, presumably leading to an oubliette below. Scattered about it are assorted bones...\t\nTurning your gaze south and to the left you see a lone brazier, its lone orb of flickering frosty light the only thing alleviating the dank darkness besieging you.\t\nLooking back there is only the passageway you just descended...\t\t", dungeonItems, dungeonFeatures);
-            Room mirrorWorld = new Room("mirror world", "You find yourself within a multi-dimensional labyrinth of mirrors forever distorting your image as you futilely try to find your way out of this prism of madness.", cell2Inventory, cell2features);
+            Room mirrorWorld = new Room("mirror world", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features);
             Room westernmostCorridor = new Room("westernmost corridor", "You enter upon the westernmost corridor of the circular landing. Opposite the antechamber through the double doors is a bare rosewood panelled wall, interrupted on occasion by rosewood doors. The corridor leads north where it turns sharply right, or you can follow it south where it veers left at another corner. Guiding both paths are rows of lanterns, casting a febrile glow...\nTo the north you see the rosewood panelled corridor end at a corner leading right.\t\nTo the west you face a pair of double doors.\t\nTurning your gaze southward the corridor ends at a corner that veers left.\t\nFacing east you find nothing of note save a blank wall bereft of portraits and the litter left behind by those who looted them.\t\t", westCorridorItems, westCorridorFeatures);
             Room northernmostCorridor = new Room("north-facing corridor", "You enter upon the north-facing corridor of the circular landing. Before you, within the glow of the dim lanterns, are two rosewood doors opposite one another. The one in the north wall and another in the south wall leading within the room you must have been circling. The corridor leads east whereupon it turns sharply right after another door, or you can follow it west where, after a similar door, it veers left at another corner...\nTo the north, in the centre of the hallway, you espy a rosewood door identical to the one in the south wall that it stands across from.\t\nTo the west the corridor ends at a corner that turns sharply left.\t\nTurning your gaze southward you espy a rosewood door, identical to the one in the north wall, and standing across from it.\t\nLooking to the east you see the corridor end at a corner that veers right.\t\t", northCorridorItems, northCorridorFeatures);
             Room easternmostCorridor = new Room("easternmost corridor", "You enter upon the easternmost corridor of the circular landing. A bare rosewood panelled wall spans the western side while some doors greet your sight some way down the eastern side of the passage. The corridor leads north where it turns sharply left, or you can follow it south where it veers right at another corner. Guiding both paths are more lanterns, throwing shadows along the walls with their dim, flickering light...\nsurveying the northern end of the hallway you see a corner that turns left.\t\nTo the west there is only bare wall and the marks left by marauders who looted the paintings.\t\nTurning your gaze south you see a corner. It turns right.\t\nTo the east is a rosewood door. There is no plaque or label to indicate where it leads...\t\t", eastCorridorItems, eastCorridorFeatures);
@@ -2597,7 +2597,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine("[2] Investigate the corridor?");
                         if (b1 > 0)
                         {
@@ -2701,8 +2702,18 @@ namespace DungeonCrawler
                                 }
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    catch
+                    {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        }
                     }
+                }
                     visitedCorridor = true;
                     if (visitedRoom)
                     {
@@ -2804,7 +2815,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
                         if (b > 0)
                         {
@@ -2849,8 +2861,18 @@ namespace DungeonCrawler
                                 success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    catch
+                    {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        }
                     }
+                }
                     if (visitedRoom)
                     {
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
@@ -2894,7 +2916,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
                         if (b > 0)
                         {
@@ -2939,8 +2962,18 @@ namespace DungeonCrawler
                                 success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    catch
+                    {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        }
                     }
+                }
                     if (visitedRoom)
                     {
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
@@ -3109,7 +3142,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
                         if (b > 0)
                         {
@@ -3211,8 +3245,18 @@ namespace DungeonCrawler
                                 }
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    catch
+                    {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        }
                     }
+                }
                     if (visitedRoom)
                     {
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
@@ -3308,7 +3352,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
                         if (b > 0)
                         {
@@ -3353,8 +3398,18 @@ namespace DungeonCrawler
                                 success = player1.UseItemOutsideCombat(cellOpposite, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    catch
+                    {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        }
                     }
+                }
                     if (visitedRoom)
                     {
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
@@ -5374,7 +5429,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
                         if (b > 0)
                         {
@@ -5423,8 +5479,18 @@ namespace DungeonCrawler
                                 }
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    catch
+                    {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        }
                     }
+                }
                     if (visitedRoom)
                     {
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
@@ -5520,7 +5586,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
                         if (b > 0)
                         {
@@ -5753,7 +5820,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
                         if (b > 0)
                         {
@@ -5980,7 +6048,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine("[2] Investigate the north-facing corridor?");
                         if (b > 0)
                         {
@@ -6205,7 +6274,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine("[2] Investigate the easternmost corridor?");
                         if (b > 0)
                         {
@@ -6432,7 +6502,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine("[2] Investigate the south-facing corridor?");
                         if (b > 0)
                         {
@@ -6631,7 +6702,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
                         if (b > 0)
                         {
@@ -6676,8 +6748,18 @@ namespace DungeonCrawler
                                 success = player1.UseItemOutsideCombat(emptyCell, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    catch
+                    {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        }
                     }
+                }
                     if (visitedRoom)
                     {
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
@@ -6706,7 +6788,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
                         if (b > 0)
                         {
@@ -6751,8 +6834,18 @@ namespace DungeonCrawler
                                 success = player1.UseItemOutsideCombat(magicalManufactory, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    catch
+                    {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        }
                     }
+                }
                     if (visitedRoom)
                     {
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
@@ -6787,7 +6880,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
                         if (b > 0)
                         {
@@ -6832,8 +6926,18 @@ namespace DungeonCrawler
                                 success = player1.UseItemOutsideCombat(broomCloset, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    catch
+                    {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        }
                     }
+                }
                     if (visitedRoom)
                     {
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
@@ -6857,7 +6961,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
                         if (b > 0)
                         {
@@ -6901,8 +7006,18 @@ namespace DungeonCrawler
                                 success = player1.UseItemOutsideCombat(highestParapet, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    catch
+                    {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        }
                     }
+                }
                     if (visitedRoom)
                     {
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
@@ -6912,6 +7027,16 @@ namespace DungeonCrawler
                     a = 0;
                     while (!leftWhichRooms[12])//huge barracks
                     {
+                        Console.WriteLine("Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Within an exhilarating instant you feel gravity lurch back into existence. You scream your way through the portal before landing splat in the middle of a muddy field - at least that's all that can be seen of it, because you landed face first in what *feels* the swampiest bit of it. \n   Already sensing you may be somewhere other than your intended destination, you mutter a few disparaging remarks under your breath aimed at the dotty old wizard and his calculations. You grope your way to your feet and at last clear the mud from your eyes...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Then you discover scores of goblins peering back at you, momentarily agog. You freeze as you take in the tents, cooking fires and palisade walls of a huge mustering ground for the CurseBreaker's army...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Before you can even begin to utter something - anything - by way of explanation, the goblin nearest you chucks his paltry gruel from his lap - 'Looks like meat's back on the menu, boys!' he booms and the many goblins roar with glee as they tie you up to a spit and stick an apple in your mouth. \nHad you a fist free you'd be shaking it at the sky and yelling, 'Damnit Merigold!!!' but you'll just have to settle for becoming a delectable appetiser for a gaggle of goblins instead...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your adventure ends here...");
+                        return;
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
@@ -6970,8 +7095,18 @@ namespace DungeonCrawler
                                 success = player1.UseItemOutsideCombat(hugeBarracks, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    catch
+                    {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        }
                     }
+                }
                     if (visitedRoom)
                     {
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
@@ -6981,6 +7116,14 @@ namespace DungeonCrawler
                     a = 0;
                     while (!leftWhichRooms[13])// desert island
                     {
+                        Console.WriteLine("Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Suddenly gravity lurches back into existence and you plunge into the warm waters of some deep blue lagoon. Wading your way to a beautiful shoreline of pearly white sand untouched by any civilisation, you yell out a hopeful greeting, calling to anyone who might hear. However, the tropical island is quite deserted.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("With no way back, you spend your time waiting for passing vessels to flag down, drinking copious amounts of coconut milk and smoking weird mushrooms that grow under rocks. In time, you make friends with a coconut named 'Wilson'...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your adventure ends here...");
+                        return;
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
@@ -7050,6 +7193,14 @@ namespace DungeonCrawler
                     a = 0;
                     while (!leftWhichRooms[14])//bank vault
                     {
+                        Console.WriteLine("Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("You crash into a vast mound of glittering coins, skittering away from you as you tumble down it like a giant golden sand dune. You look around in astonishment to find yourself in a vast chamber resplendent with untold riches, fine tapestries, mountains of gold bars, thrones, crowns, and innumerable jewels. You cheer as you run giddily through this incredible place, adorning as much jewelry as you can short of making your knees buckle and your pockets burst. Then you freeze... ");
+                        Console.ReadKey(true);
+                        Console.WriteLine("An icy dread fills you as you behold a vast vault door sealing the place in. You're in some kind of bank vault! You bang on the door for help, you search for other exits, but there is no way out. You are destined to be rich to the end of your days - all three of them...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your adventure ends here...");
+                        return;
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
@@ -7132,7 +7283,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
                         if (b > 0)
                         {
@@ -7176,8 +7328,18 @@ namespace DungeonCrawler
                                 success = player1.UseItemOutsideCombat(dragonLair, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    catch
+                    {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        }
                     }
+                }
                     if (visitedRoom)
                     {
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
@@ -7271,7 +7433,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
                         if (b > 0)
                         {
@@ -7322,8 +7485,18 @@ namespace DungeonCrawler
                                 success = player1.UseItemOutsideCombat(secretChamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    catch
+                    {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        }
                     }
+                }
                     if (visitedRoom)
                     {
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
@@ -7333,6 +7506,14 @@ namespace DungeonCrawler
                     a = 0;
                     while (!leftWhichRooms[17])//prehistoric jungle
                     {
+                        Console.WriteLine("Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("You crash through a verdant canopy, bumping into one branch, before bouncing off the next, endlessly and oafishly tumbling down the length of a huge tree before you plummet to some forest floor. It takes you a while to pick yourself up and get your bearings...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("You find yourself wondering just where on earth that strange wizard teleported you - this looks nothing like you're intended destination. Then something comes crashing through the trees towards you. It peers through the foliage at you, looming fifteen feet high with hungry reptilian eyes and teeth the size of sabres. Uh-oh... You manage to mutter a disparaging word or two about wizards under your breath before fleeing for your life. The tyrannosaurus rex happily stomps after you through the prehistoric jungle...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("You're adventure ends here...");
+                        return;
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
@@ -7415,7 +7596,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine("[2] Investigate the corridor?");
                         if (b > 0)
                         {
@@ -7460,8 +7642,18 @@ namespace DungeonCrawler
                                 success = player1.UseItemOutsideCombat(astralPlanes, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    catch
+                    {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        }
                     }
+                }
                     if (visitedRoom)
                     {
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
@@ -7484,7 +7676,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine("[2] Investigate the corridor?");
                         if (b > 0)
                         {
@@ -7529,8 +7722,18 @@ namespace DungeonCrawler
                                 success = player1.UseItemOutsideCombat(oceanBottom, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                    catch
+                    {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        }
                     }
+                }
                     if (visitedRoom)
                     {
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
@@ -8020,52 +8223,63 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
-                        Console.WriteLine("[1] Check what items are still on your person?");
+                    Console.WriteLine("[c] Check your character's status?");
+                    Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine("[2] Investigate the dungeon chamber?");
                         if (b > 0)
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
                         string reply = Console.ReadLine().ToLower().Trim();
-                        try
+                    try
+                    {
+                        int reply1 = int.Parse(reply);
+                        if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
                         {
-                            int reply1 = int.Parse(reply);
-                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
+                            Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                            continue;
+                        }
+                        else if (reply1 == 1)
+                        {
+                            player1.SearchPack(dungeonChamber.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
+                            a++;
+
+                        }
+                        else if (reply1 == 2)
+                        {
+                            ///when player discards rusty chains they may appear more than once. 
+                            ///fungshui() is present to preempt that and prevent duplicates.
+
+                            Room newRoom = dungeonChamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                            if (newRoom.Name != dungeonChamber.Name)
                             {
-                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
+
+                                leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
+                                newRoom1 = newRoom;
                                 continue;
                             }
-                            else if (reply1 == 1)
-                            {
-                                player1.SearchPack(dungeonChamber.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
-                                a++;
-
-                            }
-                            else if (reply1 == 2)
-                            {
-                                ///when player discards rusty chains they may appear more than once. 
-                                ///fungshui() is present to preempt that and prevent duplicates.
-
-                                Room newRoom = dungeonChamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
-                                if (newRoom.Name != dungeonChamber.Name)
-                                {
-
-                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
-                                    newRoom1 = newRoom;
-                                    continue;
-                                }
 
 
-                                b++;
-                            }
-                            else
-                            {
-                                List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(dungeonChamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
-                            }
+                            b++;
                         }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                        else
+                        {
+                            List<bool> success = new List<bool>();
+                            test3.RunForCombat();
+                            success = player1.UseItemOutsideCombat(dungeonChamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                        }
+                    }
+                    catch
+                    {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        }
+                    }
                     }
                     
 

@@ -181,6 +181,48 @@ namespace DungeonCrawler
                 return "To describe you as one of the seven wonders of the world would frankly be an understatement. Your raw, physical prowess leaves those lucky enough to clap eyes on you trembling in your wake. Your 'sweet bod' is the sort of exemplary specimen even Conan the Barbarian would grudgingly admire.";
             }
         }
+        public void CheckStatus()
+        {
+            Console.WriteLine($"Your stamina score is: {Stamina}/{InitialStamina}");
+            Console.WriteLine(DescribeStamina());
+            Console.WriteLine($"\nYour current skill is: {Skill}");
+            Console.WriteLine(DescribeSkill());
+
+            if (Speedy)
+            {
+                Console.WriteLine("\nPotion of alacrity is active!\nYou are filled with jittery energy, flitting about from one action to the next with disconcerting speed...");
+            }
+            int count = 0;
+            foreach (Weapon w in WeaponInventory)
+            {
+                if (w.Boon > 9)
+                {
+                    count++;
+                }
+            }
+            if (count == WeaponInventory.Count && count != 0)
+            {
+                Console.WriteLine("\nFelix Felicis is active! \nBuoyed with boundless optimism every action you take seems to miraculously turn out in your favour...");
+            }
+            if (midnightClock != null)
+            {
+                midnightClock.Stop();
+                long timeTaken = midnightClock.ElapsedMilliseconds;
+                midnightClock.Start();
+                long timeToMidnight = 1800000;
+                long timeLeft = timeToMidnight - timeTaken / 60000;
+                if (timeLeft < 0)
+                {
+                    Console.WriteLine("\nMidnight is upon you!");
+                }
+                else
+                {
+                    Console.WriteLine($"\nYou have only {timeLeft} minutes until the clocks strike twelve!");
+                }
+            }
+            Console.ReadKey(true);
+            return;
+        }
         /// <summary>
         /// The following is a similar line of code as searchFeature. It fulfills the same
         /// function, only when it uses pickUpItem we specify the range as 5, meaning
@@ -222,7 +264,7 @@ namespace DungeonCrawler
             
             while (continueLoop)
             {
-                Console.WriteLine($"[A] Show all personal effects...\n[W] Show WEAPONS only...\n[I] Show ITEMS only...\n[U] Order by USEFULNESS within {room.Name}...");
+                Console.WriteLine($"[A] Show all personal effects...\n[W] Show WEAPONS only...\n[I] Show ITEMS only...\n[U] Order by USEFULNESS within {room.Name}...\n");
                 Console.WriteLine(message);
                 if (a > 0) 
                 { 

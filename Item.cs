@@ -1321,7 +1321,7 @@ namespace DungeonCrawler
                     }
                     else if(item is Weapon)
                     {
-                        Console.WriteLine("You heave your {item.Name}, ready to smash the display case to smithereens only to find it does not comply. With uncanny cunning it casts a freezing hex on you the moment you raise your weapon above your head. No sooner has your entire body frozen to an icicle than your weapon slips from your grip and shatters you into a thousand pieces...");
+                        Console.WriteLine($"You heave your {item.Name}, ready to smash the display case to smithereens only to find it does not comply. With uncanny cunning it casts a freezing hex on you the moment you raise your weapon above your head. No sooner has your entire body frozen to an icicle than your weapon slips from your grip and shatters you into a thousand pieces...");
                         Console.ReadKey(true);
                         player.Stamina = -1;
                         Console.WriteLine("Your adventure ends here...");
@@ -2384,7 +2384,7 @@ namespace DungeonCrawler
                     {
                         if (player.Traits.ContainsKey("medicine man"))
                         {
-                            int boost = D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6);
+                            int boost = D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + SpecialEffect;
                             if (player.Stamina == player.InitialStamina)
                             {
                                 Console.WriteLine($"{item1.Name} has no effect. You're already as fit as can be.");
@@ -2404,7 +2404,7 @@ namespace DungeonCrawler
                         {
                             Dice D40 = new Dice(40);
                             Dice D4 = new Dice(4);
-                            int boost = D40.Roll(D40);
+                            int boost = D40.Roll(D40) + SpecialEffect;
                             if (player.Stamina + 2 * player.Skill >= player.InitialStamina)
                             {
                                 if (boost < 13)
@@ -2442,7 +2442,7 @@ namespace DungeonCrawler
                         }
                         else
                         {
-                            int boost = D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6);
+                            int boost = D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + SpecialEffect;
                             if (player.Stamina == player.InitialStamina)
                             {
                                 Console.WriteLine("You're already at full health! But at least the potion tastes good...");

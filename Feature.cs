@@ -7611,7 +7611,7 @@ namespace DungeonCrawler
                         }
                         else if (reply == "y" || reply == "yes")
                         {
-                            if(room.Name == "armoury" && room.FirstVisit)
+                            if(room.Name == "armoury" && room.FirstVisit && secretChamber.FeatureList[8].Name != "ajar mosaic door")
                             {
                                 if (!fieryEscape)
                                 {
