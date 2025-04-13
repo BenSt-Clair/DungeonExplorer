@@ -905,6 +905,21 @@ namespace DungeonCrawler
             {
                 Console.WriteLine("Congratulations! You've slain the monster!");
                 player.Speedy = false;
+                foreach (Weapon w in player.WeaponInventory)
+                {
+                    if (w.Boon > 9)
+                    {
+                        w.Boon = 0;
+                        if (w.Name == "sword of sealed souls")
+                        {
+                            w.Boon = 2;
+                        }
+                        if (player.Traits.ContainsKey("jinxed"))
+                        {
+                            w.Boon = 6;
+                        }
+                    }
+                }
                 return true;
             }
             else if (Monster.Stamina > 0)
@@ -2344,6 +2359,22 @@ namespace DungeonCrawler
             if (Player.Stamina > 0)
             {
                 Console.WriteLine("Congratulations! You've slain the monster!");
+                player.Speedy = false;
+                foreach(Weapon w in player.WeaponInventory)
+                {
+                    if (w.Boon > 9)
+                    {
+                        w.Boon = 0;
+                        if (w.Name == "sword of sealed souls")
+                        {
+                            w.Boon = 2;
+                        }
+                        if (player.Traits.ContainsKey("jinxed"))
+                        {
+                            w.Boon = 6;
+                        }
+                    }
+                }
                 return true;
             }
             else if (Monster.Stamina > 0 || Monster2.Stamina > 0)

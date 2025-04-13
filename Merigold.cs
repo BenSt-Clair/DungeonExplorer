@@ -456,10 +456,16 @@ namespace DungeonCrawler
                         {
                             "You sincerely thank Merigold for all of his help, however upon consideration you conclude it's perhaps wiser to employ some other strategy of taking down the CurseBreaker...",
 
-                            "'Then,' Merigold concludes, 'I have helped you the best I can. If you do not wish to pass through this portal, then the only exit is the door. " +
-                            "However you dealt with the minotaur before you got here... well, I can only wish you the best of luck. If you change your mind, of course, you " +
-                            "know where to find me...'\n\nYou begin to stride purposefully away your gaze set on the task at hand, when Merigold calls out to you one last " +
-                            "time. 'And remember this above all, you have only until the clock strikes twelve! All the gods help you if you don't stop him before then...'"
+                            "'Then,' Merigold concludes, 'I have helped you the best I can. " +
+                            "If you do not wish to pass through this portal, then the only exit is the door. " +
+                            "However you dealt with the minotaur before you got here... well, I can only wish " +
+                            "you the best of luck. Oh! And before I forget...' He waves his arms in the forms of some esoteric" +
+                            " incantation. 'There! I believe I had just enough magic to light the stairway down to the lowest levels. " +
+                            " It should no longer be quite so treacherous to traverse, but if you do change your mind, you know where to find " +
+                            "me...'\n\nYou begin to stride purposefully away your gaze set on the task at hand," +
+                            " when Merigold calls out to you one last time. \n\t'And remember this above all, " +
+                            "you have only until the clock strikes twelve! All the gods help you if you don't " +
+                            "stop him before then...'"
                         },
 
 
@@ -481,6 +487,32 @@ namespace DungeonCrawler
 
                             "His response is laconic - 'No'" +
                             "\n\nOh well, it was worth a try..."
+                        },
+
+                        {
+                            "You remind Merigold of what he told you regarding the CurseBreaker leeching his power... You tentatively make an inquiry into how much power, exactly, he is talking about and what your chances are to defeat such a foe?",
+
+                            "'Your chances of defeating the CurseBreaker without significant help aren't zero, but there is no overstating how absurdly slim they would be,' Merigold warns you sternly." +
+                            " 'He has tremendous talents in the arcane, and even without that, he is a superb duellist. Not to mention he will have taken" +
+                            " precautions to ensure he can complete his ritual. However, do not despair. For his achilles heel is very much located in this tower -" +
+                            " in point of fact, he has several weaknesses." +
+                            "\n\t'Stopping the ritual, or somehow sabotaging it, is the most important step in evening your chances. It may do little to outright diminish the power he already has, but it will prevent him from" +
+                            " achieving even more. It will widen the window of opportunity for you to strike him down. If you don't do this, then once you confront him you will be in a race against time to kill him before the ritual is complete, because" +
+                            " if he finishes it, it doesn't mater how courageous or valiant your efforts - he will *end you* with absurd ease." +
+                            "\n\t'As for neutralising his magic,' Merigold continues apace, 'there exist two weapons that could aid you. The first is my staff - one of the " +
+                            " twelve artefacts i need to control the portal. If you choose to keep it rather than lending me its power, you can use it to nullify his arcane attacks. However, " +
+                            "the problem is I don't know where it is stashed, for it was seized from me by the CurseBreaker himself and he'll no doubt have concealed it well." +
+                            "\n\t'The easiest way to find it may be through the portal itself. If I rig it to trace the location of the staff it won't matter that neither of us know the destination, it will nevertheless take you there - but I should warn you, if" +
+                            " the CurseBreaker chose its hiding place, he'll have chosen it well. I can get you there with the portal but you will have" +
+                            " to find your own way out and either back to this manufactory, or else find another way forward..." +
+                            "\n\t'As for the second weapon,' Merigold states with a grim smile and a huff, '*that* will be a lot easier to find...'" +
+                            "\n\nYou tell him that sounds more promising and ask him what it is..." +
+                            "\n\t'It's the sword of sealed souls,' Merigold answers, 'a cursed weapon that has the extraordinary effect of" +
+                            " devouring magic due to its cursed nature. It can also, as the name suggests, steal souls... oh, don't worry! Not the wielder's!' he laughs, but it is one that has no humour to it. 'No,' he intones grimly, 'this weapon poses a far more immediate problem.' " +
+                            "\n\nYou gingerly reach to your side and unsheathe the sword there. You begin telling Merigold that you're fairly certain from his description that this may be the sword he's talking about, but you can tell immediately by his astonishment that your surmise is correct..." +
+                            "\n\n\t'My dear, dear fellow,' he breathes, a grin spreading wide across his face. 'You never cease to amaze me. Yes,' he confirms, 'This is the very sword. Which means you already possess the single best means for countering the CurseBreaker's magicks...'" +
+                            "\n\t'All that remains,' Merigold's voice sobers to its familiar grave tone, 'is for you to match his skill in a one and one duel.'" +
+                            " \n  By the timbre of Merigold's voice, however, you can sense with a well of foreboding that that will be no small feat..."
                         }
                     };
                     if (_player.Traits.ContainsKey("thespian"))
@@ -492,6 +524,19 @@ namespace DungeonCrawler
                     {
                         playerchoices1.Insert(10, "The inferno raging down in the lower levels is still fresh in your mind. Even if its been put out, those levels will be teeming with enemies. You ask Merigold if there's any other way down?");
                         playerchoices1.RemoveAt(11);
+                    }
+                    bool soulSword = false;
+                    foreach(Weapon w in _player.WeaponInventory)
+                    {
+                        if (w.Name.Trim().ToLower() == "sword of sealed souls")
+                        {
+                            soulSword = true;
+                        }
+                    }
+                    if (soulSword)
+                    {
+                        playerchoices1.Insert(5, "You remind Merigold of what he told you regarding the CurseBreaker leeching his power... You tentatively make an inquiry into how much power, exactly, he is talking about and what your chances are to defeat such a foe?");
+                        playerchoices1.RemoveAt(6);
                     }
                     Dice D120 = new Dice(120);
                     Dice D60 = new Dice(60);
@@ -538,7 +583,15 @@ namespace DungeonCrawler
                                                 message += $"[{numOfMGItems}] {item.Name}\n";
                                             }
                                         }
-
+                                        foreach(Item weapon in _player.WeaponInventory)
+                                        {
+                                            if (MGItems.Contains(weapon))
+                                            {
+                                                numOfMGItems++;
+                                                backpack.Items.Add(weapon);
+                                                message += $"[{numOfMGItems}] {weapon.Name}\n";
+                                            }
+                                        }
 
                                         Console.ReadKey(true);
                                         if (numOfMGItems != 0)
@@ -547,6 +600,11 @@ namespace DungeonCrawler
 
 
                                             backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Feeling a little embarrassed you confess you have no items that fit Merigold's description. You have nothing...");
+                                            Console.ReadKey(true);
                                         }
                                         numOfMGItems = numOfMGItems - backpack.Items.Count;
                                         _player.MGItemsDonated = numOfMGItems;
@@ -632,7 +690,15 @@ namespace DungeonCrawler
                                             message += $"[{numOfMGItems}] {item.Name}\n";
                                         }
                                     }
-
+                                    foreach (Item weapon in _player.WeaponInventory)
+                                    {
+                                        if (MGItems.Contains(weapon))
+                                        {
+                                            numOfMGItems++;
+                                            backpack.Items.Add(weapon);
+                                            message += $"[{numOfMGItems}] {weapon.Name}\n";
+                                        }
+                                    }
 
                                     Console.ReadKey(true);
                                     if (numOfMGItems != 0)
@@ -706,8 +772,16 @@ namespace DungeonCrawler
                                         message += $"[{numOfMGItems}] {item.Name}\n";
                                     }
                                 }
+                                foreach (Item weapon in _player.WeaponInventory)
+                                {
+                                    if (MGItems.Contains(weapon))
+                                    {
+                                        numOfMGItems++;
+                                        backpack.Items.Add(weapon);
+                                        message += $"[{numOfMGItems}] {weapon.Name}\n";
+                                    }
+                                }
 
-                                
                                 Console.ReadKey(true);
                                 if (numOfMGItems != 0)
                                 {
@@ -764,16 +838,7 @@ namespace DungeonCrawler
                                         return new List<Dice> { D1 };
                                 }
                             case 3: // find your own way forward
-                                Console.WriteLine("'Then,' Merigold concludes, 'I have helped you the best I can. " +
-                                            "If you do not wish to pass through this portal, then the only exit is the door. " +
-                                            "However you dealt with the minotaur before you got here... well, I can only wish " +
-                                            "you the best of luck. Oh! And before I forget...' He waves his arms in the forms of some esoteric" +
-                                            " incantation. 'There! I believe I had just enough magic to light the stairway down to the lowest levels. " +
-                                            " It should no longer be quite so treacherous to traverse, but if you do change your mind, you know where to find " +
-                                            "me...'\n\nYou begin to stride purposefully away your gaze set on the task at hand," +
-                                            " when Merigold calls out to you one last time. \n\t'And remember this above all, " +
-                                            "you have only until the clock strikes twelve! All the gods help you if you don't " +
-                                            "stop him before then...'");
+                                
                                 stairwayToLower.Name = "bright stairwell";
                                 stairwayToLower.Description = "Merigold's incantaition has illuminated these stairs. At last you can see just how dangerous they really are with jutting uneven steps, crumbling masonry and little if any handholds. Descending these stairs may still prove dangerous even when lit...";
                                 stairwayToLower.Dark = false;
@@ -814,8 +879,16 @@ namespace DungeonCrawler
                                                 message += $"[{numOfMGItems}] {item.Name}\n";
                                             }
                                         }
-                                        
-                                        
+                                        foreach (Item weapon in _player.WeaponInventory)
+                                        {
+                                            if (MGItems.Contains(weapon))
+                                            {
+                                                numOfMGItems++;
+                                                backpack.Items.Add(weapon);
+                                                message += $"[{numOfMGItems}] {weapon.Name}\n";
+                                            }
+                                        }
+
                                         Console.ReadKey(true);
                                         if (numOfMGItems != 0)
                                         {
@@ -909,8 +982,16 @@ namespace DungeonCrawler
                                             message += $"[{numOfMGItems}] {item.Name}\n";
                                         }
                                     }
-                                    
-                                    
+                                    foreach (Item weapon in _player.WeaponInventory)
+                                    {
+                                        if (MGItems.Contains(weapon))
+                                        {
+                                            numOfMGItems++;
+                                            backpack.Items.Add(weapon);
+                                            message += $"[{numOfMGItems}] {weapon.Name}\n";
+                                        }
+                                    }
+
                                     Console.ReadKey(true);
                                     if (numOfMGItems != 0)
                                     {
@@ -979,6 +1060,15 @@ namespace DungeonCrawler
                                         numOfMGItems++;
                                         backpack.Items.Add(item);
                                         message += $"[{numOfMGItems}] {item.Name}\n";
+                                    }
+                                }
+                                foreach (Item weapon in _player.WeaponInventory)
+                                {
+                                    if (MGItems.Contains(weapon))
+                                    {
+                                        numOfMGItems++;
+                                        backpack.Items.Add(weapon);
+                                        message += $"[{numOfMGItems}] {weapon.Name}\n";
                                     }
                                 }
                                 Console.WriteLine(message);
@@ -1354,7 +1444,15 @@ namespace DungeonCrawler
                                             message += $"[{numOfMGItems}] {item.Name}\n";
                                         }
                                     }
-
+                                    foreach (Item weapon in _player.WeaponInventory)
+                                    {
+                                        if (MGItems.Contains(weapon))
+                                        {
+                                            numOfMGItems++;
+                                            backpack.Items.Add(weapon);
+                                            message += $"[{numOfMGItems}] {weapon.Name}\n";
+                                        }
+                                    }
 
                                     Console.ReadKey(true);
                                     if (numOfMGItems != 0)
@@ -1448,7 +1546,15 @@ namespace DungeonCrawler
                                         message += $"[{numOfMGItems}] {item.Name}\n";
                                     }
                                 }
-
+                                foreach (Item weapon in _player.WeaponInventory)
+                                {
+                                    if (MGItems.Contains(weapon))
+                                    {
+                                        numOfMGItems++;
+                                        backpack.Items.Add(weapon);
+                                        message += $"[{numOfMGItems}] {weapon.Name}\n";
+                                    }
+                                }
 
                                 Console.ReadKey(true);
                                 if (numOfMGItems != 0)
@@ -1522,7 +1628,15 @@ namespace DungeonCrawler
                                     message += $"[{numOfMGItems}] {item.Name}\n";
                                 }
                             }
-
+                            foreach (Item weapon in _player.WeaponInventory)
+                            {
+                                if (MGItems.Contains(weapon))
+                                {
+                                    numOfMGItems++;
+                                    backpack.Items.Add(weapon);
+                                    message += $"[{numOfMGItems}] {weapon.Name}\n";
+                                }
+                            }
 
                             Console.ReadKey(true);
                             if (numOfMGItems != 0)
@@ -1630,7 +1744,15 @@ namespace DungeonCrawler
                                             message += $"[{numOfMGItems}] {item.Name}\n";
                                         }
                                     }
-
+                                    foreach (Item weapon in _player.WeaponInventory)
+                                    {
+                                        if (MGItems.Contains(weapon))
+                                        {
+                                            numOfMGItems++;
+                                            backpack.Items.Add(weapon);
+                                            message += $"[{numOfMGItems}] {weapon.Name}\n";
+                                        }
+                                    }
 
                                     Console.ReadKey(true);
                                     if (numOfMGItems != 0)
@@ -1725,7 +1847,15 @@ namespace DungeonCrawler
                                         message += $"[{numOfMGItems}] {item.Name}\n";
                                     }
                                 }
-
+                                foreach (Item weapon in _player.WeaponInventory)
+                                {
+                                    if (MGItems.Contains(weapon))
+                                    {
+                                        numOfMGItems++;
+                                        backpack.Items.Add(weapon);
+                                        message += $"[{numOfMGItems}] {weapon.Name}\n";
+                                    }
+                                }
 
                                 Console.ReadKey(true);
                                 if (numOfMGItems != 0)
@@ -1795,6 +1925,15 @@ namespace DungeonCrawler
                                     numOfMGItems++;
                                     backpack.Items.Add(item);
                                     message += $"[{numOfMGItems}] {item.Name}\n";
+                                }
+                            }
+                            foreach (Item weapon in _player.WeaponInventory)
+                            {
+                                if (MGItems.Contains(weapon))
+                                {
+                                    numOfMGItems++;
+                                    backpack.Items.Add(weapon);
+                                    message += $"[{numOfMGItems}] {weapon.Name}\n";
                                 }
                             }
                             Console.WriteLine(message);

@@ -4295,8 +4295,11 @@ namespace DungeonCrawler
                     int destination = 0;
                     if (endOfMidGameChoice.Count == 1)
                     {
-                        player.midnightClock = new System.Diagnostics.Stopwatch();
-                        player.midnightClock.Start();
+                        if (player.midnightClock == null)
+                        {
+                            player.midnightClock = new System.Diagnostics.Stopwatch();
+                            player.midnightClock.Start();
+                        }
                         if (endOfMidGameChoice[0].faces == D1.faces)
                         {
                             Console.ReadKey(true);

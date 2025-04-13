@@ -2739,8 +2739,12 @@ namespace DungeonCrawler
                     }
                     while (!leftWhichRooms[0]) // your cell
                     {
+                        if (room.FeatureList.Contains(holeInCeiling))
+                        {
+                            secretChamber.Description = "You clamber into an eerie chamber of disquieting shapes imposed upon velvety darkness; a dusky landscape of sinister contours and unknown threats alleviated only slightly from the faint moon-like glow of the strange braziers below. As your eyes adjust to your new surroundings, and you can begin to make out the statues and artefacts within, you feel a cold tot of anxiety tie knots in your stomach as you realise the secret chamber has no doors or windows. Instead, as you'll come to realise, you have stumbled upon a glimpse through a keyhole into the mind of the CurseBreaker. One no one was ever meant to see...\nFacing north is some kind of statue, or perhaps a shrine. Unlit candles are arranged beneath a marble figure. Normally they'd cast it in a fiery glow, but instead the braziers' light through the hole you climbed through toss angular and tortured shadows over the chiselled face of a man crying out in anguish for all eternity. Chained to a rock, an eagle eviscerates and devours his innards as his form, frozen in stone, screams silent screams. A plaque lays at its base, while you can just detect misty jars glinting to its left. \t\nTurning your gaze westward, and squinting your eyes, you can distinguish the shape of a bookcase from within the web of shadows. \t\n To the south you find a portrait hung upon the wall of a man with chiropteric wings. \t\nLooking eastwards you discover something that seems to rattle in the darkness. Investigating further, wading through an agglomeration of arcane baubles and esoteric devices stashed and long forgotten, you find the source of the ominous rattling is a mosaic. It's tiles flip and shuffle like playing cards in the dextrous hands of an invisible dealer. They finally settle on the image of a non-descript face, gazing down upon you...\t\t";
+                        }    
                         visitedRoom = true;
-                    holeInCeiling.Name = "hole in ceiling";
+                        holeInCeiling.Name = "hole in ceiling";
                         holeInCeiling.Description = "You gaze from the heap of debris that has buried the creature alive to the hole through the ceiling above. You bet you could climb the heap and enter the room above yours.";
                         holeInCeiling.Passing = "You scramble up the mound of debris, heft yourself up through the hole and into a new room...";
                         usesDictionaryItemItem.Clear();
@@ -3436,7 +3440,14 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        
+                        try
+                        {
+                            if (!usesDictionaryItemFeature[magManKey].Contains(goodWeaponRack)) 
+                            {
+                                usesDictionaryItemFeature[magManKey].Add(goodWeaponRack);
+                            }
+                        }
+                        catch { }
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (minotaur.Stamina > 0)
                         {
@@ -5692,8 +5703,13 @@ namespace DungeonCrawler
                                 minotaurAlerted = 0;
                             }
                         }
-                        catch { 
-                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        catch {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                            continue;
+                        }
+                        Console.WriteLine("Please enter a number corresponding to your choice of action...");
                             minotaurAlertedBy = D6.Roll(D6) * 1000;
                             sw = new Stopwatch();
                             justStalked = false;
@@ -5746,7 +5762,7 @@ namespace DungeonCrawler
                         }
                         else
                         {
-                            usesDictionaryItemFeature[magManKey] = new List<Feature> {circleDoor, magManDoor };
+                            usesDictionaryItemFeature[magManKey] = new List<Feature> {circleDoor, magManDoor, goodWeaponRack, otherRosewoodDoor, rosewoodDoor, emptyCellDoor };
                         }
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
@@ -5892,7 +5908,14 @@ namespace DungeonCrawler
                             {
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
-                                
+                                if (minotaur.Location == northernmostCorridor)
+                                {
+                                    northwestCorner.Description = "The corner turns sharply right.\nFrom somewhere around the other side you hear heavy footfalls as some huge beast prowls the other side...";
+                                }
+                                else
+                                {
+                                    northwestCorner.Description = "The corner turns sharply right...";
+                                }
                                 Room newRoom = westernmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, null, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != westernmostCorridor.Name)
                                 {
@@ -5922,8 +5945,13 @@ namespace DungeonCrawler
                                 minotaurAlerted = 0;
                             }
                         }
-                        catch { 
-                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        catch {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                            continue;
+                        }
+                        Console.WriteLine("Please enter a number corresponding to your choice of action...");
                             minotaurAlertedBy = D6.Roll(D6) * 1000;
                             sw = new Stopwatch();
                             justStalked = false;
@@ -5956,6 +5984,7 @@ namespace DungeonCrawler
                     sw = new Stopwatch();
                     while (!leftWhichRooms[21])//north-facing corridor
                     {
+                        broomCloset.Description = "Your eyes clap sight of an Aladdin's cave of custodian conglomerations, janitorial jumbles and maidly menageries all agglomerated within a cosy 4 foot by 4 foot room. Somewhat ironically, it's a mess. \nYou see a broom.\t\nYou see another broom.\t\nCould that be another broom?\t\nanother br- oh, wait! That's a mop.\t\t";
                         visitedRoom = true;
                         northwestCorner.Description = "The corner turns sharply left...";
                         northwestCorner.Passing = "You follow the corner around and into the westernmost corridor.";
@@ -6147,8 +6176,13 @@ namespace DungeonCrawler
                                 minotaurAlerted = 0;
                             }
                         }
-                        catch { 
-                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        catch {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                            continue;
+                        }
+                        Console.WriteLine("Please enter a number corresponding to your choice of action...");
                             minotaurAlertedBy = D6.Roll(D6) * 1000;
                             sw = new Stopwatch();
                             justStalked = false;
@@ -6341,9 +6375,16 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 2)
                             {
-                                ///when player discards rusty chains they may appear more than once. 
-                                ///fungshui() is present to preempt that and prevent duplicates.
-
+                            ///when player discards rusty chains they may appear more than once. 
+                            ///fungshui() is present to preempt that and prevent duplicates.
+                                if (minotaur.Location == northernmostCorridor)
+                                {
+                                    northeastCorner.Description = "The corner turns sharply left.\nFrom somewhere around the other side you hear heavy footfalls as the huge beast prowls the other side...";
+                                }
+                                else
+                                {
+                                    northeastCorner.Description = "The corner turns sharply left...";
+                                }
                                 Room newRoom = easternmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, null, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != easternmostCorridor.Name)
                                 {
@@ -6373,8 +6414,13 @@ namespace DungeonCrawler
                                 minotaurAlerted = 0;
                             }
                         }
-                        catch { 
-                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        catch {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                            continue;
+                        }
+                        Console.WriteLine("Please enter a number corresponding to your choice of action...");
                             minotaurAlertedBy = D6.Roll(D6) * 1000;
                             sw = new Stopwatch();
                             justStalked = false;
@@ -6602,8 +6648,13 @@ namespace DungeonCrawler
                                 minotaurAlerted = 0;
                             }
                         }
-                        catch { 
-                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                        catch {
+                        if (reply == "c")
+                        {
+                            player1.CheckStatus();
+                            continue;
+                        }
+                        Console.WriteLine("Please enter a number corresponding to your choice of action...");
                             minotaurAlertedBy = D6.Roll(D6) * 1000;
                             sw = new Stopwatch();
                             justStalked = false;
@@ -6775,6 +6826,16 @@ namespace DungeonCrawler
                     if (minotaur.Location == antechamber && !antechamber.Description.Contains("You are struck by the carnage of the monster's obsessive hunt.")) { antechamber.ItemList.Add(breastplate); antechamber.ItemList.Add(helmet); antechamber.ItemList.Add(clunkySabaton); antechamber.Description = "You are struck by the carnage of the monster's obsessive hunt. The once wondrous and spacious antechamber is strewn with smashed breastplates and other detritus from the armoury. The monster also seems to have taken out its rage on the pillars, for you find them hacked with chunks of that fabulous marble scattered everywhere. The unscathed mosaic, high above the double doors, surveys it all.\nGazing northwards you see a heavyset door studded with steel bolts, Above it a bronze plaque has been blackened as though blasted by some spell or fireball. \t\nTo the west you see the brightly illuminated stairway you just ascended.\t\nTurning your gaze to the south wall you find bare patches where once were probably opulent oil-paintings and portraits. Their absence adds to the ominous sense of some recent tragedy befalling this place.\t\nTo the east is another door leading out of the antechamber - this one a far more inviting set of oak-panelled double doors framed by fluted pillars and a grand archway enclosing some strange mosaic.\t\t"; }
                     while (!leftWhichRooms[9])//magical manufactory
                     {
+                        broomCloset.Description = "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speed. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not long before the vortex hurls you bodily into some dank claustrophobic and frankly smelly closet. As you stagger to your feet your eyes clap sight of an Aladdin's cave of custodian conglomerations, janitorial jumbles and maidly menageries all agglomerated within a cosy 4 foot by 4 foot room. Somewhat ironically, it's a mess. \nYou see a broom.\t\nYou see another broom.\t\nCould that be another broom?\t\nanother br- oh, wait! That's a mop.\t\t";
+                        if (!room.FeatureList.Contains(holeInCeiling))
+                        {
+                            secretChamber.FeatureList.Remove(holeInCeiling);
+                            secretChamber.Description = "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speed. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not long before the vortex hurls you bodily into a strange new chamber. You clamber uneasily to your feet, finding yourself in an eerie chamber of disquieting shapes imposed upon velvety darkness; a dusky landscape of sinister contours and unknown threats alleviated only slightly from the flickering glow of a circle of candles arranged occult-like around some kind of pentagram where you landed. As your eyes adjust to your new surroundings, and you can begin to make out the statues and artefacts within, you feel a cold tot of anxiety tie knots in your stomach as you realise the secret chamber has no doors or windows. Instead, as you'll come to realise, you have stumbled upon a glimpse through a keyhole into the mind of the CurseBreaker. One no one was ever meant to see...\nFacing north is some kind of statue, or perhaps a shrine. Lit candles are arranged beneath a marble figure. They cast it in a fiery glow, tossing angular and tortured shadows over the chiselled face of a man crying out in anguish for all eternity. Chained to a rock, an eagle eviscerates and devours his innards as his form, frozen in stone, screams silent screams. A plaque lays at its base, while you can just detect misty jars glinting to its left. \t\nTurning your gaze westward, and squinting your eyes, you can distinguish the shape of a bookcase from within the web of shadows. \t\n To the south you find a portrait hung upon the wall of a man with chiropteric wings. \t\nLooking eastwards you discover something that seems to rattle in the darkness. Investigating further, wading through an agglomeration of arcane baubles and esoteric devices stashed and long forgotten, you find the source of the ominous rattling is a mosaic. It's tiles flip and shuffle like playing cards in the dextrous hands of an invisible dealer. They finally settle on the image of a non-descript face, gazing down upon you...\t\t";
+                        }
+                        else
+                        {
+                            secretChamber.Description = "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speed. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not long before the vortex hurls you bodily into a strange new chamber. You clamber uneasily to your feet, finding yourself in an eerie chamber of disquieting shapes imposed upon velvety darkness; a dusky landscape of sinister contours and unknown threats alleviated only slightly from the flickering glow of a circle of candles arranged occult-like around some kind of pentagram where you landed. As your eyes adjust to your new surroundings, and you can begin to make out the statues and artefacts within, you feel a cold tot of anxiety tie knots in your stomach as you realise the secret chamber has no doors or windows. Instead, as you'll come to realise, you have stumbled upon a glimpse through a keyhole into the mind of the CurseBreaker. One no one was ever meant to see...\nFacing north is some kind of statue, or perhaps a shrine. Lit candles are arranged beneath a marble figure. They cast it in a fiery glow, tossing angular and tortured shadows over the chiselled face of a man crying out in anguish for all eternity. Chained to a rock, an eagle eviscerates and devours his innards as his form, frozen in stone, screams silent screams. A plaque lays at its base, while you can just detect misty jars glinting to its left. \t\nTurning your gaze westward, and squinting your eyes, you can distinguish the shape of a bookcase from within the web of shadows. \t\n To the south you find a portrait hung upon the wall of a man with chiropteric wings. \t\nLooking eastwards you discover something that seems to rattle in the darkness. Investigating further, wading through an agglomeration of arcane baubles and esoteric devices stashed and long forgotten, you find the source of the ominous rattling is a mosaic. It's tiles flip and shuffle like playing cards in the dextrous hands of an invisible dealer. They finally settle on the image of a non-descript face, gazing down upon you...\t\t";
+                        }
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
@@ -7036,6 +7097,7 @@ namespace DungeonCrawler
                         Console.WriteLine("Before you can even begin to utter something - anything - by way of explanation, the goblin nearest you chucks his paltry gruel from his lap - 'Looks like meat's back on the menu, boys!' he booms and the many goblins roar with glee as they tie you up to a spit and stick an apple in your mouth. \nHad you a fist free you'd be shaking it at the sky and yelling, 'Damnit Merigold!!!' but you'll just have to settle for becoming a delectable appetiser for a gaggle of goblins instead...");
                         Console.ReadKey(true);
                         Console.WriteLine("Your adventure ends here...");
+                    Console.ReadKey(true);
                         return;
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
@@ -7123,6 +7185,7 @@ namespace DungeonCrawler
                         Console.WriteLine("With no way back, you spend your time waiting for passing vessels to flag down, drinking copious amounts of coconut milk and smoking weird mushrooms that grow under rocks. In time, you make friends with a coconut named 'Wilson'...");
                         Console.ReadKey(true);
                         Console.WriteLine("Your adventure ends here...");
+                    Console.ReadKey(true);
                         return;
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
@@ -7200,6 +7263,7 @@ namespace DungeonCrawler
                         Console.WriteLine("An icy dread fills you as you behold a vast vault door sealing the place in. You're in some kind of bank vault! You bang on the door for help, you search for other exits, but there is no way out. You are destined to be rich to the end of your days - all three of them...");
                         Console.ReadKey(true);
                         Console.WriteLine("Your adventure ends here...");
+                    Console.ReadKey(true);
                         return;
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();
@@ -7513,6 +7577,7 @@ namespace DungeonCrawler
                         Console.WriteLine("You find yourself wondering just where on earth that strange wizard teleported you - this looks nothing like you're intended destination. Then something comes crashing through the trees towards you. It peers through the foliage at you, looming fifteen feet high with hungry reptilian eyes and teeth the size of sabres. Uh-oh... You manage to mutter a disparaging word or two about wizards under your breath before fleeing for your life. The tyrannosaurus rex happily stomps after you through the prehistoric jungle...");
                         Console.ReadKey(true);
                         Console.WriteLine("You're adventure ends here...");
+                    Console.ReadKey(true);
                         return;
                         visitedRoom = true;
                         usesDictionaryItemItem.Clear();

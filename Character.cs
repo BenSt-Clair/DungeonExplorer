@@ -187,7 +187,10 @@ namespace DungeonCrawler
             Console.WriteLine(DescribeStamina());
             Console.WriteLine($"\nYour current skill is: {Skill}");
             Console.WriteLine(DescribeSkill());
-
+            foreach(KeyValuePair<string, string> k in Traits)
+            {
+                Console.WriteLine("\n" + k.Value);
+            }
             if (Speedy)
             {
                 Console.WriteLine("\nPotion of alacrity is active!\nYou are filled with jittery energy, flitting about from one action to the next with disconcerting speed...");
@@ -210,7 +213,7 @@ namespace DungeonCrawler
                 long timeTaken = midnightClock.ElapsedMilliseconds;
                 midnightClock.Start();
                 long timeToMidnight = 1800000;
-                long timeLeft = timeToMidnight - timeTaken / 60000;
+                long timeLeft = (timeToMidnight - timeTaken) / 60000;
                 if (timeLeft < 0)
                 {
                     Console.WriteLine("\nMidnight is upon you!");
@@ -1279,6 +1282,7 @@ namespace DungeonCrawler
                         if (Name == "backpack")
                         {
                             inventory.Remove(x);
+                            weaponInventory.Remove(x);
                             Items.Remove(x);
                             answer = "";
                             skip = true;
@@ -1313,6 +1317,7 @@ namespace DungeonCrawler
                         if (Name == "backpack")
                         {
                             inventory.Remove(x);
+                            
                             Items.Remove(x);
                             answer = "";
                             skip = true;
