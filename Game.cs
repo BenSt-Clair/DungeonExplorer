@@ -702,6 +702,23 @@ namespace DungeonCrawler
             List<Feature> messHallFeatures = new List<Feature> { messHallDoor, bench, diningTable, bench, diningTable, diningTable1, bench, bench, diningTable};
             ///The above is for letting the player know that they can combine the bobby pin and the stiletto and that they can use the soot or warpaint to form a disguise
             ///
+            /// The dragon lair
+            Feature stalagmite = new Feature("stalagmite", "Like a Myrovian steeple in miniature it rises from the ground - a common feature of any self respecting cavern anywhere...", false, "unbroken");
+            Feature stalactite = new Feature("stalactite", "The stalactites, unlike stalagmites, hang from the ceiling like tights - get it? Like crusty, craggy, solid, splatter-you-if-they-drop-on-your-head-in-an-earthquake tights...", false, "unbroken");
+            Item ruby = new Item("fist-sized ruby", "Which kingdom should you buy first?", false, "unblemished");
+            Item sapphire = new Item("dazzling sapphire", "Would you like to buy a private island? Two?", false, "unblemished");
+            Item emerald = new Item("lustrous emerald", "More valuable than any other Northern Rock, even ones that don't crash economies...", false, "unblemished");
+            Item goldDoubloon = new Item("gold doubloon", "~I'm in the money! \nI'm in the money! \nSpend it, \n\tLend it, \n\t\tSend it,\nRolling along!~");
+            Item silverBars = new Item("silver bars", "Freshly minted and stamped, there's enough here to buy a mercenary horde, let alone an army...");
+            List<Item> goldDragonItems = new List<Item> {goldDoubloon, silverBars, emerald, sapphire, ruby };
+            List<Dice> dragonpocalypse = new List<Dice> {D6, D6, D6, D6, D6, D6, D6, D6, D6, D6, D6, D6, D6, D6, D6, D6, D6,D6, D6, D6 };
+            Feature goldMountains = new Feature("golden mountain", "The common-man's crude rebuttal to ontological philosophers everywhere - if he's fabulously wealthy, that is...", false, "untouched", goldDragonItems);
+            Feature lake = new Feature("underwater lake", "beneath its surface lies endless jewels and gold doubloons the size of pebbles! You feel like raking them with your fingertips and tossing them in the air around you...", false, "untouched", goldDragonItems);
+            Weapon flameThrower = new Weapon("talons, tail, claws, teeth and fiery breath", "Nuh-uh! If you're reading this you cheated...", dragonpocalypse, defaultCritHits, defaultGoodHits, 20);
+            Monster goldDragon = new Monster("golden dragon", "Ohhhhhhh... drat!", goldDragonItems, 999999999, 50, flameThrower);
+            List<Feature> goldDragonFeatures = new List<Feature> {lake, goldMountains, stalactite, stalagmite, goldMountains };
+            
+
             /// The Magical Manufactory Items and Features
             Feature copperPipes = new Feature("whistling pipes", "They rattle and shake and bounce up and down in an excitable fashion, dribbling alchemical residue amidst jets of steam.");
             Feature brassTanks = new Feature("brass tanks", "They have porthole windows bolted into their sides through which you see chains of bubbles endlessly cascade upwards through some gloopy concoction or other...");
@@ -808,7 +825,7 @@ namespace DungeonCrawler
             Item armBand = new Item("golden armband", "It's rather garish and flashy, especially with that large M and G fashioned upon it. You don't think you'll be wearing it anytime soon, even if it is solid gold...");
 
             //Special Items
-            List<Item> stickyItems = new List<Item> { bowlFragments, garment, bobbyPins, clunkySabaton, breastplate, helmet, bracers, splinter, rug, looseNail, penny, crumbs, dustBunny, mops, dusters, brooms, dustpans, crumpledMissive, emptyBottles, cork };
+            List<Item> stickyItems = new List<Item> { bowlFragments, garment, bobbyPins, clunkySabaton, breastplate, helmet, bracers, splinter, rug, looseNail, penny, crumbs, dustBunny, mops, dusters, brooms, dustpans, crumpledMissive, emptyBottles, cork, ruby, emerald, sapphire, goldDoubloon, silverBars };
             List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys, lockpickingSet, bookA1, journal };
             List<Item> MGItems = new List<Item> { knifeMG, staffMG, merigoldRing, pocketWatch, bracelet, merigoldMedallion, merigoldBroach, belt, diadem, armBand, box, bookA2 };
 
@@ -828,7 +845,7 @@ namespace DungeonCrawler
             Room hugeBarracks = new Room("huge barracks", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features);
             Room desertIsland = new Room("desert island", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features);
             Room bankVault = new Room("bank vault", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features);
-            Room dragonLair = new Room("dragon's lair", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features);
+            Room dragonLair = new Room("dragon's lair", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\nLooking up you discover vast dunes of glittering treasure all stored within some strange cave. Glowing crystals form stalactites hanging from the craggy ceiling, casting the gold around you in a chilly glow. Could Merigold have sent you to heaven?\t\nYou turn your gaze left and spy an underground lake and its glassy waters, gazing through it you find not a bedrock of silt or sand but more glittering gold coins, crowns and jewels. Could Merigold have brought you to every adventurer's most fervent dreamscape?\t\nYou swivel around, dazedly looking back at mountains of rubies and emeralds and sapphires and silver and... and... and... oh yes, thank you Merigold, thank you!\t\nWith a grin dawning upon your face and lighting it like the morning sun you delight in the sight of more gold and invaluable trinkets to the right of where you landed. Yippee!\t\t", goldDragonItems, goldDragonFeatures);
             Room secretChamber = new Room("secret chamber", "You clamber into an eerie chamber of disquieting shapes imposed upon velvety darkness; a dusky landscape of sinister contours and unknown threats alleviated only slightly from the faint moon-like glow of the strange braziers below. As your eyes adjust to your new surroundings, and you can begin to make out the statues and artefacts within, you feel a cold tot of anxiety tie knots in your stomach as you realise the secret chamber has no doors or windows. Instead, as you'll come to realise, you have stumbled upon a glimpse through a keyhole into the mind of the CurseBreaker. One no one was ever meant to see...\nFacing north is some kind of statue, or perhaps a shrine. Unlit candles are arranged beneath a marble figure. Normally they'd cast it in a fiery glow, but instead the braziers' light through the hole you climbed through toss angular and tortured shadows over the chiselled face of a man crying out in anguish for all eternity. Chained to a rock, an eagle eviscerates and devours his innards as his form, frozen in stone, screams silent screams. A plaque lays at its base, while you can just detect misty jars glinting to its left. \t\nTurning your gaze westward, and squinting your eyes, you can distinguish the shape of a bookcase from within the web of shadows. \t\n To the south you find a portrait hung upon the wall of a man with chiropteric wings. \t\nLooking eastwards you discover something that seems to rattle in the darkness. Investigating further, wading through an agglomeration of arcane baubles and esoteric devices stashed and long forgotten, you find the source of the ominous rattling is a mosaic. It's tiles flip and shuffle like playing cards in the dextrous hands of an invisible dealer. They finally settle on the image of a non-descript face, gazing down upon you...\t\t", secretChamberItems, secretChamberFeatures);
             Room prehistoricJungle = new Room("prehistoric jungle", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features);
             Room astralPlanes = new Room("astral planes", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features);
@@ -7090,7 +7107,7 @@ namespace DungeonCrawler
                     {
                         Console.WriteLine("Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...");
                         Console.ReadKey(true);
-                        Console.WriteLine("Within an exhilarating instant you feel gravity lurch back into existence. You scream your way through the portal before landing splat in the middle of a muddy field - at least that's all that can be seen of it, because you landed face first in what *feels* the swampiest bit of it. \n   Already sensing you may be somewhere other than your intended destination, you mutter a few disparaging remarks under your breath aimed at the dotty old wizard and his calculations. You grope your way to your feet and at last clear the mud from your eyes...");
+                        Console.WriteLine("Within an exhilarating instant you feel gravity lurch back into existence. You scream your way through the portal before landing splat in the middle of a muddy field - at least that's all that can be seen of it, because you landed face first in what *feels* the swampiest bit of it. \n   Already sensing you may be somewhere other than your intended destination, you mutter a few disparaging remarks under your breath aimed at the dotty old wizard and his calculations. You grope your way to your feet and at last wipe the mud from your eyes...");
                         Console.ReadKey(true);
                         Console.WriteLine("Then you discover scores of goblins peering back at you, momentarily agog. You freeze as you take in the tents, cooking fires and palisade walls of a huge mustering ground for the CurseBreaker's army...");
                         Console.ReadKey(true);
@@ -7099,75 +7116,7 @@ namespace DungeonCrawler
                         Console.WriteLine("Your adventure ends here...");
                     Console.ReadKey(true);
                         return;
-                        visitedRoom = true;
-                        usesDictionaryItemItem.Clear();
-                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
-                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
-                        ///enter new Dictionaries for item use here
-                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
-                        ///red herring in room above
-                        ///Specific for each room, tailored.
-                        if (!(a == 0 && b == 0))
-                        {
-                            Console.WriteLine("Now what will you do?");
-                        }
-                        Console.WriteLine("[1] Check what items are still on your person?");
-                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
-                        if (b > 0)
-                        {
-                            Console.WriteLine("[3] Use one of your items on something?");
-                        }
-                        string reply = Console.ReadLine().ToLower().Trim();
-                        try
-                        {
-                            int reply1 = int.Parse(reply);
-                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
-                            {
-                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
-                                continue;
-                            }
-                            else if (reply1 == 1)
-                            {
-                                player1.SearchPack(hugeBarracks.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
-                                a++;
-
-                            }
-                            else if (reply1 == 2)
-                            {
-                                ///when player discards rusty chains they may appear more than once. 
-                                ///fungshui() is present to preempt that and prevent duplicates.
-
-                                Room newRoom = hugeBarracks.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
-                                if (newRoom.Name != hugeBarracks.Name)
-                                {
-
-                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
-                                    newRoom1 = newRoom;
-                                    continue;
-                                }
-
-
-                                b++;
-                            }
-                            else
-                            {
-                                List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(hugeBarracks, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
-                            }
-                        }
-                    catch
-                    {
-                        if (reply == "c")
-                        {
-                            player1.CheckStatus();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
-                        }
-                    }
+                        
                 }
                     if (visitedRoom)
                     {
@@ -7187,65 +7136,7 @@ namespace DungeonCrawler
                         Console.WriteLine("Your adventure ends here...");
                     Console.ReadKey(true);
                         return;
-                        visitedRoom = true;
-                        usesDictionaryItemItem.Clear();
-                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
-                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
-                        ///enter new Dictionaries for item use here
-                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
-                        ///red herring in room above
-                        ///Specific for each room, tailored.
-                        if (!(a == 0 && b == 0))
-                        {
-                            Console.WriteLine("Now what will you do?");
-                        }
-                        Console.WriteLine("[1] Check what items are still on your person?");
-                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
-                        if (b > 0)
-                        {
-                            Console.WriteLine("[3] Use one of your items on something?");
-                        }
-                        string reply = Console.ReadLine().ToLower().Trim();
-                        try
-                        {
-                            int reply1 = int.Parse(reply);
-                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
-                            {
-                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
-                                continue;
-                            }
-                            else if (reply1 == 1)
-                            {
-                                player1.SearchPack(desertIsland.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
-                                a++;
-
-                            }
-                            else if (reply1 == 2)
-                            {
-                                ///when player discards rusty chains they may appear more than once. 
-                                ///fungshui() is present to preempt that and prevent duplicates.
-
-                                Room newRoom = desertIsland.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
-                                if (newRoom.Name != desertIsland.Name)
-                                {
-
-                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
-                                    newRoom1 = newRoom;
-                                    continue;
-                                }
-
-
-                                b++;
-                            }
-                            else
-                            {
-                                List<bool> success = new List<bool>();
-                                
-                                success = player1.UseItemOutsideCombat(desertIsland, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
-                            }
-                        }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                        
                     }
                     if (visitedRoom)
                     {
@@ -7265,65 +7156,7 @@ namespace DungeonCrawler
                         Console.WriteLine("Your adventure ends here...");
                     Console.ReadKey(true);
                         return;
-                        visitedRoom = true;
-                        usesDictionaryItemItem.Clear();
-                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
-                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
-                        ///enter new Dictionaries for item use here
-                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
-                        ///red herring in room above
-                        ///Specific for each room, tailored.
-                        if (!(a == 0 && b == 0))
-                        {
-                            Console.WriteLine("Now what will you do?");
-                        }
-                        Console.WriteLine("[1] Check what items are still on your person?");
-                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
-                        if (b > 0)
-                        {
-                            Console.WriteLine("[3] Use one of your items on something?");
-                        }
-                        string reply = Console.ReadLine().ToLower().Trim();
-                        try
-                        {
-                            int reply1 = int.Parse(reply);
-                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
-                            {
-                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
-                                continue;
-                            }
-                            else if (reply1 == 1)
-                            {
-                                player1.SearchPack(bankVault.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
-                                a++;
-
-                            }
-                            else if (reply1 == 2)
-                            {
-                                ///when player discards rusty chains they may appear more than once. 
-                                ///fungshui() is present to preempt that and prevent duplicates.
-
-                                Room newRoom = bankVault.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
-                                if (newRoom.Name != bankVault.Name)
-                                {
-
-                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
-                                    newRoom1 = newRoom;
-                                    continue;
-                                }
-
-
-                                b++;
-                            }
-                            else
-                            {
-                                List<bool> success = new List<bool>();
-                                
-                                success = player1.UseItemOutsideCombat(bankVault, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
-                            }
-                        }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                        
                     }
                     if (visitedRoom)
                     {
@@ -7339,21 +7172,164 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                         usesDictionaryItemFeature.Remove(yourRustyChains);
-                        ///enter new Dictionaries for item use here
-                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
-                        ///red herring in room above
-                        ///Specific for each room, tailored.
-                        if (!(a == 0 && b == 0))
+                    ///enter new Dictionaries for item use here
+                    ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                    ///red herring in room above
+                    ///Specific for each room, tailored.
+                    if (b > 0 || a > 0)
+                    {
+                        Combat goldDragonBattle = new Combat(goldDragon, player1);
+                        Console.WriteLine("You suddenly halt what you're doing!");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Around you the whole cave rumbles. The waters of the previously tranquil lake roil and froth. The mounds of glittering gold coins cascade in a tumult.\n\nFrom beneath them all something has woken...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("You stare agog as a terrific dragon rises from underneath the treasure, streams of jewels and gold cascading from its scales as it rises to its feet and then pivots languidly to fix its smouldering eyes upon you...");
+                        Console.ReadKey(true);
+                        if(player1.Inventory.Contains(ruby) || player1.Inventory.Contains(emerald) || player1.Inventory.Contains(sapphire) || player1.Inventory.Contains(goldDoubloon) || player1.Inventory.Contains(silverBars))
+                        {
+                            Console.WriteLine("You follow its gaze as it appraises your pockets bulging with gems, your backpack bursting with gold and your armfuls of silver that you let clatter about your feet in tremulous fright." +
+                                "\nYou make a clumsy attempt to explain your predicament; quavering about portals and wizards and some person called the CurseBreaker, all while the dragon stares at you with bored disdain, showing no inclination of caring about the details of your (let's face it) most-likely fatal mishap... \nThe gold dragon cuts you off with a drawl, it's sleepy, firedim eyes drooped to cynical half-mast." +
+                                "\n\t'I might've indulged your pleas, ape-thing,' It's voice resonates inside your head, never spoken, but in the guise of an all-encompassing voice, 'had you not so brazenly purloined my treasure. With it untouched you might have bargained your way back from wherever you came from, but alas...' \n  It yawns before flexing its powerful wings and raking its claws languidly upon the cave wall, sharpening them to a razor-edge. 'To let a thief and liar escape and tell tale of my trove sets a bad precedent And I simply can't let that happen...'");
+                            Console.ReadKey(true);
+                            Console.WriteLine("You mutter something disparaging about wizards and their kooky calculations before drawing your weapon in a futile show of defiance against fate.\n\nMeanwhile, the gold dragon stretches sedately, takes a deep inhale and prepares to turn you into cinders...");
+                            
+                            if (goldDragonBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, true, false))
+                            {
+                                Console.WriteLine("Just kidding!\n\nThe dragon incinerates you alive...");
+                                Console.ReadKey(true);
+                                Console.WriteLine("Your adventure ends here");
+                                Console.ReadKey(true);
+                                return;
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("You nervously greet the dragon and desperately try to explain your situation. \n\nThe dragon, in turn, just stares at you with bored disdain, it's sleepy firedim eyes drooping to cynical half-mast. However, it also senses truth in your words.");
+                            Console.ReadKey(true);
+                            Console.WriteLine("After a moment's consideration, it chooses to indulge you...");
+                            Console.ReadKey(true);
+                            Console.WriteLine("\n\t'Very well, ape-thing,' it addresses you haughtily, 'you've managed to respect my treasure and leave it untouched and I detect no scent of deception about your words. Let us see if you're worthy of freedom. \n\t'Answer me this riddle,' it declares, 'and I shall use my own considerable powers to whisk you back from whence you came...'");
+                            Console.ReadKey(true);
+                            Console.WriteLine("You say you agree to the dragon's terms - afterall, what choice do you have...");
+                            Console.ReadKey(true);
+                            Console.WriteLine("\n\t'You have one guess,' it rumbles with what you assume must be a devious leer upon its draconic visage, 'try to make it a good one and listen closely...'");
+                            Console.ReadKey(true);
+                            List<string> riddleMeThis = new List<string> 
+                            { 
+                                "I can never be emptied, \nI can never be drained," +
+                                "\nI can never be filled, \nI can never be exchanged," +
+                                "\n\nI am no gold cup or glittering chalice in view, " +
+                                "\n For with age they grow dull, " +
+                                "\n Where as I am only dull when I am new," +
+                                "\n And I am only new when I am far from full..." +
+                                "\n\nThe dragon leers expectantly as it sharpens its talons. 'What am I?'\t    moon     ",
+
+                                "I am drawn, but not on paper," +
+                                "\nSeldom will you find my outline scrawled in ink." +
+                                "\nLight is what I yield should I taper," +
+                                "\nOr darkness when my two halves come to link." +
+                                "\n\nThe dragon leers expectantly as it sharpens its talons. 'What am I?'\t    curtain      ",
+
+                                "If you were to ask me the answer to my riddle," +
+                                "\nI would never be able to answer," +
+                                "\nFor I’m tongue-tied; bound straight down the middle." +
+                                "\nI could be quite the dancer," +
+                                "\nI can follow your every step," +
+                                "\nBe sure to find my answer," +
+                                "\nOr else softly you must tread." +
+                                "\n\nThe dragon leers expectantly as it sharpens its talons. 'What am I?'\t    shoe      "
+
+                                
+
+                            };
+                            int index = D3.Roll(D3) - 1;
+                            Console.WriteLine(riddleMeThis[index].Substring(0, riddleMeThis[index].IndexOf("\t")));
+                            Console.WriteLine("Type your answer below or else type 'done' if you give up...");
+                            while (true)
+                            {
+                                string answer = Console.ReadLine().Trim().ToLower();
+                                if (string.IsNullOrWhiteSpace(answer))
+                                {
+                                    continue;
+                                }
+                                //try
+                                //{
+                                    bool checkWord = false;
+                                    StreamReader sr = new StreamReader("dictionary.txt");
+                                    string line = sr.ReadLine().Trim();
+                                    while (line[0] != 'z')
+                                    {
+                                        if (line.Trim().ToLower() == answer)
+                                        {
+                                            checkWord = true;
+                                        }
+                                        line = sr.ReadLine().Trim();
+                                    }
+                                    if(answer == "done")
+                                    {
+                                        Console.WriteLine("'You give up? So be it...' the dragon intones with relish. \n\nYou're barely able to draw your weapon before the dragon lunges at you.");
+                                        if (goldDragonBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, false))
+                                        {
+                                            Console.WriteLine("Just kidding!\n\nThe dragon incinerates you alive...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Your adventure ends here");
+                                            Console.ReadKey(true);
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            return;
+                                        }
+                                    }
+                                    else if (!checkWord)
+                                    {
+                                        Console.WriteLine("That's not a word the dragon's ever heard of, and they're a very loquacious dragon! Try again...");
+                                        continue;
+                                    }
+                                    else if (riddleMeThis[index].Substring(riddleMeThis[index].IndexOf("\t") + 2, 11).Trim() == answer || riddleMeThis[index].Substring(riddleMeThis[index].IndexOf("\t") + 1, 11).Trim() + "s" == answer)
+                                    {
+                                        Console.WriteLine("The dragon surveys you haughtily, before conceding defeat. \n\t'Very well, ape-thing,' it says, 'take your leave.'" +
+                                            "\n\nThough it's not as if you could refuse even if you tried, for with one imperious gesture of it's huge claw a portal opens beneath your feet and you plummet through it and to a new destination...");
+                                        Console.ReadKey(true);
+                                        newRoom1 = broomCloset;
+                                        leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                                        break;
+
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("'Wrong answer...' the dragon intones with relish. \n\nYou're barely able to draw your weapon before the dragon lunges at you.");
+                                        if (goldDragonBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, false))
+                                        {
+                                            Console.WriteLine("Just kidding!\n\nThe dragon incinerates you alive...");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("Your adventure ends here");
+                                            Console.ReadKey(true);
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            return;
+                                        }
+                                    }
+                                //}
+                                //catch { Console.WriteLine("dictionary dysfunctional"); }
+                            }
+                            break;
+                        }
+                    }
+                    if (!(a == 0 && b == 0))
                         {
                             Console.WriteLine("Now what will you do?");
                         }
                     Console.WriteLine("[c] Check your character's status?");
                     Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
-                        if (b > 0)
-                        {
-                            Console.WriteLine("[3] Use one of your items on something?");
-                        }
+                        
                         string reply = Console.ReadLine().ToLower().Trim();
                         try
                         {
@@ -7579,65 +7555,7 @@ namespace DungeonCrawler
                         Console.WriteLine("You're adventure ends here...");
                     Console.ReadKey(true);
                         return;
-                        visitedRoom = true;
-                        usesDictionaryItemItem.Clear();
-                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
-                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
-                        ///enter new Dictionaries for item use here
-                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
-                        ///red herring in room above
-                        ///Specific for each room, tailored.
-                        if (!(a == 0 && b == 0))
-                        {
-                            Console.WriteLine("Now what will you do?");
-                        }
-                        Console.WriteLine("[1] Check what items are still on your person?");
-                        Console.WriteLine("[2] Investigate the corridor?");
-                        if (b > 0)
-                        {
-                            Console.WriteLine("[3] Use one of your items on something?");
-                        }
-                        string reply = Console.ReadLine().ToLower().Trim();
-                        try
-                        {
-                            int reply1 = int.Parse(reply);
-                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
-                            {
-                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
-                                continue;
-                            }
-                            else if (reply1 == 1)
-                            {
-                                player1.SearchPack(prehistoricJungle.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
-                                a++;
-
-                            }
-                            else if (reply1 == 2)
-                            {
-                                ///when player discards rusty chains they may appear more than once. 
-                                ///fungshui() is present to preempt that and prevent duplicates.
-
-                                Room newRoom = prehistoricJungle.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
-                                if (newRoom.Name != prehistoricJungle.Name)
-                                {
-
-                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
-                                    newRoom1 = newRoom;
-                                    continue;
-                                }
-
-
-                                b++;
-                            }
-                            else
-                            {
-                                List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(prehistoricJungle, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
-                            }
-                        }
-                        catch { Console.WriteLine("Please enter a number corresponding to your choice of action..."); }
+                        
                     }
                     if (visitedRoom)
                     {
@@ -7648,76 +7566,17 @@ namespace DungeonCrawler
                     a = 0;
                     while (!leftWhichRooms[18])//astral planes
                     {
-                        visitedRoom = true;
-                        usesDictionaryItemItem.Clear();
-                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
-                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
-                        ///enter new Dictionaries for item use here
-                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
-                        ///red herring in room above
-                        ///Specific for each room, tailored.
-                        if (!(a == 0 && b == 0))
-                        {
-                            Console.WriteLine("Now what will you do?");
-                        }
-                    Console.WriteLine("[c] Check your character's status?");
-                    Console.WriteLine("[1] Check what items are still on your person?");
-                        Console.WriteLine("[2] Investigate the corridor?");
-                        if (b > 0)
-                        {
-                            Console.WriteLine("[3] Use one of your items on something?");
-                        }
-                        string reply = Console.ReadLine().ToLower().Trim();
-                        try
-                        {
-                            int reply1 = int.Parse(reply);
-                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
-                            {
-                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
-                                continue;
-                            }
-                            else if (reply1 == 1)
-                            {
-                                player1.SearchPack(astralPlanes.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
-                                a++;
-
-                            }
-                            else if (reply1 == 2)
-                            {
-                                ///when player discards rusty chains they may appear more than once. 
-                                ///fungshui() is present to preempt that and prevent duplicates.
-
-                                Room newRoom = astralPlanes.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
-                                if (newRoom.Name != astralPlanes.Name)
-                                {
-
-                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
-                                    newRoom1 = newRoom;
-                                    continue;
-                                }
-
-
-                                b++;
-                            }
-                            else
-                            {
-                                List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(astralPlanes, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
-                            }
-                        }
-                    catch
-                    {
-                        if (reply == "c")
-                        {
-                            player1.CheckStatus();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
-                        }
-                    }
+                    Console.ReadKey(true);
+                    Console.WriteLine("You are hurled out of the vortex and into the most alien place imaginable...");
+                    Console.ReadKey(true);
+                    Console.WriteLine("You find yourself floating through space alongside rocks the size of mountains, the atmosphere so much thinner that you're head spins. You hop from one boulder to the next before you're finally able to cling on to one and get your bearings.");
+                    Console.ReadKey(true);
+                    Console.WriteLine("You find yourself in the astral planes, a place of existence spanning the heavens, where all kinds of otherworldly creatures inhabit. And you scarcely able to even breathe in this wondrous habitat adorned with supernovae and the lights of alien galaxies, are perfect prey for all the nasties that make this plane of existence home. With no way back and no way out you can only futilely shake your fist and mutter a disparaging word about wizards and their calculations...");
+                    Console.ReadKey(true);
+                    Console.WriteLine("You're adventure ends here...");
+                    Console.ReadKey(true);
+                    return;
+                   
                 }
                     if (visitedRoom)
                     {
@@ -7728,76 +7587,15 @@ namespace DungeonCrawler
                     a = 0;
                     while (!leftWhichRooms[19])//ocean bottom
                     {
-                        visitedRoom = true;
-                        usesDictionaryItemItem.Clear();
-                        usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
-                        usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
-                        ///enter new Dictionaries for item use here
-                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
-                        ///red herring in room above
-                        ///Specific for each room, tailored.
-                        if (!(a == 0 && b == 0))
-                        {
-                            Console.WriteLine("Now what will you do?");
-                        }
-                    Console.WriteLine("[c] Check your character's status?");
-                    Console.WriteLine("[1] Check what items are still on your person?");
-                        Console.WriteLine("[2] Investigate the corridor?");
-                        if (b > 0)
-                        {
-                            Console.WriteLine("[3] Use one of your items on something?");
-                        }
-                        string reply = Console.ReadLine().ToLower().Trim();
-                        try
-                        {
-                            int reply1 = int.Parse(reply);
-                            if ((b < 1 && (reply1 < 1 || reply1 > 2)) || reply1 < 1 || reply1 > 3)
-                            {
-                                Console.WriteLine("Please enter a number corresponding to a choice of action.");
-                                continue;
-                            }
-                            else if (reply1 == 1)
-                            {
-                                player1.SearchPack(oceanBottom.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
-                                a++;
-
-                            }
-                            else if (reply1 == 2)
-                            {
-                                ///when player discards rusty chains they may appear more than once. 
-                                ///fungshui() is present to preempt that and prevent duplicates.
-
-                                Room newRoom = oceanBottom.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
-                                if (newRoom.Name != oceanBottom.Name)
-                                {
-
-                                    leftWhichRooms = newRoom.WhichRoom(leftWhichRooms);
-                                    newRoom1 = newRoom;
-                                    continue;
-                                }
-
-
-                                b++;
-                            }
-                            else
-                            {
-                                List<bool> success = new List<bool>();
-                                test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(oceanBottom, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
-                            }
-                        }
-                    catch
-                    {
-                        if (reply == "c")
-                        {
-                            player1.CheckStatus();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Please enter a number corresponding to your choice of action...");
-                        }
-                    }
+                    Console.ReadKey(true);
+                    Console.WriteLine("You emerge through the portal still floating - but not through air. To your horror you've been whisked to the ocean bottom, far far beneath the surface where only the faintest light reaches.");
+                    Console.ReadKey(true);
+                    Console.WriteLine("You already know there's no way to make it to the surface before you drown, but even if you could you feel your body struggling with the undersea pressure, somehow causing black spots to appear in your vision. You shake your fist at wizards everywhere, issuing a chain of bubbles that would've made a good rant had you not been transported somewhere underwater by that bumbling, daft - oh look, a kraken...");
+                    Console.ReadKey(true);
+                    Console.WriteLine("Your adventure ends here...");
+                    Console.ReadKey(true);
+                    return;
+                    
                 }
                     if (visitedRoom)
                     {

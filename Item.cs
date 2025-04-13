@@ -2650,7 +2650,7 @@ namespace DungeonCrawler
                             Console.WriteLine(enemyCounters[1]);
                         }
                     }
-
+                    
                     foreach (Dice d in Damage)
                     {
 
