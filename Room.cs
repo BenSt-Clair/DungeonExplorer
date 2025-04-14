@@ -350,7 +350,7 @@ namespace DungeonCrawler
         /// <param name="weaponInventory"></param>
         /// <param name="b"></param>
         /// <param name="player"></param>
-        public Room Investigate(Stopwatch sw, long minotaurAlertedBy, bool justStalked, List<Room> threadPath, List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains, List<Item> stickyItems, List<Item> specialItems, Monster minotaur, Combat mageBattle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, List<Room> destinations, Door stairwayToLower, List<Room> mosaicPortal = null)
+        public Room Investigate(Stopwatch sw, long minotaurAlertedBy, bool justStalked, List<Room> threadPath, List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains, List<Item> stickyItems, List<Item> specialItems, Monster minotaur, Combat mageBattle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, List<Room> destinations, Door stairwayToLower, Feature laboratory = null, List<Room> mosaicPortal = null)
         {
             
             Dice D20 = new Dice(20);
@@ -599,7 +599,7 @@ namespace DungeonCrawler
                             Room newRoom = FeatureList[answer1].Search(player.CarryCapacity, inventory, weaponInventory, this, player.FieryEscape, player, stairwayToLower, destinations, specialItems, mageBattle, secretChamber, goblin, gnoll, MGItems);
                             FeatureList[answer1].investigateFeature(specialItems, minotaur, player, mosaicPortal);
                             
-                            if ( newRoom.Name != this.Name)
+                            if ( newRoom.Name != this.Name || laboratory.Description.Contains("It's been thoroughly trashed after your fight with Merigold..."))
                             {
                                 return newRoom;
                             }

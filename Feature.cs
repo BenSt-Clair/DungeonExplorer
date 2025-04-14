@@ -972,7 +972,7 @@ namespace DungeonCrawler
             else
             {
                 Merigold merigold = new Merigold(player, room);
-                if (Name == "laboratory" && SpecificAttribute == "unapproached")
+                if (Name == "laboratory" && SpecificAttribute == "unapproached" && !Description.Contains("lovingly adorned with Merigold's eviscerated corpse. MWA HA HA HA!!!"))
                 {
                     Console.WriteLine(Description);
                     Dice D120 = new Dice(120);
@@ -1011,6 +1011,11 @@ namespace DungeonCrawler
                             {
                                 Console.ReadKey(true);
                                 Console.WriteLine("Confident for now that you can find your own way towards your goal, you leave Merigold behind...");
+                                return room;
+                            }
+                            else if (endOfMidGameChoice[0].faces == 847713)
+                            {
+                                Description += "\nIt's been thoroughly trashed after your fight with Merigold...";
                                 return room;
                             }
                             else
@@ -4277,7 +4282,7 @@ namespace DungeonCrawler
                         return room;
                     }
                 }
-                else if (Name == "laboratory")
+                else if (Name == "laboratory" && !Description.Contains("lovingly adorned with Merigold's eviscerated corpse. MWA HA HA HA!!!"))
                 {
                     Dice D120 = new Dice(120);
                     Dice D60 = new Dice(60);
@@ -4311,6 +4316,11 @@ namespace DungeonCrawler
                         {
                             Console.ReadKey(true);
                             Console.WriteLine("Confident for now that you can find your own way towards your goal, you leave Merigold behind...");
+                            return room;
+                        }
+                        else if (endOfMidGameChoice[0].faces == 847713)
+                        {
+                            Description += "\nIt's been thoroughly trashed after your fight with Merigold...";
                             return room;
                         }
                         else
@@ -7571,7 +7581,73 @@ namespace DungeonCrawler
                         }
                     }
                 }
-                
+                else if(Name == "laboratory")
+                {
+                    Console.WriteLine("With Merigold dead and no one versed in the arcane arts to help you steer the portal, " +
+                        "you decide that the only thing for it, before the CurseBreaker's forces come looking for you in greater numbers, " +
+                        "is to take your chances with the portal. " +
+                        "You growl as you confront it, daring it to do its worst as you psych yourself up for an unknown fate... \nFinally you take the plunge.");
+                    int destination = 0;
+                    Dice D120 = new Dice(120);
+                    
+                    List<Dice> endOfMidGameChoice = new List<Dice> {D120, D120 };
+                    endOfMidGameChoice.RemoveAt(endOfMidGameChoice.Count - 1);
+                    foreach (Dice d in endOfMidGameChoice)
+                    {
+                        Console.ReadKey(true);
+                        int x = d.Roll(d);
+                        Console.WriteLine($"You rolled {x}");
+                        destination += x;
+                    }
+                    if (destination > 115 || destination < 6)
+                    {
+                        return destinations[10];
+                    }
+                    else if (destination > 110 || destination < 11)
+                    {
+                        return destinations[9];
+                    }
+                    else if (destination > 105 || destination < 16)
+                    {
+                        return destinations[11];
+                    }
+                    else if (destination > 100 || destination < 21)
+                    {
+                        return destinations[8];
+                    }
+                    else if (destination > 95 || destination < 26)
+                    {
+                        return destinations[7];
+                    }
+                    else if (destination > 90 || destination < 31)
+                    {
+                        return destinations[6];
+                    }
+                    else if (destination > 85 || destination < 36)
+                    {
+                        return destinations[5];
+                    }
+                    else if (destination > 80 || destination < 41)
+                    {
+                        return destinations[4];
+                    }
+                    else if (destination > 75 || destination < 46)
+                    {
+                        return destinations[3];
+                    }
+                    else if (destination > 70 || destination < 51)
+                    {
+                        return destinations[2];
+                    }
+                    else if (destination > 65 || destination < 56)
+                    {
+                        return destinations[1];
+                    }
+                    else
+                    {
+                        return destinations[0];
+                    }
+                }
             
                 if (Name == "bookcase" || Name == "rosewood chest")
                 {

@@ -687,7 +687,7 @@ namespace DungeonCrawler
             ///
             ///mess hall features and items
             Item messhallBook1 = new Item("The Rogue's Pocketbook", "A rather handy guide to the illicit - *ahem*, excuse me - to the skilled art of pickpocketing, conning, disguises and lockpicking.", false, "unread");
-            Item noteForJanitor = new Item("note for janitor", "Found nailed to the pantry door, the note is evidently not recently penned, but has rather, judging from the food stains and soggy texture, been up upon this door for sometime.\n There are notches hewn out of the door, as though the goblins and mercenaries had used it for target practice. \nIt reads, \n\n\tDearest Mungo, I must say that your inability to keep track of the items pertaining to your duties as custodian of my home, is becoming vexing. Keys are quite expensive to duplicate and i simply can't be doing it every time you lose one of them! I've half a mind to just build another golem and have that do the cleaning, save for the fact that my golems have yet to master the subtle difference between opening doors and crashing through the walls next to them. While I work on instructing them of one or two of the finer points of... shall we say, manoeuvring through  polite society, perhaps you might be so kind as to not lose any more of my keys. \nP.S. And FYI I've enchanted this note so even *you* can't accidentally-on-purpose lose it... [the letter trails off into a smudged scrawl blotted out by food stains]", false, "unread");
+            Item noteForJanitor = new Item("note for janitor", "Found nailed to the pantry door, the note is evidently not recently penned, but has rather, judging from the food stains and soggy texture, been up upon this door for sometime.\n There are notches hewn out of the door, as though the goblins and mercenaries had used it for target practice. \nIt reads, \n\n\tDearest Mungo, I must say that your inability to keep track of the items pertaining to your duties as custodian of my home, is becoming vexing. Keys are quite expensive to duplicate, especially the enchanted copper ones that open every cabinet and door in my home, and i simply can't be doing it every time you lose one of them! I've half a mind to just build another golem and have that do the cleaning, save for the fact that my golems have yet to master the subtle difference between opening doors and crashing through the walls next to them. While I work on instructing them of one or two of the finer points of... shall we say, manoeuvring through  polite society, perhaps you might be so kind as to not lose any more of my keys. \nP.S. And FYI I've enchanted this note so even *you* can't accidentally-on-purpose lose it... [the letter trails off into a smudged scrawl blotted out by food stains]", false, "unread");
             Item chickenBone = new Item("chicken bone", "They scatter the cobbled floor between benches. This one in particular has been well gnawed...");
             Item plate = new Item("plate", "Some shattered into pieces, others merely chipped a lot, they litter the floor. It looks like they were used as missiles during a riotous brawl.");
             Item fork = new Item("fork", "A utensil that hasn't seen much use amongst the motley recruits of the CurseBreaker's private army.");
@@ -5505,6 +5505,11 @@ namespace DungeonCrawler
                                 {
                                     return;
                                 }
+                                if(goodWeaponRack.SpecificAttribute == "unlocked" && goodWeaponRack.ItemList.Count == 0)
+                                {
+                                    goodWeaponRack.ItemList = unlockedWeapons;
+                                    unlockedWeapons = new List<Item>();
+                                }
                             }
                         }
                     catch
@@ -6893,7 +6898,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = magicalManufactory.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = magicalManufactory.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower, worktop);
                                 if (newRoom.Name != magicalManufactory.Name)
                                 {
 
@@ -6901,9 +6906,22 @@ namespace DungeonCrawler
                                     newRoom1 = newRoom;
                                     continue;
                                 }
+                                else if (worktop.Description.Contains("It's been thoroughly trashed after your fight with Merigold..."))
+                                {
+                                    if (mageBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature,
+                                        magicalManufactory, player1, usesDictionaryItemChar, holeInCeiling, specialItems))
+                                    {
+                                        mageBattle.WonFight(magicalManufactory);
+                                        worktop.Description = "Aisles of haphazardly arranged worktops, replete with conical flasks, distillation tubes, alchemical devices and round-bottom retorts bubbling with strange essences form a mismanaged maze of meticulous mayhem, lovingly adorned with Merigold's eviscerated corpse. MWA HA HA HA!!!";
+                                    }
+                                    else
+                                    {
+                                        return;
+                                    }
+                                }
 
 
-                                b++;
+                            b++;
                             }
                             else
                             {
@@ -7500,7 +7518,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = secretChamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower, mosaicPortal);
+                                Room newRoom = secretChamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower, null, mosaicPortal);
                                 if (newRoom.Name != secretChamber.Name)
                                 {
 
