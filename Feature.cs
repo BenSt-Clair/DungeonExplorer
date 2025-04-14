@@ -285,7 +285,7 @@ namespace DungeonCrawler
         /// </summary>
         /// <param name="inventory"></param>
         /// <param name="weaponInventory"></param>
-        public Room Search(int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, Room room, bool fieryEscape, Player player, Door stairwayToLower, List<Room> destinations, List<Item> specialItems = null, Combat battle = null, Room secretChamber = null, Monster goblin = null, Monster gnoll = null, List<Item> MGItems = null)
+        public Room Search(List<Room> choiceVersusDestination, int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, Room room, bool fieryEscape, Player player, Door stairwayToLower, List<Room> destinations, List<Item> specialItems = null, Combat battle = null, Room secretChamber = null, Monster goblin = null, Monster gnoll = null, List<Item> MGItems = null)
         {
             Console.WriteLine($"Rummaging about the {Name}, you find the following;");
             int r = 1;
@@ -1067,6 +1067,7 @@ namespace DungeonCrawler
                                 }
                                 else if (destination > 85 || destination < 36)
                                 {
+                                    choiceVersusDestination.Add(destinations[5]);
                                     return destinations[5];
                                 }
                                 else if (destination > 80 || destination < 41)
@@ -1075,10 +1076,12 @@ namespace DungeonCrawler
                                 }
                                 else if (destination > 75 || destination < 46)
                                 {
+                                    choiceVersusDestination.Add(destinations[3]);
                                     return destinations[3];
                                 }
                                 else if (destination > 70 || destination < 51)
                                 {
+                                    choiceVersusDestination.Add(destinations[2]);
                                     return destinations[2];
                                 }
                                 else if (destination > 65 || destination < 56)
@@ -1110,6 +1113,7 @@ namespace DungeonCrawler
                                         switch (m.getIntResponse(4))
                                         {
                                             case 1:
+                                                choiceVersusDestination.Add(destinations[0]);
                                                 Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("Roll two D60...\n[you need your dice rolls to sum up to as close to 61 as possible...");
@@ -1142,6 +1146,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 95 || destination < 26)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];//dragon's lair
                                                 }
                                                 else if (destination > 90 || destination < 31)
@@ -1162,10 +1167,12 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 70 || destination < 51)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];//secret chamber
                                                 }
                                                 else if (destination > 65 || destination < 56)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];// broom closet
                                                 }
                                                 else
@@ -1173,6 +1180,7 @@ namespace DungeonCrawler
                                                     return destinations[0];// highest parapet
                                                 }
                                             case 2:
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("Roll two D60...\n[you need your dice rolls to sum up to as close to 61 as possible...");
@@ -1205,6 +1213,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 95 || destination < 26)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];//dragon's lair
                                                 }
                                                 else if (destination > 90 || destination < 31)
@@ -1229,13 +1238,16 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 65 || destination < 56)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];// broom closet
                                                 }
                                                 else
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];// secret chamber
                                                 }
                                             default:
+                                                choiceVersusDestination.Add(destinations[1]);
                                                 Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("Roll two D60...\n[you need your dice rolls to sum up to as close to 61 as possible...");
@@ -1268,6 +1280,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 95 || destination < 26)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];//dragon's lair
                                                 }
                                                 else if (destination > 90 || destination < 31)
@@ -1288,10 +1301,12 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 70 || destination < 51)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];//secret chamber
                                                 }
                                                 else if (destination > 65 || destination < 56)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];// broom closet
                                                 }
                                                 else
@@ -1309,6 +1324,7 @@ namespace DungeonCrawler
                                         switch (m.getIntResponse(5))
                                         {
                                             case 1:
+                                                choiceVersusDestination.Add(destinations[8]);
                                                 Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("Roll two D60...\n[you need your dice rolls to sum up to as close to 61 as possible...");
@@ -1325,10 +1341,12 @@ namespace DungeonCrawler
                                                 }
                                                 if (destination > 115 || destination < 6)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];
                                                 }
                                                 else if (destination > 110 || destination < 11)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];
                                                 }
                                                 else if (destination > 105 || destination < 16)
@@ -1357,6 +1375,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 75 || destination < 46)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];//highest parapet
                                                 }
                                                 else if (destination > 70 || destination < 51)
@@ -1372,6 +1391,7 @@ namespace DungeonCrawler
                                                     return destinations[8];// oubliette
                                                 }
                                             case 2:
+                                                choiceVersusDestination.Add(destinations[6]);
                                                 Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("Roll two D60...\n[you need your dice rolls to sum up to as close to 61 as possible...");
@@ -1392,6 +1412,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 110 || destination < 11)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];
                                                 }
                                                 else if (destination > 105 || destination < 16)
@@ -1424,10 +1445,12 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 70 || destination < 51)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];//secret chamber
                                                 }
                                                 else if (destination > 65 || destination < 56)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];// broom closet
                                                 }
                                                 else
@@ -1435,6 +1458,7 @@ namespace DungeonCrawler
                                                     return destinations[6];// oubliette
                                                 }
                                             case 3:
+                                                choiceVersusDestination.Add(destinations[7]);
                                                 Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("Roll two D60...\n[you need your dice rolls to sum up to as close to 61 as possible...");
@@ -1455,6 +1479,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 110 || destination < 11)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];
                                                 }
                                                 else if (destination > 105 || destination < 16)
@@ -1463,6 +1488,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 100 || destination < 21)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];
                                                 }
                                                 else if (destination > 95 || destination < 26)
@@ -1471,6 +1497,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 90 || destination < 31)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];//bank vault
                                                 }
                                                 else if (destination > 85 || destination < 36)
@@ -1498,6 +1525,7 @@ namespace DungeonCrawler
                                                     return destinations[7];// oubliette
                                                 }
                                             default:
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("Roll two D60...\n[you need your dice rolls to sum up to as close to 61 as possible...");
@@ -1514,6 +1542,7 @@ namespace DungeonCrawler
                                                 }
                                                 if (destination > 115 || destination < 6)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];
                                                 }
                                                 else if (destination > 110 || destination < 11)
@@ -1550,6 +1579,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 70 || destination < 51)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];//secret chamber
                                                 }
                                                 else if (destination > 65 || destination < 56)
@@ -1558,6 +1588,7 @@ namespace DungeonCrawler
                                                 }
                                                 else
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];// oubliette
                                                 }
                                         }
@@ -1595,6 +1626,7 @@ namespace DungeonCrawler
                                         switch (m.getIntResponse(4))
                                         {
                                             case 1:
+                                                choiceVersusDestination.Add(destinations[0]);
                                                 Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("Roll three D40...\n[you need your dice rolls to sum up to as close to 61 as possible...");
@@ -1623,6 +1655,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 100 || destination < 21)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];
                                                 }
                                                 else if (destination > 95 || destination < 26)
@@ -1643,10 +1676,12 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 75 || destination < 46)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];//oubliette
                                                 }
                                                 else if (destination > 70 || destination < 51)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];//secret chamber
                                                 }
                                                 else if (destination > 65 || destination < 56)
@@ -1658,6 +1693,7 @@ namespace DungeonCrawler
                                                     return destinations[0];// highest parapet
                                                 }
                                             case 2:
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("Roll three D40...\n[you need your dice rolls to sum up to as close to 61 as possible...");
@@ -1686,6 +1722,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 100 || destination < 21)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];
                                                 }
                                                 else if (destination > 95 || destination < 26)
@@ -1710,17 +1747,21 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 70 || destination < 51)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];// oubliette
                                                 }
                                                 else if (destination > 65 || destination < 56)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];// broom closet
                                                 }
                                                 else
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];// secret chamber
                                                 }
                                             default:
+                                                choiceVersusDestination.Add(destinations[1]);
                                                 Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("Roll three D40...\n[you need your dice rolls to sum up to as close to 61 as possible...");
@@ -1749,6 +1790,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 100 || destination < 21)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];
                                                 }
                                                 else if (destination > 95 || destination < 26)
@@ -1769,10 +1811,12 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 75 || destination < 46)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];//highest parapet
                                                 }
                                                 else if (destination > 70 || destination < 51)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];//secret chamber
                                                 }
                                                 else if (destination > 65 || destination < 56)
@@ -1794,6 +1838,7 @@ namespace DungeonCrawler
                                         switch (m.getIntResponse(5))
                                         {
                                             case 1:
+                                                choiceVersusDestination.Add(destinations[8]);
                                                 Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("Roll three D40...\n[you need your dice rolls to sum up to as close to 61 as possible...");
@@ -1810,10 +1855,12 @@ namespace DungeonCrawler
                                                 }
                                                 if (destination > 115 || destination < 6)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];
                                                 }
                                                 else if (destination > 110 || destination < 11)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];
                                                 }
                                                 else if (destination > 105 || destination < 16)
@@ -1838,6 +1885,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 80 || destination < 41)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];//huge barracks
                                                 }
                                                 else if (destination > 75 || destination < 46)
@@ -1857,6 +1905,7 @@ namespace DungeonCrawler
                                                     return destinations[8];// oubliette
                                                 }
                                             case 2:
+                                                choiceVersusDestination.Add(destinations[6]);
                                                 Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("Roll three D40...\n[you need your dice rolls to sum up to as close to 61 as possible...");
@@ -1877,6 +1926,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 110 || destination < 11)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];
                                                 }
                                                 else if (destination > 105 || destination < 16)
@@ -1905,10 +1955,13 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 75 || destination < 46)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];//highest parapet
                                                 }
                                                 else if (destination > 70 || destination < 51)
                                                 {
+
+                                                    choiceVersusDestination.Add(destinations[5]); 
                                                     return destinations[5];//secret chamber
                                                 }
                                                 else if (destination > 65 || destination < 56)
@@ -1920,6 +1973,7 @@ namespace DungeonCrawler
                                                     return destinations[6];// oubliette
                                                 }
                                             case 3:
+                                                choiceVersusDestination.Add(destinations[7]);
                                                 Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("Roll three D40...\n[you need your dice rolls to sum up to as close to 61 as possible...");
@@ -1940,6 +1994,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 110 || destination < 11)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];
                                                 }
                                                 else if (destination > 105 || destination < 16)
@@ -1948,6 +2003,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 100 || destination < 21)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];
                                                 }
                                                 else if (destination > 95 || destination < 26)
@@ -1956,6 +2012,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 90 || destination < 31)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];//bank vault
                                                 }
                                                 else if (destination > 85 || destination < 36)
@@ -1983,6 +2040,7 @@ namespace DungeonCrawler
                                                     return destinations[7];// oubliette
                                                 }
                                             default:
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 Console.WriteLine("Merigold recuperates whatever meagre magic he can and then begins to weave enchantments about the portal. You confidently stride forward...");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("Roll three D40...\n[you need your dice rolls to sum up to as close to 61 as possible...");
@@ -1999,6 +2057,7 @@ namespace DungeonCrawler
                                                 }
                                                 if (destination > 115 || destination < 6)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];
                                                 }
                                                 else if (destination > 110 || destination < 11)
@@ -2031,6 +2090,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 75 || destination < 46)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];//highest parapet
                                                 }
                                                 else if (destination > 70 || destination < 51)
@@ -2039,10 +2099,12 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 65 || destination < 56)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];// broom closet
                                                 }
                                                 else
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];// oubliette
                                                 }
                                         }
@@ -2079,6 +2141,7 @@ namespace DungeonCrawler
                                         switch (m.getIntResponse(4))
                                         {
                                             case 1:
+                                                choiceVersusDestination.Add(destinations[0]);
                                                 Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                     "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                                 Console.ReadKey(true);
@@ -2118,6 +2181,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 101 || destination < 22)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];
                                                 }
                                                 else if (destination > 96 || destination < 27)
@@ -2138,10 +2202,12 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];//oubliette
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
@@ -2153,6 +2219,7 @@ namespace DungeonCrawler
                                                     return destinations[0];// highest parapet
                                                 }
                                             case 2:
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                     "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                                 Console.ReadKey(true);
@@ -2191,6 +2258,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 101 || destination < 22)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];
                                                 }
                                                 else if (destination > 96 || destination < 27)
@@ -2215,17 +2283,21 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];// oubliette
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];// broom closet
                                                 }
                                                 else
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];// secret chamber
                                                 }
                                             default:
+                                                choiceVersusDestination.Add(destinations[1]);
                                                 Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                     "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                                 Console.ReadKey(true);
@@ -2264,6 +2336,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 101 || destination < 22)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];
                                                 }
                                                 else if (destination > 96 || destination < 27)
@@ -2284,10 +2357,12 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];//highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
@@ -2309,6 +2384,7 @@ namespace DungeonCrawler
                                         switch (m.getIntResponse(5))
                                         {
                                             case 1:
+                                                choiceVersusDestination.Add(destinations[8]);
                                                 Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                     "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                                 Console.ReadKey(true);
@@ -2335,10 +2411,12 @@ namespace DungeonCrawler
                                                 }
                                                 if (destination > 116 || destination < 7)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];
                                                 }
                                                 else if (destination > 111 || destination < 12)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];
                                                 }
                                                 else if (destination > 106 || destination < 17)
@@ -2363,6 +2441,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
@@ -2382,6 +2461,7 @@ namespace DungeonCrawler
                                                     return destinations[8];// oubliette
                                                 }
                                             case 2:
+                                                choiceVersusDestination.Add(destinations[6]);
                                                 Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                     "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                                 Console.ReadKey(true);
@@ -2412,6 +2492,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 111 || destination < 12)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];
                                                 }
                                                 else if (destination > 106 || destination < 17)
@@ -2440,10 +2521,12 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];//highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
@@ -2455,6 +2538,7 @@ namespace DungeonCrawler
                                                     return destinations[6];// oubliette
                                                 }
                                             case 3:
+                                                choiceVersusDestination.Add(destinations[7]);
                                                 Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                     "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                                 Console.ReadKey(true);
@@ -2485,6 +2569,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 111 || destination < 12)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];
                                                 }
                                                 else if (destination > 106 || destination < 17)
@@ -2493,6 +2578,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 101 || destination < 22)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];
                                                 }
                                                 else if (destination > 96 || destination < 27)
@@ -2501,6 +2587,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 91 || destination < 32)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];//bank vault
                                                 }
                                                 else if (destination > 86 || destination < 37)
@@ -2528,6 +2615,7 @@ namespace DungeonCrawler
                                                     return destinations[7];// oubliette
                                                 }
                                             default:
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                     "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                                 Console.ReadKey(true);
@@ -2554,6 +2642,7 @@ namespace DungeonCrawler
                                                 }
                                                 if (destination > 116 || destination < 7)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];
                                                 }
                                                 else if (destination > 111 || destination < 12)
@@ -2586,18 +2675,22 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];//highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
+                                                    
                                                     return destinations[6];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];// broom closet
                                                 }
                                                 else
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];// oubliette
                                                 }
                                         }
@@ -2634,6 +2727,7 @@ namespace DungeonCrawler
                                         switch (m.getIntResponse(4))
                                         {
                                             case 1:
+                                                choiceVersusDestination.Add(destinations[0]);
                                                 Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                     "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                                 Console.ReadKey(true);
@@ -2669,6 +2763,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 106 || destination < 17)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];
                                                 }
                                                 else if (destination > 101 || destination < 22)
@@ -2689,10 +2784,12 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];//oubliette
                                                 }
                                                 else if (destination > 71 || destination < 52)
@@ -2708,6 +2805,7 @@ namespace DungeonCrawler
                                                     return destinations[0];// highest parapet
                                                 }
                                             case 2:
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                     "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                                 Console.ReadKey(true);
@@ -2741,6 +2839,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 106 || destination < 17)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];
                                                 }
                                                 else if (destination > 101 || destination < 22)
@@ -2765,21 +2864,26 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];// highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];// oubliette
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];// broom closet
                                                 }
                                                 else
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];// secret chamber
                                                 }
                                             default:
+                                                choiceVersusDestination.Add(destinations[1]);
                                                 Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                     "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                                 Console.ReadKey(true);
@@ -2813,6 +2917,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 106 || destination < 17)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];
                                                 }
                                                 else if (destination > 101 || destination < 22)
@@ -2833,10 +2938,12 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];//highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
@@ -2862,6 +2969,7 @@ namespace DungeonCrawler
                                         switch (m.getIntResponse(5))
                                         {
                                             case 1:
+                                                choiceVersusDestination.Add(destinations[8]);
                                                 Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                     "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                                 Console.ReadKey(true);
@@ -2887,10 +2995,12 @@ namespace DungeonCrawler
                                                 }
                                                 if (destination > 116 || destination < 7)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];
                                                 }
                                                 else if (destination > 111 || destination < 12)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];
                                                 }
                                                 else if (destination > 106 || destination < 17)
@@ -2911,6 +3021,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 86 || destination < 37)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];// desert island
                                                 }
                                                 else if (destination > 81 || destination < 42)
@@ -2934,6 +3045,7 @@ namespace DungeonCrawler
                                                     return destinations[8];// oubliette
                                                 }
                                             case 2:
+                                                choiceVersusDestination.Add(destinations[6]);
                                                 Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                     "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                                 Console.ReadKey(true);
@@ -2963,6 +3075,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 111 || destination < 12)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];
                                                 }
                                                 else if (destination > 106 || destination < 17)
@@ -2987,10 +3100,12 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];//highest parapet
                                                 }
                                                 else if (destination > 71 || destination < 52)
@@ -3006,6 +3121,7 @@ namespace DungeonCrawler
                                                     return destinations[6];// oubliette
                                                 }
                                             case 3:
+                                                choiceVersusDestination.Add(destinations[7]);
                                                 Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                     "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                                 Console.ReadKey(true);
@@ -3035,6 +3151,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 111 || destination < 12)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];
                                                 }
                                                 else if (destination > 106 || destination < 17)
@@ -3043,6 +3160,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 101 || destination < 22)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];
                                                 }
                                                 else if (destination > 96 || destination < 27)
@@ -3051,6 +3169,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 91 || destination < 32)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];//bank vault
                                                 }
                                                 else if (destination > 86 || destination < 37)
@@ -3078,6 +3197,7 @@ namespace DungeonCrawler
                                                     return destinations[7];// oubliette
                                                 }
                                             default:
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                     "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                                 Console.ReadKey(true);
@@ -3103,6 +3223,7 @@ namespace DungeonCrawler
                                                 }
                                                 if (destination > 116 || destination < 7)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[3]);
                                                     return destinations[3];
                                                 }
                                                 else if (destination > 111 || destination < 12)
@@ -3131,6 +3252,7 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 81 || destination < 42)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[2]);
                                                     return destinations[2];//huge barracks
                                                 }
                                                 else if (destination > 76 || destination < 47)
@@ -3139,14 +3261,17 @@ namespace DungeonCrawler
                                                 }
                                                 else if (destination > 71 || destination < 52)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];//secret chamber
                                                 }
                                                 else if (destination > 66 || destination < 57)
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];// broom closet
                                                 }
                                                 else
                                                 {
+                                                    choiceVersusDestination.Add(destinations[5]);
                                                     return destinations[5];// oubliette
                                                 }
                                         }
@@ -3176,6 +3301,7 @@ namespace DungeonCrawler
                                     switch (m.getIntResponse(4))
                                     {
                                         case 1:
+                                            choiceVersusDestination.Add(destinations[0]);
                                             Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                 "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                             Console.ReadKey(true);
@@ -3227,10 +3353,12 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
+                                                choiceVersusDestination.Add(destinations[2]);
                                                 return destinations[2];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
@@ -3250,6 +3378,7 @@ namespace DungeonCrawler
                                                 return destinations[0];// highest parapet
                                             }
                                         case 2:
+                                            choiceVersusDestination.Add(destinations[3]);
                                             Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                 "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                             Console.ReadKey(true);
@@ -3299,29 +3428,36 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
+                                                
                                                 return destinations[1];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
+                                                choiceVersusDestination.Add(destinations[2]);
                                                 return destinations[2];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];// highest parapet
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];// oubliette
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];// broom closet
                                             }
                                             else
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];// secret chamber
                                             }
                                         default:
+                                            choiceVersusDestination.Add(destinations[1]);
                                             Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                 "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                             Console.ReadKey(true);
@@ -3371,10 +3507,12 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
+                                                choiceVersusDestination.Add(destinations[2]);
                                                 return destinations[2];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
@@ -3404,6 +3542,7 @@ namespace DungeonCrawler
                                     switch (m.getIntResponse(5))
                                     {
                                         case 1:
+                                            choiceVersusDestination.Add(destinations[8]);
                                             Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                 "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                             Console.ReadKey(true);
@@ -3429,10 +3568,12 @@ namespace DungeonCrawler
                                             }
                                             if (destination > 117 || destination < 8)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];
                                             }
                                             else if (destination > 112 || destination < 13)
                                             {
+                                                choiceVersusDestination.Add(destinations[2]);
                                                 return destinations[2];
                                             }
                                             else if (destination > 107 || destination < 18)
@@ -3449,6 +3590,7 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 92 || destination < 33)
                                             {
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 return destinations[5];//bank vault
                                             }
                                             else if (destination > 87 || destination < 38)
@@ -3476,6 +3618,7 @@ namespace DungeonCrawler
                                                 return destinations[8];// oubliette
                                             }
                                         case 2:
+                                            choiceVersusDestination.Add(destinations[6]);
                                             Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                 "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                             Console.ReadKey(true);
@@ -3525,10 +3668,12 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
+                                                choiceVersusDestination.Add(destinations[2]);
                                                 return destinations[2];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 return destinations[5];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
@@ -3548,6 +3693,7 @@ namespace DungeonCrawler
                                                 return destinations[6];// oubliette
                                             }
                                         case 3:
+                                            choiceVersusDestination.Add(destinations[7]);
                                             Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                 "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                             Console.ReadKey(true);
@@ -3577,6 +3723,7 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 112 || destination < 13)
                                             {
+                                                choiceVersusDestination.Add(destinations[2]);
                                                 return destinations[2];
                                             }
                                             else if (destination > 107 || destination < 18)
@@ -3585,6 +3732,7 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 102 || destination < 23)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];
                                             }
                                             else if (destination > 97 || destination < 28)
@@ -3620,6 +3768,7 @@ namespace DungeonCrawler
                                                 return destinations[7];// oubliette
                                             }
                                         default:
+                                            choiceVersusDestination.Add(destinations[5]);
                                             Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                 "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                             Console.ReadKey(true);
@@ -3645,6 +3794,7 @@ namespace DungeonCrawler
                                             }
                                             if (destination > 117 || destination < 8)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];
                                             }
                                             else if (destination > 112 || destination < 13)
@@ -3669,6 +3819,7 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
+                                                choiceVersusDestination.Add(destinations[2]);
                                                 return destinations[2];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
@@ -3677,18 +3828,22 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 return destinations[5];//highest parapet
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 return destinations[5];//secret chamber
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 return destinations[5];// broom closet
                                             }
                                             else
                                             {
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 return destinations[5];// oubliette
                                             }
                                     }
@@ -3707,6 +3862,7 @@ namespace DungeonCrawler
                                     switch (m.getIntResponse(4))
                                     {
                                         case 1:
+                                            choiceVersusDestination.Add(destinations[0]);
                                             Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                 "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                             Console.ReadKey(true);
@@ -3758,10 +3914,12 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
+                                                choiceVersusDestination.Add(destinations[2]);
                                                 return destinations[2];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
@@ -3781,6 +3939,7 @@ namespace DungeonCrawler
                                                 return destinations[0];// highest parapet
                                             }
                                         case 2:
+                                            choiceVersusDestination.Add(destinations[3]);
                                             Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                 "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                             Console.ReadKey(true);
@@ -3818,6 +3977,7 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 102 || destination < 23)
                                             {
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 return destinations[5];
                                             }
                                             else if (destination > 97 || destination < 28)
@@ -3834,25 +3994,31 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
+                                                choiceVersusDestination.Add(destinations[2]);
                                                 return destinations[2];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];// highest parapet
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];// oubliette
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];// broom closet
                                             }
                                             else
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];// secret chamber
                                             }
                                         default:
+                                            choiceVersusDestination.Add(destinations[1]);
                                             Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                 "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                             Console.ReadKey(true);
@@ -3902,10 +4068,12 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
+                                                choiceVersusDestination.Add(destinations[2]);
                                                 return destinations[2];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
@@ -3935,6 +4103,7 @@ namespace DungeonCrawler
                                     switch (m.getIntResponse(5))
                                     {
                                         case 1:
+                                            choiceVersusDestination.Add(destinations[8]);
                                             Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                 "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                             Console.ReadKey(true);
@@ -3960,10 +4129,12 @@ namespace DungeonCrawler
                                             }
                                             if (destination > 117 || destination < 8)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];
                                             }
                                             else if (destination > 112 || destination < 13)
                                             {
+                                                choiceVersusDestination.Add(destinations[2]);
                                                 return destinations[2];
                                             }
                                             else if (destination > 107 || destination < 18)
@@ -3980,6 +4151,7 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 92 || destination < 33)
                                             {
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 return destinations[5];//bank vault
                                             }
                                             else if (destination > 87 || destination < 38)
@@ -4007,6 +4179,7 @@ namespace DungeonCrawler
                                                 return destinations[8];// oubliette
                                             }
                                         case 2:
+                                            choiceVersusDestination.Add(destinations[6]);
                                             Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                 "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                             Console.ReadKey(true);
@@ -4036,6 +4209,7 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 112 || destination < 13)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];
                                             }
                                             else if (destination > 107 || destination < 18)
@@ -4056,10 +4230,12 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
+                                                choiceVersusDestination.Add(destinations[2]);
                                                 return destinations[2];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
                                             {
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 return destinations[5];//huge barracks
                                             }
                                             else if (destination > 77 || destination < 48)
@@ -4079,6 +4255,7 @@ namespace DungeonCrawler
                                                 return destinations[6];// oubliette
                                             }
                                         case 3:
+                                            choiceVersusDestination.Add(destinations[7]);
                                             Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                 "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                             Console.ReadKey(true);
@@ -4108,6 +4285,7 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 112 || destination < 13)
                                             {
+                                                choiceVersusDestination.Add(destinations[2]);
                                                 return destinations[2];
                                             }
                                             else if (destination > 107 || destination < 18)
@@ -4116,6 +4294,7 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 102 || destination < 23)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];
                                             }
                                             else if (destination > 97 || destination < 28)
@@ -4151,6 +4330,7 @@ namespace DungeonCrawler
                                                 return destinations[7];// oubliette
                                             }
                                         default:
+                                            choiceVersusDestination.Add(destinations[5]);
                                             Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                 "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                             Console.ReadKey(true);
@@ -4176,6 +4356,7 @@ namespace DungeonCrawler
                                             }
                                             if (destination > 117 || destination < 8)
                                             {
+                                                choiceVersusDestination.Add(destinations[3]);
                                                 return destinations[3];
                                             }
                                             else if (destination > 112 || destination < 13)
@@ -4200,6 +4381,7 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 87 || destination < 38)
                                             {
+                                                choiceVersusDestination.Add(destinations[2]);
                                                 return destinations[2];// desert island
                                             }
                                             else if (destination > 82 || destination < 43)
@@ -4208,18 +4390,22 @@ namespace DungeonCrawler
                                             }
                                             else if (destination > 77 || destination < 48)
                                             {
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 return destinations[5];//highest parapet
                                             }
                                             else if (destination > 72 || destination < 53)
                                             {
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 return destinations[5];//secret chamber
                                             }
                                             else if (destination > 67 || destination < 58)
                                             {
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 return destinations[5];// broom closet
                                             }
                                             else
                                             {
+                                                choiceVersusDestination.Add(destinations[5]);
                                                 return destinations[5];// oubliette
                                             }
                                     }
@@ -4268,6 +4454,7 @@ namespace DungeonCrawler
                                                 "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                             return destinations[7];
                                         default:
+                                            choiceVersusDestination.Add(destinations[0]);
                                             Console.WriteLine("Merigold recuperates as much magic as he can, scrunches up his features in concentration as though doing some quick mental arithmetic and finally performs some impressive looking incantations." +
                                                 "  You see his magic weave itself about the portal, altering it, smoothing it as waves might a pebble. You confidently stride forward...");
                                             return destinations[5];
@@ -4296,7 +4483,7 @@ namespace DungeonCrawler
                     Dice D2 = new Dice(2);
                     Dice D3 = new Dice(3);
                     Dice D4 = new Dice(4);
-                    List<Dice> endOfMidGameChoice = merigold.ReturnToMerigoldDialogue(specialItems, battle, secretChamber, goblin, gnoll, MGItems, stairwayToLower);
+                    List<Dice> endOfMidGameChoice = merigold.ReturnToMerigoldDialogue(specialItems, battle, secretChamber, goblin, gnoll, MGItems, stairwayToLower, choiceVersusDestination);
                     int destination = 0;
                     if (endOfMidGameChoice.Count == 1)
                     {

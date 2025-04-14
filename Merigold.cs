@@ -1144,10 +1144,77 @@ namespace DungeonCrawler
             
             
         }
-        public List<Dice> ReturnToMerigoldDialogue(List<Item> specialItems, Combat battle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, Door stairwayToLower)
+        public List<Dice> ReturnToMerigoldDialogue(List<Item> specialItems, Combat battle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, Door stairwayToLower, List<Room> choiceVersusDestination)
         {
             Dice D1 = new Dice(1);
-            Console.WriteLine("Upon the sight of you Merigold immediately perks up from his unruly laboratory. 'You're back,' he bursts excitably. 'Am I to understand you would like my assistance?'");
+            string excerpt = "";
+            if (choiceVersusDestination.Count == 2)
+            {
+                if (choiceVersusDestination[0].Name != choiceVersusDestination[1].Name)
+                {
+                    if (choiceVersusDestination[1].Name == "secret chamber")
+                    {
+                        excerpt= "Upon the sight of you Merigold immediately perks up from his unruly laboratory. 'You're back,' he blurts. He takes in your look of disquiet. 'Just where did you end up?'" +
+                            "\n   You reply that you found a hidden chamber with a maddening mosaic and too many disturbing secrets... it doesn't matter, the less said of it the better." +
+                            "\n   Merigold peers at you through those spectacles, but he doesn't press the subject any further. 'Can I be of any further assistance? Answer any more questions? I still" +
+                            " have some control of the portal,' his voice is tentative, 'if you'd like you could try your luck again...'";
+                    }
+                    else if (choiceVersusDestination[1].Name == "dragon's lair")
+                    {
+                        excerpt = "You decide you have a bone or two to pick with the old wizard. \n  Upon the sight of you stomping moodily his way, Merigold immediately perks up from his dishevelled laboratory. 'You're back,' he bursts excitably, oblivious to your less than affable countenance." +
+                            "\nYou proceed to fume about dragons and riddles and thinking you were going to be burned alive. All the while Merigold nods along, infuriatingly empathetic." +
+                            "\n\t'Yes I know quite what you mean,' he replies absently, 'its like when you expect a spell to turn out one way but somehow you just can't *quite* get the incantation right, and before you know it you have bright pink geraniums rather than the lovely blue hue you'd been hoping for...'" +
+                            "\n You're about to make a heated and incredulous retort - How can this dotty man possibly be comparing such a trivial matter with your life-or-death ordeal? But then Merigold briskly claps his hands, bounces to his feet and exuberantly declares; 'Well, never mind, I believe I've corrected the calculations now - so if you want to try again...? Or would you prefer to ask some questions first?'" +
+                            "\nYou bluster for a moment, tongue-tied, before finally heaving a heavy sigh. There really is no reasoning with wizards..." +
+                            "\n\nWill you accept Merigold'S help?";
+                    }
+                    else if (choiceVersusDestination[1].Name == "broom closet")
+                    {
+                        excerpt = "Upon the sight of you Merigold immediately perks up from his unruly laboratory. 'You're back,' he blurts. He takes in your scuffed knees, your clothes dripping with dirty bucket water and the dust you ruffle out of your hair. 'Just where exactly have you been?'" +
+                            "\n  You tell Merigold the portal whisked you to the broom closet only a few feet outside the door. " +
+                            "\n\t'Hmm, fascinating fascinating...' Merigold ponders absent-mindedly for a moment, 'It seems I got my calculations a little off.'" +
+                            "\nYou tell Merigold that somehow doesn't surprise you..." +
+                            "\n\t'Well, no matter,' he claps his hands and bounces to his feet. 'I'll just do some reconfigurations... Am I right in presuming you'd still like to use the portal? Or do you wish to ask more questions from me first?'";
+                    }
+                    else
+                    {
+                        excerpt = "Upon the sight of you Merigold immediately perks up from his unruly laboratory. 'You're back,' he bursts excitably. 'Am I to understand you would like my assistance?'";
+                    }
+                }
+                else if (choiceVersusDestination[0].Name == "secret chamber")
+                {
+                    excerpt = "Upon the sight of you Merigold immediately perks up from his unruly laboratory. 'You're back,' he bursts excitably. 'So how was it? Did you uncover what you were looking for?'" +
+                        "\nYou reply you found more than you bargained for..." +
+                        "\n\t'Well, the CurseBreaker always was a disturbed individual. Can I be of further assistance? Do you need the portal again? Or would you like to ask some more questions?'";
+                }
+                else if (choiceVersusDestination[0].Name == "dragon's lair")
+                {
+                    excerpt = "You decide you have a bone or two to pick with the old wizard." +
+                        " \n  Upon the sight of you stomping moodily his way, Merigold immediately" +
+                        " perks up from his dishevelled laboratory. 'You're back,' he bursts excitably," +
+                        " oblivious to your less than affable countenance." +
+                        "\nYou proceed to fume about dragons and riddles and thinking you were" +
+                        " going to be burned alive. All the while Merigold nods along, infuriatingly empathetic.\n\t" +
+                        "'Yes I know quite what you mean,' he replies absently, 'its like when you expect a spell to turn out one way but somehow you just can't *quite* get the incantation right, and before you know it you have bright pink geraniums rather than the lovely blue hue you'd been hoping for...'" +
+                        "\n You're about to make a heated and incredulous retort - How can this dotty man possibly" +
+                        " be comparing such a trivial matter with your life-or-death ordeal?" +
+                        " But then Merigold briskly claps his hands, bounces to his feet and exuberantly declares;" +
+                        " 'Well, never mind, I believe I've corrected the calculations now - so if you want to try again...?" +
+                        "Perhaps we'll have better luck directing you to somewhere within this tower, hmm? Or would you prefer to ask some questions first?'" +
+                        "\nYou bluster for a moment, tongue-tied, before finally heaving a heavy sigh. There really is no reasoning with wizards..." +
+                        "\n\nWill you accept Merigold's help?";
+                }
+                else
+                {
+                    excerpt = "Upon the sight of you Merigold immediately perks up from his unruly laboratory. 'You're back,' he bursts excitably. 'Am I to understand you would like my assistance?'";
+                }
+            }
+            else
+            {
+                excerpt = "Upon the sight of you Merigold immediately perks up from his unruly laboratory. 'You're back,' he bursts excitably. 'Am I to understand you would like my assistance?'";
+            }
+            Console.WriteLine(excerpt);
+            choiceVersusDestination.Clear();
             if (getYesNoResponse())
             {
                 string description1 = "Merigold becomes animated by boundless energy. ";

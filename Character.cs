@@ -669,7 +669,7 @@ namespace DungeonCrawler
                             {
                                 if (chosenItem.Name == "rusty chain-flail")
                                 {
-                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, steelKey, null, null, jailorKeys);
+                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, steelKey, null, null, jailorKeys);
                                     List<Weapon> _weapons = new List<Weapon>();
                                     List<Item> _weaponItem = new List<Item> { chosenItem};
                                     _weapons = _weaponItem.Cast<Weapon>().ToList();
@@ -684,7 +684,7 @@ namespace DungeonCrawler
                                 }
                                 else if (chosenItem.Name == "healing potion"|| chosenItem.Name=="Felix Felicis"|| chosenItem.Name=="elixir of feline guile")
                                 {
-                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, binkySkull, musicBox, note);
+                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, binkySkull, musicBox, note);
                                 }
                                 else
                                 {

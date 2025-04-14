@@ -2434,7 +2434,8 @@ namespace DungeonCrawler
                 }
                 List<bool> leftWhichRooms = new List<bool> {true, false, true, true, true, true, 
                 true, true, true, true, true, true, true, true, true, true, true, true, true, true, 
-                true, true, true, true};
+                true, true, true, true, true};
+                List<Room> choiceVersusDestination = new List<Room>();
                 Room newRoom1 = corridor;
                 if (!escapedThroughDoor)
                 {
@@ -6898,7 +6899,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = magicalManufactory.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower, worktop);
+                                Room newRoom = magicalManufactory.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower, choiceVersusDestination, worktop);
                                 if (newRoom.Name != magicalManufactory.Name)
                                 {
 
@@ -7194,6 +7195,16 @@ namespace DungeonCrawler
                     ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                     ///red herring in room above
                     ///Specific for each room, tailored.
+                    if (!dragonLair.FirstVisit)
+                    {
+                        Console.WriteLine("You find yourself crashing once again into the dragon's lair - the *same* dragon's lair. And it's the same dragon that now fixes you with icy exasperation as you stumble to your feet...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("You ask (rather nervously) it if it would, maybe, like to challenge you to another riddle...?\n\nIt incinerates you instead.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your adventure ends here...");
+                        Console.ReadKey(true);
+                        return;
+                    }
                     if (b > 0 || a > 0)
                     {
                         Combat goldDragonBattle = new Combat(goldDragon, player1);
@@ -7311,8 +7322,9 @@ namespace DungeonCrawler
                                     else if (riddleMeThis[index].Substring(riddleMeThis[index].IndexOf("\t") + 2, 11).Trim() == answer || riddleMeThis[index].Substring(riddleMeThis[index].IndexOf("\t") + 1, 11).Trim() + "s" == answer)
                                     {
                                         Console.WriteLine("The dragon surveys you haughtily, before conceding defeat. \n\t'Very well, ape-thing,' it says, 'take your leave.'" +
-                                            "\n\nThough it's not as if you could refuse even if you tried, for with one imperious gesture of it's huge claw a portal opens beneath your feet and you plummet through it and to a new destination...");
+                                            "\n\nHowever, it's not as if you could've refused even if you'd tried, for with one imperious gesture of it's huge claw a portal opens beneath your feet and you plummet through it and to a new destination...");
                                         Console.ReadKey(true);
+                                        dragonLair.FirstVisit = false;
                                         newRoom1 = broomCloset;
                                         leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                         break;
@@ -7518,7 +7530,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = secretChamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower, null, mosaicPortal);
+                                Room newRoom = secretChamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower, null, null, mosaicPortal);
                                 if (newRoom.Name != secretChamber.Name)
                                 {
 
@@ -7564,7 +7576,6 @@ namespace DungeonCrawler
                     a = 0;
                     while (!leftWhichRooms[17])//prehistoric jungle
                     {
-                        Console.WriteLine("Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...");
                         Console.ReadKey(true);
                         Console.WriteLine("You crash through a verdant canopy, bumping into one branch, before bouncing off the next, endlessly and oafishly tumbling down the length of a huge tree before you plummet to some forest floor. It takes you a while to pick yourself up and get your bearings...");
                         Console.ReadKey(true);
@@ -8162,6 +8173,14 @@ namespace DungeonCrawler
                         }
                     }
                     }
+                while (!leftWhichRooms[24])
+                {
+                    Console.WriteLine("You appear within some strange two dimensional plane - a prison of some kind but not like any worldly one you've ever known. You stare out of it as you might a window, slamming your fists futilely upon it as it twirls endlessly through outer space. 'Damnit Merigold!' you yell, shaking your fist as nebulae and galaxies whisk by...");
+                    Console.ReadKey(true);
+                    Console.WriteLine("Your adventure ends here...");
+                    Console.ReadKey(true);
+                    return;
+                }
                     
 
 
