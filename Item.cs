@@ -53,8 +53,301 @@ namespace DungeonCrawler
                 item.Attribute= true;
                 item.SpecifyAttribute = "read";
             }
+            else if (Name == "note for janitor")
+            {
+                Attribute = true;
+                SpecifyAttribute = "read";
+            }
+            
             Console.WriteLine(item.Description);
-            if(item.Name == "book on cursed weapons")
+            if (Name == "crystal ball")
+            {
+                Console.WriteLine("You have the unnerving sense that something within wishes to draw your focus. Will you permit yourself to see what the orb wishes to show you?");
+                Dialogue crystal = new Dialogue(item);
+                if (crystal.getYesNoResponse())
+                {
+                    string description = "You bring all of your focus upon the swirling tendrils of mist, ever shifting within the crystal ball. Suddenly, its as though your gaze is consumed by the roiling fog inside." +
+                        " Your sight plummets deeper within, bearing witness to smoky figures yet unknown, past deeds as yet undiscovered, and secrets that, for now, are so nebulous they seem to luminate your mind like vast and distant constellations of meaning.";
+                    List<string> parlances = new List<string> 
+                    { 
+                        "You're bewildered to find yourself within what you can only hope to divine must be some other quarter of this tower, if " +
+                        "the rosewood decor and elegant furnishings are anything to go by. Surrounding you are a colonnade of fluted marble pillars flanking the length of a hall" +
+                        " and the long rosewood table therein. Seated about the table, are blurry figures. Unlike the features of the room that are crisp and clear in their detail, the figures are spectres of fog and mist, " +
+                        "their ghostly faces moulded it seems out of the vapours of the crystal ball. You catch them all in a moment of crackling silence. Though you've only just 'arrived', you sense you could cut through the suspense " +
+                        "with a blade, for there is scarcely a murmur amongst the company, their nervous gazes flitting about each of the others, and their attention never far away from fixing upon a lone, imposing silhouette at the head" +
+                        " of the ornate table, his back towards them all.\nSomeone, you sense with a gnawing dread, that can be none other than the CurseBreaker...",
+
+                        "Suddenly, one of those seated phantoms bangs their fist upon the table, chair scraping as they rise belligerently from it. " +
+                        "\n\t'This is an outrage!' he blusters. He looks around, what you can discern of their visage beseeching the others, 'Are you all seriously going to take this from... from *him*?' " +
+                        "\nThe aggressive phantom jabs a finger at the lone silhouette of the CurseBreaker. Their back is still faced to them all, and they scarcely stir as the other man launches into his tirade." +
+                        "\n\t'Only three moons ago we were the unquestioned powers that held sway over these blasted lands. Now I find you all bowing and scraping to this conjuror, this warlock's apprentice, this... this... motherless cur!'" +
+                        "\n  The other spectres around you shift uneasily, their nervous gaze flitting from the angry spirit to the imposing silhouette, held captive between their fear of being seen as weak and their even greater terror of speaking out. \n" +
+                        "The raging spectre scoffs in disgust. 'You, the lords of estates, mayors of powerful cities, mercenary captains and guildmasters? You would all be blackmailed by him?' In response to their stony silence, the angry spirit turns to face the focus of his fury, the CurseBreaker who's not so much as shifted the whole time. \n\t'Well, I tell you this,' the angry spirit hisses as he abruptly stalks the length of the table. " +
+                        " His fist curls tight about his sword. 'You may think you can compromise *them*, but I won't be made to live my days with some sorceror's sword of Damocles hanging over my head!'\n" +
+                        "Each of his footfalls punctuates the crackling silence as a full stop punctuates a sentence.His thunderous tirade builds into a martial flourish as he unsheathes his sword. He charges forward. The silhouette does not stir. It does not face them at all. In a breathless moment the charging phantom is almost upon him. \nThen he's stopped...",
+
+                        "You watch, transfixed, as the warrior's sword clatters to the ground. They splutter, their ghostly form of vapours and mist scrabbling at their throat as they drown in their own blood. \nAnother guest, having risen from his seat, withdraws the blade from the warrior's neck and plunges it into their gut.\n" +
+                        "\t'I'm sorry,' the intercedent whispers with each stab of the knife, tears gritting their eyes, 'I'm sorry... I'm sorry...'\nThey stab them over and over again, until at last their body crumples to the ground, their phantasmal form released of life.\n\t'I can't be exposed. I can't run that risk. I'm sorry...'" +
+                        " \n  The murky form of the knife-wielder stands there for a moment, seemingly distraught by their own actions. The silence is only broken once their knife clatters to the floor and they slump back into their chair." +
+                        "\n  Then, finally, a new voice rolls over the assembled company. \n  It's a voice as smooth and even as moonlit lakes with treacherous depths. It's the even voice of a man so self-assured, he'd never expected any different outcome. It's as though he'd somehow seen, and known, the intent of each of them all along. \n\t'I believe that concludes our business, gentlemen,' the lone silhouette, the CurseBreaker, intones at last,  'Those leaders of the Vespasian Mercenary Company who are inclined to" +
+                        " see reason and adapt to their new reality will now answer to me. Don't fret. You'll have your fill of loot and plunder in the months ahead...'",
+
+                        "You watch as the guests, rather unsteadily, rise from their seats and take their leave. One of the last to do so is a figure who stirs within you some disquieting unease; an unwelcome, nauseating deja vu. The ghostly apparition is more tremulous than most as he heads for the door..." +
+                        "\n\t'Not you, *mayor*' the CurseBreaker's voice is soft, but you can sense an acerbic edge to it - one that seems to mock the very title the man holds. 'I still have a request to make of you.'" +
+                        "\n\t'What...' he gulps, 'what more do you require of me?' And suddenly you recognise the man's voice. Behind the veil of mist and vapours that compose the quivering man's face is the identity of your kidnapper, or at least, the first one. \nThe phantom before you is the Innkeeper in Myrovia, the one that had you abducted. " +
+                        "\nYou sense a humorless smile slip upon the CurseBreaker's lips as he continues addressing the man, still not deigning to turn and face him. 'I find myself in need of resources. Breaking your curse shall prove no small feat without the proper means for exorcising it.' his tone drops an octave. 'I need subjects for my experiments.'" +
+                        "\n  You can sense, in spite of the veil of vapours obscuring his features, the mayor's face go as white as a sheet. \nThe Cursebreaker seems to sense this too, because they huff before saying, 'No need to worry yourself, mayor. The townspeople of Myrovia are innocents caught up in your dealings. You know I'm only ruthless to the wicked and unjust." +
+                        " I am *merciful* to those who do no wrong. As you know...' he states the last pointedly and with some hint of an unspoken threat." +
+                        "\n\t'So if not the villagers, then who...'" +
+                        "\n\t'You shall make a call for adventurers,' the CurseBreaker intones, 'a call for aid against your curse. When they arrive you shall give them lodgings for the night, along with a tonic that will knock them unconscious. These shall be the subjects I will use.' His voice lowers to a deadly soft tone, 'and I shall be their justice...'",
+
+                        "Your avid gaze is transfixed as you feel the pieces of why and how you came to be in this predicament are suddenly on the cusp of tumbling into place. Your feeling of epiphany almost threatens to pull you from the crystal ball's vision, before you jolt your focus back on the innkeeper (this mayor of Myrovia) and the CurseBreaker.\n" +
+                        "\t'I'll do as you require,' the frightened mayor tries his best to muster a defiant edge to his tone, but falters as the CurseBreaker's back stiffens. 'I- I mean... for the good of my people, for Myrovia, I'll do anything...'" +
+                        "\n\t'Have you already forgotten, *mayor*,' the CurseBreaker's voice turns deadly soft once again, 'the powers that I already possess...'\n" +
+                        " The CurseBreaker turns for the first time, and you catch your breath as you behold eyes that are anything but human.\n" +
+                        "You clasp sight of smouldering eyes, with a frightful clarity that seems out of place in this world of vapours and mist and memory. They are as pitilessly black as the void between stars, devouring any and all light that touches them. And as they fix upon the Innkeeper, you can feel their scorching stare running through him, seeing beyond him and grasping so much more." +
+                        "\n\t'I see your past mayor,' the CurseBreaker breathes contemptuously, 'I clasp sight of every foetid deed of yours as though they were conducted before me in this very hall. I know all of your secrets. I can read each of them as though they were fiery runes etched under your skin." +
+                        "\n\t'Don't forget, there is another way I can break this curse of yours. An older way. The ancient way. And it's a rite that's a whole lot easier to perform...'" +
+                        "\n\t'No...please...' the mayor staggers backwards, all at once terrified. 'anything but that... anything...'" +
+                        "\n\t'Then,' the CurseBreaker eyes him appraisingly, 'it seems your choice is clear. You will deliver unto me these adventurers and mercenaries. I shall be their justice." +
+                        " And, when all is done, you shall be free of your curse, for as long as you serve my vision of a new world...'" +
+                        "\n  With that the CurseBreaker turns and begins to stride away. He dismisses the innkeeper with an imperious gesture of the hand. " +
+                        "\n\t'Thank you, my master,' the mayor stammers. 'It's an honour to serve, master...'" +
+                        "The CurseBreaker halts in his tracks. Slowly his head pivots and he fixes the quivering mayor with a sidelong, inscrutable look. \n" +
+                        "\t'Yes...' he says with a silky voice as smooth as dark lakes with unseen currents. You feel a fever of gooseflesh creep up your arms. 'I suppose I am just a master. For now...'"
+                    };
+                    List<List<string>> playerchoice = new List<List<string>>
+                    {
+                        new List<string>
+                        {
+                            "Keep watching?",
+                            "Pull away?"
+                        },
+                        new List<string>
+                        {
+                            "Keep watching?",
+                            "Pull away?"
+                        },
+                        new List<string>
+                        {
+                            "Keep watching?",
+                            "Pull away?"
+                        },
+                        new List<string>
+                        {
+                            "Keep watching?",
+                            "Pull away?"
+                        },
+                        new List<string>
+                        {
+                            "Pull away?"
+                        }
+                    };
+                    Dictionary<string, string> choice_visions = new Dictionary<string, string>
+                    {
+                        {"Keep watching?", "" },
+                        {"Pull away?", "You tear yourself away from the vision, seemingly lurching out of a world of fog and vapours and long shadows cast by events out of place and time. You find yourself back in the secret chamber. It takes a moment of inertia and vertigo before you quite feel yourself again and you can piece together what all that you witnessed means..." }
+                    };
+                    this.Attribute = true;
+                    this.SpecifyAttribute = "examined";
+                    crystal.LinearParle(choice_visions, parlances, playerchoice, description);
+                    
+                }
+                else
+                {
+                    Console.WriteLine("Feeling a touch of foreboding you tear your gaze from the orb and the long shadows cast by events out of place and time...");
+                    Console.ReadKey(true);
+                    return;
+                }
+            }
+            if (Name == "Majesty of the Eldritch Fey")
+            {
+                Console.WriteLine("Would you like to delve deeper into what this book has to say?");
+                Dialogue fey = new Dialogue(item);
+                if (fey.getYesNoResponse())
+                {
+
+                    string description = "Your curiosity piqued, you browse through the books pages...";
+                    List<string> pages = new List<string>
+                    {
+                        "This chapter lays bare the traveller's previous exploits and encounters with magic:" +
+                        "\n\n\tHark, for my name is Caspian. And that be my name upon a thousand strange tongues, " +
+                        "and it be known within hundreds of strange lands. Many moons have passed since my first " +
+                        "voyage of discovery upon the DawnTreader, breaking the horizon of distant shores and exploring" +
+                        " realms far beyond our own. \n\tAnd yet, this latest adventure that i plan will cast my heels " +
+                        "off into still farther and still stranger places. For I find the sum of my experience to be of " +
+                        " discovering worldly kingdoms upon the material planes, and I have yet to embark upon a journey beyond " +
+                        "that. It is known for millennia there lays a world astride ours, like a mirror's reflection it lurks beyond" +
+                        " most mortals grasp. It is a world of fanciful tales and impossible dreams. It is the realm of the Fey." +
+                        "\n\tIt is my ambition to unlock a door into this world, dear reader, and record my findings" +
+                        " for posterity. For if I'm right and the stories are true, then the fair princes and lords of this most" +
+                        " magical of kingdoms will be a place of wonders, where nought exists but revelry and gaiety, " +
+                        "and chalices overflow with elixirs for every possible ailment. What blessed creatures, " +
+                        "so heaped in good fortune and powers, could make this terrific dominion their abode. The fairytales " +
+                        "say creatures of unsurpassed beauty and generosity, fair races who chase each day away with endless" +
+                        " play and delightful conviviality. Are the legends true? My hand even now shakes but to think it. " +
+                        "But before I can know, I must find a passage inside...",
+
+                        "This page details numerous failed and aborted attempts to gain entrance to the Fey Realm until your eye rests on the writer's ultimate success:" +
+                        "\n\n\t...after so long, I've found it! After searching and searching... cursed mirrors that give nought but a taunting glimpse of" +
+                        " the Fey Realms, doors that beckon only children through them, enchanted forests bordering their world but within which mortals cannot help but roam in circles - " +
+                        "Each an alley leading from one frustrating dead-end to the next. Now, finally, I have found a portal through which" +
+                        " i might gain entrance to that enchanted world of which I have received thus far only tantalising glimpses. We are so very young within this world " +
+                        "of ours, and yet we find ourselves skirting another: beyond reach it hangs like a forbidden fruit of possibilities transcending our imagination. I have been told so in endless dreams. Dreams sourced, I'm sure now, from the aforementioned mirror. The mirror that i left, but that still lurks within the depths of my mind. " +
+                        "At first they were maddening, these visions; an ecstasy of impossible nightmares both wondrous and haunting. But now I understand that the lords and ladies of the ArchFey weren't tormenting me, they were just helping me this whole time. It's been their way, their ancient custom, of inviting me, " +
+                        "(me!), to bear witness to their world and court them within the most majestic halls of their kingdom.\n Yes! They chose me... for I am Caspian... this is Caspian's destiny...",
+
+                        "The next few pages are a journal detailing this explorer's foray through the Faerie Realms.\nIt begins as a sober and organised list of dated entries, before tumbling into something more akin to a collage of incoherent thoughts, then a flurry of fever-filled ramblings:" +
+                        "\n\n\tAfter seeing such wonders, after visiting upon my body such titillations and sensations as cannot be dreamt in our mundane world, how can I bear the thought of returning without despair. For I know now that our ArchFey friends are so superior to us in every way. " +
+                        "Unlike their cohabitants, the trivial fairies, silly pixies and their sillier warnings, the very words of the eldritch ArchFey weave dreams and visions through my mind like a forest weaves vines through a crumbling wall. Their fragrance sets my heart racing through endless possibilities. Their movements, so seductively fluid and enticing and precise, make me such an oaf by comparison. " +
+                        "Even now I lament for my words do not do their beauty and grace justice. I often question myself: am I truly worthy to be amongst so perfect sleepless creatures, to tread upon their twilight world? At first I thought theirs an innocent realm untouched by the sins that so beleaguer us mortals - yet, with my closed mind (my so inadequate, provincial mind) I'd dared not imagine " +
+                        "the truth: that here there is simply no sin at all. No act that can't be perfected by seeking its apotheosis, no vice that can't be made virtuous by transfiguring it beyond the apex of delight. \nTomorrow I shall try once again to be more like my friends. I mustn't shame them with my presence. My aspiration to make myself as beautiful as they are has thus far made progress, but success still eludes me. Still the ArchFey titter as I pass. It's " +
+                        "not their fault, of course. I'm only glad my endless shortcomings brings such innocent creatures something so delightful as their divine laughter, instead of the disgust I deserve. For I have yet to become as elegant as they. I shall return tonight to the lakeside whereupon I shall study my reflection. \nIf I can just starve myself a little more, perhaps I too will be almost as slender and fine-featured as they...",
+
+                        "The last page's handwriting is fluid, cursive, elegant, a masterpiece in and of itself - and definitely *not* the author's;" +
+                        "\n\nThe lake's a mirror we shatter, " +
+                        "\nWhose splinters are all scattered," +
+                        "\nPiece by piece we make this one's eyes sparkle," +
+                        "\nWith the ravenous hunger of a jackal," +
+                        "\nFor we fed him nought but the melody of our lyre," +
+                        "\nHe feasted upon the fumes of our enchanted fire," +
+                        "\nHe partook of those acts from which he'd never tire," +
+                        "\nThe nightmares born of his heart's desire..."
+
+
+                    };
+                    List<List<string>> playerchoice = new List<List<string>>
+                    {
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+
+                        new List<string>
+                        {
+                            "Turn back to the first page?",
+                            "Close the book?"
+                        }
+                    };
+                    Dictionary<string, string> action = new Dictionary<string, string>
+                    {
+                        {"Turn back to the first page?", "You scour the book for the first entry you came across..."},
+                        { "Turn the page?", "You leaf through a page or two more, before your eyes rest on the next intriguing excerpt." },
+                        {"Close the book?", "You decide to stop reading the literature for now." }
+                    };
+                    int x = 0;
+                    while (x == 0)
+                    {
+                        x = fey.LinearParle(action, pages, playerchoice, description);
+                    }
+                    item.Attribute = true;
+                    item.SpecifyAttribute = "read";
+                }
+                else
+                {
+                    Console.WriteLine("You decide now isn't the time. You close the book.");
+                    Console.ReadKey(true);
+                    return;
+                }
+            }
+            if (Name == "The Rogue's Pocketbook")
+            {
+                Console.WriteLine("Would you like to delve deeper into what this book has to say?");
+                Dialogue thievin = new Dialogue(item);
+                if (thievin.getYesNoResponse())
+                {
+
+                    string description = "Your curiosity piqued, you peruse the books rather tatty pages...";
+                    List<string> pages = new List<string>
+                    {
+                        "This chapter lays bare the underlying rationale for this book:" +
+                        "\n\n\tIf you want to become a great thief for some vainglorious purpose, reader, then " +
+                        "you've entered the wrong profession.\nIf you have ambitions of being portrayed in some gallery of the " +
+                        "notorious and the machiavellian, then you can place back this book now.\n\tLet it instead be found for those" +
+                        "who revel in obscurity, who make the shadows their business, and subterfuge their mistress. Herein lies" +
+                        " those secrets worthy only of those who follow Bhaal or Shar, whether by devoted spirit or inadvertently through deed...",
+
+                        "This page is a how-to-guide for lockpicking, home invasion and escape artistry:" +
+                        "\n\n\tNo door makes a vault impregnable. No lock can withstand the right tools. For most mundane locks" +
+                        " this is all too evident. All that's needed to crack open a door is more often than not nothing more than a bobby pin to jimmy the tumblers into position and a screwdriver" +
+                        " or any similar edged implement, a narrow thin blade for example, that can lever the inside mechanics within." +
+                        " Combine these two items, use one along with the other, and you'll have your very own lockpicking set" +
+                        " that'll work nine times out of ten...",
+
+                        "The following excerpt examines first principles upon disguises, camouflage and espionage:" +
+                        "\n\n\t... three quarters of any disguise lies in projecting the behaviour and the gestures that'll " +
+                        "make you blend seamlessly with the crowd you wish to integrate into. Without confidence, if nervousness gnaws your guts, and your eyes glance whiplash quick " +
+                        "at those who might already suspect you, then you're going to get caught no matter how ingenious your disguise or brilliant your plan. " +
+                        "\n\tAs for the other quarter, find the right garb that won't stand out, wear the symbols and trinkets that mark your target for infiltration as one of their own," +
+                        " and if you can't conceal your face, then use something to obscure it or draw attention away from memorable features. " +
+                        "\n\tAs for camouflage, remember the five 'S': Shift, Shape, Shadow, Silhouette and Shine. Where 'shine' is concerned," +
+                        " blacken anything that might be seen, use charcoal to smear your face and make it less visible at night...",
+
+                        "This page goes through a detailed step by step plan on how to pick-pockets;" +
+                        "\n\n1. Find your target and study their routines. Who do they know? Who do they meet? Who is likely to intercede on their behalf if things go wrong?" +
+                        "\n2. Find the best spot to cross their path and perform the deed. You need a place that's public, crowded and away from any of their friends." +
+                        "\n3. You need a trustworthy wingman. One you perform the act, they'll take your stash off of you, so if the militia are alerted they'll find nothing on you." +
+                        "\n4. You'll need to act swiftly. Bump into them. distract them. Do it right and they won't notice you snatch what you want from their pockets, then make your exit. Plan beforehand which street corners you'll turn, which alleys you'll dart through to lose them..."
+
+                        
+                    };
+                    List<List<string>> playerchoice = new List<List<string>>
+                    {
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        new List<string>
+                        {
+                            "Turn the page?",
+                            "Close the book?"
+                        },
+                        
+                        new List<string>
+                        {
+                            "Turn back to the first page?",
+                            "Close the book?"
+                        }
+                    };
+                    Dictionary<string, string> action = new Dictionary<string, string>
+                    {
+                        {"Turn back to the first page?", "You scour the book for the first entry you came across..."},
+                        { "Turn the page?", "You leaf through a page or two more, before your eyes rest on the next intriguing excerpt." },
+                        {"Close the book?", "You decide to stop reading the literature for now." }
+                    };
+                    int x = 0;
+                    while (x == 0)
+                    {
+                        x = thievin.LinearParle(action, pages, playerchoice, description);
+                    }
+                    item.Attribute = true;
+                    item.SpecifyAttribute = "read";
+                }
+                else
+                {
+                    Console.WriteLine("You decide now isn't the time. You close the book.");
+                    Console.ReadKey(true);
+                    return;
+                }
+            }
+            if (item.Name == "book on cursed weapons")
             {
                 Console.WriteLine("Would you like to delve deeper into what this book has to say?");
                 Dialogue cursed_weapons = new Dialogue(item);
@@ -397,6 +690,17 @@ namespace DungeonCrawler
             {
                 Console.WriteLine("[4] Begin unspooling the red thread and leave it trailing behind you from room to room?");
             }
+            if (Name == "music box" && range == 5)
+            {
+                if (Attribute)
+                {
+                    Console.WriteLine("[4] Close the music box?");
+                }
+                else
+                {
+                    Console.WriteLine($"[4] Open the music box and leave it in the {room.Name} as a distraction?");
+                }
+            }
             do
             {
                 string answer = Console.ReadLine();
@@ -413,6 +717,18 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?\n[4]Begin unspooling it as you travel from room to room?");
                         }
+                        continue;
+                    }
+                    else if (Name == "music box" && Attribute && range == 5)
+                    {
+                        Console.WriteLine("Please enter '1', '2', '3' or '4'");
+                        Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?\n[4] Close the music box?");
+                        continue;
+                    }
+                    else if (Name == "music box" && range == 5)
+                    {
+                        Console.WriteLine("Please enter '1', '2', '3' or '4'");
+                        Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?\n[4] Open the music box and leave it in the {room.Name} as a distraction?");
                         continue;
                     }
                     else
@@ -437,10 +753,19 @@ namespace DungeonCrawler
                 try
                 {
                     int answerNum = int.Parse(answer);
-                    if ((answerNum < 1 || answerNum > 3)&& (Name != "ball of red thread" || SpecifyAttribute != "spooled"))
+                    if ((answerNum < 1 || answerNum > 3)&& (Name != "ball of red thread" || SpecifyAttribute != "spooled") && (range != 5 || Name != "music box"))
                     {
-                        Console.WriteLine("Please choose option 1, 2, or 3.");
-                        continue;
+                        if (range != 5 || Name != "music box")
+                        {
+                            Console.WriteLine("Please choose option 1, 2, or 3.");
+                            continue;
+                        }
+
+                        else
+                        {
+                            Console.WriteLine("Please choose option 1, 2, 3, or 4.");
+                            continue;
+                        }
                     }
                     else if (answerNum < 1 || answerNum > 4)
                     {
@@ -452,6 +777,7 @@ namespace DungeonCrawler
                         if (weapon == null)//if item is not a weapon
                         {
                             StudyItem(item);
+                            
                             if (range == 3 || range == 4 || range == 6)
                             {
                                 Console.WriteLine($"\nWould you now like to:\n [1]study the {Name} again \n[2]stash it upon your person \n[3]place it back where you found it?");
@@ -741,15 +1067,38 @@ namespace DungeonCrawler
                     }
                     else
                     {
-                        Console.WriteLine("You begin unravelling the thread. It trails behind you as you move...");
-                        SpecifyAttribute = "unspooled";
-                        Attribute = false;
-                        if (!inventory.Contains(item))
+                        if (item.Name == "ball of red thread")
                         {
-                            StashItem(item, inventory);
+                            Console.WriteLine("You begin unravelling the thread. It trails behind you as you move...");
+                            SpecifyAttribute = "unspooled";
+                            Attribute = false;
+                            if (!inventory.Contains(item))
+                            {
+                                StashItem(item, inventory);
+                            }
+                            room.ItemList.Remove(item);
+                            threadPath.Insert(0, room);
+                            return;
                         }
-                        room.ItemList.Remove(item);
-                        threadPath.Insert(0, room);
+                        else
+                        {
+                            if (!item.Attribute)
+                            {
+                                Console.WriteLine($"You open up the music box and let it's enchanting music fill the {room.Name}.\n You then leave it behind. If you're being followed, maybe it'll make a good distraction...");
+                                item.SpecifyAttribute = "opened";
+                                item.Attribute = true;
+                                room.ItemList.Add(item);
+                                inventory.Remove(item);
+                                return;
+                            }
+                            else
+                            {
+                                Console.WriteLine("You close the lovely music box. It's melody stops at once...");
+                                item.SpecifyAttribute = "unopened";
+                                item.Attribute = false;
+                                return;
+                            }
+                        }
                     }
                 }
                 catch //if a number was not entered
@@ -787,27 +1136,40 @@ namespace DungeonCrawler
         /// <returns></returns>
         public bool UseItem1(Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Monster monster, Combat battle, bool fieryEscape, Item binkySkull = null, Item musicBox = null, Item note = null, Item jailorKeys = null)
         {
+            Door door1 = new Door();
+            List<Room> roomlist = new List<Room>(); // empty lists for filling in Search function unused parameters
             if (usesDictionary[item].Contains(feature))
             {
+                
                 feature.Attribute = !feature.Attribute; // key lock unlock, weapon intact broken, magical charm uncharmed charmed, etc
                 if (feature.Attribute == false)
                 {
                     feature.SpecificAttribute = "un" + feature.SpecificAttribute;
                     if (item.Name == "jailor keys" && (feature.Name == "far door" || feature.Name == "near door"))
                     {
-                        Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door unlock.");
+                        int index = feature.SpecificAttribute.IndexOf("ed");
+                        string strand = feature.SpecificAttribute.Substring(0, index);
+                        Console.WriteLine($"The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door {strand}.");
                         Console.ReadKey(true);
                         return true;
                     }
                     else if (item.Name == "brass key" && feature.Name == "double doors")
                     {
-                        Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door unlock.");
+                        int index = feature.SpecificAttribute.IndexOf("ed");
+                        string strand = feature.SpecificAttribute.Substring(0, index);
+                        Console.WriteLine($"The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door {strand}.");
                         Console.ReadKey(true);
                         return true;
                     }
                     else if (item.Name == "lockpicking set")
                     {
                         Console.WriteLine($"You slide the stiletto's blade through the top of the keyhole and begin jostling with the tumblers with the bobby pin. Sure enough something clunks. The {feature.Name} has been unlocked.");
+                        Console.ReadKey(true);
+                        return true;
+                    }
+                    else if (item.Name == "copper key")
+                    {
+                        Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door unlock");
                         Console.ReadKey(true);
                         return true;
                     }
@@ -825,7 +1187,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape);
+                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -864,13 +1226,20 @@ namespace DungeonCrawler
                     feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
                     if (item.Name == "jailor keys" && (feature.Name == "far door" || feature.Name == "near door"))
                     {
+                        
                         Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door lock.");
                         Console.ReadKey(true);
                         return true;
                     }
                     else if (item.Name == "brass key" && feature.Name == "double doors")
                     {
-                        Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door unlock.");
+                        Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door lock.");
+                        Console.ReadKey(true);
+                        return true;
+                    }
+                    else if (item.Name == "copper key")
+                    {
+                        Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door lock");
                         Console.ReadKey(true);
                         return true;
                     }
@@ -900,7 +1269,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape);
+                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -919,7 +1288,47 @@ namespace DungeonCrawler
                     return true; }
             }
             else 
-            { 
+            {
+                if (feature.Description == "Replete with weapons of all descriptions, their oiled and well-polished blades gleam at you.\nIt's a shame someone was foresighted enough to lock them all behind an enchanted glass panel...")
+                {
+                    if (Name == "lockpicking set" || Name.Contains(" key"))
+                    {
+                        Console.WriteLine("You try opening the display case, wary of the magical forcefield surrounding it but unable to resist the temptation of the glittering weapons on the other side of the glass. \n If you could just twist it a little more - YOUCH!");
+                        List<string> magicRebuke = new List<string> 
+                        { 
+                            $"The enchanted lock flings your {item.Name} back in your face!",
+                            $"You get zapped by a fierce blue bolt of magic!",
+                            $"While you're distracted the enchanted display case wallops you with one it's door before quickly snapping shut again!",
+                            $"The display case burns your fingers with a cantrip of frost!",
+                            $"The lock suddenly comes to life and nips at your fingers!"
+                        };
+                        Dice D5 = new Dice(5);
+                        int damage = D5.Roll(D5) * 2;
+                        Console.WriteLine(magicRebuke[D5.Roll(D5) - 1] + $" You lose {damage} stamina!");
+                        player.Stamina -= damage;   
+                        if (player.Stamina < 1)
+                        {
+                            Console.WriteLine("Though you were on death's door, you nevertheless tarried on anyway. However, with this injury you have finally passed beyond its threshold...");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Your adventure ends here...");
+                            Console.ReadKey(true);
+                            return false;
+                        }
+                        Console.ReadKey(true);
+                        Console.WriteLine($"You retrieve your {item.Name} and recoil.\n This display case has got some serious attitude!");
+                        Console.ReadKey(true);
+                        return false;
+                    }
+                    else if(item is Weapon)
+                    {
+                        Console.WriteLine($"You heave your {item.Name}, ready to smash the display case to smithereens only to find it does not comply. With uncanny cunning it casts a freezing hex on you the moment you raise your weapon above your head. No sooner has your entire body frozen to an icicle than your weapon slips from your grip and shatters you into a thousand pieces...");
+                        Console.ReadKey(true);
+                        player.Stamina = -1;
+                        Console.WriteLine("Your adventure ends here...");
+                        Console.ReadKey(true);
+                        return false;
+                    }
+                }
                 if (item.Name=="magnifying glass")
                 {
                     if (feature.Name == "skeleton" && feature.SpecificAttribute == "unshattered")
@@ -955,7 +1364,7 @@ namespace DungeonCrawler
                                     }
                                     else if (answer == "yes" || answer == "y")
                                     {
-                                        feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape);
+                                        feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
                                         break;
                                     }
                                     else if (answer == "no" || answer == "n")
@@ -980,7 +1389,8 @@ namespace DungeonCrawler
                     else if (feature.Name.Contains("brazier"))
                     {
                         Console.WriteLine($"You peer through the magnifying glass at the {feature.Name}, only to blink and recoil as the magical flame's light focuses into an intense beam.\nExperimentally, you swivel your magnifying glass around," +
-                            $"your eyes following the tight circle of light as it flickers and dances across the opposite wall. Whatever the beam touches is left warm to the touch. \nAn idea begins to form...");
+                            $"your eyes following the tight circle of light as it flickers and dances across the opposite wall. Whatever the beam touches is left warm to the touch.");
+                        if (room.Name == "dank cell") { Console.WriteLine("An idea begins to form..."); }
                     }
                     
                     else { Console.WriteLine($"You inspect the {feature.Name} with your magnifying glass. Were you expecting to find something?"); }
@@ -1964,13 +2374,17 @@ namespace DungeonCrawler
                     //PropertyInfo boost = typeof(int).GetProperty(propString);
                     //object value = boost.GetValue(player, null);
                     //int CharacterAttribute = Convert.ToInt32(value);
-
-
-                    if (propString == "Stamina")
+                    if (propString == "speed")
+                    {
+                        player.Speedy = true;
+                        player.Inventory.Remove(item1);
+                        return true;
+                    }
+                    else if (propString == "Stamina")
                     {
                         if (player.Traits.ContainsKey("medicine man"))
                         {
-                            int boost = D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6);
+                            int boost = D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + SpecialEffect;
                             if (player.Stamina == player.InitialStamina)
                             {
                                 Console.WriteLine($"{item1.Name} has no effect. You're already as fit as can be.");
@@ -1990,7 +2404,7 @@ namespace DungeonCrawler
                         {
                             Dice D40 = new Dice(40);
                             Dice D4 = new Dice(4);
-                            int boost = D40.Roll(D40);
+                            int boost = D40.Roll(D40) + SpecialEffect;
                             if (player.Stamina + 2 * player.Skill >= player.InitialStamina)
                             {
                                 if (boost < 13)
@@ -2028,7 +2442,7 @@ namespace DungeonCrawler
                         }
                         else
                         {
-                            int boost = D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6);
+                            int boost = D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + D6.Roll(D6) + SpecialEffect;
                             if (player.Stamina == player.InitialStamina)
                             {
                                 Console.WriteLine("You're already at full health! But at least the potion tastes good...");
@@ -2236,7 +2650,7 @@ namespace DungeonCrawler
                             Console.WriteLine(enemyCounters[1]);
                         }
                     }
-
+                    
                     foreach (Dice d in Damage)
                     {
 

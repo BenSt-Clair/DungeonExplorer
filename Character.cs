@@ -58,8 +58,10 @@ namespace DungeonCrawler
         public bool Masked { get; set; }
         public int CarryCapacity { get; set; }
         public bool FieryEscape { get; set; }
-
-        public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits, bool masked = false, bool fieryEscape = false)
+        public bool Speedy { get; set; }
+        public Stopwatch midnightClock { get; set; }
+        public int MGItemsDonated { get; set; }
+        public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits, bool masked = false, bool fieryEscape = false, bool speedy = false, Stopwatch midnightClock = null, int MGItemsDonated = 0)
         {
             Name = name;
             Skill = skill;
@@ -71,6 +73,9 @@ namespace DungeonCrawler
             Masked = masked;
             CarryCapacity = 12;
             FieryEscape = fieryEscape;
+            Speedy = speedy;
+            this.midnightClock = midnightClock;
+            this.MGItemsDonated = MGItemsDonated;
         }
         public string DisplayName() { return Name; }
         public int DisplaySkill() { return Skill; }
@@ -176,6 +181,51 @@ namespace DungeonCrawler
                 return "To describe you as one of the seven wonders of the world would frankly be an understatement. Your raw, physical prowess leaves those lucky enough to clap eyes on you trembling in your wake. Your 'sweet bod' is the sort of exemplary specimen even Conan the Barbarian would grudgingly admire.";
             }
         }
+        public void CheckStatus()
+        {
+            Console.WriteLine($"Your stamina score is: {Stamina}/{InitialStamina}");
+            Console.WriteLine(DescribeStamina());
+            Console.WriteLine($"\nYour current skill is: {Skill}");
+            Console.WriteLine(DescribeSkill());
+            foreach(KeyValuePair<string, string> k in Traits)
+            {
+                Console.WriteLine("\n" + k.Value);
+            }
+            if (Speedy)
+            {
+                Console.WriteLine("\nPotion of alacrity is active!\nYou are filled with jittery energy, flitting about from one action to the next with disconcerting speed...");
+            }
+            int count = 0;
+            foreach (Weapon w in WeaponInventory)
+            {
+                if (w.Boon > 9)
+                {
+                    count++;
+                }
+            }
+            if (count == WeaponInventory.Count && count != 0)
+            {
+                Console.WriteLine("\nFelix Felicis is active! \nBuoyed with boundless optimism every action you take seems to miraculously turn out in your favour...");
+            }
+            if (midnightClock != null)
+            {
+                midnightClock.Stop();
+                long timeTaken = midnightClock.ElapsedMilliseconds;
+                midnightClock.Start();
+                long timeToMidnight = 1800000;
+                long timeLeft = (timeToMidnight - timeTaken) / 60000;
+                if (timeLeft < 0)
+                {
+                    Console.WriteLine("\nMidnight is upon you!");
+                }
+                else
+                {
+                    Console.WriteLine($"\nYou have only {timeLeft} minutes until the clocks strike twelve!");
+                }
+            }
+            Console.ReadKey(true);
+            return;
+        }
         /// <summary>
         /// The following is a similar line of code as searchFeature. It fulfills the same
         /// function, only when it uses pickUpItem we specify the range as 5, meaning
@@ -183,7 +233,7 @@ namespace DungeonCrawler
         /// the formula for this code is very similar to searchfeature.
         /// </summary>
         /// <param name="roomItems"></param>
-        public void SearchPack(List<Item> roomItems, Room room, List<Room> threadPath)
+        public void SearchPack(List<Item> roomItems, Room room, List<Room> threadPath, Dictionary<Item, List<Item>>usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar)
         {
             Console.WriteLine("Rummaging through your effects you find the following;");
             int r = 1;
@@ -206,26 +256,43 @@ namespace DungeonCrawler
                 Console.ReadKey(true);
                 return;
             }
-            Console.WriteLine(message);
+            else
+            {
+                message += $"[{r}] Try something else...";
+            }
+            
 
             bool continueLoop = true;
             int a = 0;
-            Console.WriteLine("\nWhich of these items will you take a closer look at?");
+            
             while (continueLoop)
             {
-                if (a > 0) { Console.WriteLine(message); Console.WriteLine("Select another item from the list above."); }
+                Console.WriteLine($"[A] Show all personal effects...\n[W] Show WEAPONS only...\n[I] Show ITEMS only...\n[U] Order by USEFULNESS within {room.Name}...\n");
+                Console.WriteLine(message);
+                if (a > 0) 
+                { 
+                    
+                    Console.WriteLine("Select another item from the list above."); 
+                }
+                else { Console.WriteLine("\nWhich of these items will you take a closer look at?"); }
                 string reply = Console.ReadLine().Trim().ToLower();
 
                 try
                 {
                     int reply1 = int.Parse(reply);
-                    if (reply1 < 1 || reply1 > r - 1)
+                    if (reply1 < 1 || reply1 > r)
                     {
-                        Console.WriteLine($"Please enter a number between 1 and {r - 1}.");
+                        Console.WriteLine($"Please enter a number between 1 and {r}.");
                         continue;
                     }
                     else
                     {
+                        if (reply1 == r)
+                        {
+                            Console.WriteLine("closing your backpack you turn your attention elsewhere...");
+                            Console.ReadKey(true);
+                            return;
+                        }
                         try
                         {
                             bool success = false;
@@ -270,8 +337,143 @@ namespace DungeonCrawler
                 }
                 catch
                 {
-                    Console.WriteLine("Please enter a number corresponding to your choice of action.");
-                    continue;
+                    if (reply == "a")
+                    {
+                        r = 1;
+                        message = "";
+                        foreach (Weapon w in WeaponInventory)
+                        {
+                            message += $"[{r}] {w.Name}\n";
+                            r++;
+                        }
+                        foreach (Item item in Inventory)
+                        {
+                            message += $"[{r}] {item.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        continue;
+                    }
+                    else if (reply == "w")
+                    {
+                        r = 1;
+                        message = "";
+                        foreach (Weapon w in WeaponInventory)
+                        {
+                            message += $"[{r}] {w.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        if (r == 1)
+                        {
+                            message = "";
+                            Console.WriteLine("You possess no weapons! You feel as vulnerable as a wizard without his staff, a rogue without his tools or... well, an adventurer without a sword");
+                            foreach (Item item in Inventory)
+                            {
+                                message += $"[{r}] {item.Name}\n";
+                                r++;
+                            }
+                            message += $"[{r}] Try something else...";
+                            Console.ReadKey(true);
+                            
+                        }
+                        continue;
+                    }
+                    else if (reply == "i")
+                    {
+                        r = 1;
+                        message = "";
+                        foreach (Item item in Inventory)
+                        {
+                            message += $"[{r}] {item.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        if (r == 1)
+                        {
+                            message = "";
+                            Console.WriteLine("You possess no items!");
+                            foreach (Weapon w in WeaponInventory)
+                            {
+                                message += $"[{r}] {w.Name}\n";
+                                r++;
+                            }
+                            message += $"[{r}] Try something else...";
+                            Console.ReadKey(true);
+                            
+                        }
+                        continue;
+                    }
+                    else if (reply == "u")
+                    {
+                        List<Item> usefulList = new List<Item>();
+                        
+                        foreach(Item w in WeaponInventory)
+                        {
+                            usefulList.Add((Item)w);
+                        }
+                        foreach (Item i in Inventory)
+                        {
+                            usefulList.Add(i);
+                        }
+                        Dictionary<Item, int> usefulness = new Dictionary<Item, int>();
+                        foreach (Item item in usefulList)
+                        {
+                            int count = 0;
+                            try
+                            {
+                                foreach(Item i in usesDictionaryItemItem[item])
+                                {
+                                    if (room.ItemList.Contains(i))
+                                    {
+                                        count++;
+                                    }
+                                    else if (Inventory.Contains(i))
+                                    {
+                                        count++;
+                                    }
+                                    
+                                }
+
+                            }
+                            catch { }
+                            try
+                            {
+                                foreach (Feature f in usesDictionaryItemFeature[item])
+                                {
+                                    if (room.FeatureList.Contains(f))
+                                    {
+                                        count++;
+                                    }
+
+                                }
+                            }
+                            catch { }
+                            try
+                            {
+                                count += usesDictionaryItemChar[item].Count;
+                            }
+                            catch { }
+                            usefulness[item] = count;
+                        }
+                        IEnumerable<Item> query = from item in usefulList
+                                                  orderby usefulness[item] descending
+                                                  select item;
+                        message = "";
+                        r = 1;
+                        foreach (Item item in query)
+                        {
+                            message += $"[{r}] {item.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        continue;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please enter a number or letter corresponding to your choice of action.");
+                        continue;
+                    }
                 }
 
             }
@@ -439,6 +641,10 @@ namespace DungeonCrawler
                                 else if (chosenItem.Name.Trim().ToLower() == "elixir of feline guile")
                                 {
                                     Console.WriteLine("You glug the potent elixir down. Your stomach ties itself in knots for a moment, before you feel your instincts and reflexes sharpen.");
+                                }
+                                else if (chosenItem.Name.Trim().ToLower() == "potion of alacrity")
+                                {
+                                    Console.WriteLine("The potion tastes as bad as it looks. However, you instantly discover the rest of the world looks as though it couldn't catch up with a snail.\n You fly into action...");
                                 }
                                 else if (chosenItem.Name.Trim().ToLower() == "felix felicis") // luck potion grants boon to all weapons.
                                 {
@@ -766,32 +972,139 @@ namespace DungeonCrawler
             Patrol = patrol;
             Time = (Path.Count - 1) * 20000;
         }
-        public bool MinotaurReturning(Room room)
+        public bool MinotaurReturning(Room room, Item redThread, Item musicBox, List<Room> threadPath, Player player)
         {
             this.Patrol.Stop();
-            
+            Dice D6 = new Dice(6);
             long time = this.Time - this.Patrol.ElapsedMilliseconds;
-            
-
-            if (time < (this.Path.Count - 2) * 20000 && this.Path.Count>1)
+            if (player.Speedy)
             {
-                this.Location = this.Path[1];
-                if (((room.Name.Contains("corridor") && room.Name != "long corridor")|| room.Name == "mess hall" || room.Name == "broom closet" || room.Name == "antechamber" || room.Name == "armoury") && ((Location.Name.Contains("corridor") && Location.Name != "long corridor")|| Location.Name == "mess hall" || Location.Name == "broom closet" || Location.Name == "antechamber" || Location.Name == "armoury"))
+                time = this.Time - this.Patrol.ElapsedMilliseconds / 2;
+            }
+            List<string> enragedHunt = new List<string>
                 {
-                    Console.WriteLine($"You hear the monster's lumbering footfalls as it moves into the {this.Location.Name}...");
-                }
-                else if((room.Name == "long corridor" || room.Name == "dank cell" || room.Name == "eerie cell" || room.Name == "empty cell" || room.Name == "antechamber" || room.Name == "dungeon chamber") && (Location.Name == "long corridor" || Location.Name == "dank cell" || Location.Name == "eerie cell" || Location.Name == "empty cell" || Location.Name == "antechamber" || Location.Name == "dungeon chamber"))
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                };
+            try
+            {
+                enragedHunt = new List<string>
                 {
-                    Console.WriteLine($"You hear the monster's lumbering footfalls as it moves into the {this.Location.Name}...");
-                }
-                this.Path.RemoveAt(0);
+                $"You overhear the monster crashing through the {Path[1].Name} in search of you...",
+                $"The sound of the monster tearing the {Path[1].Name} apart as it hunts you fills you with icy foreboding. \nBetter move quickly...",
+                $"The monster storms the {Path[1].Name}. You can hear the carnage wrought from the {room.Name}...",
+                $"You hear the beast barrel into the {Path[1].Name}, ripping the place apart as it attempts to scare up your hiding spot...",
+                $"The din of the beasts furious roars and frenzied hunting continues into the {Path[1].Name}...",
+                $"You overhear the beast charge into the {Path[1].Name} as it looks for you..."
+                };
+            }
+            catch
+            {
                 
             }
-            if (this.Location.Name == "north-facing corridor" && this.Path.Count == 1)
+            List<Room> adjacentrooms = new List<Room>();
+            List<Door> doors = new List<Door>();
+            foreach(Feature f in Location.FeatureList)
+            {
+                if(f is Door)
+                {
+                    doors.Add(f.CastDoor());
+                }
+            }
+            foreach(Door d in doors)
+            {
+                foreach(Room r in d.Portal)
+                {
+                    if (r != Location)
+                    {
+                        adjacentrooms.Add(r);
+                    }
+                }
+            }
+            foreach (Room r in adjacentrooms)
+            {
+                if (r.ItemList.Contains(musicBox) && musicBox.Attribute)
+                {
+                    this.Path.Insert(1, Location);
+                    this.Path.Insert(1, r);
+                }
+            }
+            if (Path.Count > 1)
+            {
+                if (this.Path[1].ItemList.Contains(musicBox) && musicBox.Attribute)
+                {
+                    Console.WriteLine($"You hear the monster abruptly pause as it listens to the music box's melody. \n You listen with bated breath as it's heavy footfalls enter the {Path[1].Name} to investigate...");
+                    Console.ReadKey(true);
+                    if (Path[1] == room)
+                    {
+                        Location = Path[1];
+                        Path.RemoveAt(0);
+                        return true;
+                    }
+                    Console.WriteLine("The music box continues playing. It seems the monster is momentarily captivated by it! But how long for you don't know...");
+                    Console.ReadKey(true);
+                    this.Location = this.Path[1];
+                    this.Time += 1200000;
+                    this.Items.Add(musicBox);
+
+                    this.Path.RemoveAt(0);
+                    return true;
+                }
+                else if (this.Location.ItemList.Contains(musicBox) && musicBox.Attribute && time > (this.Path.Count - 2) * 20000)
+                {
+                    Console.ReadKey(true);
+                    Console.WriteLine($"You hear the music continue playing in the {Location.Name}, concealing the sound of your footsteps. So long as you keep away from that place you should go undetected...");
+                    return true;
+                }
+                
+            }
+            
+            if (time < (this.Path.Count - 2) * 20000 && this.Path.Count > 1)
+            {
+                if (Location.ItemList.Contains(musicBox))
+                {
+                    Console.WriteLine("The music box snaps shut!");
+                    Console.ReadKey(true);
+                    Console.WriteLine("It seems the monster's suspicions are roused once more, as it keeps an eye out for you...");
+                    Suspicious = true;
+                    Rage = false;
+                    Location.ItemList.Remove(musicBox);
+                }
+                this.Location = this.Path[1];
+                if (this.Rage)
+                {
+                    Console.ReadKey(true);
+                    Console.WriteLine(enragedHunt[D6.Roll(D6) - 1]);
+                    Console.ReadKey(true);
+                }
+                else if (((room.Name.Contains("corridor") && room.Name != "long corridor") || room.Name == "mess hall" || room.Name == "broom closet" || room.Name == "antechamber" || room.Name == "armoury") && ((Location.Name.Contains("corridor") && Location.Name != "long corridor") || Location.Name == "mess hall" || Location.Name == "broom closet" || Location.Name == "antechamber" || Location.Name == "armoury"))
+                {
+                    Console.ReadKey(true);
+                    Console.WriteLine($"You hear the monster's lumbering footfalls as it moves into the {this.Location.Name}...");
+                    Console.ReadKey(true);
+                }
+                else if ((room.Name == "long corridor" || room.Name == "dank cell" || room.Name == "eerie cell" || room.Name == "empty cell" || room.Name == "antechamber" || room.Name == "dungeon chamber") && (Location.Name == "long corridor" || Location.Name == "dank cell" || Location.Name == "eerie cell" || Location.Name == "empty cell" || Location.Name == "antechamber" || Location.Name == "dungeon chamber"))
+                {
+                    Console.ReadKey(true);
+                    Console.WriteLine($"You hear the monster's lumbering footfalls as it moves into the {this.Location.Name}...");
+                    Console.ReadKey(true);
+                }
+                this.Path.RemoveAt(0);
+
+            }
+            if ((this.Location.Name == "north-facing corridor" || this.Location.Name == "ocean bottom") && this.Path.Count == 1)
             {
                 this.Patrol.Stop();
                 this.Patrol = new Stopwatch();
                 this.Time = 0;
+                if (this.Items.Contains(redThread))
+                {
+                    threadPath.Clear();
+                }
                 return false;
             }
             else
@@ -821,9 +1134,14 @@ namespace DungeonCrawler
                 message += $"\n[{number}] {x.Name}";
                 number++;
             }
-
-            
-            message += $"\nupon the {Name}.";
+            if (Name == "backpack")
+            {
+                message += $"\nwithin your pack.";
+            }
+            else
+            {
+                message += $"\nupon the {Name}.";
+            }
             if (Items.Count() == 0)
             {
                 message = "You find nothing of note";
@@ -832,13 +1150,19 @@ namespace DungeonCrawler
             Console.WriteLine(message);
             int i = 0;
             int turn = 0;
+            string strand = "";
+            if (Name == "backpack")
+            {
+                strand += " to give to Merigold";
+            }
             if (continueSearch && plunder.Count() > 1)
             {
-                Console.WriteLine("Would you like to pick up one of these artefacts?");
+                
+                Console.WriteLine($"Would you like to select one of these artefacts{strand}?");
             }
             else if (continueSearch)
             {
-                Console.WriteLine("Would you like to pick up this item?");
+                Console.WriteLine($"Would you like to select this item{strand}?");
             }
             bool alreadyStashed = false;
             bool skip = false;
@@ -855,8 +1179,14 @@ namespace DungeonCrawler
                         number++;
                     }
 
-
-                    message += $"\nupon the {Name}.";
+                    if (Name == "backpack")
+                    {
+                        message += $"\nwithin your pack.";
+                    }
+                    else
+                    {
+                        message += $"\nupon the {Name}.";
+                    }
                     Console.WriteLine(message, "\nWould you like to pick up another one of the above items?");
                 }
                 turn++;
@@ -905,19 +1235,19 @@ namespace DungeonCrawler
                 if (!continueSearch)
                 {
                     Console.WriteLine($"You finish rummaging through the {Name}'s effects.");
-                    continue;
+                    return;
                 }
                 alreadyStashed = false;
                 foreach (Item z in inventory)
                 {
-                    if (z.Name.ToLower() == answer)
+                    if (z.Name.ToLower() == answer && Name != "backpack")
                     {
                         alreadyStashed = true;
                     }
                 }
                 foreach (Weapon z in weaponInventory)
                 {
-                    if (z.Name.ToLower() == answer)
+                    if (z.Name.ToLower() == answer && Name != "backpack")
                     {
                         alreadyStashed = true;
                     }
@@ -949,10 +1279,20 @@ namespace DungeonCrawler
                     }
                     else if (x.Name.Trim().ToLower() == answer)
                     {
-
-                        x.PickUpItem(carryCapacity, inventory, weaponInventory, 3, 0, null, x, null, null, null, null, this);
-                        answer = "";
-                        skip = true;
+                        if (Name == "backpack")
+                        {
+                            inventory.Remove(x);
+                            weaponInventory.Remove(x);
+                            Items.Remove(x);
+                            answer = "";
+                            skip = true;
+                        }
+                        else
+                        {
+                            x.PickUpItem(carryCapacity, inventory, weaponInventory, 3, 0, null, x, null, null, null, null, this);
+                            answer = "";
+                            skip = true;
+                        }
 
                         
 
@@ -974,8 +1314,18 @@ namespace DungeonCrawler
 
                     else if (x.Name.Trim().ToLower() == answer)
                     {
-                        x.PickUpItem(carryCapacity, inventory, weaponInventory, 3, 0, x, null,null,null, null,null, this);
-                        
+                        if (Name == "backpack")
+                        {
+                            inventory.Remove(x);
+                            
+                            Items.Remove(x);
+                            answer = "";
+                            skip = true;
+                        }
+                        else
+                        {
+                            x.PickUpItem(carryCapacity, inventory, weaponInventory, 3, 0, x, null, null, null, null, null, this);
+                        }
                         break;
                     }
 
@@ -984,11 +1334,11 @@ namespace DungeonCrawler
                 if (Items.Count == 0)
                 {
                     Console.WriteLine($"You finish searching the {Name} for items.");
-                    break;
+                    return;
                 }
                 else if (!checkWeapon.Contains(answer))
                 {
-                    Console.WriteLine($"Please type in an item or weapon name listed above or else answer 'no' to finish your search of the {Name}.");
+                    Console.WriteLine($"Please type in an item or weapon name listed above or it's corresponding number or else answer 'no' to finish your search of the {Name}.");
 
                 }
             }

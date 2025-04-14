@@ -332,7 +332,14 @@ namespace DungeonCrawler
                 int damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling);
                 Monster.Stamina -= damageDealt;
                 Console.WriteLine($"The {Monster.Name} lost {damageDealt} points of stamina!");
-                turn = 1;               
+                turn = 1; 
+                if (player.Speedy)
+                {
+                    Console.WriteLine("The enemy is scarcely able to respond to your first attack when you quickly jump in with another.");
+                    damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling);
+                    Monster.Stamina -= damageDealt;
+                    Console.WriteLine($"The {Monster.Name} lost {damageDealt} points of stamina!");
+                }
                 Console.ReadKey(true);
             }
 
@@ -350,6 +357,7 @@ namespace DungeonCrawler
                 if (damageDealt >= 0)
                 {
                     Player.Stamina -= damageDealt;
+                    
                     Console.WriteLine($"You've lost {damageDealt} points of stamina!");
                 }
                 else if (damageDealt < 0)
@@ -440,6 +448,7 @@ namespace DungeonCrawler
                 
                 Console.WriteLine(Player.DescribeStamina());
                 Console.Write($"Do you wish to continue attacking with your {playerWeapon.Name}? ");
+                int speedyturn = 0;
                 while (true)
                 {
                     string answer = Console.ReadLine().Trim().ToLower();
@@ -513,11 +522,21 @@ namespace DungeonCrawler
                         
                         damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling);
                         Monster.Stamina -= damageDealt;
+                        if (player.Speedy && speedyturn == 0)
+                        {
+                            Console.WriteLine($"The {Monster.Name} lost {damageDealt} points of stamina!");
+                            Console.WriteLine("The enemy is scarcely able to respond to your rapid movements when you quickly make another action.");
+                            Console.Write($"Do you wish to continue attacking with your {playerWeapon.Name}? ");
+                            speedyturn++;
+                            continue;
+
+                        }
 
                         Console.WriteLine("\n");
                         if (damageDealt > 0)
                         {
                             Console.WriteLine($"The {Monster.Name} lost {damageDealt} points of stamina!");
+                            
                         }
                         else
                         {
@@ -573,6 +592,11 @@ namespace DungeonCrawler
                                         {
                                             if (y.Equipped) { playerWeapon = y; break; }
                                         }
+                                        if (player.Speedy && speedyturn == 0)
+                                        {
+                                            Console.WriteLine($"You admire your {availableWeapons[numResponse - 1].Name} amidst a world sluggishly moving around you in slow motion, before instantly jumping to your next action.");
+                                            break;
+                                        }
                                         Console.WriteLine($"You admire your {availableWeapons[numResponse - 1].Name} for only an instant before the {Monster.Name} lunges at you...");
                                         break;
                                     }
@@ -583,6 +607,7 @@ namespace DungeonCrawler
                                     }
 
                                 }
+                                
                                 break;
 
                             }
@@ -629,6 +654,11 @@ namespace DungeonCrawler
                                     else
                                     {
                                         playerWeapon = new Weapon("fists", "Your firm hands are deadly weapons in themselves; artfully precise implements of destruction that've been hardened by years of punching tree trunks and doing press ups on blazing hot coals.", pugilism, pugilismCritHits, pugilismGoodHits);
+                                    }
+                                    if (player.Speedy && speedyturn == 0)
+                                    {
+                                        Console.WriteLine($"{playerWeapon.Description}\nYou resolve to fight bare fisted, mano e mano.");
+                                        break;
                                     }
                                     Console.WriteLine($"{playerWeapon.Description}\nYou resolve to fight bare fisted, mano e mano. \n Meanwhile, the {Monster.Name} charges towards you...");
                                     break;
@@ -753,6 +783,10 @@ namespace DungeonCrawler
                                                     {
                                                         Console.WriteLine("You glug the potent elixir down. Your stomach ties itself in knots for a moment, before you feel your instincts and reflexes sharpen.");
                                                     }
+                                                    else if(chosenItem.Name.Trim().ToLower() == "potion of alacrity")
+                                                    {
+                                                        Console.WriteLine("The potion tastes as bad as it looks. However, you instantly discover the rest of the world looks as though it couldn't catch up with a snail. The enemy's lunges and attacks begin to look comically sluggish, as though they were moving through water.\n You fly into action...");
+                                                    }
                                                     else if (success) // luck potion grants boon to all weapons.
                                                     {
                                                         Console.WriteLine("The sweet liquid tastes like nirvana. It's effervescent body dances on your tongue and delights the senses. Suddenly you feel like anything is possible...");
@@ -814,6 +848,11 @@ namespace DungeonCrawler
                                 {
                                     Console.WriteLine("You've no items in your backpack!");
                                 }
+                                if (player.Speedy && speedyturn == 0)
+                                {
+                                    Console.WriteLine("You don't waste a moment before bounding into your next action...");
+                                    break;
+                                }
                                 if (success && !room.FeatureList.Contains(holeInCeiling))
                                 {
                                     Console.WriteLine($"\nIt's not long after your actions take effect before the {Monster.Name} attacks you!");
@@ -831,6 +870,11 @@ namespace DungeonCrawler
                             // basically you lose a turn       
                             else if (answer1 == "4" || answer1 == "four")
                             {
+                                if (player.Speedy && speedyturn == 0)
+                                {
+                                    Console.WriteLine("You marvel at how easy it is to dodge incoming attacks as the world moves languidly about you.\nIt's like everyone else is moving underwater while you dart about like a humming bird...");
+                                    break;
+                                }
                                 Console.WriteLine($"The {Monster.Name} closes in for another vicious attack!");
                                 break;
                             }
@@ -839,6 +883,12 @@ namespace DungeonCrawler
                                 Console.WriteLine("ERROR! Please answer either '1', '2', '3' or '4'.");
                                 continue;
                             }
+                        }
+                        if (player.Speedy && speedyturn == 0)
+                        {
+                            speedyturn++;
+                            Console.WriteLine($"Do you wish to attack with your {playerWeapon.Name}? ");
+                            continue;
                         }
                     }
                     else
@@ -854,16 +904,42 @@ namespace DungeonCrawler
             if (Player.Stamina > 0)
             {
                 Console.WriteLine("Congratulations! You've slain the monster!");
+                player.Speedy = false;
+                foreach (Weapon w in player.WeaponInventory)
+                {
+                    if (w.Boon > 9)
+                    {
+                        w.Boon = 0;
+                        if (w.Name == "sword of sealed souls")
+                        {
+                            w.Boon = 2;
+                        }
+                        if (player.Traits.ContainsKey("jinxed"))
+                        {
+                            w.Boon = 6;
+                        }
+                    }
+                }
                 return true;
             }
             else if (Monster.Stamina > 0)
             {
+                if(Monster.Name == "golden dragon")
+                {
+                    Console.WriteLine("The dragon's fiery breath cremates you in the blink of an eye. Your smoking boots are all that remains of your folly.");
+                    Console.ReadKey(true);
+                    Console.WriteLine("Your adventure ends here...");
+                    Console.ReadKey(true);
+                    return false;
+                }
                 Console.WriteLine($"The {Monster.Name}'s last attack proves fatal. You collapse in shameful defeat, a trickle of blood running from your mouth as your limp body drops to its knees. The {Monster.Name} has proven too much for you. Your adventure ends here...");
+                Console.ReadKey(true);
                 return false;
             }
             else
             {
                 Console.WriteLine("The fire consumes you both!");
+                Console.ReadKey(true);
                 return false;
             }
         }
@@ -1118,6 +1194,8 @@ namespace DungeonCrawler
             int turn = 0;
             int round = 0;
             bool attackedMonster2 = false;
+            long setTime = 2000;
+            int speedyturn = 0;
             if (initiative)
             {
                 int damageDealt = 0;
@@ -1128,6 +1206,11 @@ namespace DungeonCrawler
                 while (true)
                 {
                     long timeLapsed = 0;
+                    
+                    if (player.Speedy)
+                    {
+                        setTime = 4000;
+                    }
                     string answer = Console.ReadLine().Trim().ToLower();
                     if (string.IsNullOrWhiteSpace(answer))
                     {
@@ -1145,7 +1228,7 @@ namespace DungeonCrawler
                         {
                             stopwatch.Stop();
                             timeLapsed = stopwatch.ElapsedMilliseconds;
-                            if (timeLapsed < 2000)
+                            if (timeLapsed < setTime)
                             {
                                 damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling);
                                 Monster.Stamina -= damageDealt;
@@ -1167,7 +1250,7 @@ namespace DungeonCrawler
                         {
                             stopwatch.Stop();
                             timeLapsed = stopwatch.ElapsedMilliseconds;
-                            if (timeLapsed < 2000)
+                            if (timeLapsed < setTime)
                             {
                                 damageDealt = playerWeapon.Attack(Player.Skill, Monster2.Skill, Monster2.Stamina, true, Monster2, player, another, room, holeInCeiling);
                                 Monster2.Stamina -= damageDealt;
@@ -1187,6 +1270,8 @@ namespace DungeonCrawler
 
                     }
                     catch { Console.WriteLine("Please enter a number corresponding to your choice"); continue; }
+                    
+                    
                 }
                 
             }
@@ -1367,6 +1452,7 @@ namespace DungeonCrawler
                 Console.WriteLine(Player.DescribeStamina());
                 Console.Write($"Do you wish to continue attacking with your {playerWeapon.Name}? ");
                 bool skipPlayerTurn = false;
+                speedyturn = 0;
                 while (true)
                 {
                     string answer = Console.ReadLine().Trim().ToLower();
@@ -1377,9 +1463,21 @@ namespace DungeonCrawler
                         //stopwatch.Start();
                         if (Monster.Stamina > 0 && Monster2.Stamina > 0)
                         {
-                            Console.WriteLine($"Do you attack... \n[1] the {Monster.Name}\n[2] or the {Monster2.Name}?\n[You've only 3 seconds to decide]");
-                            
+                            if (!player.Speedy) 
+                            { 
+                                Console.WriteLine($"Do you attack... \n[1] the {Monster.Name}\n[2] or the {Monster2.Name}?\n[You've only 3 seconds to decide]");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Do you attack... \n[1] the {Monster.Name}\n[2] or the {Monster2.Name}?\n[Thanks to your potion of alacrity, you've 6 seconds to decide]");
+                            }
+                            setTime = 3000;
+                            if (player.Speedy)
+                            {
+                                setTime = 6000;
+                            }
                             stopwatch.Start();
+                            
                             while (true)
                             {
                                 long timeLapsed = 0;
@@ -1400,7 +1498,7 @@ namespace DungeonCrawler
                                     {
                                         stopwatch.Stop();
                                         timeLapsed = stopwatch.ElapsedMilliseconds;
-                                        if (timeLapsed < 3000)
+                                        if (timeLapsed < setTime)
                                         {
                                             pugilism = new List<Dice>();
                                             i = 0;
@@ -1469,24 +1567,45 @@ namespace DungeonCrawler
 
                                             damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling);
                                             Monster.Stamina -= damageDealt;
-
+                                            
                                             Console.WriteLine("\n");
                                             if (damageDealt > 0)
                                             {
                                                 Console.WriteLine($"The {Monster.Name} lost {damageDealt} points of stamina!");
+                                                if (player.Speedy && speedyturn == 0)
+                                                {
+                                                    Console.WriteLine("You dart into your next speedy action!");
+                                                    
+                                                }
+                                                attackedMonster2 = false;
+                                                Console.ReadKey(true);
+                                                break;
                                             }
                                             else
                                             {
+                                                if (player.Speedy && speedyturn == 0)
+                                                {
+                                                    Console.WriteLine("You dart into your next speedy action!");
+                                                    Console.ReadKey(true);
+                                                    break;
+                                                }
                                                 turn = -1;
                                                 Console.WriteLine($"{Monster.Name} seizes their chance to attack!");
+                                                attackedMonster2 = false;
+                                                Console.ReadKey(true);
+                                                break;
                                             }
-                                            attackedMonster2 = false;
-                                            Console.ReadKey(true);
-                                            break;
+                                            
                                         }
                                         else
                                         {
-
+                                            if (player.Speedy && speedyturn == 0)
+                                            {
+                                                Console.WriteLine("You take a leisurely 30 mph sprint around the room before you dart into your next speedy action!");
+                                                skipPlayerTurn = true;
+                                                Console.ReadKey(true);
+                                                break;
+                                            }
                                             Console.WriteLine("Too late! Your enemies attack!");
                                             skipPlayerTurn = true;
                                             break;
@@ -1496,7 +1615,7 @@ namespace DungeonCrawler
                                     {
                                         stopwatch.Stop();
                                         timeLapsed = stopwatch.ElapsedMilliseconds;
-                                        if (timeLapsed < 3000)
+                                        if (timeLapsed < setTime)
                                         {
                                             pugilism = new List<Dice>();
                                             i = 0;
@@ -1567,12 +1686,25 @@ namespace DungeonCrawler
                                             Monster2.Stamina -= damageDealt;
 
                                             Console.WriteLine("\n");
+                                            
                                             if (damageDealt > 0)
                                             {
                                                 Console.WriteLine($"The {Monster2.Name} lost {damageDealt} points of stamina!");
+                                                if (player.Speedy && speedyturn == 0)
+                                                {
+                                                    Console.WriteLine("You dart into your next speedy action!");
+                                                    Console.ReadKey(true);
+                                                    break;
+                                                }
                                             }
                                             else
                                             {
+                                                if (player.Speedy && speedyturn == 0)
+                                                {
+                                                    Console.WriteLine("You dart into your next speedy action!");
+                                                    Console.ReadKey(true);
+                                                    break;
+                                                }
                                                 turn = -1;
 
                                                 Console.WriteLine($"{Monster2.Name} seizes their chance to attack!");
@@ -1583,6 +1715,13 @@ namespace DungeonCrawler
                                         }
                                         else
                                         {
+                                            if (player.Speedy && speedyturn == 0)
+                                            {
+                                                Console.WriteLine("You take a leisurely 30 mph sprint around the room before you dart into your next speedy action!");
+                                                skipPlayerTurn = true;
+                                                Console.ReadKey(true);
+                                                break;
+                                            }
                                             Console.WriteLine("Too late! Your enemies attack!");
                                             skipPlayerTurn = true;
                                             break;
@@ -1672,14 +1811,31 @@ namespace DungeonCrawler
                             if (damageDealt > 0)
                             {
                                 Console.WriteLine($"The {Monster.Name} lost {damageDealt} points of stamina!");
+                                if (player.Speedy && speedyturn == 0)
+                                {
+                                    Console.WriteLine("Before your enemy can react you've already darted into your next action!");
+
+                                    
+                                }
+                                Console.ReadKey(true);
+                                break;
                             }
-                            else
+                            else 
                             {
+                                if(player.Speedy && speedyturn == 0)
+                                {
+                                    Console.WriteLine("Before your enemy can react you've already darted into your next action!");
+
+                                    Console.ReadKey(true);
+                                    break;
+                                }
                                 turn = -1;
                                 Console.WriteLine($"{Monster.Name} seizes their chance to attack!");
+                                Console.ReadKey(true);
+                                break;
                             }
-                            Console.ReadKey(true);
-                            break;
+                            
+                            
                         }
                         else if (Monster2.Stamina > 0)
                         {
@@ -1755,15 +1911,30 @@ namespace DungeonCrawler
                             if (damageDealt > 0)
                             {
                                 Console.WriteLine($"The {Monster2.Name} lost {damageDealt} points of stamina!");
+                                if (player.Speedy && speedyturn == 0)
+                                {
+                                    Console.WriteLine("Your enemy can scarcely react before you dart into your next action!");
+                                                                       
+                                }
+                                Console.ReadKey(true);
+                                break;
                             }
                             else
                             {
+                                if (player.Speedy && speedyturn == 0)
+                                {
+                                    Console.WriteLine("Your enemy can scarcely react before you dart into your next action!");
+
+                                    Console.ReadKey(true);
+                                    break;
+                                }
                                 turn = -1;
 
                                 Console.WriteLine($"{Monster2.Name} seizes their chance to attack!");
+                                Console.ReadKey(true);
+                                break;
                             }
-                            Console.ReadKey(true);
-                            break;
+                            
                         }
                     }
                     // try some other tactic
@@ -1789,6 +1960,7 @@ namespace DungeonCrawler
                                 if (j < 1)
                                 {
                                     Console.WriteLine("You waste time frenziedly rummaging through your rucksack, but you've no new weapons to choose from!");
+                                    speedyturn = 1;
                                     break;
                                 }
                                 string message = "You can choose from ";
@@ -1812,8 +1984,17 @@ namespace DungeonCrawler
                                         {
                                             if (y.Equipped) { playerWeapon = y; break; }
                                         }
-                                        Console.WriteLine($"You admire your {availableWeapons[numResponse - 1].Name} for only an instant before the {Monster.Name} lunges at you...");
-                                        break;
+                                        if (!player.Speedy || speedyturn != 0)
+                                        {
+                                            Console.WriteLine($"You admire your {availableWeapons[numResponse - 1].Name} for only an instant before the {Monster.Name} lunges at you...");
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine($"You admire your {availableWeapons[numResponse - 1].Name}, effortlessly dodging the {Monster.Name}, as the world moves sluggishly around you...");
+                                            
+                                            break;
+                                        }
                                     }
                                     catch
                                     {
@@ -1829,7 +2010,14 @@ namespace DungeonCrawler
                             {
                                 if (playerWeapon.Name == "fists")
                                 {
-                                    Console.WriteLine($"You're not sure how you might 'unequip' your own fists, and as you contemplate this conundrum the {Monster.Name} comes in for the attack...");
+                                    if (!player.Speedy || speedyturn != 0)
+                                    {
+                                        Console.WriteLine($"You're not sure how you might 'unequip' your own fists, and as you contemplate this conundrum the {Monster.Name} comes in for the attack...");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("You can't unequip your fists!\nHas the potion of alacrity scrambled your brains?");
+                                    }
                                     break;
                                 }
                                 else
@@ -1869,7 +2057,15 @@ namespace DungeonCrawler
                                     {
                                         playerWeapon = new Weapon("fists", "Your firm hands are deadly weapons in themselves; artfully precise implements of destruction that've been hardened by years of punching tree trunks and doing press ups on blazing hot coals.", pugilism, pugilismCritHits, pugilismGoodHits);
                                     }
-                                    Console.WriteLine($"{playerWeapon.Description}\nYou resolve to fight bare fisted, mano e mano. \n Meanwhile, the {Monster.Name} charges towards you...");
+                                    if (!player.Speedy || speedyturn != 0)
+                                    {
+                                        Console.WriteLine($"{playerWeapon.Description}\nYou resolve to fight bare fisted, mano e mano. \n Meanwhile, the {Monster.Name} charges towards you...");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"{playerWeapon.Description}\nYou resolve to fight bare fisted, mano e mano.");
+                                        
+                                    }
                                     break;
                                 }
                             }
@@ -1998,6 +2194,10 @@ namespace DungeonCrawler
                                                     {
                                                         Console.WriteLine("You glug the potent elixir down. Your stomach ties itself in knots for a moment, before you feel your instincts and reflexes sharpen.");
                                                     }
+                                                    else if (chosenItem.Name == "potion of alacrity")
+                                                    {
+                                                        Console.WriteLine("It tastes as bad as it looks. However, you instantly discover that the world around you moves in slow motion...and so does your enemy.");
+                                                    }
                                                     else if (success) // luck potion grants boon to all weapons.
                                                     {
                                                         Console.WriteLine("The sweet liquid tastes like nirvana. It's effervescent body dances on your tongue and delights the senses. Suddenly you feel like anything is possible...");
@@ -2073,7 +2273,12 @@ namespace DungeonCrawler
                                 {
                                     Console.WriteLine("You've no items in your backpack!");
                                 }
-                                if (success && !room.FeatureList.Contains(holeInCeiling) && Monster.Stamina > 0 && Monster2.Stamina > 0)
+                                if (player.Speedy && speedyturn == 0)
+                                {
+                                    Console.WriteLine("Your adversary has scarcely time to act before you bound into your next action!");
+                                    break;
+                                }
+                                else if (success && !room.FeatureList.Contains(holeInCeiling) && Monster.Stamina > 0 && Monster2.Stamina > 0)
                                 {
                                     Console.WriteLine($"\nIt's not long after your actions take effect before both your enemies attack you!");
                                     break;
@@ -2110,7 +2315,13 @@ namespace DungeonCrawler
                             // basically you lose a turn       
                             else if (answer1 == "4" || answer1 == "four")
                             {
-                                if (Monster.Stamina > 0 && Monster2.Stamina > 0)
+                                if (player.Speedy && speedyturn == 0)
+                                {
+                                    Console.WriteLine("You take a moment, effortlessly dodging your opponents swings, just to marvel at how slow everything feels. Remarkable!");
+                                    
+                                    break;
+                                }
+                                else if (Monster.Stamina > 0 && Monster2.Stamina > 0)
                                 {
                                     Console.WriteLine($"Your enemies close in for more vicious attacks!");
                                     break;
@@ -2142,6 +2353,12 @@ namespace DungeonCrawler
                         Console.WriteLine("Please enter either 'yes' or 'no'.");
                         continue;
                     }
+                    if (player.Speedy && speedyturn == 0)
+                    {
+                        speedyturn++;
+                        Console.WriteLine($"Do you wish to continue attacking with your {playerWeapon.Name}? ");
+                        continue;
+                    }
                     break;
                 }
                 turn++;
@@ -2150,6 +2367,22 @@ namespace DungeonCrawler
             if (Player.Stamina > 0)
             {
                 Console.WriteLine("Congratulations! You've slain the monster!");
+                player.Speedy = false;
+                foreach(Weapon w in player.WeaponInventory)
+                {
+                    if (w.Boon > 9)
+                    {
+                        w.Boon = 0;
+                        if (w.Name == "sword of sealed souls")
+                        {
+                            w.Boon = 2;
+                        }
+                        if (player.Traits.ContainsKey("jinxed"))
+                        {
+                            w.Boon = 6;
+                        }
+                    }
+                }
                 return true;
             }
             else if (Monster.Stamina > 0 || Monster2.Stamina > 0)
@@ -2161,6 +2394,7 @@ namespace DungeonCrawler
             else
             {
                 Console.WriteLine("The fire consumes you both!");
+                Console.ReadKey(true);  
                 return false;
             }
         }

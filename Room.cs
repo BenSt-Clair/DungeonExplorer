@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Numerics;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DungeonCrawler
@@ -348,8 +350,9 @@ namespace DungeonCrawler
         /// <param name="weaponInventory"></param>
         /// <param name="b"></param>
         /// <param name="player"></param>
-        public Room Investigate(List<Room> threadPath, List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains, List<Item> stickyItems, List<Item> specialItems = null, Monster minotaur = null)
+        public Room Investigate(Stopwatch sw, long minotaurAlertedBy, bool justStalked, List<Room> threadPath, List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains, List<Item> stickyItems, List<Item> specialItems, Monster minotaur, Combat mageBattle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, List<Room> destinations, Door stairwayToLower, Feature laboratory = null, List<Room> mosaicPortal = null)
         {
+            
             Dice D20 = new Dice(20);
             Dice D6 = new Dice(6);
             //string list for moving about the room
@@ -387,7 +390,7 @@ namespace DungeonCrawler
             "Flashing a grin indicative of derring do, you theatrically stroll up",
             "Armed with your dazzling smile, you strut over"
             };
-            if (b < 1)
+            if (b < 1 && (Name !="antechamber" || FirstVisit))
             {
                 Console.WriteLine($"Will you investigate the {Name}'s...");
                 Console.WriteLine("[1] Northern wall?");
@@ -527,6 +530,40 @@ namespace DungeonCrawler
             while (true)
             {
                 string answer = Console.ReadLine().Trim().ToLower();
+                List<Door> doors = new List<Door>();
+                List<Room> adjacentRoom = new List<Room>();
+                foreach (Feature f in FeatureList) 
+                { 
+                    if(f is Door)
+                    {
+                        doors.Add(f.CastDoor());
+                    }
+                }
+                foreach (Door d in doors)
+                {
+                    foreach(Room r in d.Portal)
+                    {
+                        if (r != this)
+                        {
+                            adjacentRoom.Add(r);
+                        }
+                    }
+                }
+                sw.Stop();
+                long timeout = sw.ElapsedMilliseconds;
+                try
+                {
+                    if (!justStalked && timeout > minotaurAlertedBy && adjacentRoom.Contains(minotaur.Location) && minotaur.Path.Count == 1)
+                    {
+                        Console.WriteLine("You suddenly halt what you are doing...");
+                        Console.ReadKey(true);
+                        Console.WriteLine($"Rooted to the floor, you think you can hear the monster stirring in the {minotaur.Location.Name}. You dare not make a sound as you wait for what happens next...");
+                        Console.ReadKey(true);
+                        return this;
+                    }
+                }
+                catch { }
+                sw.Start();
                 if (string.IsNullOrEmpty(answer))
                 {
                     Console.WriteLine("Choose a number corresponding to the list above.");
@@ -559,10 +596,10 @@ namespace DungeonCrawler
                                 Console.WriteLine($"\n{ministryOfSillyWalks[19+D6.Roll(D6)]} to the {FeatureList[answer1].Name}...\n");
                             }
                             Console.ReadKey(true);
-                            Room newRoom = FeatureList[answer1].Search(player.CarryCapacity, inventory, weaponInventory, this, player.FieryEscape);
-                            FeatureList[answer1].investigateFeature(specialItems, minotaur);
+                            Room newRoom = FeatureList[answer1].Search(player.CarryCapacity, inventory, weaponInventory, this, player.FieryEscape, player, stairwayToLower, destinations, specialItems, mageBattle, secretChamber, goblin, gnoll, MGItems);
+                            FeatureList[answer1].investigateFeature(specialItems, minotaur, player, mosaicPortal);
                             
-                            if ( newRoom.Name != this.Name)
+                            if ( newRoom.Name != this.Name || laboratory.Description.Contains("It's been thoroughly trashed after your fight with Merigold..."))
                             {
                                 return newRoom;
                             }
