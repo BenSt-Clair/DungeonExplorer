@@ -553,6 +553,7 @@ namespace DungeonCrawler
                     Monster backpack = new Monster("backpack", "", new List<Item>(), 1, 1, flap);
                     if (!_player.FieryEscape)
                     {
+                        _room.FirstVisit = false;
                         switch (LoopParle(choice_answer, playerchoices1, description1, parlance, 8, 9, 10))
                         {
                             case 1:
@@ -849,6 +850,7 @@ namespace DungeonCrawler
                     }
                     else
                     {
+                        _room.FirstVisit = false;
                         switch (LoopParle(choice_answer, playerchoices1, description1, parlance, 8, 9))
                         {
                             case 1: //flee

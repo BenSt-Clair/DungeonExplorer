@@ -775,7 +775,7 @@ namespace DungeonCrawler
             Item jawBone = new Item("jaw bone", "This bone is of disquietingly human origin - and is warm...", false);
             Item legBone = new Item("leg bone", "It's been gnawed until, in some places, whittled to the very marrow...", false);
             Item rib = new Item("rib", "It's not much of a find...", false);
-            Door hatch = new Door("trapdoor", "It is constructed out of dwarven steel. Your hands trace the craftsmanship. However, you notice no bolts or locks keeping it shut. It's free to open - should you choose to go down it...", false, "unlocked", null, null, "You heft the heavy trapdoor open, before it clangs to the granite floor. Before you lies a gaping hole of unfathomable depths; only darkness seems to lurk beneath your feet. The noise reverberates for a moment as a chill wind whisks up from the dank depths below. \nThere's a ladder. With trepidation gnawing at your gut, you follow it down...");
+            Door hatch = new Door("trapdoor", "It is constructed out of dwarven steel. Your hands trace the craftsmanship. However, you notice no bolts or locks keeping it shut. It's free to open - should you choose to go down it...", false, "unlocked", null, null, "You heft the heavy trapdoor open, it's clanging on the granite floor reverberating eerily within the silence. Before you lies a gaping hole of unfathomable depths; only darkness seems to lurk beneath your feet, along with an unsettling stillness that almost invites you to sink within its depths. The noise continues to reverberate as you brace against a chill whisked up from somewhere behind the darkness. \nThere's a ladder. With trepidation gnawing at your gut, you follow it down...");
             Feature aBrazier = new Feature("brazier", "If this brazier does indeed burn it is not with any normal fire. Upon closer inspection, its dim flickering glow seemingly cannot be expunged. It barely keeps the looming shadows at bay.", true, "lit", null);
             List<Item>dungeonItems = new List<Item> { femur, jawBone, legBone, rib};
             List<Feature>dungeonFeatures = new List<Feature> {stairwayToLower, aBrazier, hatch};
@@ -834,7 +834,7 @@ namespace DungeonCrawler
             Room corridor = new Room("long corridor", "More of those strange braziers cast pools of frosty light within the dark corridor. Here and there they alleviate the murk within the passage of grim stone walls and rickety floorboards. It extends to the left into darkness and to the right towards a wide flight of stone stairs. \nTo the north you face another door similar to the ornate rosewood door behind you.\t\nTurning your gaze west down the shadowy passage you see the flickering braziers leading towards a dark stairwell, descending beyond the inky blackness to unknown depths.\t\nTurning your head south the ornate rosewood door to your own former cell meets your gaze.\t\nTo the east the passageway leads past more doors up to a flight of stairs, ascending to the next level of whatever building or (tower?) you find yourself in.\t\t", corridorItems, corridorFeatures);
             Room cellOpposite = new Room("eerie cell", "There are scratch marks on the inside of the rosewood door leading into this cell. Whoever was here was dragged out and taken Lord only knows where. \nAhead of you is a bare stone wall, a bowl left close by. A kind of nest has been formed out of the strewn garments - clearly where the last occupant had rested. They're still warm...\t\nYou find little of note save for a clumsy attempt to craft crude levers out of the wooden planks of the floor. You guess they were used to slip under the gap in the door and lever it out of its iron pin hinges. Judging by the snapped and splintered planks of wood around you, the attempt failed.\t\nTurning your gaze southwards you see the door through which you entered. Like your room there are braziers either side of it, but they've been bent out of shape, their unnatural frosty flames extinguished.\t\nLooking to the east wall you find a trunk made of coarse leather hide and a wooden frame.\t\t", cell2Inventory, cell2features);
             Room antechamber = new Room("antechamber", "The prodigious antechamber you now find yourself in is an architectural marvel of sweeping stone arches and a vaulted ceiling. For a few moments the sight of its extravagance, so vastly different from your previous surroundings, takes your breath away.\nGazing northwards you see a heavyset door studded with steel bolts, Above it a bronze plaque has been blackened as though blasted by some spell or fireball. \t\nTo the west you see the brightly illuminated stairway you just ascended.\t\nTurning your gaze to the south wall you find bare patches where once were probably opulent oil-paintings and portraits. Their absence adds to the ominous sense of some recent tragedy befalling this place.\t\nTo the east is another door leading out of the antechamber - this one a far more inviting set of oak-panelled double doors framed by fluted pillars and a grand archway enclosing some strange mosaic.\t\t", antechamberItems, antechamberFeatures);
-            Room oubliette = new Room("oubliette", "~demon pit~", cellInventory, cellfeatures);
+            Room oubliette = new Room("oubliette", "You find yourself within a chamber darker than any you've come across before. It's sole faint light comes from arcane and esoteric runes, imbued with some enchanted pale blue glow. They luminate the place like distant dying stars, scrawled along a vaulted ceiling, the far walls and trailing away from you in all directions across the unnaturally cold ground. Feathers of frost fill the air in front of you with every exhale, as you begin to shiver from the cold. Suddenly, you hear something clang above you, but all you can see as your gaze darts to the ceiling are more runes. You realise that you're sealed in here with no way out...\nTo the north you notice the runes wend their way in geometric patterns and arcs towards a distant wall where their snaking paths continue upwards as though the entire room were bound in some bewitching ribbons of indecipherable symbols.\t\nYour gaze turns left, where you notice a vast portal of crackling arcane energy. The ribbons of runes trailing through this whole place feed into this vortex, where a rupture in the very space around it seems to permit a view of some terrible storm, jagged crenulations as of some dark towertop and a lone silhouette braced, unfeeling, against howling wind, and biting sleet. They face away from you seemingly beseeching  the full moon with disquieting incantations and dark utterances...\t\nTurning around you spy a ladder leading to some hatch above, but as you step towards it the rungs seem to drift farther and farther apart as though part of some optical illusion. The ladder is impossible to climb, warped by some magical anomaly that escapes your understanding.\t\nGazing to the right lies more of those runic ribbons of enchantment binding the room in great geometric arcs, they seem to spiral in on some distant pentagram, but it's too dark to see anything further...\t\t ", cellInventory, cellfeatures);
             Room emptyCell = new Room("empty cell", "Upon entering this cell you find scratch marks around the lock. The enchanted braziers cast everything in a shimmering ethereal glow, as though the light were reaching this room through some alien ocean or the underside of a glacier\nAhead of you are more garments strewn haphazardly about. Some of them have been piled against the wall, almost as though to form something to sit on.\t\nTurning your gaze left you espy more rusty chains, along with a bookcase that - like the one in your old cell - looks like its seen better days.\t\nFacing the rosewood door you came through you notice bobby pins litter the floor. They must've been something the previous occupant had brought here with them. It looks like they were used to try and unlock the door.\t\nTo the east, just peeping from under the garments, you notice a ball of red thread. It seems to have been collected by the last occupant but you've no idea what for.\t\t", emptyCellItems, emptyCellFeatures);
             Room armoury = new Room("armoury", "The instant you step inside you are greeted with a startled gnoll and goblin. Coins clatter to the table they're gathered around as they stare at you, surrounded by weapon racks and other decidedly sharp furnishings. Your presence has caused them to pause their boisterous clamouring mid-game of coins... It seems you've intruded upon a private party. Their stunned silence has yet to change into hostility, but it won't be long before it does...\nThe high walls of the 'RmorRee' extend to a vaulted ceiling and appear to have been stripped of many ladders and shelves judging by the bare patches and splintered wood panels left behind. The north wall in particular is one of the few that betrays what this room might've been before its spartan refurbishment; a rosewood bookcase, replete with tomes, greets your gaze directly ahead.\t\nThe west wall to your left is where the table is situated where the gnoll and goblin played their game of coins.\t\nFacing south you find the door you just passed through.\t\nTo your right, gazing east, you see racks fully stocked with weapons and armour.\t\t", armouryItems, armouryFeatures);
             Room messHall = new Room("mess hall", "The vast hall seems to have lived a former life as the servants cafeteria, replete with benches and a communal space for dining. It has since been transformed into a mess hall where the CurseBreaker's private army sates their gluttony and engages in regular bouts of fisticuffs and food fights. Mashed potato has spattered areas of the wall for so long that it has almost ossified. The tables are a raucous assemblage far from the neat aisles you presume they once formed. Meanwhile, you spot the open kitchen has been left in dire need of cleaning with pots and pans strewn over the floor, some sort of gruel congealing within.\nTo the north you can see the open kitchen area behind a counter. The oven is an oldfashioned copper burner, though its been dented somewhat by beer swilling pugilists.\t\nTo the west you can see the through which you entered. From this side it's been studded with knives, seemingly having been aimed at a note that's been nailed there.\t\nTo the south you espy most of the horrendously dishevelled dining area. Bones scatter the cobbled floor from previous feasts. \t\nTo the east you see the far table has an open book one of the mercenaries must've been reading through.\t\t", messHallItems, messHallFeatures);
@@ -905,6 +905,7 @@ namespace DungeonCrawler
             broomClosetDoor.CastDoor().Portal = broomClosetPassage;
             messHallDoor.CastDoor().Portal = messHallPassage;
             holeInCeiling.CastDoor().Portal = holeRooms;
+            hatch.CastDoor().Portal = hatchPassage; 
             Test test1 = new Test(room);
             test1.RunForRoom();
             List<Room> destinations = new List<Room> {highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes,  mirrorWorld };
@@ -2925,22 +2926,27 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
+                    // throwing knife on pentagram
                         if (!usesDictionaryItemFeature.ContainsKey(lockpickingSet))
                         {
                             usesDictionaryItemFeature.Add(lockpickingSet, new List<Feature> { emptyCellDoor, otherRosewoodDoor, circleDoor, magManDoor });
                         }
                         usesDictionaryItemFeature.Remove(yourRustyChains);
-                        ///enter new Dictionaries for item use here
-                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
-                        ///red herring in room above
-                        ///Specific for each room, tailored.
-                        if (!(a == 0 && b == 0))
+                    ///enter new Dictionaries for item use here
+                    ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                    ///red herring in room above
+                    ///Specific for each room, tailored.
+                    if (b != 0)
+                    {
+                        //ArchFey
+                    }    
+                    if (!(a == 0 && b == 0))
                         {
                             Console.WriteLine("Now what will you do?");
                         }
                     Console.WriteLine("[c] Check your character's status?");
                     Console.WriteLine("[1] Check what items are still on your person?");
-                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
+                        Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");// immediately called over by trapped 'pixie'
                         if (b > 0)
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
@@ -2973,7 +2979,7 @@ namespace DungeonCrawler
                                     newRoom1 = newRoom;
                                     continue;
                                 }
-
+                                
 
                                 b++;
                             }
@@ -7239,7 +7245,7 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("You nervously greet the dragon and desperately try to explain your situation. \n\nThe dragon, in turn, just stares at you with bored disdain, it's sleepy firedim eyes drooping to cynical half-mast. However, it also senses truth in your words.");
                             Console.ReadKey(true);
-                            Console.WriteLine("After a moment's consideration, it chooses to indulge you...");
+                            Console.WriteLine("After a moment's consideration, and with what you sense to be an ancient cunning rousing itself behind those frightful eyes, it chooses to indulge you...");
                             Console.ReadKey(true);
                             Console.WriteLine("\n\t'Very well, ape-thing,' it addresses you haughtily, 'you've managed to respect my treasure and leave it untouched and I detect no scent of deception about your words. Let us see if you're worthy of freedom. \n\t'Answer me this riddle,' it declares, 'and I shall use my own considerable powers to whisk you back from whence you came...'");
                             Console.ReadKey(true);
@@ -7249,7 +7255,7 @@ namespace DungeonCrawler
                             Console.ReadKey(true);
                             List<string> riddleMeThis = new List<string> 
                             { 
-                                "I can never be emptied, \nI can never be drained," +
+                                "\nI can never be emptied, \nI can never be drained," +
                                 "\nI can never be filled, \nI can never be exchanged," +
                                 "\n\nI am no gold cup or glittering chalice in view, " +
                                 "\n For with age they grow dull, " +
@@ -7257,27 +7263,48 @@ namespace DungeonCrawler
                                 "\n And I am only new when I am far from full..." +
                                 "\n\nThe dragon leers expectantly as it sharpens its talons. 'What am I?'\t    moon     ",
 
-                                "I am drawn, but not on paper," +
+                                "\nI am drawn, but not on paper," +
                                 "\nSeldom will you find my outline scrawled in ink." +
                                 "\nLight is what I yield should I taper," +
                                 "\nOr darkness when my two halves come to link." +
                                 "\n\nThe dragon leers expectantly as it sharpens its talons. 'What am I?'\t    curtain      ",
 
-                                "If you were to ask me the answer to my riddle," +
+                                "\nIf you were to ask me the answer to my riddle," +
                                 "\nI would never be able to answer," +
                                 "\nFor I’m tongue-tied; bound straight down the middle." +
                                 "\nI could be quite the dancer," +
                                 "\nI can follow your every step," +
                                 "\nBe sure to find my answer," +
                                 "\nOr else softly you must tread." +
-                                "\n\nThe dragon leers expectantly as it sharpens its talons. 'What am I?'\t    shoe      "
+                                "\n\nThe dragon leers expectantly as it sharpens its talons. 'What am I?'\t    shoe      ",
 
-                                
+                                "\nThese keys unlock no doors of note," +
+                                "\nBut do reveal a note no author ever wrote." +
+                                "\nThough some wrote notes that I utter with no" +
+                                " throat,\nThese notes that they wrote have no words of which they can gloat," +
+                                "\nAnd it’s these notes with no words, but with sentences and phrases," +
+                                "\nThat gauges which notes that no author ever wrote are revealed in phases," +
+                                "\n\nThe dragon leers expectantly as it sharpens its talons. 'What am I?'\t    piano      ",
+
+                                "\nWhen I fill a concert hall," +
+                                "\nCrowds upon crowds of people I might enthral." +
+                                "\nI follow every fish in the sea," +
+                                "\nAlthough I cannot claim that they notice me," +
+                                "\nAnd, on balance, no one would claim that I’m regal," +
+                                "\nBut I am the thing that judges to make things equal." +
+                                "\nI might weigh heavily on your mind," +
+                                "\nFor I am seen on every map," +
+                                "\nYet I am no road, no city, no place to find," +
+                                "\nAnd I can be reached by no adventurer, man or indeed any chap." +
+                                "\n\nThe dragon leers expectantly as it sharpens its talons. 'What am I?'\t    scale      "
+
+
 
                             };
-                            int index = D3.Roll(D3) - 1;
+                            Dice D5 = new Dice(5);
+                            int index = D5.Roll(D5) - 1;
                             Console.WriteLine(riddleMeThis[index].Substring(0, riddleMeThis[index].IndexOf("\t")));
-                            Console.WriteLine("Type your answer below or else type 'done' if you give up...");
+                            Console.WriteLine("Type your answer (as a single word!) below or else type 'done' if you give up...");
                             while (true)
                             {
                                 string answer = Console.ReadLine().Trim().ToLower();
@@ -7328,6 +7355,84 @@ namespace DungeonCrawler
                                         newRoom1 = broomCloset;
                                         leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                         break;
+
+                                    }
+                                    else if ((player1.Traits.ContainsKey("jinxed") || player1.Traits.ContainsKey("friends with fairies")) && answer == "dragon")
+                                    {
+                                    string description = "If the dragon's eyes were drooped to cynical half-mast before, now they're in danger of rolling all the way to the back of its draconic head.";
+                                    string parlance = "'It seems the basics of riddles eludes you somewhat, ape-thing,' the dragon replies with pained exasperation. 'When I say, *what am I?*, I don't mean it literally...'";
+                                    Dialogue dragon = new Dialogue(player1, dragonLair);
+                                    List<string> responses = new List<string> 
+                                    { 
+                                        "You reply you can hardly be very literary. Afterall, there's no paper and pen down here...",
+                                        "You reply by repeating the obvious; but you are a dragon, right...?",
+                                        "You apologise and tell him you were always better at charades anyhow. Would they care to play charades?"
+                                    };    
+                                    switch(dragon.Parle(description, parlance, responses))
+                                    {
+                                        case 1:
+                                            Console.WriteLine("The dragon's eyes narrow dangerously as it surveys you. 'You misunderstand, ape-thing,' it replies with in soft and deadly tones, 'literally means not a simile or metaphor. For example, saying you are literally paper would be wrong, but saying you are metaphorically paper would be right, seeing as you share the property of burning to ashes whenever I feel like it...'");
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("You're about to respond when the dragon continues, 'Or perhaps you need a more *palpable* demonstration...'");
+                                            if (goldDragonBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, false))
+                                            {
+                                                Console.WriteLine("Just kidding!\n\nThe dragon incinerates you alive...");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("Your adventure ends here");
+                                                Console.ReadKey(true);
+                                                return;
+                                            }
+                                            else
+                                            {
+                                                return;
+                                            }
+                                        case 2:
+                                            description = "The dragon glowers at you, it's disdain crystalising into a kind of baleful vexation.";
+                                            parlance = "'That's hardly the point, ape-thing...' it responds with a voice as icy as the thin ice you're metaphorically walking on.";
+                                            responses.Clear();
+                                            responses.Add("You doggedly and cogently pursue your syllogistic inquiry to its inexorable logical conclusion: 'but you *are* a dragon, so I answered the question right, right...?'");
+                                            responses.Add("You tell the dragon that you thought the point was to answer the riddle correctly, which you did and now you'd like to be whisked back tout suite...");
+                                            switch (dragon.Parle(description, parlance, responses))
+                                            {
+                                                default:
+                                                    Console.WriteLine("The dragon scowls, seems to very sincerely consider multiple methods of killing you... slowly, before finally deciding that it wouldn't be worth the effort.");
+                                                    Console.WriteLine("It mumbles something about silly ape-things before imperiously gesturing with its claw and casting a portal to open up at your feet. You plummet through it and finally leave the poor dragon in peace.");
+                                                    Console.ReadKey(true);
+                                                    newRoom1 = broomCloset;
+                                                    leftWhichRooms = newRoom1.WhichRoom (leftWhichRooms);
+                                                    break;
+                                            }
+                                            break;
+                                        default:
+                                            description = "The dragon simply glowers at you, it's disdain crystalising into a baleful hostility. It seems to hold back from burning you to cinders only because it believes instant cremation would be too good for you...";
+                                            parlance = "";
+                                            responses.Clear();
+                                            responses.Add("You get the ball rolling: 'Oh so, umm... [motion a book]... and, uh, four syllables... oops! I'm not supposed to say that...'");
+                                            responses.Add("Begin an elaborate mime routine - walking down invisible stairs, trapped in a glass box, et cetera... all the while slowly inching your way to the lovely, cool, watery, not-at-all-flammable lake...");
+                                            responses.Add("You make another suggestion: 'Or there's this game they play in the CurseBreaker's tower called coins...'");
+                                            switch(dragon.Parle(description, parlance, responses))
+                                            {
+                                                case 1:
+                                                    Console.WriteLine("The dragon eyes your inane antics with incredulity - incredulity at how blundersome you are. You've already obliviously given the answer away twice by the time the dragon mercifully interrupts your performance with a fireball. You are incinerated within moments...");
+                                                    Console.ReadKey(true);
+                                                    Console.WriteLine("Your adventure ends here...");
+                                                    Console.ReadKey(true);
+                                                    return;
+                                                case 2:
+                                                    Console.WriteLine("The dragon eyes your antics with mounting disdain. It's a beast that has survived for centuries, deployed great wit and cunning in innumerable measure to do so, and here before it prances this ape-thing who thinks it can escape by doing a silent hokey-pokey into the lake...\nThe dragon heaves a heavy sigh before swatting you with its claw...");
+                                                    Console.ReadKey(true);
+                                                    Console.WriteLine("Your adventure ends here...");
+                                                    Console.ReadKey(true);
+                                                    return;
+                                                default:
+                                                    Console.WriteLine("The dragon evidently thinks 'coins' sounds like a terrible game. Anyway, it has enough of them already. With one lazy flick of its claw it lops off your head before your daftness becomes infectious...");
+                                                    Console.ReadKey(true);
+                                                    Console.WriteLine("Your adventure ends here...");
+                                                    Console.ReadKey(true);
+                                                    return;
+                                            }
+
+                                    }
 
                                     }
                                     else

@@ -516,6 +516,10 @@ namespace DungeonCrawler
 
                 }
             }
+            if (Name == "oubliette")
+            {
+                return this;
+            }
             ///What now follows are a list of options whereby the player can pick up
             ///items in the room, investigate features of the room, or try something else, i.e.
             ///return to main options.
