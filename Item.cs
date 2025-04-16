@@ -36,7 +36,7 @@ namespace DungeonCrawler
         {
             weaponInventory.Add(weapon);
         }
-        public void StudyItem(Item item)
+        public void StudyItem(Item item, Player player)
         {
             if (item.Name.Contains("newsletter"))
             {
@@ -554,7 +554,7 @@ namespace DungeonCrawler
                     int x = 0;
                     while (x == 0)
                     {
-                        x = history_curses.LinearParle(action, pages, playerchoice, description);
+                        x = history_curses.LinearParle(action, pages, playerchoice, description, player);
                     }
                 }
                 else
@@ -654,7 +654,7 @@ namespace DungeonCrawler
         /// <param name="weapon"></param>
         /// <param name="featureItems"></param>
         /// <param name="roomItems"></param>
-        public void PickUpItem( int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null, Weapon yourRustyChains = null, List<Item> stickyItems = null, Monster monster = null, List<Room> threadPath = null, Room room = null)
+        public void PickUpItem( Player player, int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null, Weapon yourRustyChains = null, List<Item> stickyItems = null, Monster monster = null, List<Room> threadPath = null, Room room = null)
         {
             try
             {
@@ -776,7 +776,7 @@ namespace DungeonCrawler
                     {
                         if (weapon == null)//if item is not a weapon
                         {
-                            StudyItem(item);
+                            StudyItem(item, player);
                             
                             if (range == 3 || range == 4 || range == 6)
                             {
@@ -791,7 +791,7 @@ namespace DungeonCrawler
                         }
                         else//if item is a weapon
                         {
-                            StudyItem(weapon);
+                            StudyItem(weapon, player);
                             if (range == 3 || range == 4 || range == 6)
                             {
                                 Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it upon your person \n[3]place it back where you found it?");

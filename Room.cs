@@ -658,7 +658,7 @@ namespace DungeonCrawler
                                 if (freshLoop) { continue; }
                                 List<Item> weaponSplice = new List<Item> { itemList[answer1 - FeatureList.Count] };
                                 List<Weapon> weapon1 = weaponSplice.Cast<Weapon>().ToList();
-                                weapon1[0].PickUpItem( player.CarryCapacity, inventory, weaponInventory, 4, 0, null, weapon1[0], null, ItemList, yourRustyChains, stickyItems, null, threadPath, this);
+                                weapon1[0].PickUpItem( player, player.CarryCapacity, inventory, weaponInventory, 4, 0, null, weapon1[0], null, ItemList, yourRustyChains, stickyItems, null, threadPath, this);
                             }
                             catch // if not a weapon that is to be picked up...
                             {
@@ -683,7 +683,7 @@ namespace DungeonCrawler
                                     }
                                 }
                                 if (freshLoop) { continue; }
-                                itemList[answer1 - FeatureList.Count].PickUpItem( player.CarryCapacity, inventory, weaponInventory, 4, 0, itemList[answer1 - FeatureList.Count], null, null, ItemList, null, stickyItems, null, threadPath, this); 
+                                itemList[answer1 - FeatureList.Count].PickUpItem( player, player.CarryCapacity, inventory, weaponInventory, 4, 0, itemList[answer1 - FeatureList.Count], null, null, ItemList, null, stickyItems, null, threadPath, this); 
                                     
                                 
                             }

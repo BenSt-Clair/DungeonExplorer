@@ -61,6 +61,8 @@ namespace DungeonCrawler
         public bool Speedy { get; set; }
         public Stopwatch midnightClock { get; set; }
         public int MGItemsDonated { get; set; }
+        public bool Fooled { get; set; }
+        public int UncoverSecretOfMyrovia { get; set; }
         public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits, bool masked = false, bool fieryEscape = false, bool speedy = false, Stopwatch midnightClock = null, int MGItemsDonated = 0)
         {
             Name = name;
@@ -76,6 +78,8 @@ namespace DungeonCrawler
             Speedy = speedy;
             this.midnightClock = midnightClock;
             this.MGItemsDonated = MGItemsDonated;
+            Fooled = true;
+            UncoverSecretOfMyrovia = 0;
         }
         public string DisplayName() { return Name; }
         public int DisplaySkill() { return Skill; }
@@ -298,8 +302,8 @@ namespace DungeonCrawler
                             bool success = false;
                             string objName = message.Substring(message.IndexOf(reply1.ToString()) + 3, message.IndexOf((reply1 + 1).ToString()) - 2 - (message.IndexOf(reply1.ToString()) + 3)).Trim();
                             Console.WriteLine(objName);
-                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
-                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
                             if (!success) { Console.WriteLine($"You threw your {objName} away!"); }
 
                         }
@@ -308,8 +312,8 @@ namespace DungeonCrawler
                             bool success = false;
                             string objName = message.Substring(message.IndexOf((r - 1).ToString()) + 3, message.Length - 1 - (message.IndexOf((r - 1).ToString()) + 3)).Trim();
                             Console.WriteLine(objName);
-                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
-                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(CarryCapacity,    Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(this, CarryCapacity,    Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
                             if (!success) { Console.WriteLine($"You threw your {objName} away!"); }
                         }
                     }
@@ -1123,7 +1127,7 @@ namespace DungeonCrawler
         /// </summary>
         /// <param name="inventory"></param>
         /// <param name="weaponInventory"></param>
-        public void search(int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory)
+        public void search(int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, Player player)
         {
             bool continueSearch = true;
             string message = "You find";
@@ -1289,7 +1293,7 @@ namespace DungeonCrawler
                         }
                         else
                         {
-                            x.PickUpItem(carryCapacity, inventory, weaponInventory, 3, 0, null, x, null, null, null, null, this);
+                            x.PickUpItem(player, carryCapacity, inventory, weaponInventory, 3, 0, null, x, null, null, null, null, this);
                             answer = "";
                             skip = true;
                         }
@@ -1324,7 +1328,7 @@ namespace DungeonCrawler
                         }
                         else
                         {
-                            x.PickUpItem(carryCapacity, inventory, weaponInventory, 3, 0, x, null, null, null, null, null, this);
+                            x.PickUpItem(player, carryCapacity, inventory, weaponInventory, 3, 0, x, null, null, null, null, null, this);
                         }
                         break;
                     }

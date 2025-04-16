@@ -40,7 +40,7 @@ namespace DungeonCrawler
                 string answer = Console.ReadLine().Trim().ToLower();
                 if (answer == "yes" || answer == "y")
                 {
-                    Monster.search(Player.CarryCapacity, Player.Inventory, Player.WeaponInventory);
+                    Monster.search(Player.CarryCapacity, Player.Inventory, Player.WeaponInventory, Player);
                     Feature deadFoe1 = new Feature("fallen foe", "They've pockets free for the plundering...", true, "searched", Monster.Items);
                     Feature fallenFoe = null;
                     foreach(Feature f in room.FeatureList)

@@ -186,7 +186,7 @@ namespace DungeonCrawler
                 }
             }
         }
-        public int LinearParle(Dictionary<string, string> choice_CustomResponse, List<string>parlances, List<List<string>> playerChoices, string description)
+        public int LinearParle(Dictionary<string, string> choice_CustomResponse, List<string>parlances, List<List<string>> playerChoices, string description, Player player = null)
         {
             int node = 0;
             int answer1 = 0;
@@ -222,6 +222,7 @@ namespace DungeonCrawler
                             Console.WriteLine($"Please enter a number between 1 and {option}");
                             continue;
                         }
+                        
                         if (choice_CustomResponse[playerChoices[node][answer1]] == "You decide to stop reading the literature for now.")
                         {
                             Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]]);
@@ -246,7 +247,23 @@ namespace DungeonCrawler
                             Console.ReadKey(true);
                             return -50;
                         }
-                        
+                        if (player != null)
+                        {
+                            if (node == 1 && parlances[2].Contains("This report sends a jolt through you, as the name of that accursed village that'd abducted you leaps out of the page at you;"))
+                            {
+                                if (player.UncoverSecretOfMyrovia < 4)
+                                {
+                                    player.UncoverSecretOfMyrovia += 4;
+                                }
+                            }
+                            else if (node == 2 && parlances[3].Contains("You watch as the guests, rather unsteadily, rise from their seats and take their leave. One of the last to do so is a figure who stirs within you some disquieting unease; an unwelcome, nauseating deja vu. The ghostly apparition is more tremulous than most as he heads for the door..."))
+                            {
+                                if (player.UncoverSecretOfMyrovia == 1 || player.UncoverSecretOfMyrovia == 4 || player.UncoverSecretOfMyrovia == 5 || player.UncoverSecretOfMyrovia == 0)
+                                {
+                                    player.UncoverSecretOfMyrovia += 2;
+                                }
+                            }
+                        }
                         Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]] + " " + parlances[node + 1]);
                         
                         break;
@@ -589,6 +606,17 @@ namespace DungeonCrawler
                 try
                 {
                     int answer1 = int.Parse(answer) - 1;
+                    if (choices[answer1] == "You remind him of what he said about only having until midnight to stop some profane ritual - you ask him to tell you everything he knows about it...")
+                    {
+                        _player.Fooled = false;
+                    }
+                    if (choices[answer1] == "You tell him that the strange innkeeper made it clear you were abducted and exchanged in the hope that the CurseBreaker might somehow break Myrovia's curse. How does this villain intend to commit such a feat?")
+                    {
+                        if (_player.UncoverSecretOfMyrovia == 0 || _player.UncoverSecretOfMyrovia == 2 || _player.UncoverSecretOfMyrovia == 4 || _player.UncoverSecretOfMyrovia == 6)
+                        {
+                            _player.UncoverSecretOfMyrovia++;
+                        }
+                    }
                     if (answer1 < 0 || answer1 > choices.Count - 1)
                     {
                         Console.WriteLine($"Please enter a number between 1 and {option}");

@@ -2938,7 +2938,8 @@ namespace DungeonCrawler
                     ///Specific for each room, tailored.
                     if (b != 0)
                     {
-                        //ArchFey
+                        ArchFey LadyOfVipers = new ArchFey(player1, goblin, trialBattle, oubliette);
+                        LadyOfVipers.ElderArchFeyPlotPoint(magicalManufactory);
                     }    
                     if (!(a == 0 && b == 0))
                         {
@@ -7746,10 +7747,12 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         threadPath.Insert(0, newRoom1);
                     }
+                    bool descending = true;
                     while (!leftWhichRooms[20])//dungeon Chamber : only way in is by the stairs. can be bypassed by portal
                     {
                         bool leave = false;
-                        if (stairwayToLower.Dark)
+                        
+                        if (stairwayToLower.Dark && descending)
                         {
                             Console.ReadKey(true);
                             Console.WriteLine("Traversing these treacherous steps in the dark is no mean feat. You must continually test your skill all the way down.");
@@ -7842,7 +7845,7 @@ namespace DungeonCrawler
                                 tests--;
                             } 
                         }
-                        else
+                        else if (descending)
                         {
                             Console.ReadKey(true);
                             Console.WriteLine("Traversing these treacherous steps even when brightly lit by Merigold's magic is no mean feat. You must continually test your skill all the way down.");
@@ -7933,6 +7936,7 @@ namespace DungeonCrawler
                             Console.ReadKey(true);
                             discovery = false;
                         }
+                        descending = false;
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
                         stairwayToLower.Description = "The steep stone steps ascend beyond the faint light of the lone brazier and up towards the corridor above.";
                         stairwayToLower.Passing = "Leaving this ghastly chamber behind and whatever further horrors lurk beyond the trapdoor, you ascend the steep steps...";

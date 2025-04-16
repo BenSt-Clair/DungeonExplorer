@@ -600,7 +600,7 @@ namespace DungeonCrawler
                                             Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                            backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                            backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                         }
                                         else
                                         {
@@ -707,7 +707,7 @@ namespace DungeonCrawler
                                         Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                     }
                                     numOfMGItems = numOfMGItems - backpack.Items.Count;
                                     _player.MGItemsDonated = numOfMGItems;
@@ -789,7 +789,7 @@ namespace DungeonCrawler
                                     Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                 }
                                 numOfMGItems = numOfMGItems - backpack.Items.Count;
                                 _player.MGItemsDonated = numOfMGItems;
@@ -897,7 +897,7 @@ namespace DungeonCrawler
                                             Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                            backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                            backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                         }
                                         numOfMGItems = numOfMGItems - backpack.Items.Count;
                                         _player.MGItemsDonated = numOfMGItems;
@@ -1000,7 +1000,7 @@ namespace DungeonCrawler
                                         Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                     }
                                     numOfMGItems = numOfMGItems - backpack.Items.Count;
                                     _player.MGItemsDonated = numOfMGItems;
@@ -1085,7 +1085,7 @@ namespace DungeonCrawler
                                     Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                 }
                                 numOfMGItems = numOfMGItems - backpack.Items.Count;
                                 _player.MGItemsDonated = numOfMGItems;
@@ -1529,7 +1529,7 @@ namespace DungeonCrawler
                                         Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                     }
                                     numOfMGItems = numOfMGItems - backpack.Items.Count + _player.MGItemsDonated;
                                     _player.MGItemsDonated = numOfMGItems;
@@ -1631,7 +1631,7 @@ namespace DungeonCrawler
                                     Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                 }
                                 numOfMGItems = numOfMGItems - backpack.Items.Count + _player.MGItemsDonated;
                                 _player.MGItemsDonated = numOfMGItems;
@@ -1713,7 +1713,7 @@ namespace DungeonCrawler
                                 Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                             }
                             numOfMGItems = numOfMGItems - backpack.Items.Count + _player.MGItemsDonated;
                             _player.MGItemsDonated = numOfMGItems;
@@ -1829,7 +1829,7 @@ namespace DungeonCrawler
                                         Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                     }
                                     numOfMGItems = numOfMGItems - backpack.Items.Count + _player.MGItemsDonated;
                                     _player.MGItemsDonated = numOfMGItems;
@@ -1932,7 +1932,7 @@ namespace DungeonCrawler
                                     Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                 }
                                 numOfMGItems = numOfMGItems - backpack.Items.Count + _player.MGItemsDonated;
                                 _player.MGItemsDonated = numOfMGItems;
@@ -2017,7 +2017,7 @@ namespace DungeonCrawler
                                 Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                             }
                             numOfMGItems = numOfMGItems - backpack.Items.Count + _player.MGItemsDonated;
                             _player.MGItemsDonated = numOfMGItems;
