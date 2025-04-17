@@ -15,7 +15,7 @@ namespace DungeonCrawler
             _player = player;
             _room = room;
         }
-        public List<Dice> MerigoldPlotPoint(List<Item> specialItems, Combat battle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, Door stairwayToLower)
+        public List<Dice> MerigoldPlotPoint(List<Item> specialItems, Combat battle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, Door stairwayToLower, Dictionary<Item, List<Player>> usesDictionaryItemChar)
         {
             Dice D1 = new Dice(1);
             string message = "";
@@ -233,6 +233,8 @@ namespace DungeonCrawler
                     string description1 = "Merigold becomes animated by boundless energy. ";
                     Item healPotion1 = new Item("healing potion", "It has flecks of gold floating amidst a gel like suspension. The label reads; 'When you're feeling blue, down with the flu, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!'", true, "used", 20, "Stamina: When you're blue, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!");
                     Item healPotion2 = new Item("healing potion", "It has flecks of gold floating amidst a gel like suspension. The label reads; 'When you're feeling blue, down with the flu, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!'", true, "used", 20, "Stamina: When you're blue, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!");
+                    usesDictionaryItemChar[healPotion1] = new List<Player> { _player};
+                    usesDictionaryItemChar[healPotion2] = new List<Player> { _player};
                     if (_player.Stamina < _player.InitialStamina / 2)
                     {
                         description1 += "\n\t'Well, first things first. You look frightful, dear fellow - like death warmed up. A few of my finest elixirs will mend those ghastly wounds.'\nHe rummages under the laboratory's worktop and produces a few bottles of his healing potion. You notice the hue is slightly different to the ones you've come across elsewhere in the tower. When you point this out, he taps his nose wryly. \n\t'Little does the CurseBreaker know that I've been supplying his forces with potions of a somewhat subpar standard. A small act of defiance for sure, but one I've been all too willing to make and for minimal risk... Here,' he proffers one of the bottles, 'to your health. And keep the others for later - I fear you may need them for what lies ahead...'\nYou glug it down and to your surprise, it tastes delicious. You feel incredible. Merigold waves away the compliments with faux-modesty, though you can tell he's pleased. \n";

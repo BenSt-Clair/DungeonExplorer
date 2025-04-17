@@ -1134,7 +1134,7 @@ namespace DungeonCrawler
         /// <param name="weaponInventory"></param>
         /// <param name="binkySkull"></param>
         /// <returns></returns>
-        public bool UseItem1(Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Monster monster, Combat battle, bool fieryEscape, List<Room> choiceVersusDestination = null, Item binkySkull = null, Item musicBox = null, Item note = null, Item jailorKeys = null)
+        public bool UseItem1(Dictionary<Item, List<Player>> usesDictionaryItemChar,Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Monster monster, Combat battle, bool fieryEscape, List<Room> choiceVersusDestination = null, Item binkySkull = null, Item musicBox = null, Item note = null, Item jailorKeys = null)
         {
             Door door1 = new Door();
             List<Room> roomlist = new List<Room>(); // empty lists for filling in Search function unused parameters
@@ -1187,7 +1187,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(choiceVersusDestination, player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
+                                feature.Search(usesDictionaryItemChar, choiceVersusDestination, player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -1269,7 +1269,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(choiceVersusDestination, player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
+                                feature.Search(usesDictionaryItemChar, choiceVersusDestination, player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -1364,7 +1364,7 @@ namespace DungeonCrawler
                                     }
                                     else if (answer == "yes" || answer == "y")
                                     {
-                                        feature.Search(choiceVersusDestination, player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
+                                        feature.Search(usesDictionaryItemChar, choiceVersusDestination, player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
                                         break;
                                     }
                                     else if (answer == "no" || answer == "n")
@@ -2246,7 +2246,7 @@ namespace DungeonCrawler
                 return false; 
             }
         }
-        public List<bool> UseItem(Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, List<Item> specialItems, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, Dictionary<Item, List<Player>> usesDictionaryItemChar = null, Player player1 = null, Combat trialBattle = null)
+        public List<bool> UseItem(Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, List<Item> specialItems, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, Dictionary<Item, List<Player>> usesDictionaryItemChar = null, Player player1 = null, Combat trialBattle = null, Monster monster = null)
         {
             List<bool> tlist = new List<bool> { false, false };
             if (usesDictionary[item1].Contains(item2))
@@ -2355,7 +2355,52 @@ namespace DungeonCrawler
                 tlist[0] = true;
                 return tlist;
             }
-            else { return tlist; }
+            else 
+            {
+                if (item2.Name == monster.Veapon.Name && item1.Name == "throwing knife")
+                {
+                    int resultOfSkillTest = 0;
+                    if (player.Skill < 7)
+                    {
+                        Console.WriteLine("In the heat of battle you hurl your throwing knife and pray it hits your target...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("[Test your skill: Roll a D7 equal to or under your skill score]");
+                        Console.ReadKey(true);
+                        Dice D7 = new Dice(7);
+                        resultOfSkillTest = D7.Roll(D7);
+                        if(resultOfSkillTest > 3 && player.Traits.ContainsKey("jinxed"))
+                        {
+                            resultOfSkillTest -= 3;
+                        }
+                        Console.WriteLine($"You rolled a {resultOfSkillTest}");
+                        if (resultOfSkillTest <= player.Skill)
+                        {
+                            Console.ReadKey(true);
+                            Console.WriteLine("You fling the throwing knife into your opponent's weapon. It is sent clattering away along the ground. Fuming, your enemy resolves to settle this fight with their bare hands...");
+                        }
+                        else
+                        {
+                            Console.ReadKey(true);
+                            Console.WriteLine("Your throwing knife misses...");
+                            return tlist;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("With well practiced flair you fling the throwing knife into your opponent's weapon. It is sent clattering away along the ground. Fuming, your enemy resolves to settle this fight with their bare hands...");
+                    }
+                    
+                    player.Inventory.Remove(item1);
+                    room.ItemList.Add(item1);
+                    monster.Items.RemoveAt(0);
+                    room.ItemList.Add(item2);
+                    List<Item> weaponcaster = new List<Item> { specialItems[8] };
+                    List<Weapon> weaponCasted = weaponcaster.Cast<Weapon>().ToList();
+                    monster.Veapon = weaponCasted[0];
+                    
+                }
+                return tlist; 
+            }
 
         }
         public bool UseItem3(Item item1, Player player, Dictionary<Item, List<Player>> usesDictionary, bool masked)

@@ -648,7 +648,9 @@ namespace DungeonCrawler
             Weapon bastardSword = new Weapon("bastard sword", "The one and half handed sword glints with singular purpose. Wielded with any proficiency this blade would be formidable indeed.", bastardswordDamage, defaultCritHits, defaultGoodHits, 2, false);
             Weapon sai = new Weapon("sai-daggers", "They're oriental ninja weapons that, by the looks of the knocks they've received, have been used by anything other than ninjas - good ones anyway...", damage, defaultCritHits, defaultGoodHits, 1, false);
             Weapon axe = new Weapon("battle-axe", "It's a no-nonsense, true-to-its-purpose axe. If it can't cleave a goblin in two, it might at last give it something to think about...", damage1, defaultCritHits, defaultGoodHits, 1, false);
-            Item throwingKnife = new Item("throwing knife", "Despite its humble appearance, it's well made, sharp, and perfectly balanced.", false, "unbroken");
+            Item throwingKnife = new Item("throwing knife", "Despite its humble appearance, it's well made, sharp, perfectly balanced and heavy enough to, I don't know, say... knock a weapon out of an enemy's hand...?", false, "unbroken");
+            Item throwingKnife2 = new Item("throwing knife", "Despite its humble appearance, it's well made, sharp, perfectly balanced and heavy enough to, I don't know, say... knock a weapon out of an enemy's hand...?", false, "unbroken");
+            Item throwingKnife3 = new Item("throwing knife", "Despite its humble appearance, it's well made, sharp, perfectly balanced and heavy enough to, I don't know, say... knock a weapon out of an enemy's hand...?", false, "unbroken");
             Weapon rustySword = new Weapon("rusty shortsword", "A tinge of rust traces the blade around the handle. It's been recently sharpened on a grindstone, but it probably still couldn't pierce a good set of armour worthy of the name.", damage1, defaultCritHits, defaultGoodHits);
             Weapon stiletto = new Weapon("stiletto blade", "This slender blade has a needle-like point that's sharper than a drill sergeant's tongue and a fox's wits and a bag of lemons and... \nWell, you get the idea.", stilettoDamage, defaultCritHits, defaultGoodHits, 1, false);
             Item bagOfCoins = new Item("bag of coins", "Most of the coins are scattered all over the table, with a few mounds forming the winnings of previous games. There is, however, a lovely large leather bag to stash them all in close by...", false, "unspent");
@@ -824,9 +826,13 @@ namespace DungeonCrawler
             Item diadem = new Item("fancy diadem", "It's encrusted with diamonds, peppered with pearls and... hey, is that an M and G engraved on the back?");
             Item armBand = new Item("golden armband", "It's rather garish and flashy, especially with that large M and G fashioned upon it. You don't think you'll be wearing it anytime soon, even if it is solid gold...");
 
+
+            List<Dice> fistDamage = new List<Dice> { D2, D2, D3 };
+            Weapon fists = new Weapon("fists", "", fistDamage, defaultCritHits, defaultGoodHits, 0);
+
             //Special Items
             List<Item> stickyItems = new List<Item> { bowlFragments, garment, bobbyPins, clunkySabaton, breastplate, helmet, bracers, splinter, rug, looseNail, penny, crumbs, dustBunny, mops, dusters, brooms, dustpans, crumpledMissive, emptyBottles, cork, ruby, emerald, sapphire, goldDoubloon, silverBars };
-            List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys, lockpickingSet, bookA1, journal };
+            List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys, lockpickingSet, bookA1, journal, fists };
             List<Item> MGItems = new List<Item> { knifeMG, staffMG, merigoldRing, pocketWatch, bracelet, merigoldMedallion, merigoldBroach, belt, diadem, armBand, box, bookA2 };
 
             ///Rooms
@@ -1748,14 +1754,13 @@ namespace DungeonCrawler
             //
 
             //
-           
+            
             // weapons to be used in battles
             Weapon vanquisher = new Weapon("Sword of Sealed Souls", "This sword almost seems to whisper as it slices the air like silk. You can almost imagine hearing wails off in the distance as though from the victims of some banshee haunting a blighted moor.", vanquisherDamage, defaultCritHits, defaultGoodHits, 3);
             Weapon breadKnife = new Weapon("Bread Knife", "This knife's blade is dulled with age. Any aspirations to slice anything other than very, very \nsoft butter might be met with something less than success", damage, defaultCritHits, defaultGoodHits);
             Weapon scimitar = new Weapon("rusty scimitar", "The scimitar's blade is flecked with rust. Crude and brittle, you doubt it'd last long parrying a better sword.", damage1, defaultCritHits, defaultGoodHits);
             Weapon bite = new Weapon("gnashing maw", "Sharp hook-like fangs lathered with drooling saliva, nestle within this creatures jaw, ready to draw blood.", damage1, defaultCritHits, defaultGoodHits);
             Weapon dagger = new Weapon("dagger", "The dagger's blade gleams like a crooked smile in some dubious tavern.", damage1, defaultCritHits, defaultGoodHits);
-            
             // player1.WeaponInventory.Add(breadKnife);
             // player1.Inventory.Add(healPotion);
             player1.Inventory.Add(FelixFelicis);
@@ -1904,7 +1909,7 @@ namespace DungeonCrawler
                         ///when player discards rusty chains they may appear more than once. 
                         ///fungshui() is present to preempt that and prevent duplicates.
                         
-                        room.Investigate(aq, minotaurdoesnothing, justGrazing, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                        room.Investigate(usesDictionaryItemChar, aq, minotaurdoesnothing, justGrazing, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                         b++;
                     }
                     else if (reply1 == 3)
@@ -2534,7 +2539,10 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item>{ bobbyPins});
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto});
-                        if (!usesDictionaryItemFeature.ContainsKey(jailorKeys))
+                    usesDictionaryItemItem.Add(throwingKnife, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
+                    if (!usesDictionaryItemFeature.ContainsKey(jailorKeys))
                         {
                             
                             usesDictionaryItemFeature.Add(jailorKeys, new List<Feature> { emptyCellDoor, otherRosewoodDoor });
@@ -2687,7 +2695,7 @@ namespace DungeonCrawler
                                 corridor.ItemList.Remove(rustyChains);
                                 corridor.ItemList.Remove(bowlFragments);
                                 corridor.ItemList.Remove(looseNail);
-                                Room newRoom = corridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b1, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = corridor.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b1, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != corridor.Name)
                                 {
 
@@ -2769,7 +2777,10 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        if (!usesDictionaryItemFeature.ContainsKey(lockpickingSet))
+                    usesDictionaryItemItem.Add(throwingKnife, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
+                    if (!usesDictionaryItemFeature.ContainsKey(lockpickingSet))
                         {
                             usesDictionaryItemFeature.Add(lockpickingSet, new List<Feature> { emptyCellDoor, otherRosewoodDoor, circleDoor, magManDoor });
                         }
@@ -2865,7 +2876,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = room.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = room.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != room.Name)
                                 {
 
@@ -2972,7 +2983,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = oubliette.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = oubliette.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != oubliette.Name)
                                 {
 
@@ -3033,6 +3044,7 @@ namespace DungeonCrawler
                         {
                             newRoom1.Description.Remove(newRoom1.Description.IndexOf(".") + 1, deleteString.Length);
                         }
+
                         fireClock.Stop();
                         fireTimeLapsed = fireClock.ElapsedMilliseconds;
                         if (fireProgress > 0 && fireProgress < 5 && fireTimeLapsed > 360000)
@@ -3087,6 +3099,9 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
+                        usesDictionaryItemItem.Add(throwingKnife, new List<Item>());
+                        usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
+                        usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
                         usesDictionaryItemFeature.Remove(yourRustyChains);
                         antechamber.ItemList.Add(clunkySabaton);
                         antechamber.ItemList.Add(breastplate);
@@ -3242,7 +3257,7 @@ namespace DungeonCrawler
                                 antechamber.ItemList.Remove(breastplate);
                                 antechamber.ItemList.Remove(helmet);
                                 antechamber.ItemList.Remove(bracers);
-                                Room newRoom = antechamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = antechamber.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 antechamber.FirstVisit = false;
                                 if (newRoom.Name != antechamber.Name)
                                 {
@@ -3315,8 +3330,11 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        //usesDictionaryItemFeature[jailorKeys].Remove(otherRosewoodDoor);
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                    usesDictionaryItemItem.Add(throwingKnife, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
+                    //usesDictionaryItemFeature[jailorKeys].Remove(otherRosewoodDoor);
+                    usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (minotaur.Stamina > 0)
                         {
                         if (!minotaur.MinotaurReturning(cellOpposite, redThread, musicBox, threadPath, player1))
@@ -3408,7 +3426,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = cellOpposite.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = cellOpposite.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != cellOpposite.Name)
                                 {
 
@@ -3465,7 +3483,10 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        try
+                    usesDictionaryItemItem.Add(throwingKnife, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
+                    try
                         {
                             if (!usesDictionaryItemFeature[magManKey].Contains(goodWeaponRack)) 
                             {
@@ -5492,7 +5513,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = armoury.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = armoury.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != armoury.Name)
                                 {
 
@@ -5515,7 +5536,10 @@ namespace DungeonCrawler
                                 }
                                 if(goodWeaponRack.SpecificAttribute == "unlocked" && goodWeaponRack.ItemList.Count == 0)
                                 {
+                                    unlockedWeapons.Add(throwingKnife2);
+                                    unlockedWeapons.Add(throwingKnife3);
                                     goodWeaponRack.ItemList = unlockedWeapons;
+                                
                                     unlockedWeapons = new List<Item>();
                                 }
                             }
@@ -5566,7 +5590,10 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                    usesDictionaryItemItem.Add(throwingKnife, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
+                    usesDictionaryItemFeature.Remove(yourRustyChains);
                         sw.Stop();
                         minotaurAlerted = sw.ElapsedMilliseconds;
                         sw.Start();
@@ -5697,7 +5724,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = messHall.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = messHall.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (noteForJanitor.SpecifyAttribute == "read" && bucket.ItemList.Count == 0)
                                 {
                                     bucket.ItemList.Add(magManKey);
@@ -5782,7 +5809,10 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                    usesDictionaryItemItem.Add(throwingKnife, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
+                    usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (usesDictionaryItemFeature.ContainsKey(magManKey))
                         {
                             if (!usesDictionaryItemFeature[magManKey].Contains(circleDoor))
@@ -5946,7 +5976,7 @@ namespace DungeonCrawler
                                 {
                                     northwestCorner.Description = "The corner turns sharply right...";
                                 }
-                                Room newRoom = westernmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, null, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = westernmostCorridor.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, null, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != westernmostCorridor.Name)
                                 {
                                     
@@ -6024,7 +6054,10 @@ namespace DungeonCrawler
                    
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                    usesDictionaryItemItem.Add(throwingKnife, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
+                    usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (!usesDictionaryItemFeature.ContainsKey(magManKey))
                         {
                             usesDictionaryItemFeature[magManKey] = new List<Feature>{ magManDoor};
@@ -6177,7 +6210,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = northernmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = northernmostCorridor.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != northernmostCorridor.Name)
                                 {
 
@@ -6270,7 +6303,10 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                    usesDictionaryItemItem.Add(throwingKnife, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
+                    usesDictionaryItemFeature.Remove(yourRustyChains);
                         sw.Stop();
                         minotaurAlerted = sw.ElapsedMilliseconds;
                         sw.Start();
@@ -6415,7 +6451,7 @@ namespace DungeonCrawler
                                 {
                                     northeastCorner.Description = "The corner turns sharply left...";
                                 }
-                                Room newRoom = easternmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, null, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = easternmostCorridor.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, null, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != easternmostCorridor.Name)
                                 {
 
@@ -6491,7 +6527,10 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                    usesDictionaryItemItem.Add(throwingKnife, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
+                    usesDictionaryItemFeature.Remove(yourRustyChains);
 
                         if (minotaur.Location == oceanBottom && circleDoor.SpecificAttribute == "unlocked")
                         {
@@ -6650,7 +6689,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = southernmostCorridor.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = southernmostCorridor.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != southernmostCorridor.Name)
                                 {
 
@@ -6717,8 +6756,11 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        //usesDictionaryItemFeature[jailorKeys].Remove(emptyCellDoor);
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                    usesDictionaryItemItem.Add(throwingKnife, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
+                    //usesDictionaryItemFeature[jailorKeys].Remove(emptyCellDoor);
+                    usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (minotaur.Stamina > 0)
                         {
                             if (!minotaur.MinotaurReturning(emptyCell, redThread, musicBox, threadPath, player1))
@@ -6810,7 +6852,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = emptyCell.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = emptyCell.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != emptyCell.Name)
                                 {
 
@@ -6906,7 +6948,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = magicalManufactory.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower, choiceVersusDestination, worktop);
+                                Room newRoom = magicalManufactory.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower, choiceVersusDestination, worktop);
                                 if (newRoom.Name != magicalManufactory.Name)
                                 {
 
@@ -6975,7 +7017,10 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                    usesDictionaryItemItem.Add(throwingKnife, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
+                    usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                         ///red herring in room above
@@ -7011,7 +7056,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = broomCloset.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = broomCloset.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != broomCloset.Name)
                                 {
 
@@ -7056,7 +7101,10 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                    usesDictionaryItemItem.Add(throwingKnife, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
+                    usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                         ///red herring in room above
@@ -7092,7 +7140,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = highestParapet.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = highestParapet.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != highestParapet.Name)
                                 {
 
@@ -7486,7 +7534,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = dragonLair.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = dragonLair.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != dragonLair.Name)
                                 {
 
@@ -7544,7 +7592,10 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                    usesDictionaryItemItem.Add(throwingKnife, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
+                    usesDictionaryItemFeature.Remove(yourRustyChains);
                         if (minotaur.Stamina > 0)
                         {
                             if (!minotaur.MinotaurReturning(secretChamber, redThread, musicBox, threadPath, player1))
@@ -7636,7 +7687,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = secretChamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower, null, null, mosaicPortal);
+                                Room newRoom = secretChamber.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower, null, null, mosaicPortal);
                                 if (newRoom.Name != secretChamber.Name)
                                 {
 
@@ -7944,7 +7995,10 @@ namespace DungeonCrawler
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
-                        usesDictionaryItemFeature.Remove(yourRustyChains);
+                    usesDictionaryItemItem.Add(throwingKnife, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
+                    usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
+                    usesDictionaryItemFeature.Remove(yourRustyChains);
                         ///enter new Dictionaries for item use here
                         ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                         ///red herring in room above
@@ -8251,7 +8305,7 @@ namespace DungeonCrawler
                             ///when player discards rusty chains they may appear more than once. 
                             ///fungshui() is present to preempt that and prevent duplicates.
 
-                            Room newRoom = dungeonChamber.Investigate(sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                            Room newRoom = dungeonChamber.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                             if (newRoom.Name != dungeonChamber.Name)
                             {
 

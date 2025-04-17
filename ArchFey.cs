@@ -198,7 +198,7 @@ namespace DungeonCrawler
                     "\n\tFor that, such fun would not be any kind of tonic." +
                     "\n\tI tell you the truth, once, twice, thrice," +
                     "\n\tI just want to stretch my wings," +
-                    "\n\t\tI know not of any kind of vice," +
+                    "\n\t\tI know nought of any vice," +
                     "\n\t\t\tFree, I could get you out of this tower in a trice," +
                     "\n\tSo why not come closer and take a roll of the dice...'" 
                 },
@@ -266,8 +266,21 @@ namespace DungeonCrawler
                 }
             }
             else 
-            { 
-            
+            {
+                switch (LinearParle(choices_response, parlances, choices, description))
+                {
+                    case 0:
+                    case 1:
+                    case 2:
+                    default:
+                        Console.WriteLine("Flutterlyn watches on hungrily as you approach to liberate her.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("The moment your foot scuffs the pentagram is the last moment of your life...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your adventure ends here...");
+                        Console.ReadKey(true);
+                        return false;
+                }
             }
             return false;
         }

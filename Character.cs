@@ -673,7 +673,7 @@ namespace DungeonCrawler
                             {
                                 if (chosenItem.Name == "rusty chain-flail")
                                 {
-                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, steelKey, null, null, jailorKeys);
+                                    success[0] = chosenItem.UseItem1(usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, steelKey, null, null, jailorKeys);
                                     List<Weapon> _weapons = new List<Weapon>();
                                     List<Item> _weaponItem = new List<Item> { chosenItem};
                                     _weapons = _weaponItem.Cast<Weapon>().ToList();
@@ -688,11 +688,11 @@ namespace DungeonCrawler
                                 }
                                 else if (chosenItem.Name == "healing potion"|| chosenItem.Name=="Felix Felicis"|| chosenItem.Name=="elixir of feline guile")
                                 {
-                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, binkySkull, musicBox, note);
+                                    success[0] = chosenItem.UseItem1(usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, binkySkull, musicBox, note);
                                 }
                                 else
                                 {
-                                    success[0] = chosenItem.UseItem1(chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, musicBox, note);
+                                    success[0] = chosenItem.UseItem1(usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, musicBox, note);
                                 }
                                 if (!success[0])
                                 {
@@ -996,6 +996,7 @@ namespace DungeonCrawler
                 };
             try
             {
+                
                 enragedHunt = new List<string>
                 {
                 $"You overhear the monster crashing through the {Path[1].Name} in search of you...",
@@ -1082,7 +1083,26 @@ namespace DungeonCrawler
                 if (this.Rage)
                 {
                     Console.ReadKey(true);
-                    Console.WriteLine(enragedHunt[D6.Roll(D6) - 1]);
+                    if (Location.Name == "dungeon chamber")
+                    {
+                        Console.WriteLine("The monster storms the dark stairwell, hunting you down. You overhear it slip and crash all the way down the steps. Ouch!");
+                        Console.ReadKey(true);
+                        Console.WriteLine("From the sound of the monster's lumbering footsteps and pained grunts, it seems severely injured...");
+                        Stamina -= 80;
+                        int g = Path.Count - 1;
+                        while (g > 0)
+                        {
+                            if (Path[g].Name == "dungeon chamber")
+                            {
+                                Path.RemoveAt(g);
+                            }
+                            g--;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine(enragedHunt[D6.Roll(D6) - 1]);
+                    }
                     Console.ReadKey(true);
                 }
                 else if (((room.Name.Contains("corridor") && room.Name != "long corridor") || room.Name == "mess hall" || room.Name == "broom closet" || room.Name == "antechamber" || room.Name == "armoury") && ((Location.Name.Contains("corridor") && Location.Name != "long corridor") || Location.Name == "mess hall" || Location.Name == "broom closet" || Location.Name == "antechamber" || Location.Name == "armoury"))

@@ -285,7 +285,7 @@ namespace DungeonCrawler
         /// </summary>
         /// <param name="inventory"></param>
         /// <param name="weaponInventory"></param>
-        public Room Search(List<Room> choiceVersusDestination, int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, Room room, bool fieryEscape, Player player, Door stairwayToLower, List<Room> destinations, List<Item> specialItems = null, Combat battle = null, Room secretChamber = null, Monster goblin = null, Monster gnoll = null, List<Item> MGItems = null)
+        public Room Search(Dictionary<Item, List<Player>> usesDictionaryItemChar, List<Room> choiceVersusDestination, int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, Room room, bool fieryEscape, Player player, Door stairwayToLower, List<Room> destinations, List<Item> specialItems = null, Combat battle = null, Room secretChamber = null, Monster goblin = null, Monster gnoll = null, List<Item> MGItems = null)
         {
             Console.WriteLine($"Rummaging about the {Name}, you find the following;");
             int r = 1;
@@ -992,7 +992,7 @@ namespace DungeonCrawler
 
                     if (merigold.getYesNoResponse())
                     {
-                        List<Dice> endOfMidGameChoice = merigold.MerigoldPlotPoint(specialItems, battle, secretChamber, goblin, gnoll, MGItems, stairwayToLower);
+                        List<Dice> endOfMidGameChoice = merigold.MerigoldPlotPoint(specialItems, battle, secretChamber, goblin, gnoll, MGItems, stairwayToLower, usesDictionaryItemChar);
                         Attribute = true;
                         SpecificAttribute = "dishevelled";
                         int destination = 0;
