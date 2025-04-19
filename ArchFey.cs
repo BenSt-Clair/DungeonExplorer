@@ -432,11 +432,11 @@ namespace DungeonCrawler
                         {
                             "You bristle, grip your sword tighter and ask why you shouldn't just run the creature through...",
 
-                            "Your attempts to menacingly brandish your weapon are made oafish under the bewitching gaze" +
+                            "Your attempts to menacingly brandish your weapon are made oafish under the bewitching presence" +
                             " of this monster. Her pillow-like lips only part into a wider and fuller smile than before as" +
                             " you clumsily fumble at the handle of your weapon. " +
                             "\n  Since when did your hands become so slippery with sweat?" +
-                            "\n  When at last you manage to tear your own eyes away from her captivating gaze, you discover with horror that it was the protruding thumb of your other hand that" +
+                            "\n  When at last you manage to tear your own eyes away from her captivating presence, you discover with horror that it was the protruding thumb of your other hand that" +
                             " had held your weapon in place all along. And for a moment you are struck dumb by the strangest feeling, as though parts of your own" +
                             " body are acting on their own and without your knowledge, treacherously countering your rapidly crumbling resolve. All the while the" +
                             " Lady's laughter becomes as sweet and melodic as a sonata to your" +
@@ -549,11 +549,11 @@ namespace DungeonCrawler
                             " and then you'll both be done for. You emphasise your point by asking the creature if they relish the " +
                             "thought of the CurseBreaker's dark metamorphosis - of their body been ripped apart from the inside out by a new" +
                             " creature. You nonchalantly tell her that it sounds painful to you..." +
-                            "\n   She does not respond as you expect. The Lady tilts her head as she eyes you wryly. " +
+                            "\n   She does not respond as you expect. The Lady tilts her head as she faces you wryly. " +
                             "\n\t'How little you understand, sweet thing,' she trills, 'We of the Fey Realms do not experience any such thing as" +
                             " pain. The closest we feel to pain is boredom. And there's little chance of that while I have you to" +
                             " play with..." +
-                            "\n\t'But fine,' she capriciously changes track, 'let's play your game instead. Take a look around you, sweet thing.'" +
+                            "\n\t'But fine,' she capriciously changes tack, 'let's play your game instead. Take a look around you, sweet thing.'" +
                             "  She gestures to the runes spiralling through the oubliette, binding it and zeroing in upon the crackling vortex of energy through which you nervously see the ritual pick up its pace as midnight approaches..." +
                             "\n\t'You can stop the CurseBreaker's ritual in a trice,' she tells you coyly, 'all you have to do is disturb the markings" +
                             " upon the floor. Then the portal will close, and you'll be trapped down here playing with me until the CurseBreaker comes after you die of thirst, repairs the runes and completes the ritual upon the next full moon. Sound tempting?' A smile creeps across her gorgeous face as your own pales." +
@@ -563,8 +563,8 @@ namespace DungeonCrawler
                         {
                             "You challenge the creature: does it wish to succumb to the CurseBreaker's schemes?",
 
-                            "You tell her the dark metamorphsis that the CurseBreaker has planned sounds like the most agonising ordeal you've ever uncovered."+
-                            "\n   She does not respond as you expect. The Lady tilts her head as she eyes you wryly. " +
+                            "You tell her the dark metamorphosis that the CurseBreaker has planned sounds like the most agonising ordeal you've ever uncovered."+
+                            "\n   She does not respond as you expect. The Lady tilts her head as she faces you wryly. " +
                             "\n\t'How little you understand, sweet thing,' she trills, 'We of the Fey Realms do not experience any such thing as" +
                             " pain. The closest we feel to pain is boredom. And there's little chance of that while I have you to" +
                             " play with..." +
@@ -585,7 +585,7 @@ namespace DungeonCrawler
                         "lust, if not quite easily, then more quickly than before.";
                     parlances = new List<string>
                     {
-                        "She sweeps back her ethereal hair, her serene gaze locked with yours. 'So,' she trills, 'what game do you" +
+                        "She sweeps back her ethereal hair, her serene ''gaze'' locked with yours. 'So,' she trills, 'what game do you" +
                         " wish to make of it?'",
 
                         "Your gaze latches onto the portal, even to your untrained eye you can see the runes feed into and are bound to the crackling vortex of energy. " +
@@ -720,18 +720,204 @@ namespace DungeonCrawler
                 }
                 if (path == 0)
                 {
-
+                    Console.WriteLine("The Lady says nothing as she hears your footsteps clap away towards the portal" +
+                        ". Looking back you catch her listening attentively, gleefully waiting to see if you'll do as you" +
+                        " intend. Feeling a knot of dread before the swirling vortex you brace yourself to jump...");
+                    Console.ReadKey(true);
+                    Console.WriteLine("You do not hear the Lady's laughter. It does not follow you into death as your body" +
+                        " is torn asunder in an instant of exquisite agony. If it had, you'd have thought it the most wondrous aria of mirth you'd ever heard...");
+                    Console.ReadKey(true);
+                    Console.WriteLine("Your adventure ends here...");
+                    Console.ReadKey(true);
+                    return false;
                 }
                 else if (path == 1) 
-                { 
-                
+                {
+                    Console.WriteLine("The moment your foot scuffs the symbols, near complete darkness falls. The portal does indeed disappear. But the pentagram remains locking the creature in place. You have been shown a mercy. For had you disturbed the runes within the pentagram what would've awaited you would've been a fate worse than death.");
+                    Console.ReadKey(true);
+                    Console.WriteLine("As it is, you shall instead die of thirst, as the ladder's enchantment and locked hatch seal your exit. The CurseBreaker's transformation shall be completed during the next full moon...");
+                    Console.ReadKey(true);
+                    Console.WriteLine("Your adventure ends here...");
+                    Console.ReadKey(true);
+                    return false;
                 }
                 else
                 {
+                    description = "Sparing the Lady a wary glance you pick up a nearby stone." +
+                        " Hurling it at the portal, you watch as it's caught midair, seems" +
+                        " to hover a moment, then crumples to dust as though ground by an " +
+                        "invisible fist.";
+                    parlances = new List<string> 
+                    { 
+                        "\n'Do you believe me now, little one,' the Lady's voice creeps up on" +
+                        " you from behind, sending a chill all the way up your spine. 'Our fates" +
+                        " are tangled. The only way to break the bond I have with that portal, " +
+                        "that excludes anyone else from using it, is to break the pentagram at " +
+                        "my feet. So,' she concludes, her lips parting into that arresting cat-like" +
+                        " smile, as you once again draw towards her, 'will you play?'",
 
+                        "'I have often been delighted at tales of your silly human ideas,' " +
+                        "she purrs softly, her movements so wonderfully fluid and seductive" +
+                        " as she paces within the pentagram, 'ethics and justice, right and wrong." +
+                        " Such things seem so silly. What justice is there in a typhoon. What morals" +
+                        " keep a tiger from devouring its prey, the tiny mouse from finding itself" +
+                        " consumed by the snake...' her pink tongue runs along her pearly white teeth," +
+                        " 'the little fly from being ensnared by the tarantula?" +
+                        "\n\t'Tell me,' she inquires softly, 'what about me is so different from them?" +
+                        " Are we not just all creatures of whim, of desire, of our own nature... What is it" +
+                        " of my nature that so frightens you, Little one?' her cat-like smile returns and " +
+                        "sends your heart racing. 'It's only natural for you to surrender to me...'",
+
+                        "\n\t'Curses are neither good nor evil, little one,' she purrs, 'they are simply " +
+                        "nature finding balance - The wheel of fortune turning, unsteered by any mortal hands." +
+                        " Does not the rabbit rejoice when the fox chokes on its bones? Does the kingdom misruled by a tyrant" +
+                        " care whether it is a just man that brings down the dagger or a fatal illness?" +
+                        "\n'When morals become the dirge of the mighty over the weak, " +
+                        "\nwhen justice is adjudicated and administered by the corrupt and venal," +
+                        " \nand when mortals smother the secrets their actions wrought with silence," +
+                        " \nWhat other recourse is there but the balance brought by time and chance?" +
+                        " \n  What other hope is there bolstering those who suffer and keeping them waiting out the darkness, so that they might finally bask in the dawn.'" +
+                        "  The eldritch creature turns to you, and for the first time you catch a glimmer of what she truly is," +
+                        " the same force that turned colliding galaxies into new worlds. The cycle of creation and destruction." +
+                        "\n\t'You see,' her silky voice caresses your mind, 'I told you true when I first called to you in the darkness;" +
+                        " \n\t'...he schemes for the downfall of the unruled, the whimsical, the free, \nAdventurers who dare stand up to power and restore the balance, \n\tlike you, \n\t\tlike me...'" +
+                        "\n\n  Her head languidly pivots from you and turns to face the CurseBreaker through the portal, his feverish incantations picking up the pace and jolted into a devilish staccato.\n You witness lightning flashing above him as thunder roars... \n\n  'To defeat the one who'd make himself tyrant of fortune itself, your only choice is to free me...'",
+
+                        "  Every game has rules. You ask the Lady what hers are..." +
+                        "\n\tShe claps her hands delightedly and gasps with glee. 'It's simple,' she replies," +
+                        " 'Once you scuff the markings of this pentagram I shall no longer be bound to the portal. Within this " +
+                        "chamber I shall roam free though still caught by the CurseBreaker's other enchantments - the same ones that keep you here." +
+                        " However,' she continues coyly, 'the portal shall remain, only capable of transporting one of us to the highest parapet of this tower. The portal's magics were weaved such that only one may use it. Who that is depends on who should reach it first...'"
+                    };
+                    choices = new List<List<string>> 
+                    { 
+                        new List<string>
+                        {
+                            "You say you won't free a malignant creature such as her under any circumstances...",
+                            "You openly wonder whether Merigold would ever countenance dealing with such a monster...",
+                            "You tell her that the CurseBreaker may be bad, but you assert she's pure evil..."
+                        },
+                        new List<string>
+                        {
+                            "You tell her that she is pure chaos...",
+                            "You say that she is remorseless and that the destruction she'd cause if free would be senseless...",
+                            "You reply that she is capricious, untrustworthy and far too powerful...",
+                            "You claim you do not know exactly, but you know you're right..."
+                        },
+                        new List<string>
+                        {
+                            "You ask her how you can be sure she won't just kill you the moment she's free...",
+                            "You ask why she thinks she's the only one who can kill the CurseBreaker..."
+                        },
+                        new List<string>
+                        {
+                            "So you want to battle for the chance to use the portal?",
+                            "So you want to race for the portal?"
+                        }
+                    };
+                    choices_response = new Dictionary<string, string>
+                    {
+                        {
+                            "You say you won't free a malignant creature such as her under any circumstances...",
+                            
+                            "'Malignant?' the Lady seems bemused by the notion."
+                        },
+                        {
+                            "You openly wonder whether Merigold would ever countenance dealing with such a monster...",
+                            
+                            "'Monster?' the Lady seems bemused by such a notion."
+                        },
+                        {
+                            "You tell her that the CurseBreaker may be bad, but you assert she's pure evil...",
+                            
+                            "'Evil?' the Lady seems bemused by such a notion."
+                        },
+                        {
+                            "You tell her that she is pure chaos...",
+                            
+                            "'Chaos?' she breathes, delighted by the suggestion. Her laughter once" +
+                            " again is in danger of enrapturing you. 'Oh, sweet thing, you do not know how" +
+                            " right you are...'" +
+                            "\n  You ask her to explain herself. " +
+                            "\n\t'The CurseBreaker knows it,' she replies coyly, 'but I suppose Merigold " +
+                            "hasn't a clue, poor fool. Years upon years he studied curses. Never has he uncovered" +
+                            " more than a veneer of the truth...'"
+                        },
+                        {
+                            "You say that she is remorseless and that the destruction she'd cause if free would be senseless...",
+                            
+                            "You surmise by telling her that her powers would be no better than a curse upon" +
+                            " the good people of this world... \nYou stop to find her laughing at your words, but for once " +
+                            "her laughter does not elicit anything from you other than anger. " +
+                            "\n  You demand to know what you said that's so humorous." +
+                            "\n\t'Oh, sweet thing,' she answers, 'you do not know how" +
+                            " right you are...'" +
+                            "\n  You ask her to explain herself. " +
+                            "\n\t'The CurseBreaker knows it,' she replies coyly, 'but I suppose Merigold " +
+                            "hasn't a clue, poor fool. Years upon years he studied curses. Never has he uncovered" +
+                            " more than a veneer of the truth...'"
+                        },
+                        {
+                            "You reply that she is capricious, untrustworthy and far too powerful...", 
+                            
+                            "She dishes you a coquettish and yet knowing smile, like a cat that knows its prey is already trapped." +
+                            " 'But of course,' the Lady trills, 'Those are the things that are in my nature, and always shall be." +
+                            " Your kind has always bestowed our twilight race with gentle names and wondrous tales, yet we are " +
+                            "not so dissimilar to another force of magic in this world - one which you fear and wish to" +
+                            " expunge.'" +
+                            "\n  You ask her what that might be?" +
+                            "\n\t'Is it not obvious,' she purrs. 'Our nature is one with curses, those that bind the threads of men's deeds to their fates." +
+                            " You suppose such things to be terrible. You call them capricious and powerful and cruel. Yet those are only " +
+                            "what you call them because you cannot control them.'"
+                        },
+                        {
+                            "You claim you do not know exactly, but you know you're right...", 
+                            
+                            "'Oh sweet thing,' she trills, 'so very very ignorant. We are not so different " +
+                            "from another entity that afflicts your world. One with which your kind has had " +
+                            "intimate contact with.' She seems to sense the frown furrowing your brow, for she smiles," +
+                            " delighting in the captivating anticipation she seeks to hang you with." +
+                            "\n  Finally, and with more than a knot of foreboding, you ask her what that might be." +
+                            "\n 'But curses, of course...'\n"
+                        },
+                        {
+                            "You ask her how you can be sure she won't just kill you the moment she's free...",
+
+                            "'Oh, sweet thing,' she titters, 'but of course I'm going to try to kill you." +
+                            " That's what makes this game is so fun!'"
+                        },
+                        {
+                            "You ask why she thinks she's the only one who can kill the CurseBreaker...",
+
+                            "She tilts her head once more and dishes you a bemused grin. 'I'm not,' she purrs, 'why the" +
+                            " CurseBreaker is only a man, little fly. Anyone can run him through with steel - if you hurry." +
+                            "\n\n\t'Tick, tock says the clock,' she trills, 'splice and dice time into blocks," +
+                            "\n\tcut and slice, don't play nice, spin their fate, set the date, cast all men into their box...'\n"
+                        }
+                    };
+                    path = LinearParle(choices_response, parlances, choices, description);
+                }
+                if (path == 0)
+                {
+                    Console.WriteLine("The Lady of the ArchFey only greets your response with" +
+                        " laughter. And once again you are struck by its melody. It almost seems" +
+                        " to resonate and chime with every lustrous and beautiful memory you can" +
+                        " conjure to mind. But there is also something else underneath that laugh" +
+                        " now. Something terrible, something that turns that resonance into the" +
+                        " tremors of prey about to be caught, the shiver of an animal starving" +
+                        " in the dead of winter. And for once, upon the horizon of your senses," +
+                        " you detect a stranger; some amorphous silhouette of " +
+                        "pure, undiluted terror - distant, but" +
+                        " closing in fast...");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("The Lady giggles excitedly, before coyly addressing you. 'Mmm... Not much time left. Make your move, little fly...'");
+                    return true;
                 }
             }
-            return false;
+            
         }
     }
 }
