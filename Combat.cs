@@ -31,6 +31,51 @@ namespace DungeonCrawler
         /// For after the player wins a fight and wishes
         /// to search the monster for treasure
         /// </summary>
+        public bool Race(Item speedPotion)
+        {
+            int options = 1;
+            string message = "How will you proceed?";
+            List<string> choice = new List<string> 
+            { 
+                "Step over to the pentagram, brace yourself and scuff the symbols with your boot...",
+                "Refuse to play the creature's game...",
+                
+            };
+            if(Player.Inventory.Count != 0)
+            {
+                choice.Add("Throw an item to disturb the markings...");
+            }
+            if (Player.Inventory.Contains(speedPotion))
+            {
+                choice.Add("Take a potion of alacrity before breaking the pentagram...");
+            }
+            if (Player.midnightClock != null)
+            {
+                Player.midnightClock.Stop();
+                long timeTaken = Player.midnightClock.ElapsedMilliseconds;
+                Player.midnightClock.Start();
+                long timeToMidnight = 1800000;
+                long timeLeft = (timeToMidnight - timeTaken) / 60000;
+                if (timeLeft < 0)
+                {
+                    Console.WriteLine("\nMidnight is upon you!");
+                    Console.ReadKey(true);
+                    Console.WriteLine("Throughout the tower all the clocks chime the hour. Even from the oubliette you hear " +
+                        "them. The pale ghostly light of the runes catch your final look of fright, before all the lights go out and darkness falls." +
+                        " Your interlocutor disappeared with them, swept into the portal that turned, for but an instant, blood moon red, before it too vanished. " +
+                        "  \n  You are left alone only for a few tense moments, dreading what is to follow, before a blood-curdling howl erupts from above" +
+                        " as something new and terrible is brought into the world. Soon afterwards, the tower collapses in on you... ");
+                    Console.ReadKey(true);
+                    Console.WriteLine("At least you never caught sight of the horror your lack of urgency unleashed.");
+                    Console.ReadKey(true);
+                    Console.WriteLine("Your adventure ends here...");
+                    return false;
+                }
+
+            }
+            return true;
+
+        }
         public void WonFight(Room room)
         {
             Console.WriteLine($"Would you like to search the {Monster.Name} for items?");

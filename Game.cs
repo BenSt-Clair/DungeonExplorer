@@ -7447,6 +7447,7 @@ namespace DungeonCrawler
                                                     Console.WriteLine("The dragon scowls, seems to very sincerely consider multiple methods of killing you... slowly, before finally deciding that it wouldn't be worth the effort.");
                                                     Console.WriteLine("It mumbles something about silly ape-things before imperiously gesturing with its claw and casting a portal to open up at your feet. You plummet through it and finally leave the poor dragon in peace.");
                                                     Console.ReadKey(true);
+                                                    dragonLair.FirstVisit = false;
                                                     newRoom1 = broomCloset;
                                                     leftWhichRooms = newRoom1.WhichRoom (leftWhichRooms);
                                                     break;
@@ -7482,7 +7483,7 @@ namespace DungeonCrawler
                                             }
 
                                     }
-
+                                    break;
                                     }
                                     else
                                     {

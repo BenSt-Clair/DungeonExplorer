@@ -270,6 +270,30 @@ namespace DungeonCrawler
             else 
             {
                 int path = LinearParle(choices_response, parlances, choices, description);
+                if (_player.midnightClock != null)
+                {
+                    _player.midnightClock.Stop();
+                    long timeTaken = _player.midnightClock.ElapsedMilliseconds;
+                    _player.midnightClock.Start();
+                    long timeToMidnight = 1800000;
+                    long timeLeft = (timeToMidnight - timeTaken) / 60000;
+                    if (timeLeft < 0)
+                    {
+                        Console.WriteLine("\nMidnight is upon you!");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Throughout the tower all the clocks chime the hour. Even from the oubliette you hear " +
+                            "them. The pale ghostly light of the runes catch your final look of fright, before all the lights go out and darkness falls." +
+                            " Your interlocutor disappeared with them, swept into the portal that turned, for but an instant, blood moon red, before it too vanished. " +
+                            "  \n  You are left alone only for a few tense moments, dreading what is to follow, before a blood-curdling howl erupts from above" +
+                            " as something new and terrible is brought into the world. Soon afterwards, the tower collapses in on you... ");    
+                        Console.ReadKey(true);
+                        Console.WriteLine("At least you never caught sight of the horror your lack of urgency unleashed.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your adventure ends here...");
+                        return false;
+                    }
+                    
+                }
                 if (path < 2)
                 {
                     string says = "";
@@ -498,6 +522,30 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         return false;
                 }
+                if (_player.midnightClock != null)
+                {
+                    _player.midnightClock.Stop();
+                    long timeTaken = _player.midnightClock.ElapsedMilliseconds;
+                    _player.midnightClock.Start();
+                    long timeToMidnight = 1800000;
+                    long timeLeft = (timeToMidnight - timeTaken) / 60000;
+                    if (timeLeft < 0)
+                    {
+                        Console.WriteLine("\nMidnight is upon you!");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Throughout the tower all the clocks chime the hour. Even from the oubliette you hear " +
+                            "them. The pale ghostly light of the runes catch your final look of fright, before all the lights go out and darkness falls." +
+                            " Your interlocutor disappeared with them, swept into the portal that turned, for but an instant, blood moon red, before it too vanished. " +
+                            "  \n  You are left alone only for a few tense moments, dreading what is to follow, before a blood-curdling howl erupts from above" +
+                            " as something new and terrible is brought into the world. Soon afterwards, the tower collapses in on you... ");
+                        Console.ReadKey(true);
+                        Console.WriteLine("At least you never caught sight of the horror your lack of urgency unleashed.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your adventure ends here...");
+                        return false;
+                    }
+
+                }
                 if (path == 0)
                 {
                     description = "You realise that the Lady before you must be deploying some " +
@@ -718,6 +766,30 @@ namespace DungeonCrawler
                     }
 
                 }
+                if (_player.midnightClock != null)
+                {
+                    _player.midnightClock.Stop();
+                    long timeTaken = _player.midnightClock.ElapsedMilliseconds;
+                    _player.midnightClock.Start();
+                    long timeToMidnight = 1800000;
+                    long timeLeft = (timeToMidnight - timeTaken) / 60000;
+                    if (timeLeft < 0)
+                    {
+                        Console.WriteLine("\nMidnight is upon you!");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Throughout the tower all the clocks chime the hour. Even from the oubliette you hear " +
+                            "them. The pale ghostly light of the runes catch your final look of fright, before all the lights go out and darkness falls." +
+                            " Your interlocutor disappeared with them, swept into the portal that turned, for but an instant, blood moon red, before it too vanished. " +
+                            "  \n  You are left alone only for a few tense moments, dreading what is to follow, before a blood-curdling howl erupts from above" +
+                            " as something new and terrible is brought into the world. Soon afterwards, the tower collapses in on you... ");
+                        Console.ReadKey(true);
+                        Console.WriteLine("At least you never caught sight of the horror your lack of urgency unleashed.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your adventure ends here...");
+                        return false;
+                    }
+
+                }
                 if (path == 0)
                 {
                     Console.WriteLine("The Lady says nothing as she hears your footsteps clap away towards the portal" +
@@ -897,6 +969,30 @@ namespace DungeonCrawler
                     };
                     path = LinearParle(choices_response, parlances, choices, description);
                 }
+                if (_player.midnightClock != null)
+                {
+                    _player.midnightClock.Stop();
+                    long timeTaken = _player.midnightClock.ElapsedMilliseconds;
+                    _player.midnightClock.Start();
+                    long timeToMidnight = 1800000;
+                    long timeLeft = (timeToMidnight - timeTaken) / 60000;
+                    if (timeLeft < 0)
+                    {
+                        Console.WriteLine("\nMidnight is upon you!");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Throughout the tower all the clocks chime the hour. Even from the oubliette you hear " +
+                            "them. The pale ghostly light of the runes catch your final look of fright, before all the lights go out and darkness falls." +
+                            " Your interlocutor disappeared with them, swept into the portal that turned, for but an instant, blood moon red, before it too vanished. " +
+                            "  \n  You are left alone only for a few tense moments, dreading what is to follow, before a blood-curdling howl erupts from above" +
+                            " as something new and terrible is brought into the world. Soon afterwards, the tower collapses in on you... ");
+                        Console.ReadKey(true);
+                        Console.WriteLine("At least you never caught sight of the horror your lack of urgency unleashed.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your adventure ends here...");
+                        return false;
+                    }
+
+                }
                 if (path == 0)
                 {
                     Console.WriteLine("The Lady of the ArchFey only greets your response with" +
@@ -909,11 +1005,13 @@ namespace DungeonCrawler
                         " you detect a stranger; some amorphous silhouette of " +
                         "pure, undiluted terror - distant, but" +
                         " closing in fast...");
+                    Console.ReadKey(true);
                     return true;
                 }
                 else
                 {
                     Console.WriteLine("The Lady giggles excitedly, before coyly addressing you. 'Mmm... Not much time left. Make your move, little fly...'");
+                    Console.ReadKey(true);
                     return true;
                 }
             }
