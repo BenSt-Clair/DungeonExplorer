@@ -831,6 +831,7 @@ namespace DungeonCrawler
             Weapon fists = new Weapon("fists", "", fistDamage, defaultCritHits, defaultGoodHits, 0);
 
             //Special Items
+            List<Item> throwables = new List<Item> {armBand, clunkySabaton, bracers, helmet, breastplate, knifeMG, musicBox, mops, brooms, emptyBottles, bookA1, bookA2, bookA3, bookEC1, bookEC2, bookSC1, bookSC2, bookSC3, messhallBook1, journal, binkySkull, box, belt, lantern, femur, legBone, rib, crystalBall, brassTrinket, copperTrinket, jar, plate, bowl, throwingKnife, throwingKnife2, throwingKnife3  };
             List<Item> stickyItems = new List<Item> { bowlFragments, garment, bobbyPins, clunkySabaton, breastplate, helmet, bracers, splinter, rug, looseNail, penny, crumbs, dustBunny, mops, dusters, brooms, dustpans, crumpledMissive, emptyBottles, cork, ruby, emerald, sapphire, goldDoubloon, silverBars };
             List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys, lockpickingSet, bookA1, journal, fists };
             List<Item> MGItems = new List<Item> { knifeMG, staffMG, merigoldRing, pocketWatch, bracelet, merigoldMedallion, merigoldBroach, belt, diadem, armBand, box, bookA2 };
@@ -2950,7 +2951,20 @@ namespace DungeonCrawler
                     if (b != 0)
                     {
                         ArchFey LadyOfVipers = new ArchFey(player1, goblin, trialBattle, oubliette);
-                        LadyOfVipers.ElderArchFeyPlotPoint(magicalManufactory);
+                        if (LadyOfVipers.ElderArchFeyPlotPoint(magicalManufactory))
+                        {
+                            List<Dice> clawDamage = new List<Dice> { D12, D12, D12, D12, D12, D12, D12, D12 };
+                            Weapon deadlyClaws = new Weapon("claws", "They're going to hurt...", clawDamage, defaultCritHits, defaultGoodHits, -2);
+                            Weapon venomousSting = new Weapon("venomous sting", "Youch!", clawDamage, defaultCritHits, defaultGoodHits);
+                            List<Item> purse = new List<Item> { venomousSting, dustBunny };
+                            Monster ArchFeyQueen = new Monster("Lady of Vipers", "Transfigured into one of her most frightful avatars, mounted on frayed bat wings that scuttle blindly towards you like a tarantula, this powerful creature will find all kinds of fun ways to make your demise slow and enjoyable... if she can catch you.", purse, 666666, 2, deadlyClaws);
+                            Combat LadyOfVipersRace = new Combat(ArchFeyQueen, player1);
+                            LadyOfVipersRace.Race(speedPotion, throwables, oubliette, usesDictionaryItemItem, usesDictionaryItemFeature, player1, usesDictionaryItemChar, holeInCeiling, specialItems);
+                        }
+                        else
+                        {
+                            return;
+                        }
                     }    
                     if (!(a == 0 && b == 0))
                         {

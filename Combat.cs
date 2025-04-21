@@ -31,46 +31,393 @@ namespace DungeonCrawler
         /// For after the player wins a fight and wishes
         /// to search the monster for treasure
         /// </summary>
-        public bool Race(Item speedPotion)
+        public bool Race(Item speedPotion, List<Item> throwables, Room oubliette, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, List<Item> specialItems, bool fire = false, bool _initiative = false, bool masked = false)
         {
             int options = 1;
             string message = "How will you proceed?";
+            int trackLength = 200;
+            int playerProgress = 0;
+            int monsterProgress = 0;
+            List<Dice> normalSpeed = new List<Dice> { };
+            List<Dice> alacritySpeed = new List<Dice> { };
+            Dice D4 = new Dice(4);
+            Dice D3 = new Dice(3);
+            Dice D6 = new Dice(6);
+            int i = 0;
+            while (i < 8)
+            {
+                normalSpeed.Add(D4);
+                i++;
+            }
+            i = 0;
+            while (i < 14)
+            {
+                alacritySpeed.Add(D3); 
+                i++;
+            }
+            if(Player.Traits.ContainsKey("hale, hot and hearty"))
+            {
+                normalSpeed.Add(D6);
+                alacritySpeed.Add(D4);
+            }
+            bool throwingArm = false;
+            foreach(Item t in throwables)
+            {
+                if (Player.Inventory.Contains(t))
+                {
+                    throwingArm = true;
+                }
+            }
+            if (Player.WeaponInventory.Count != 0)
+            {
+                throwingArm = true;
+            }
             List<string> choice = new List<string> 
             { 
                 "Step over to the pentagram, brace yourself and scuff the symbols with your boot...",
                 "Refuse to play the creature's game...",
+                "Battle the Lady of the ArchFey..."
                 
             };
-            if(Player.Inventory.Count != 0)
+            if(Player.Inventory.Count != 0 && throwingArm)
             {
-                choice.Add("Throw an item to disturb the markings...");
+                choice.Add("Lob an item to disturb the markings...");
             }
+            
             if (Player.Inventory.Contains(speedPotion))
             {
                 choice.Add("Take a potion of alacrity before breaking the pentagram...");
             }
-            if (Player.midnightClock != null)
+            foreach(string c in choice)
             {
-                Player.midnightClock.Stop();
-                long timeTaken = Player.midnightClock.ElapsedMilliseconds;
-                Player.midnightClock.Start();
-                long timeToMidnight = 1800000;
-                long timeLeft = (timeToMidnight - timeTaken) / 60000;
-                if (timeLeft < 0)
+                message += $"\n[{options}] {choice[options - 1]}";
+                options++;
+            }
+            Console.WriteLine(message);
+            Dialogue race = new Dialogue(speedPotion);
+            int answer = race.getIntResponse(options);
+            int index = message.IndexOf($"{answer}") + 3;
+            if (message[index] == 'S')
+            {
+                if (Player.Speedy)
                 {
-                    Console.WriteLine("\nMidnight is upon you!");
+                    Console.WriteLine("Test your skill...\n[Roll a D12 under or equal to your skill score]");
                     Console.ReadKey(true);
-                    Console.WriteLine("Throughout the tower all the clocks chime the hour. Even from the oubliette you hear " +
-                        "them. The pale ghostly light of the runes catch your final look of fright, before all the lights go out and darkness falls." +
-                        " Your interlocutor disappeared with them, swept into the portal that turned, for but an instant, blood moon red, before it too vanished. " +
-                        "  \n  You are left alone only for a few tense moments, dreading what is to follow, before a blood-curdling howl erupts from above" +
-                        " as something new and terrible is brought into the world. Soon afterwards, the tower collapses in on you... ");
-                    Console.ReadKey(true);
-                    Console.WriteLine("At least you never caught sight of the horror your lack of urgency unleashed.");
+                    Dice D12 = new Dice(12);
+                    int roll = D12.Roll(D12);
+                    if (Player.Traits.ContainsKey("jinxed"))
+                    {
+                        roll /= 3;
+                    }
+                    Console.WriteLine($"You rolled a {roll}");
+                    if(roll <= Player.Skill)
+                    {
+                        Console.WriteLine("The moment your foot breaks the circle of the pentagram, you flee!\n You are too fast for the Lady's surprise attack, but she only laughs ecstatically in response. Her mania, however, soon morphs into some alien species of cackle, its blood-chilling notes electrifying the very air that surges past you as you race forward. You can hear her slowly mutate into some new form...");
+                        playerProgress = 7;
+                    }
+                    else
+                    {
+                        Console.WriteLine("The potion of alacrity permits you to see, in your final moments, the Eldritch Lady of the ArchFey's glamour vanish. The moment your foot scuffs the pentagram, some sort of spindly appendage flashes from nowhere, its claw slashing open your throat before a flurry of similar attacks utterly eviscerates you...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your adventure ends here...");
+                        Console.ReadKey(true);
+                        return false;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("The moment your foot scuffs the markings is the last moment of your life...");
                     Console.ReadKey(true);
                     Console.WriteLine("Your adventure ends here...");
+                    Console.ReadKey(true);
                     return false;
                 }
+            }
+            else if (message[index] == 'R')
+            {
+                Console.WriteLine("You scour the oubliette for some other exit, " +
+                    "some other way forward - anything you might have overlooked. " +
+                    "Your search becomes feverish as midnight approaches, and all " +
+                    "the while the CurseBreaker's incantations build momentum towards " +
+                    "some crescendo of ghastly syllables that send chills through you... ");
+                Console.ReadKey(true);
+                Console.WriteLine("\nFinally midnight is upon you.");
+                Console.ReadKey(true);
+                Console.WriteLine("Throughout the tower all the clocks chime the hour. Even from the oubliette you hear " +
+                    "them. The pale ghostly light of the runes catch your final look of fright, before all the lights go out and darkness falls." +
+                    " The dark Lady disappeared with them, swept into the portal that turned, for but an instant, blood moon red, before it too vanished. " +
+                    "  \n  You are left alone only for a few tense moments, dreading what is to follow, before a blood-curdling howl erupts from above" +
+                    " as something new and terrible is brought into the world. Soon afterwards, the tower collapses in on you... ");
+                Console.ReadKey(true);
+                Console.WriteLine("At least you never caught sight of the horror your lack of urgency unleashed.");
+                Console.ReadKey(true);
+                Console.WriteLine("Your adventure ends here...");
+                return false;
+            }
+            else if (message[index] == 'L')
+            {
+                Weapon flap = new Weapon("", "", new List<Dice> { D4 }, new List<string>(), new List<string>());
+                Monster backpack = new Monster("backpack", "", new List<Item>(), 1, 1, flap);
+                int numOfThrowables = 0;
+                Console.ReadKey(true);
+                Console.WriteLine("You search through your pack for anything the right weight and size...");
+
+                message = "";
+                foreach (Item item in throwables)
+                {
+                    if (Player.Inventory.Contains(item))
+                    {
+                        numOfThrowables++;
+                        backpack.Items.Add(item);
+                        message += $"[{numOfThrowables}] {item.Name}\n";
+                    }
+                }
+                foreach (Item weapon in Player.WeaponInventory)
+                {
+                    numOfThrowables++;
+                    backpack.Items.Add(weapon);
+                    message += $"[{numOfThrowables}] {weapon.Name}\n";
+                    
+                }
+
+                Console.ReadKey(true);
+                if (numOfThrowables != 0)
+                {
+                    Console.WriteLine("The following items can be thrown. Of them, which would you like to lob at the pentagram?");
+                    options = 1;
+                    foreach (Item item in backpack.Items)
+                    {
+                        Console.WriteLine($"[{options}] {item.Name}");
+                        options++;
+                    }
+                    answer = race.getIntResponse(options);
+                    Item chosenItem = backpack.Items[answer - 1];
+                    if (!Player.Inventory.Remove(chosenItem)) 
+                    {
+                        List<Item> weapons = new List<Item> { chosenItem };
+                        List<Weapon> weapons2 = weapons.Cast<Weapon>().ToList();
+                        Player.WeaponInventory.Remove(weapons2[0]); 
+                    }
+                    if(chosenItem.Name == "crystal ball")
+                    {
+                        Console.WriteLine("As you take the mystical glass orb out of your pack, the creature calls to you...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("\t'So the little fly wishes to cheat,' she tuts." +
+                            "\n\t'That'll only make its fate worse than dead meat...' \nShe grins slyly as you take as many paces back towards the portal as you can while being sure to hit the pentagram. \n[You get a head start of 40 feet]");
+                        Console.ReadKey(true);
+                        Console.WriteLine("'Let's play, little fly...' she trills. " +
+                            "\n  Finally, you brace yourself. You take in a shuddering, nervous breath. Then you fling the crystal ball. You watch it's slow arc through the chamber, before it shatters into an explosion of glass fragments and great whorls of mist. But that's not before you clasp sight of the true horror the Lady embodies...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your transfixed gaze latches with unbridled horror upon the beginning of the Lady's transformation into some new species of terror - a towering, gaunt monster with claws and unfurling chiropteric wings. They are huge and bat-like, yet they're so frayed that only the spindly but powerful fingers remain. Her laughter transfigures into a bestial hiss as the rattling, skeletal wings loom and spread above the smoke like the hood of a cobra poised to strike.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("The blood drains from your face. Your heart knocks in double-time. You stagger backwards as the Lady's shadow looms within the swelling smoke and fills the chamber. Slowly those spindly appendages clack upon the flagstones, elevating her - not like a devil in flight - but like the legs of a monstrous tarantula. Seeing for the first time what you're truly up against, you turn and scramble for the portal!  ");
+                        Console.ReadKey(true);
+                        playerProgress = 40;
+                    }
+                    else if (chosenItem.Name == "lantern")
+                    {
+                        Console.WriteLine($"As you take the {chosenItem.Name} out of your pack, the creature calls to you...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("\t'So the little fly wishes to cheat,' she tuts." +
+                            "\n\t'That'll only make its fate worse than dead meat...' \nShe grins slyly as you take as many paces back towards the portal as you can while being sure to hit the pentagram. \n[You get a head start of 30 feet]");
+                        Console.ReadKey(true);
+                        Console.WriteLine("'Let's play, little fly...' she trills. " +
+                            "\n  Finally, you brace yourself. You take in a shuddering, nervous breath. Then you fling the lantern overarm. You watch it's slow arc through the chamber, before it shatters into an explosion of glass fragments and a mighty plume of flame. But that's not before you clasp sight of the true horror the Lady embodies...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your transfixed gaze latches with unbridled horror upon the beginning of the Lady's transformation into some new species of terror. Caught in the glow of the roaring flames, a towering, gaunt monster with claws and unfurling chiropteric wings reveals itself. They are huge and bat-like, yet so frayed that only the spindly but powerful fingers, hooked with talons, remain. Her laughter transfigures into a bestial hiss as the rattling, skeletal wings loom and spread above the fire like the hood of a cobra poised to strike.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("The blood drains from your face. Your heart knocks in double-time. You stagger backwards as the Lady's terrifying form looms within the swelling smoke and fills the chamber. Slowly those spindly appendages clack upon the flagstones, elevating her - not like a devil in flight - but like the legs of a monstrous tarantula. Seeing for the first time what you're truly up against, you turn and scramble for the portal!  ");
+                        Console.ReadKey(true);
+                        playerProgress = 30;
+                    }
+                    else if (chosenItem.Name == "throwing knife")
+                    {
+                        Console.WriteLine($"As you take the {chosenItem.Name} out of your pack, the creature calls to you...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("\t'So the little fly wishes to cheat,' she tuts." +
+                            "\n\t'That'll only make its fate worse than dead meat...' \nShe grins slyly as you take as many paces back towards the portal as you can while being sure to hit the pentagram. \n[You get a head start of 60 feet]");
+                        Console.ReadKey(true);
+                        Console.WriteLine("'Let's play, little fly...' she trills. " +
+                            $"\n  Finally, you brace yourself. You take in a shuddering, nervous breath. Then you fling the {chosenItem.Name}. You watch it's slow arc through the chamber, before it strikes true, sending all the runes to flicker in the darkness; a flurry of sporadic flashes that jolt the web of shadows around you into a frenzied quiver. But that's not before you clasp sight of the true horror the Lady embodies...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your transfixed gaze latches with unbridled horror upon the beginning of the Lady's transformation into some new species of terror. Caught in sporadic snapshots as the runes' glow sputters and flashes like lightning, a towering, gaunt monster with vicious claws and slowly unfurling chiropteric wings reveals itself. They are huge and bat-like, yet so frayed that only the spindly but powerful fingers, hooked with talons, remain. Her laughter transfigures into a bestial hiss as the rattling, skeletal wings loom and spread like the hood of a cobra poised to strike.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("The blood drains from your face. Your heart knocks in double-time. You stagger backwards as the Lady's terrifying form looms more and more with each jerky snapshot of light, filling the dark chamber. You hear the spindly appendages clack upon the flagstones. They elevate her - not like a devil in flight - but like the legs of a monstrous tarantula. \n\nSeeing for the first time what you're truly up against, you turn and scramble for the portal!  ");
+                        Console.ReadKey(true);
+                        playerProgress = 60;
+                    }
+                    else if (chosenItem is Weapon)
+                    {
+                        Console.WriteLine($"As you take the {chosenItem.Name} out of your pack, the creature calls to you...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("\t'So the little fly wishes to cheat,' she tuts." +
+                            "\n\t'That'll only make its fate worse than dead meat...' \nShe grins slyly as you take as many paces back towards the portal as you can while being sure to hit the pentagram. \n[You get a head start of 30 feet]");
+                        Console.ReadKey(true);
+                        Console.WriteLine("'Let's play, little fly...' she trills. " +
+                            $"\n  Finally, you brace yourself. You take in a shuddering, nervous breath. Then you fling the {chosenItem.Name}. You watch it's slow arc through the chamber, before it strikes true. All the runes suddenly flicker in the darkness; a flurry of sporadic flashes that jolt the web of shadows around you into a frenzied quiver. But that's not before you clasp sight of the true horror the Lady embodies...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your transfixed gaze latches with unbridled horror upon the beginning of the Lady's transformation into some new species of terror. Caught in sporadic snapshots as the runes' glow sputters and flashes like lightning, a towering, gaunt monster with vicious claws and slowly unfurling chiropteric wings reveals itself. They are huge and bat-like, yet so frayed that only the spindly but powerful fingers, hooked with talons, remain. Her laughter transfigures into a bestial hiss as the rattling, skeletal wings loom and spread like the hood of a cobra poised to strike.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("The blood drains from your face. Your heart knocks in double-time. You stagger backwards as the Lady's terrifying form looms more and more with each jerky snapshot of light, filling the dark chamber. You hear the spindly appendages clack upon the flagstones. They elevate her - not like a devil in flight - but like the legs of a monstrous tarantula. \n\nSeeing for the first time what you're truly up against, you turn and scramble for the portal!  ");
+                        Console.ReadKey(true);
+                        playerProgress = 30;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"As you take the {chosenItem.Name} out of your pack, the creature calls to you...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("\t'So the little fly wishes to cheat,' she tuts." +
+                            "\n\t'That'll only make its fate worse than dead meat...' \nShe grins slyly as you take as many paces back towards the portal as you can while being sure to hit the pentagram. \n[You get a head start of 20 feet]");
+                        Console.ReadKey(true);
+                        Console.WriteLine("'Let's play, little fly...' she trills. " +
+                            $"\n  Finally, you brace yourself. You take in a shuddering, nervous breath. Then you fling the {chosenItem.Name}. You watch it's slow arc through the chamber, before it strikes true. All the runes suddenly flicker in the darkness; a flurry of sporadic flashes that jolt the web of shadows around you into a frenzied quiver. But that's not before you clasp sight of the true horror the Lady embodies...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your transfixed gaze latches with unbridled horror upon the beginning of the Lady's transformation into some new species of terror. Caught in sporadic snapshots as the runes' glow sputters and flashes like lightning, a towering, gaunt monster with vicious claws and slowly unfurling chiropteric wings reveals itself. They are huge and bat-like, yet so frayed that only the spindly but powerful fingers, hooked with talons, remain. Her laughter transfigures into a bestial hiss as the rattling, skeletal wings loom and spread like the hood of a cobra poised to strike.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("The blood drains from your face. Your heart knocks in double-time. You stagger backwards as the Lady's terrifying form looms more and more with each jerky snapshot of light, filling the dark chamber. You hear the spindly appendages clack upon the flagstones. They elevate her - not like a devil in flight - but like the legs of a monstrous tarantula. \n\nSeeing for the first time what you're truly up against, you turn and scramble for the portal!  ");
+                        Console.ReadKey(true);
+                        playerProgress = 20;
+                    }
+
+                }
+                else
+                {
+                    Console.WriteLine("You have nothing here that you can throw! \n\nWill you scuff the pentagram with your foot instead?");
+                    if (race.getYesNoResponse())
+                    {
+                        if (Player.Speedy)
+                        {
+                            Console.WriteLine("Test your skill...\n[Roll a D12 under or equal to your skill score]");
+                            Console.ReadKey(true);
+                            Dice D12 = new Dice(12);
+                            int roll = D12.Roll(D12);
+                            if (Player.Traits.ContainsKey("jinxed"))
+                            {
+                                roll /= 3;
+                            }
+                            Console.WriteLine($"You rolled a {roll}");
+                            if (roll <= Player.Skill)
+                            {
+                                Console.WriteLine("The moment your foot breaks the circle of the pentagram, you flee!\n You are too fast for the Lady's surprise attack, but she only laughs ecstatically in response. Her mania, however, soon morphs into some alien species of cackle, its blood-chilling notes electrifying the very air that surges past you as you race forward. You can hear her slowly mutate into some new form...");
+                                playerProgress = 7;
+                            }
+                            else
+                            {
+                                Console.WriteLine("The potion of alacrity permits you to see, in your final moments, the Eldritch Lady of the ArchFey's glamour vanish. The moment your foot scuffs the pentagram, some sort of spindly appendage flashes from nowhere, its claw slashing open your throat before a flurry of similar attacks utterly eviscerates you...");
+                                Console.ReadKey(true);
+                                Console.WriteLine("Your adventure ends here...");
+                                Console.ReadKey(true);
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("The moment your foot scuffs the markings is the last moment of your life...");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Your adventure ends here...");
+                            Console.ReadKey(true);
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("You scour the oubliette for some other exit, " +
+                    "some other way forward - anything you might have overlooked. " +
+                    "Your search becomes feverish as midnight approaches, and all " +
+                    "the while the CurseBreaker's incantations build momentum towards " +
+                    "some crescendo of ghastly syllables that send chills through you... ");
+                        Console.ReadKey(true);
+                        Console.WriteLine("\nFinally midnight is upon you.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Throughout the tower all the clocks chime the hour. Even from the oubliette you hear " +
+                            "them. The pale ghostly light of the runes catch your final look of fright, before all the lights go out and darkness falls." +
+                            " The dark Lady disappeared with them, swept into the portal that turned, for but an instant, blood moon red, before it too vanished. " +
+                            "  \n  You are left alone only for a few tense moments, dreading what is to follow, before a blood-curdling howl erupts from above" +
+                            " as something new and terrible is brought into the world. Soon afterwards, the tower collapses in on you... ");
+                        Console.ReadKey(true);
+                        Console.WriteLine("At least you never caught sight of the horror your lack of urgency unleashed.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your adventure ends here...");
+                        return false;
+                    }
+                    Console.ReadKey(true);
+                }
+                
+            }
+            else if(message[index] == 'T')
+            {
+                Console.WriteLine("Test your skill...\n[Roll a D12 under or equal to your skill score]");
+                Console.ReadKey(true);
+                Dice D12 = new Dice(12);
+                int roll = D12.Roll(D12);
+                if (Player.Traits.ContainsKey("jinxed"))
+                {
+                    roll /= 3;
+                }
+                Console.WriteLine($"You rolled a {roll}");
+                if (roll <= Player.Skill)
+                {
+                    Console.WriteLine("The moment your foot breaks the circle of the pentagram, you flee!\n You are too fast for the Lady's surprise attack, but she only laughs ecstatically in response. Her mania, however, soon morphs into some alien species of cackle, its blood-chilling notes electrifying the very air that surges past you as you race forward. You can hear her slowly mutate into some new form...");
+                    playerProgress = 7;
+                }
+                else
+                {
+                    Console.WriteLine("The potion of alacrity permits you to see, in your final moments, the Eldritch Lady of the ArchFey's glamour vanish. The moment your foot scuffs the pentagram, some sort of spindly appendage flashes from nowhere, its claw slashing open your throat before a flurry of similar attacks utterly eviscerates you...");
+                    Console.ReadKey(true);
+                    Console.WriteLine("Your adventure ends here...");
+                    Console.ReadKey(true);
+                    return false;
+                }
+            }
+            else if (message[index] == 'B')
+            {
+                Console.WriteLine("As you approach the pentagram, you ready yourself for anything...");
+                Console
+                    .ReadKey(true);
+                Console.WriteLine("The moment you break the pentagram with your foot," +
+                    " all the runes suddenly flicker in the darkness; a flurry of" +
+                    " sporadic flashes that jolt the web of shadows around you into a" +
+                    " frenzied quiver. But that's not before you clasp sight of the" +
+                    " true horror the Lady embodies...");
+                Console.ReadKey(true);
+                Console.WriteLine("Your transfixed gaze latches with unbridled horror" +
+                    " upon the beginning of the Lady's transformation into some new " +
+                    "species of terror. Caught in sporadic snapshots as the runes' " +
+                    "glow sputters and flashes like lightning, a towering, gaunt " +
+                    "monster with vicious claws and slowly unfurling chiropteric" +
+                    " wings reveals itself. They are huge and bat-like, yet so " +
+                    "frayed that only the spindly but powerful fingers, hooked with " +
+                    "talons, remain. Her laughter transfigures into a bestial hiss " +
+                    "as the rattling, skeletal wings loom and spread like the hood " +
+                    "of a cobra poised to strike.");
+                Console.ReadKey(true);
+                Console.WriteLine("The blood drains from your face. Your heart" +
+                    " knocks in double-time. You stagger backwards as the Lady's " +
+                    "terrifying form looms more and more with each jerky snapshot of " +
+                    "light, filling the dark chamber. You hear the spindly appendages " +
+                    "clack upon the flagstones. They elevate her - not like a devil in flight - " +
+                    "but like the legs of a monstrous tarantula...");
+                Console.ReadKey(true);
+                Console.WriteLine("'So you wish to fight me, little fly?' her voice" +
+                    " is the vespine buzzing of a thousand wasps, as her once bewitching smile" +
+                    " becomes a jagged maw of razors. 'How I shall enjoy plucking your limbs one by one!'");
+                if (Fight(usesDictionaryItemItem, usesDictionaryItemFeature, oubliette, Player, usesDictionaryItemChar, holeInCeiling, specialItems, false, false))
+                {
+                    Console.WriteLine("Wasting no more time you stagger your way to the portal and finally take the plunge...");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Error locating option! Check index.");
+            }
+            
+            while (playerProgress < 200 && monsterProgress < 200)
+            {
 
             }
             return true;
