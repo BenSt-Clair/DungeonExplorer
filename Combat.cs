@@ -31,6 +31,78 @@ namespace DungeonCrawler
         /// For after the player wins a fight and wishes
         /// to search the monster for treasure
         /// </summary>
+        private int AdvanceForward(int progress, List<Dice> hurry)
+        {
+            int result = 0;
+            foreach(Dice d in hurry)
+            {
+                Thread.Sleep(27);
+                result += d.Roll(d);
+            }
+            string strand = "";
+            if (progress < 65)
+            {
+                strand = "clasp your desperate eyes on the distant portal and push yourself forward...";
+            }
+            else if(progress < 100)
+            {
+                strand = "race away from the terror at your heels...";
+            }
+            else if (progress < 135)
+            {
+                strand = "feel your muscles burn...";
+
+            }
+            else if (progress < 170)
+            {
+                strand = "begin to hear the roar of the portal and the raging storm beyond...";
+            }
+            else
+            {
+                strand = "are finally only seconds away from the crackling vortex!";
+            }
+            List<string> commentary = new List<string>
+            {
+                $"You lunge forward {result} feet, kicking your heels as you {strand}",
+                $"You dart nimbly ahead by {result} feet, throwing caution to the wind as you {strand}",
+                $"You bound forward {result} feet, wide-eyed as you {strand}",
+
+                $"You scramble {result} feet, struggling to keep balance as you dodge the Lady of Vipers' blind attacks! You {strand}",
+                $"You hurl yourself forward {result} feet, struggling to catch your breath as you stumble, right yourself, and dart forward again... \n You {strand}",
+                $"Blood pounds in your ears, as you fling one foot in front of the other for {result} feet. You {strand}",
+
+                $"You trip! You gaze in horror as the Lady of Vipers closes in...",
+                $"You twist your ankle! You desperately limp forward {result} feet before pushing yourself through the pain...",
+                $"You slow down to catch your breath. You {strand}"
+            };
+            int sum = 0;
+            foreach(Dice d in hurry)
+            {
+                sum += d.faces;
+            }
+            int range = sum - hurry.Count;
+            Dice D3 = new Dice(3);
+            if (hurry[0].faces != 11)
+            {
+                if ((result - hurry.Count) > 3 * range / 5)
+                {
+                    Console.WriteLine(commentary[D3.Roll(D3) - 1]);
+                }
+                else if ((result - hurry.Count) <= 2 * range / 5)
+                {
+                    Console.WriteLine(commentary[D3.Roll(D3) + 5]);
+                }
+                else
+                {
+                    Console.WriteLine(commentary[D3.Roll(D3) + 2]);
+                }
+            }
+            else
+            {
+                Console.WriteLine($"The Lady of Vipers advances {result} feet!");
+            }
+            return result;
+        }
         public bool Race(Item speedPotion, List<Item> throwables, Room oubliette, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, List<Item> specialItems, bool fire = false, bool _initiative = false, bool masked = false)
         {
             int options = 1;
@@ -40,9 +112,11 @@ namespace DungeonCrawler
             int monsterProgress = 0;
             List<Dice> normalSpeed = new List<Dice> { };
             List<Dice> alacritySpeed = new List<Dice> { };
+            List<Dice> monsterSpeed = new List<Dice> { };
             Dice D4 = new Dice(4);
             Dice D3 = new Dice(3);
             Dice D6 = new Dice(6);
+            Dice D11 = new Dice(11);
             int i = 0;
             while (i < 8)
             {
@@ -53,6 +127,12 @@ namespace DungeonCrawler
             while (i < 14)
             {
                 alacritySpeed.Add(D3); 
+                i++;
+            }
+            i = 0;
+            while (i < 5)
+            {
+                monsterSpeed.Add(D11);
                 i++;
             }
             if(Player.Traits.ContainsKey("hale, hot and hearty"))
@@ -210,7 +290,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         Console.WriteLine("Your transfixed gaze latches with unbridled horror upon the beginning of the Lady's transformation into some new species of terror - a towering, gaunt monster with claws and unfurling chiropteric wings. They are huge and bat-like, yet they're so frayed that only the spindly but powerful fingers remain. Her laughter transfigures into a bestial hiss as the rattling, skeletal wings loom and spread above the smoke like the hood of a cobra poised to strike.");
                         Console.ReadKey(true);
-                        Console.WriteLine("The blood drains from your face. Your heart knocks in double-time. You stagger backwards as the Lady's shadow looms within the swelling smoke and fills the chamber. Slowly those spindly appendages clack upon the flagstones, elevating her - not like a devil in flight - but like the legs of a monstrous tarantula. Seeing for the first time what you're truly up against, you turn and scramble for the portal!  ");
+                        Console.WriteLine("The blood drains from your face. Your heart knocks in double-time. You stagger backwards as the Lady's shadow looms within the swelling smoke and fills the chamber. Slowly those spindly appendages clack upon the flagstones, elevating her - not like wings carrying a devil in flight - but like legs supporting a monstrous tarantula. Seeing for the first time what you're truly up against, you turn and scramble for the portal!  ");
                         Console.ReadKey(true);
                         playerProgress = 40;
                     }
@@ -226,7 +306,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         Console.WriteLine("Your transfixed gaze latches with unbridled horror upon the beginning of the Lady's transformation into some new species of terror. Caught in the glow of the roaring flames, a towering, gaunt monster with claws and unfurling chiropteric wings reveals itself. They are huge and bat-like, yet so frayed that only the spindly but powerful fingers, hooked with talons, remain. Her laughter transfigures into a bestial hiss as the rattling, skeletal wings loom and spread above the fire like the hood of a cobra poised to strike.");
                         Console.ReadKey(true);
-                        Console.WriteLine("The blood drains from your face. Your heart knocks in double-time. You stagger backwards as the Lady's terrifying form looms within the swelling smoke and fills the chamber. Slowly those spindly appendages clack upon the flagstones, elevating her - not like a devil in flight - but like the legs of a monstrous tarantula. Seeing for the first time what you're truly up against, you turn and scramble for the portal!  ");
+                        Console.WriteLine("The blood drains from your face. Your heart knocks in double-time. You stagger backwards as the Lady's terrifying form looms within the swelling smoke and fills the chamber. Slowly those spindly appendages clack upon the flagstones, elevating her - not like wings carrying a devil in flight - but like legs supporting a monstrous tarantula. Seeing for the first time what you're truly up against, you turn and scramble for the portal!  ");
                         Console.ReadKey(true);
                         playerProgress = 30;
                     }
@@ -242,7 +322,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         Console.WriteLine("Your transfixed gaze latches with unbridled horror upon the beginning of the Lady's transformation into some new species of terror. Caught in sporadic snapshots as the runes' glow sputters and flashes like lightning, a towering, gaunt monster with vicious claws and slowly unfurling chiropteric wings reveals itself. They are huge and bat-like, yet so frayed that only the spindly but powerful fingers, hooked with talons, remain. Her laughter transfigures into a bestial hiss as the rattling, skeletal wings loom and spread like the hood of a cobra poised to strike.");
                         Console.ReadKey(true);
-                        Console.WriteLine("The blood drains from your face. Your heart knocks in double-time. You stagger backwards as the Lady's terrifying form looms more and more with each jerky snapshot of light, filling the dark chamber. You hear the spindly appendages clack upon the flagstones. They elevate her - not like a devil in flight - but like the legs of a monstrous tarantula. \n\nSeeing for the first time what you're truly up against, you turn and scramble for the portal!  ");
+                        Console.WriteLine("The blood drains from your face. Your heart knocks in double-time. You stagger backwards as the Lady's terrifying form looms more and more with each jerky snapshot of light, filling the dark chamber. You hear the spindly appendages clack upon the flagstones. They elevate her - not like wings carrying a devil in flight - but like legs supporting a monstrous tarantula. \n\nSeeing for the first time what you're truly up against, you turn and scramble for the portal!  ");
                         Console.ReadKey(true);
                         playerProgress = 60;
                     }
@@ -258,7 +338,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         Console.WriteLine("Your transfixed gaze latches with unbridled horror upon the beginning of the Lady's transformation into some new species of terror. Caught in sporadic snapshots as the runes' glow sputters and flashes like lightning, a towering, gaunt monster with vicious claws and slowly unfurling chiropteric wings reveals itself. They are huge and bat-like, yet so frayed that only the spindly but powerful fingers, hooked with talons, remain. Her laughter transfigures into a bestial hiss as the rattling, skeletal wings loom and spread like the hood of a cobra poised to strike.");
                         Console.ReadKey(true);
-                        Console.WriteLine("The blood drains from your face. Your heart knocks in double-time. You stagger backwards as the Lady's terrifying form looms more and more with each jerky snapshot of light, filling the dark chamber. You hear the spindly appendages clack upon the flagstones. They elevate her - not like a devil in flight - but like the legs of a monstrous tarantula. \n\nSeeing for the first time what you're truly up against, you turn and scramble for the portal!  ");
+                        Console.WriteLine("The blood drains from your face. Your heart knocks in double-time. You stagger backwards as the Lady's terrifying form looms more and more with each jerky snapshot of light, filling the dark chamber. You hear the spindly appendages clack upon the flagstones. They elevate her - not like wings carrying a devil in flight - but like legs supporting a monstrous tarantula. \n\nSeeing for the first time what you're truly up against, you turn and scramble for the portal!  ");
                         Console.ReadKey(true);
                         playerProgress = 30;
                     }
@@ -274,7 +354,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         Console.WriteLine("Your transfixed gaze latches with unbridled horror upon the beginning of the Lady's transformation into some new species of terror. Caught in sporadic snapshots as the runes' glow sputters and flashes like lightning, a towering, gaunt monster with vicious claws and slowly unfurling chiropteric wings reveals itself. They are huge and bat-like, yet so frayed that only the spindly but powerful fingers, hooked with talons, remain. Her laughter transfigures into a bestial hiss as the rattling, skeletal wings loom and spread like the hood of a cobra poised to strike.");
                         Console.ReadKey(true);
-                        Console.WriteLine("The blood drains from your face. Your heart knocks in double-time. You stagger backwards as the Lady's terrifying form looms more and more with each jerky snapshot of light, filling the dark chamber. You hear the spindly appendages clack upon the flagstones. They elevate her - not like a devil in flight - but like the legs of a monstrous tarantula. \n\nSeeing for the first time what you're truly up against, you turn and scramble for the portal!  ");
+                        Console.WriteLine("The blood drains from your face. Your heart knocks in double-time. You stagger backwards as the Lady's terrifying form looms more and more with each jerky snapshot of light, filling the dark chamber. You hear the spindly appendages clack upon the flagstones. They elevate her - not like wings carrying a devil in flight - but like legs supporting a monstrous tarantula. \n\nSeeing for the first time what you're truly up against, you turn and scramble for the portal!  ");
                         Console.ReadKey(true);
                         playerProgress = 20;
                     }
@@ -348,6 +428,7 @@ namespace DungeonCrawler
             {
                 Console.WriteLine("Test your skill...\n[Roll a D12 under or equal to your skill score]");
                 Console.ReadKey(true);
+                
                 Dice D12 = new Dice(12);
                 int roll = D12.Roll(D12);
                 if (Player.Traits.ContainsKey("jinxed"))
@@ -358,7 +439,7 @@ namespace DungeonCrawler
                 if (roll <= Player.Skill)
                 {
                     Console.WriteLine("The moment your foot breaks the circle of the pentagram, you flee!\n You are too fast for the Lady's surprise attack, but she only laughs ecstatically in response. Her mania, however, soon morphs into some alien species of cackle, its blood-chilling notes electrifying the very air that surges past you as you race forward. You can hear her slowly mutate into some new form...");
-                    playerProgress = 7;
+                    playerProgress = 6;
                 }
                 else
                 {
@@ -368,6 +449,8 @@ namespace DungeonCrawler
                     Console.ReadKey(true);
                     return false;
                 }
+                Player.Speedy = true;
+                Player.Inventory.Remove(speedPotion);
             }
             else if (message[index] == 'B')
             {
@@ -395,8 +478,8 @@ namespace DungeonCrawler
                     " knocks in double-time. You stagger backwards as the Lady's " +
                     "terrifying form looms more and more with each jerky snapshot of " +
                     "light, filling the dark chamber. You hear the spindly appendages " +
-                    "clack upon the flagstones. They elevate her - not like a devil in flight - " +
-                    "but like the legs of a monstrous tarantula...");
+                    "clack upon the flagstones. They elevate her - not like wings carrying a devil in flight - " +
+                    "but like legs supporting a monstrous tarantula...");
                 Console.ReadKey(true);
                 Console.WriteLine("'So you wish to fight me, little fly?' her voice" +
                     " is the vespine buzzing of a thousand wasps, as her once bewitching smile" +
@@ -415,12 +498,76 @@ namespace DungeonCrawler
             {
                 Console.WriteLine("Error locating option! Check index.");
             }
-            
-            while (playerProgress < 200 && monsterProgress < 200)
+            List<Dice> playerSpeed = new List<Dice>();
+            if (Player.Speedy)
             {
+                playerSpeed = alacritySpeed;
+            }
+            else
+            {
+                playerSpeed = normalSpeed;
+            }
+            playerProgress += AdvanceForward(playerProgress, playerSpeed);
+            Console.ReadKey(true);
+            Console.WriteLine("From somewhere behind you hear the Lady cackle as she scuttles towards you. She stalks the sound of your clapping footfalls, closes in on each beat of your pounding heart, all while she blindly flails at you with her talons each chance she gets...");
+            Console.ReadKey(true);
+            while (playerProgress < 200 || monsterProgress < 200)
+            {
+                monsterProgress += AdvanceForward(monsterProgress, monsterSpeed);
+                Console.ReadKey(true);
+                if (monsterProgress > playerProgress && monsterProgress < 160)
+                {
+                    
+                    int ouch = Monster.Veapon.Attack(Monster.Skill, Player.Skill, Player.Stamina, true, Monster, Player, "", oubliette, holeInCeiling);
+                    Player.Stamina -= ouch;
+                    if (Player.Stamina < 1)
+                    {
+                        Console.WriteLine("Your adventure ends here...");
+                        Console.ReadKey(true);
+                        return false;
+                    }
+                    Console.WriteLine($"\nYou lost {ouch} points of Stamina!");
+                    if (ouch == 0)
+                    {
+                        monsterProgress = playerProgress - 20 - D11.Roll(D11);
+                    }
+                    else
+                    {
+                        monsterProgress = playerProgress - 10;
+                    }
+                    Console.ReadKey(true);
+                    Console.WriteLine("The Lady falls behind, blindly flailing before she catches the sound of you running away. Laughing manically, she gives chase...");
+                    Console.ReadKey(true);
+                }
+                playerProgress += AdvanceForward(playerProgress, playerSpeed);
+                Console.ReadKey(true);
+                
 
             }
-            return true;
+            Console.WriteLine("You are an instant from the portal's reach when within a breathless instant the Lady lunges forwards!");
+            Console.ReadKey(true);
+            Console.WriteLine("As the monster's ''wings'' close around you, snatching the portal from sight, you have but one final chance - You throw yourself through her clutches! ");
+            Console.ReadKey(true);
+            Console.WriteLine("You both tumble then dive for the prize!");
+            Console.ReadKey(true);
+            if(playerProgress >= monsterProgress)
+            {
+                Player.Speedy = false;
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("You're too late!");
+                Console.ReadKey(true);
+                Console.WriteLine("By the time you reach the portal the Eldritch" +
+                    " Queen of the ArchFey has already won her freedom. You are" +
+                    " crushed and torn asunder by the portals remaining tidal " +
+                    "forces, as it collapses in on you.");
+                Console.ReadKey(true);
+                Console.WriteLine("Your adventure ends here...");
+                Console.ReadKey(true);
+                return false;
+            }
 
         }
         public void WonFight(Room room)

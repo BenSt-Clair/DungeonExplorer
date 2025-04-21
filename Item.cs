@@ -2357,48 +2357,52 @@ namespace DungeonCrawler
             }
             else 
             {
-                if (item2.Name == monster.Veapon.Name && item1.Name == "throwing knife")
+                if (monster != null)
                 {
-                    int resultOfSkillTest = 0;
-                    if (player.Skill < 7)
+                    if (item2.Name == monster.Veapon.Name && item1.Name == "throwing knife")
                     {
-                        Console.WriteLine("In the heat of battle you hurl your throwing knife and pray it hits your target...");
-                        Console.ReadKey(true);
-                        Console.WriteLine("[Test your skill: Roll a D7 equal to or under your skill score]");
-                        Console.ReadKey(true);
-                        Dice D7 = new Dice(7);
-                        resultOfSkillTest = D7.Roll(D7);
-                        if(resultOfSkillTest > 3 && player.Traits.ContainsKey("jinxed"))
+                        int resultOfSkillTest = 0;
+                        if (player.Skill < 7)
                         {
-                            resultOfSkillTest -= 3;
-                        }
-                        Console.WriteLine($"You rolled a {resultOfSkillTest}");
-                        if (resultOfSkillTest <= player.Skill)
-                        {
+                            Console.WriteLine("In the heat of battle you hurl your throwing knife and pray it hits your target...");
                             Console.ReadKey(true);
-                            Console.WriteLine("You fling the throwing knife into your opponent's weapon. It is sent clattering away along the ground. Fuming, your enemy resolves to settle this fight with their bare hands...");
+                            Console.WriteLine("[Test your skill: Roll a D7 equal to or under your skill score]");
+                            Console.ReadKey(true);
+                            Dice D7 = new Dice(7);
+                            resultOfSkillTest = D7.Roll(D7);
+                            if (resultOfSkillTest > 3 && player.Traits.ContainsKey("jinxed"))
+                            {
+                                resultOfSkillTest -= 3;
+                            }
+                            Console.WriteLine($"You rolled a {resultOfSkillTest}");
+                            if (resultOfSkillTest <= player.Skill)
+                            {
+                                Console.ReadKey(true);
+                                Console.WriteLine("You fling the throwing knife into your opponent's weapon. It is sent clattering away along the ground. Fuming, your enemy resolves to settle this fight with their bare hands...");
+                            }
+                            else
+                            {
+                                Console.ReadKey(true);
+                                Console.WriteLine("Your throwing knife misses...");
+                                return tlist;
+                            }
                         }
                         else
                         {
-                            Console.ReadKey(true);
-                            Console.WriteLine("Your throwing knife misses...");
-                            return tlist;
+                            Console.WriteLine("With well practiced flair you fling the throwing knife into your opponent's weapon. It is sent clattering away along the ground. Fuming, your enemy resolves to settle this fight with their bare hands...");
                         }
+
+                        player.Inventory.Remove(item1);
+                        room.ItemList.Add(item1);
+                        monster.Items.RemoveAt(0);
+                        room.ItemList.Add(item2);
+                        List<Item> weaponcaster = new List<Item> { specialItems[8] };
+                        List<Weapon> weaponCasted = weaponcaster.Cast<Weapon>().ToList();
+                        monster.Veapon = weaponCasted[0];
+
                     }
-                    else
-                    {
-                        Console.WriteLine("With well practiced flair you fling the throwing knife into your opponent's weapon. It is sent clattering away along the ground. Fuming, your enemy resolves to settle this fight with their bare hands...");
-                    }
-                    
-                    player.Inventory.Remove(item1);
-                    room.ItemList.Add(item1);
-                    monster.Items.RemoveAt(0);
-                    room.ItemList.Add(item2);
-                    List<Item> weaponcaster = new List<Item> { specialItems[8] };
-                    List<Weapon> weaponCasted = weaponcaster.Cast<Weapon>().ToList();
-                    monster.Veapon = weaponCasted[0];
-                    
                 }
+                
                 return tlist; 
             }
 
@@ -2657,19 +2661,33 @@ namespace DungeonCrawler
             {
                 if (commentary) //if the player is attacking...
                 {
-                    Console.WriteLine($"Roll for your {Name}...");
-                    foreach (Dice d in Damage)
+                    if (skill == -10)
                     {
-                        Console.ReadKey(true);
-                        int roll = d.Roll(d);
-                        damageDealt += roll;
-                        Console.WriteLine($"You rolled a {roll}");
+                        foreach (Dice d in Damage)
+                        {
 
+                            int roll = d.Roll(d);
+                            damageDealt += roll;
+
+
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Roll for your {Name}...");
+                        foreach (Dice d in Damage)
+                        {
+                            Console.ReadKey(true);
+                            int roll = d.Roll(d);
+                            damageDealt += roll;
+                            Console.WriteLine($"You rolled a {roll}");
+
+                        }
                     }
                 }
                 else
                 {
-                    if (!start && !attackedMonster2)
+                    if (!start && !attackedMonster2 && player.Skill != -10)
                     {
                         List<string> enemyCounters = new List<string>
                             {
@@ -2715,7 +2733,7 @@ namespace DungeonCrawler
 
 
 
-                if ((hitThreshold - hitRoll) - 3 > opponentSkill)
+                if ((hitThreshold - hitRoll) - 3 > opponentSkill || (skill == -10))
                 {
                     goodHit = (hitThreshold - opponentSkill);
                     good = true;
@@ -2833,8 +2851,13 @@ namespace DungeonCrawler
                     }
                     else if (good)
                     {
+                        int LadyDeathStrike = 0;
+                        if (skill == -10)
+                        {
+                            LadyDeathStrike = D4.Roll(D4);
+                        }
                         Console.WriteLine("\n");
-                        if (skill > 8)
+                        if (skill > 8 || LadyDeathStrike == 4)
                         {
                             if (enemyStamina - (damageDealt + goodHit / 2) < 1)
                             {
@@ -2854,7 +2877,7 @@ namespace DungeonCrawler
                             }
 
                         }
-                        else if (skill > 5)
+                        else if (skill > 5 || LadyDeathStrike == 3)
                         {
                             if (enemyStamina - (damageDealt + goodHit / 2) < 1)
                             {
@@ -2873,7 +2896,7 @@ namespace DungeonCrawler
                                 Console.WriteLine(GoodAttack[7]);
                             }
                         }
-                        else if (skill > 2)
+                        else if (skill > 2 || LadyDeathStrike == 2)
                         {
                             if (enemyStamina - (damageDealt + goodHit / 2) < 1)
                             {
@@ -2918,7 +2941,10 @@ namespace DungeonCrawler
                 }
 
 
-                if (!commentary && player.Traits.ContainsKey("thick-skinned")) { return (4 * (damageDealt + goodHit / 2) / 5); }
+                if (!commentary && player.Traits.ContainsKey("thick-skinned"))
+                {
+                    return (4 * (damageDealt + goodHit / 2) / 5); 
+                }
                 else
                 {
                     return (damageDealt + (goodHit / 2));
@@ -2928,7 +2954,17 @@ namespace DungeonCrawler
             {
                 if (commentary)
                 {
-                    Console.WriteLine("Your attack misses!");
+                    if (skill == -10)
+                    {
+                        Console.WriteLine("The Lady of Vipers attacks!");
+                        Console.ReadKey(true);
+                        Console.WriteLine("You dodge it just in time!");
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Your attack misses!");
+                    }
                 }
                 else
                 {
