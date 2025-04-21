@@ -2990,6 +2990,7 @@ namespace DungeonCrawler
                                 leftWhichRooms = highestParapet.WhichRoom(leftWhichRooms);
                                 //Upon the highest parapet the dark figure completes their incantation, wait with bated breath, finger of god descend from skies, if fiery escape scene of fire below, dialogue
                                 // add commentary on CurseBreaker completing their rite during end of race?
+                                // add section of race where dark lady unleashes a flurry of attacks near portal?
                                 break;
                             }
                             else
