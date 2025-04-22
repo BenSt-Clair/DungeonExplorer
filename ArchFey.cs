@@ -21,7 +21,7 @@ namespace DungeonCrawler
             Race = race;
             Room = room;
         } 
-        public bool ElderArchFeyPlotPoint(Room magicalManufactory)
+        public bool ElderArchFeyPlotPoint(Room magicalManufactory, Feature mosaic)
         {
             string description = "Suddenly, a voice beckons you from somewhere within the shadows! " +
                 "\n\t'Oh, I wouldn't do that if I were you...' it calls, its cadence childlike in its singsong delivery from the depths of the oubliette. " +
@@ -853,7 +853,7 @@ namespace DungeonCrawler
                         " the same force that turned colliding galaxies into new worlds. The cycle of creation and destruction." +
                         "\n\t'You see,' her silky voice caresses your mind, 'I told you true when I first called to you in the darkness;" +
                         " \n\t'...he schemes for the downfall of the unruled, the whimsical, the free, \nAdventurers who dare stand up to power and restore the balance, \n\tlike you, \n\t\tlike me...'" +
-                        "\n\n  Her head languidly pivots from you and turns to face the CurseBreaker through the portal, his feverish incantations picking up the pace and jolted into a devilish staccato.\n You witness lightning flashing above him as thunder roars... \n\n  'To defeat the one who'd make himself tyrant of fortune itself, your only choice is to free me...'",
+                        "\n\n  Her head turns from you to face the dark silhouette through the portal. His evil chant picks up the pace, as lightning flashes above him and thunder roars... \n\n  'To defeat the one who'd make himself tyrant of hope and chance, your only choice is to unleash me...'",
 
                         "  Every game has rules. You ask the Lady what hers are..." +
                         "\n\tShe claps her hands delightedly and gasps with glee. 'It's simple,' she replies," +
@@ -887,6 +887,10 @@ namespace DungeonCrawler
                             "So you want to race for the portal?"
                         }
                     };
+                    if (mosaic.SpecificAttribute == "studied")
+                    {
+                        choices[1].Insert(0, "You recall the peculiar mosaic's words from the Antechamber. With a shock of recognition you realise this must be the creature from the CurseBreaker's past. You confront her with her appalling crimes...");
+                    }
                     choices_response = new Dictionary<string, string>
                     {
                         {
@@ -903,6 +907,30 @@ namespace DungeonCrawler
                             "You tell her that the CurseBreaker may be bad, but you assert she's pure evil...",
                             
                             "'Evil?' the Lady seems bemused by such a notion."
+                        },
+                        {
+                            "You recall the peculiar mosaic's words from the Antechamber. With a shock of recognition you realise this must be the creature from the CurseBreaker's past. You confront her with her appalling crimes...",
+
+                            "The Lady titters as she seems to reminisce on her first meeting with the" +
+                            " CurseBreaker. 'Oh, even then Arcturas was no fun - He didn't like the games" +
+                            " I taught the other children to play...'" +
+                            "\n  She turns her attention back to you, tilting her head curiously. 'Those" +
+                            " adventurers leapt at the chance to deliver their ''justice'' to the parents of that village. I wonder if you would too?'" +
+                            "\n\n   You assert you'd never do what they did... never.\n" +
+                            "\n\t'Wouldn't you?' she fixes you once again with that knowing smile. You wipe your sweaty hands down your front. 'I" +
+                            " always find it *fascinating* how much more sadistic the self-righteous can be than those" +
+                            " who are simply cruel. All their sanctimonious talk, all their acts in the name" +
+                            " of ''what's right'', all of it is just another game played by neighbours, concealing what they'd *really*" +
+                            " do to each other if given the chance. And all that's needed to unleash those darkest desires is" +
+                            " to assure them that it'll be seen as ''good''. To seduce them with morals and ethics and justice.'" +
+                            "\n\n  You tell her that she's worse than any curse for what she did... she's pure chaos." +
+                            "'Chaos?' she breathes, delighted by the suggestion. Her laughter once" +
+                            " again is in danger of enrapturing you. 'Oh, sweet thing, you do not know how" +
+                            " right you are...'" +
+                            "\n  You ask her to explain herself. " +
+                            "\n\t'The CurseBreaker knows it,' she replies coyly, 'but I suppose Merigold " +
+                            "hasn't a clue, poor fool. Years upon years he studied curses. Never has he uncovered" +
+                            " more than a veneer of the truth...'"
                         },
                         {
                             "You tell her that she is pure chaos...",

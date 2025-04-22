@@ -39,6 +39,10 @@ namespace DungeonCrawler
                 Thread.Sleep(27);
                 result += d.Roll(d);
             }
+            if (hurry[0].faces == 11)
+            {
+                result += 7;
+            }
             string strand = "";
             if (progress < 65)
             {
@@ -63,23 +67,24 @@ namespace DungeonCrawler
             }
             List<string> commentary = new List<string>
             {
-                $"You lunge forward {result} feet, kicking your heels as you {strand}",
-                $"You dart nimbly ahead by {result} feet, throwing caution to the wind as you {strand}",
-                $"You bound forward {result} feet, wide-eyed as you {strand}",
+                $"\nYou lunge forward {result} feet, kicking your heels as you {strand}",
+                $"\nYou dart nimbly ahead by {result} feet, throwing caution to the wind as you {strand}",
+                $"\nYou bound forward {result} feet, wide-eyed as you {strand}",
 
-                $"You scramble {result} feet, struggling to keep balance as you dodge the Lady of Vipers' blind attacks! You {strand}",
-                $"You hurl yourself forward {result} feet, struggling to catch your breath as you stumble, right yourself, and dart forward again... \n You {strand}",
-                $"Blood pounds in your ears, as you fling one foot in front of the other for {result} feet. You {strand}",
+                $"\nYou scramble {result} feet, struggling to keep balance as you dodge the Lady of Vipers' blind attacks! You {strand}",
+                $"\nYou hurl yourself forward {result} feet, struggling to catch your breath as you stumble, right yourself, and dart forward again... \n You {strand}",
+                $"\nBlood pounds in your ears, as you fling one foot in front of the other for {result} feet. You {strand}",
 
-                $"You trip! You gaze in horror as the Lady of Vipers closes in...",
-                $"You twist your ankle! You desperately limp forward {result} feet before pushing yourself through the pain...",
-                $"You slow down to catch your breath. You {strand}"
+                $"\nYou trip! You gaze in horror as the Lady of Vipers closes in...",
+                $"\nYou twist your ankle! You desperately limp forward {result} feet before pushing yourself through the pain...",
+                $"\nYou slow down to catch your breath. You {strand}"
             };
             int sum = 0;
             foreach(Dice d in hurry)
             {
                 sum += d.faces;
             }
+            
             int range = sum - hurry.Count;
             Dice D3 = new Dice(3);
             if (hurry[0].faces != 11)
@@ -99,7 +104,7 @@ namespace DungeonCrawler
             }
             else
             {
-                Console.WriteLine($"The Lady of Vipers advances {result} feet!");
+                Console.WriteLine($"\nThe Lady of Vipers advances {result} feet!");
             }
             return result;
         }
@@ -116,6 +121,7 @@ namespace DungeonCrawler
             Dice D4 = new Dice(4);
             Dice D3 = new Dice(3);
             Dice D6 = new Dice(6);
+            Dice D8 = new Dice(8);
             Dice D11 = new Dice(11);
             int i = 0;
             while (i < 8)
@@ -137,8 +143,8 @@ namespace DungeonCrawler
             }
             if(Player.Traits.ContainsKey("hale, hot and hearty"))
             {
-                normalSpeed.Add(D6);
-                alacritySpeed.Add(D4);
+                normalSpeed.Add(D8);
+                alacritySpeed.Add(D6);
             }
             bool throwingArm = false;
             foreach(Item t in throwables)
@@ -509,13 +515,23 @@ namespace DungeonCrawler
             }
             playerProgress += AdvanceForward(playerProgress, playerSpeed);
             Console.ReadKey(true);
-            Console.WriteLine("From somewhere behind you hear the Lady cackle as she scuttles towards you. She stalks the sound of your clapping footfalls, closes in on each beat of your pounding heart, all while she blindly flails at you with her talons each chance she gets...");
+            Console.WriteLine("\nFrom somewhere behind you hear the Lady cackle as she scuttles towards you. She stalks the sound of your clapping footfalls, closes in on each beat of your pounding heart, all while she blindly flails at you with her talons each chance she gets...");
             Console.ReadKey(true);
-            while (playerProgress < 200 || monsterProgress < 200)
+            List<string> afterStrike = new List<string>
+                    {
+                        "\nThe Lady falls behind, blindly stabbing at the flagstones with her talons... \nThen she catches your scent...",
+                        "\nThe Lady falls behind, blindly flailing before she catches the sound of you running away. Laughing manically, she gives chase...",
+                        "\nThe Lady blindly scours the chamber for you as you slip ahead. It's not long before she's once again on your tail... ",
+                        "\nThe Lady of vipers wastes time tearing up flagstones as she seeks to bloody her talons once more. Then she hears your scrambling...",
+                        "\nThe looming monster slashes blindly at the ground where you were last! She cackles before she once again zeroes in on the sound of your thumping heart...",
+                        "\nYou slip past the monster, leaving her to jab wildly at the floor with her spindly appendages..."
+                    };
+            while (playerProgress < 160 && monsterProgress < 160)
             {
                 monsterProgress += AdvanceForward(monsterProgress, monsterSpeed);
+                Console.WriteLine($"\n\nplayer - {playerProgress} : {monsterProgress} - monster\n");
                 Console.ReadKey(true);
-                if (monsterProgress > playerProgress && monsterProgress < 160)
+                if (monsterProgress > playerProgress)
                 {
                     
                     int ouch = Monster.Veapon.Attack(Monster.Skill, Player.Skill, Player.Stamina, true, Monster, Player, "", oubliette, holeInCeiling);
@@ -536,15 +552,72 @@ namespace DungeonCrawler
                         monsterProgress = playerProgress - 10;
                     }
                     Console.ReadKey(true);
-                    Console.WriteLine("The Lady falls behind, blindly flailing before she catches the sound of you running away. Laughing manically, she gives chase...");
+                    Console.WriteLine(afterStrike[D6.Roll(D6) - 1]);
                     Console.ReadKey(true);
                 }
+                
                 playerProgress += AdvanceForward(playerProgress, playerSpeed);
                 Console.ReadKey(true);
                 
 
             }
+            while (playerProgress < 200 || monsterProgress < 200)
+            {
+                monsterProgress += AdvanceForward(monsterProgress, monsterSpeed);
+                Console.ReadKey(true);
+                if (monsterProgress > playerProgress)
+                {
+                    Console.WriteLine("The terror looming above you unleashes a frenzied flurry of strikes!");
+                    Console.ReadKey(true);
+                    int ouch = Monster.Veapon.Attack(Monster.Skill, Player.Skill, Player.Stamina, true, Monster, Player, "", oubliette, holeInCeiling);
+                    Player.Stamina -= ouch;
+                    if (Player.Stamina < 1)
+                    {
+                        Console.WriteLine("Your adventure ends here...");
+                        Console.ReadKey(true);
+                        return false;
+                    }
+                    Console.WriteLine($"\nYou lost {ouch} points of Stamina!");
+                    Console.ReadKey(true);
+                    int youch = Monster.Veapon.Attack(Monster.Skill, Player.Skill, Player.Stamina, true, Monster, Player, "", oubliette, holeInCeiling);
+                    Player.Stamina -= youch;
+                    if (Player.Stamina < 1)
+                    {
+                        Console.WriteLine("Your adventure ends here...");
+                        Console.ReadKey(true);
+                        return false;
+                    }
+                    Console.WriteLine($"\nYou lost {youch} points of Stamina!");
+                    Console.ReadKey(true);
+                    int yeouch = Monster.Veapon.Attack(Monster.Skill, Player.Skill, Player.Stamina, true, Monster, Player, "", oubliette, holeInCeiling);
+                    Player.Stamina -= yeouch;
+                    if (Player.Stamina < 1)
+                    {
+                        Console.WriteLine("Your adventure ends here...");
+                        Console.ReadKey(true);
+                        return false;
+                    }
+                    Console.WriteLine($"\nYou lost {yeouch} points of Stamina!");
+                    if (yeouch == 0)
+                    {
+                        monsterProgress = playerProgress - 20 - D11.Roll(D11);
+                    }
+                    else
+                    {
+                        monsterProgress = playerProgress - 10;
+                    }
+                    Console.ReadKey(true);
+
+                    Console.WriteLine(afterStrike[D6.Roll(D6) - 1]);
+                    Console.ReadKey(true);
+                }
+                playerProgress += AdvanceForward(playerProgress, playerSpeed);
+                Console.ReadKey(true);
+            }
+            Console.WriteLine("\x1b[3J");
+            Console.Clear();
             Console.WriteLine("You are an instant from the portal's reach when within a breathless instant the Lady lunges forwards!");
+            monsterProgress += AdvanceForward(monsterProgress, monsterSpeed);
             Console.ReadKey(true);
             Console.WriteLine("As the monster's ''wings'' close around you, snatching the portal from sight, you have but one final chance - You throw yourself through her clutches! ");
             Console.ReadKey(true);

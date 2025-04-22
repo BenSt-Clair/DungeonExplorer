@@ -1885,6 +1885,26 @@ namespace DungeonCrawler
             bool justGrazing = true;
             while (!escapedRoom1)
             {
+                /*
+                player1.Inventory.Add(crystalBall);
+                player1.Inventory.Add(throwingKnife);
+                player1.Inventory.Add(lantern);
+                player1.Inventory.Add(copperTrinket);
+                player1.WeaponInventory.Add(vanquisher);
+                player1.WeaponInventory.Add(stiletto);
+                
+                MGItems.Remove(staffMG);
+                mosaic.SpecificAttribute = "studied";
+                foreach(Item item in MGItems)
+                {
+                    player1.Inventory.Add(item);
+                }
+                escapedRoom1 = true;
+                continue;
+                */
+                //
+                //
+                //
                 for (int i = room.ItemList.Count - 1; i >= 0; i--)
                 {
                     FungShui(room.ItemList[i].Name);
@@ -1918,20 +1938,10 @@ namespace DungeonCrawler
                         c++;
                         
                         
-                        if (c == 1 && player1.Traits.ContainsKey("friends with fairies") && !player1.Traits.ContainsKey("thespian"))
-                        {
-                            Console.WriteLine("You march up to the door, put on your serious face, and set about yelling for succour. You bang on the door. You bang so hard you think eventually you might just bang your way through it. Then your jailor would be mourning the loss of this rosewood door... \nPfft... mourning...<titter>...wood. You roll on the floor in a fit of giggles. Your fairy friends nod their heads with approval.\n");
-                            Console.WriteLine("You waste precious minutes!");
-                            e++;
-
-                        }
-                        else if (player1.Traits.ContainsKey("friends with fairies") && !player1.Traits.ContainsKey("thespian"))
-                        {
-                            Console.WriteLine("You almost can't look at the door without a ripple of mirth shuddering through you. No... you must focus! You tug your own face into a grumpy frown, fighting the laughter.");
-                        }
+                        
                         if (c == 1)
                         {
-                            Console.WriteLine($"Somewhere not too far from beyond the confines of the {room.Name} a bestial guffaw can be heard. It seems whoever, or whatever, guards your cell cares little for your predicament.");
+                            Console.WriteLine($"Somewhere not too far from beyond the confines of the {room.Name} a bestial guffaw can be heard. It seems whoever, or whatever, guards your cell cares little for your predicament. If you want their attention, you may need something louder that they can't ignore...");
                         }
                         else
                         {
@@ -2460,6 +2470,16 @@ namespace DungeonCrawler
                 long fireTimeLapsed = 0;
                 bool visitedCorridor = false;
                 bool showFireMessage = true;
+            //
+            //
+            //
+            /*
+            newRoom1 = magicalManufactory;
+            leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+            */
+            //
+            //
+            //
                 while (!victorious)
                 {
                     
@@ -2680,7 +2700,11 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(corridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
+                            corridor.ItemList.Remove(garment);
+                            corridor.ItemList.Remove(rustyChains);
+                            corridor.ItemList.Remove(bowlFragments);
+                            corridor.ItemList.Remove(looseNail);
+                            player1.SearchPack(corridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
                                 fireProgress = FireProgress(fireProgress, player1, corridor);
                                 if (fireProgress > 999)
@@ -2734,6 +2758,10 @@ namespace DungeonCrawler
                     {
                         if (reply == "c")
                         {
+                            corridor.ItemList.Remove(garment);
+                            corridor.ItemList.Remove(rustyChains);
+                            corridor.ItemList.Remove(bowlFragments);
+                            corridor.ItemList.Remove(looseNail);
                             player1.CheckStatus();
                         }
                         else
@@ -2951,7 +2979,7 @@ namespace DungeonCrawler
                     if (b != 0)
                     {
                         ArchFey LadyOfVipers = new ArchFey(player1, goblin, trialBattle, oubliette);
-                        if (LadyOfVipers.ElderArchFeyPlotPoint(magicalManufactory))
+                        if (LadyOfVipers.ElderArchFeyPlotPoint(magicalManufactory, mosaic))
                         {
                             List<string> LadyGoodHits = new List<string> 
                             {
@@ -2978,7 +3006,8 @@ namespace DungeonCrawler
                                 "The Lady gropes for you in the dark with her many talons!"
 
                             };
-                            List<Dice> clawDamage = new List<Dice> { D12, D12, D12, D12, D12, D12, D12, D12 };
+                            Dice D80 = new Dice(80);
+                            List<Dice> clawDamage = new List<Dice> { D80 };
                             Weapon deadlyClaws = new Weapon("claws", "They're going to hurt...", clawDamage, defaultCritHits, LadyGoodHits, 0);
                             Weapon venomousSting = new Weapon("venomous sting", "Youch!", clawDamage, defaultCritHits, defaultGoodHits);
                             List<Item> purse = new List<Item> { venomousSting, dustBunny };
@@ -3291,7 +3320,11 @@ namespace DungeonCrawler
                             }
                             else if (reply1 == 1)
                             {
-                                player1.SearchPack(antechamber.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
+                            antechamber.ItemList.Remove(clunkySabaton);
+                            antechamber.ItemList.Remove(breastplate);
+                            antechamber.ItemList.Remove(helmet);
+                            antechamber.ItemList.Remove(bracers);
+                            player1.SearchPack(antechamber.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
                                 a++;
                                 fireProgress = FireProgress(fireProgress, player1, antechamber);
                                 antechamber.FirstVisit = false;
@@ -3344,11 +3377,19 @@ namespace DungeonCrawler
                     {
                         if (reply == "c")
                         {
+                            antechamber.ItemList.Remove(clunkySabaton);
+                            antechamber.ItemList.Remove(breastplate);
+                            antechamber.ItemList.Remove(helmet);
+                            antechamber.ItemList.Remove(bracers);
                             player1.CheckStatus();
                         }
                         else
                         {
                             Console.WriteLine("Please enter a number corresponding to your choice of action...");
+                            antechamber.ItemList.Remove(clunkySabaton);
+                            antechamber.ItemList.Remove(breastplate);
+                            antechamber.ItemList.Remove(helmet);
+                            antechamber.ItemList.Remove(bracers);
                         }
                     }
                 }

@@ -2956,9 +2956,20 @@ namespace DungeonCrawler
                 {
                     if (skill == -10)
                     {
+                        List<string> dodge = new List<string> 
+                        {
+                            "\nYou dodge it just in time!",
+                            "\nYou swerve out of the way!",
+                            "\nYou dive before the blow lands!",
+                            "\nYou lunge out of reach!",
+                            "\nYou sidestep before the blow cleaves you in two!",
+                            "\nYou nip out of the way!",
+                            "\nYou duck under her flailing talons!",
+                            "\nYou scramble from her clutches!"
+                        };
                         Console.WriteLine("The Lady of Vipers attacks!");
                         Console.ReadKey(true);
-                        Console.WriteLine("You dodge it just in time!");
+                        Console.WriteLine(dodge[(D16.Roll(D16) - 1)/2]);
 
                     }
                     else
