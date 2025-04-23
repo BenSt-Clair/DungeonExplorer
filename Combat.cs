@@ -630,6 +630,7 @@ namespace DungeonCrawler
             }
             else
             {
+                /*
                 Console.WriteLine("You're too late!");
                 Console.ReadKey(true);
                 Console.WriteLine("By the time you reach the portal the Eldritch" +
@@ -640,6 +641,9 @@ namespace DungeonCrawler
                 Console.WriteLine("Your adventure ends here...");
                 Console.ReadKey(true);
                 return false;
+                */
+                Player.Stamina = 0;
+                return true;
             }
 
         }

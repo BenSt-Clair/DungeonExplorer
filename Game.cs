@@ -552,6 +552,50 @@ namespace DungeonCrawler
                 "The enemy somehow stabs themselves on your weapon.",
                 "The enemy gets a spontaneous nosebleed."
                 };
+            List<string> sabreCrits = new List<string> 
+            {
+                "After a flurry of ripostes and counters the CurseBreaker finally finds his opening. He bolts forward and runs you through with his sabre. Moments before the light leaves your eyes, you see a smug, satisfied smile creep across his lips, as he slowly slides the blade out of your soon-to-be corpse...",
+                "The CurseBreaker nimbly sidesteps your attacks. Before you know it he's managed to dart behind you and open up a severe and nasty gash across your back. You can't help but collapse as the steel bites, and only just manage to roll out of the way before he lands the killing blow...",
+                "Thunder crashes overhead as you both enter a desperate flurry of parries and ripostes amidst the biting sleet. The CurseBreaker's sabre is a blur as he slashes at your forearm, spattering blood into your anguished face...",
+                "Both your feet clap upon the flagstones as your duel rages under the frightful storm. You each try to outmanoeuvre the other; a fever of feints and sidesteps and parries. Amidst it all, the CurseBreaker slices open the back of your hand...",
+
+                "Sensing your exhaustion, the CurseBreaker finally seizes his chance. He leaves finesse behind as he hammers at your defence with his sabre, sending you staggering backwards. Back against the parapet's edge he delivers the final blow; a kick that sends you plummeting to your death...",
+                "The CurseBreaker unleashes a frenzied flurry of swipes that put you on the defensive. You only just manage to roll out from under his onslaught, clutching a bloodied arm. You glance your blood-drenched garb and know instantly that your time is running out...",
+                "The storm rages on as you and the CurseBreaker clash beneath the lightning strikes. You lock weapons, each gripping the others sword-arm before the CurseBreaker gets the upper hand. Stepping on your inside knee, he mashes your face with the hilt of his sabre before you jolt back from his deadly killing blow...",
+                "You circle one another, clashing steel and lighting the dark towertop with showers of sparks, when the CurseBreaker slashes at your leg...",
+
+                "After a flurry of ripostes and counters the CurseBreaker finally finds his opening. He bolts forward and runs you through with his sabre. Moments before the light leaves your eyes, you see a smug, satisfied smile creep across his lips, as he slowly slides the blade out of your soon-to-be corpse...",
+                "The CurseBreaker nimbly sidesteps your attacks. Before you know it he's managed to dart behind you and open up a severe and nasty gash across your back. You can't help but collapse as the steel bites, and only just manage to roll out of the way before he lands the killing blow...",
+                "Thunder crashes overhead as you both enter a desperate flurry of parries and ripostes amidst the biting sleet. The CurseBreaker's sabre is a blur as he slashes at your forearm, spattering blood into your anguished face...",
+                "Both your feet clap upon the flagstones as your duel rages under the frightful storm. You each try to outmanoeuvre the other; a fever of feints and sidesteps and parries. Amidst it all, the CurseBreaker slices open the back of your hand...",
+
+                "Sensing your exhaustion, the CurseBreaker finally seizes his chance. He leaves finesse behind as he hammers at your defence with his sabre, sending you staggering backwards. Back against the parapet's edge he delivers the final blow; a kick that sends you plummeting to your death...",
+                "The CurseBreaker unleashes a frenzied flurry of swipes that put you on the defensive. You only just manage to roll out from under his onslaught, clutching a bloodied arm. You glance your blood-drenched garb and know instantly that your time is running out...",
+                "The storm rages on as you and the CurseBreaker clash beneath the lightning strikes. You lock weapons, each gripping the others sword-arm before the CurseBreaker gets the upper hand. Stepping on your inside knee, he mashes your face with the hilt of his sabre before you jolt back from his deadly killing blow...",
+                "You circle one another, clashing steel and lighting the dark towertop with showers of sparks, when the CurseBreaker slashes at your leg..."
+            };
+            List<string> sabreGoodHits = new List<string>
+            {
+                "The CurseBreaker breaks your defence. He finally delivers the killing blow...",
+                "The CurseBreaker parries and counterstrikes. He smiles grimly at your pained anguish as his sabre bites into flesh...",
+                "Your duel rages as torrents of sleet crash down upon you both. You slip upon the wet flagstones and the CurseBreaker presses his advantage...",
+                "The CurseBreaker unleashes a flurry of expert strikes that you can scarcely defend against...",
+
+                "The CurseBreaker breaks your defence before barrelling into you. He shunts you off the towertop, sending you plummeting to your death...",
+                "The CurseBreaker knocks your defence to pieces before his gleaming sabre slashes at your midsection...",
+                "The CurseBreaker watches you with those perturbing black eyes, probing for your weaknesses. When he strikes, you can scarcely counter him...",
+                "The CurseBreaker nimbly spins a parry into a thrust. He grazes your ribs with his vicious sabre...",
+
+                "The CurseBreaker lobs a fragment of flagstone at your face! You stagger backwards, unable to stop him from running you through...",
+                "Wrestling with one another's wrists, you each struggle for the advantage, before the CurseBreaker knees your gut. His killing blow becomes a glancing strike as you scramble away...",
+                "Thunder crashes as you exchange blows. The CurseBreaker is steadily getting the upper hand...",
+                "Lightning flashes as blood spatters the flagstones! You look down at the gash in your leg before recovering. The CurseBreaker had struck so fast his blade could scarcely be seen. He advances on you once again... ",
+
+                "The CurseBreaker breaks your defence. He finally delivers the killing blow...",
+                "The CurseBreaker knocks your defence to pieces before his gleaming sabre slashes at your midsection...",
+                "Thunder crashes as you exchange blows. The CurseBreaker is steadily getting the upper hand...",
+                "The CurseBreaker unleashes a flurry of expert strikes that you can scarcely defend against..."
+            };
             string newNote = "Someone has scrawled upon the note in hasty erratic cursive. It reads, 'I don't have long now. If you're reading this then you're likely another foolhardy adventurer like myself who got his'self kidnapped just as I woz. I don' have much space so mark my words. Whatever they tell you - its a lie. They're going to harm you. They're most likely going to kill you in one of their mad experiments. There's a music box. I kept it locked away and hidden from sight. It's in the chest. It may look empty but set in its bottom is a panel that can be removed. You'll find it there. If you play it the guard loses his marbles about it. Can't stand the tune, the little blighter! It's like nails on a chalkboard to 'em creatures. When it enters, subdue the loathsome thing. It's the only way out of 'ere. Hopefully, if I don't make it, at least someone else will...' The rest deteriorates into an illegible scribble at the bottom of the page.";
             //Items to be located somewhere in the room or upon the player character
             Item binkySkull = new Item("Binky", "~~ He's a bonafide friend in need, a bonny true soul indeed, he's brimming with revelry when you bring bonhomie, Hey! don't be a bonana, 'cause you've got a BONANZA, of a friend in me! ~~");
@@ -830,6 +874,21 @@ namespace DungeonCrawler
             List<Dice> fistDamage = new List<Dice> { D2, D2, D3 };
             Weapon fists = new Weapon("fists", "", fistDamage, defaultCritHits, defaultGoodHits, 0);
 
+            //Highest Parapet
+            Feature crystalTotem1 = new Feature("totem of shielding", "A knot of gnarled roots in the shape of a large hand clutches a gem that exudes waves of magic with its pulsating glow. Summoned through some confluence of sinister magic and Fey sorcery, it creates a protective shield about the caster and dampens any harm that might befall them...", false, "unshattered");
+            Feature crystalTotem2 = new Feature("totem of invincibility", "Gnarled roots extend through the flagstones in the form of a fist, clasping a gem that makes the air around it shimmer with magic. Summoned through some confluence of dark necromancy and Fey magicks, it conspires to reduce all incoming damage for its caster...", false, "unshattered");
+            Feature crystalTotem3 = new Feature("totem of invulnerability", "A writhing tangle of roots stretch from the cracked flagstones in the shape of a fist. Within, a strange ethereal gem pulses with light, casting a protective shield about the summoner, which absorbs most incoming damage...", false, "unshattered");
+            Feature crenellations = new Feature("crenellations", "Over the towertop's low battlements you survey a moonlit valley and in the distance the spires of Myrovia...", true, "imposing");
+            Item brokenFlagstone = new Item("broken flagstone", "Many of the flagstones are cracked and broken. The rest have been worn down over the centuries...");
+            Item crackedFlagstone = new Item("cracked flagstone", "Many of the flagstones are cracked and broken. The rest have been worn down over the centuries...");
+            Item shatteredFlagstone = new Item("shattered flagstone", "Many of the flagstones are cracked and broken. The rest have been worn down over the centuries...");
+            Item flagstoneShards = new Item("flagstone shards", "Sharp and heavy, they look so very throwable...");
+            List<Feature> highestParapetFeatures = new List<Feature> {crenellations, crystalTotem1, crystalTotem2, crystalTotem3};
+            List<Item> highestParapetItems = new List<Item> {brokenFlagstone, crackedFlagstone, flagstoneShards, shatteredFlagstone };
+            List<Dice> sabreDamage = new List<Dice> {D3, D3, D2, D2 };
+            Weapon sabre = new Weapon("sabre", "Light but deadly-sharp, it slices the air like silk.", sabreDamage, sabreCrits, sabreGoodHits, 2);
+            List<Item> CurseBreakerPockets = new List<Item> {sabre, goldDoubloon, ruby};
+            Monster CurseBreaker = new Monster("CurseBreaker", "You face before you a striking young man, aged beyond his years. He fixes you with unsettling black eyes that he stole from a fell creature. You sense them probe you for weaknesses as he flourishes a vicious sabre and wields an arcane glove crackling with cursed magic. The CurseBreaker, the would-be-architect of your doom, closes in for the kill...", CurseBreakerPockets, 100, 8, sabre);
             //Special Items
             List<Item> throwables = new List<Item> {armBand, clunkySabaton, bracers, helmet, breastplate, knifeMG, musicBox, mops, brooms, emptyBottles, bookA1, bookA2, bookA3, bookEC1, bookEC2, bookSC1, bookSC2, bookSC3, messhallBook1, journal, binkySkull, box, belt, lantern, femur, legBone, rib, crystalBall, brassTrinket, copperTrinket, jar, plate, bowl, throwingKnife, throwingKnife2, throwingKnife3  };
             List<Item> stickyItems = new List<Item> { bowlFragments, garment, bobbyPins, clunkySabaton, breastplate, helmet, bracers, splinter, rug, looseNail, penny, crumbs, dustBunny, mops, dusters, brooms, dustpans, crumpledMissive, emptyBottles, cork, ruby, emerald, sapphire, goldDoubloon, silverBars };
@@ -848,7 +907,7 @@ namespace DungeonCrawler
             Room circularLanding = new Room("circular landing", "~minor tour antics~", cell2Inventory, cell2features);
             Room magicalManufactory = new Room("magical manufactory", "The moment you clasp sight of what's beyond the door, you stare about you in stunned disbelief. The first thing that strikes you is the impossibility of the vast chamber's dimensions. You're striding within a vast manufactory of some kind, one so prodigious you can scarcely see the end of it, and yet the corridor you've been circling can't possibly have run around the exterior of this whole compound. Great brass pistons boom and pump some way off to your left, conveyor belts rattle overhead in all dizzying directions, notes imbued with strange blue tinted magic flutter about your head like pixies. You manage to grab one of them and discover that they are orders for the production of more formulas, elixirs and potions; '21 bottles of Merigold's finest healing potion for the west barracks, 39 vials of Felix Felicis for some place you've never heard of, 6 jugs of god knows what for yet another far off place...' The list is endless. You gaze about you at the churning clockwork machinery, the brass tanks bubbling, the copper tubes whistling steam, the general chaos of an enchanted lab run riot. And at the centre of it all, an aged bespectacled man with long wispy silver hair and an absently vexed if not wizardly demeanour has yet to notice your stumbling upon his solitude...\nLooking back north you find the door you passed through still in place. It seems to have locked itself the moment it closed behind you, but at least it hasn't been magicked away like you'd half expected...\t\nTurning west you look past a labyrinth of copper pipes and conical flasks to a distant wall replete with rosewood bookshelves and seemingly endless troves of tomes and books and journals. The many shelves trail away and out of sight towards a ceiling that seems more distant than any horizon.\t\nDirectly ahead of you, to the south, you espy more of those enchanted orders and missives fluttering about, appearing from one lone vast crackling magic portal spanning the far wall. These enchanted missives flying into the manufactory seem to circle and zero in on the wizardly figure at their centre, distracted as he mumbles to himself and causes various flasks and vials to erupt in puffs of technicolour smoke. You sense a certain air of dottiness about this man. \t\nTo the east your gaze settles on... uh, no, it can't. There's too much going on for it to settle on anything... You take in a Gordian knot of conveyer belts, then the whooshing missives flitting between them, then the general chaos of rumbling brass tanks with dials spinning out of control and jets of steam and books soaring back and forth from the shelves. They all agglomerate into some kind of orchestrated pandemonium, one whose symphony somehow transcends the din and discord and seamlessly, almost melodically, rises and resonates towards a crescendo of mad genius efficiency.\t\t", magicalManufactoryItems, magicalManufactoryFeatures);
             Room broomCloset = new Room("broom closet", "Your eyes clap sight of an Aladdin's cave of custodian conglomerations, janitorial jumbles and maidly menageries all agglomerated within a cosy 4 foot by 4 foot room. Somewhat ironically, it's a mess. \nYou see a broom.\t\nYou see another broom.\t\nCould that be another broom?\t\nanother br- oh, wait! That's a mop.\t\t", broomClosetItems, broomClosetFeatures);
-            Room highestParapet = new Room("highest parapet", "~final boss fight~", cell2Inventory, cell2features);
+            Room highestParapet = new Room("highest parapet", "\nTo the north you glance mountaintops looming in the distance, the full moon casting a pearly glow over the dark battlements and crenellations around you.\t\nTo the west stands the CurseBreaker. He slowly unsheathes a sabre with one of his gloved hands and surveys you with pitiless black eyes wreathed by ghastly veins. They writhe beneath his pale skin to his temples like a dark briar. About him are strange totems - gnarled and knotted roots extending out of the towertop in the shape of hands, each clutching some gemstone that casts a protective aura about him. Any incoming damage he faces will likely be reduced unless they're shattered first...\t\nTo the south you see no way back. You face the CurseBreaker alone.\t\nYou gaze up to find the storm centring and circling about the tower, the looming thunderheads brought down upon the parapet by the CurseBreaker's dark utterances...\t\t", highestParapetItems, highestParapetFeatures);
             Room hugeBarracks = new Room("huge barracks", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features);
             Room desertIsland = new Room("desert island", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features);
             Room bankVault = new Room("bank vault", "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speeds. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not before long you find yourself plummeting to a new location...\n", cell2Inventory, cell2features);
@@ -1885,7 +1944,7 @@ namespace DungeonCrawler
             bool justGrazing = true;
             while (!escapedRoom1)
             {
-                /*
+                
                 player1.Inventory.Add(crystalBall);
                 player1.Inventory.Add(throwingKnife);
                 player1.Inventory.Add(lantern);
@@ -1901,7 +1960,7 @@ namespace DungeonCrawler
                 }
                 escapedRoom1 = true;
                 continue;
-                */
+                
                 //
                 //
                 //
@@ -2473,10 +2532,10 @@ namespace DungeonCrawler
             //
             //
             //
-            /*
+            
             newRoom1 = magicalManufactory;
             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-            */
+            
             //
             //
             //
@@ -2978,6 +3037,7 @@ namespace DungeonCrawler
                     ///Specific for each room, tailored.
                     if (b != 0)
                     {
+                        oubliette.FirstVisit = false;
                         ArchFey LadyOfVipers = new ArchFey(player1, goblin, trialBattle, oubliette);
                         if (LadyOfVipers.ElderArchFeyPlotPoint(magicalManufactory, mosaic))
                         {
@@ -7197,11 +7257,103 @@ namespace DungeonCrawler
                     usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
                     usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
                     usesDictionaryItemFeature.Remove(yourRustyChains);
-                        ///enter new Dictionaries for item use here
-                        ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
-                        ///red herring in room above
-                        ///Specific for each room, tailored.
-                        if (!(a == 0 && b == 0))
+                    ///enter new Dictionaries for item use here
+                    ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
+                    ///red herring in room above
+                    ///Specific for each room, tailored.
+
+                    if (!oubliette.FirstVisit)
+                    {
+                        Console.ReadKey(true);
+                        Console.WriteLine("\x1b[3J");
+                        Console.Clear();
+                        Console.WriteLine("Upon the highest parapet of the tower, the dark figure's" +
+                            " vile dirge escalates to a powerful crescendo, resonating across the" +
+                            " valleys below him. He raises his arms, beseeching an avalanche of thunderheads above" +
+                            " as they begin to stir, lightning flashing from within...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("   His voice rises above the crash of thunder. The pages of the tome he reads glow hot, " +
+                            " as though its passages had been etched in fire. With each ghastly syllable, fanatically delivered to" +
+                            " the storm circling above, the full moon in the distance glows brighter and brighter... ");
+                        Console.ReadKey(true);
+                        Console.WriteLine("\n   Slowly, as drops of blood might despoil water, its glow garners" +
+                            " a scarlet hue as the diabolical rite nears completion...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("  The storm abates its thunder.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("  The fierce wind holds back its icy fury.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("  The very forces of nature seem to recoil and pause with bated breath as the " +
+                            " CurseBreaker, with one final zealous flourish, booms the last words of the ritual...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("There are no interruptions.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("The young man in black attire, aged beyond his years, belts the last verse in rapturous triumph.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Then he waits...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Nothing stirs. \n\n\t\tAll is silent...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("The CurseBreaker staggers back, uncomprehending. His arms fall limp to his sides as a vagary of wind ruffles his dark hair. ");
+                        Console.ReadKey(true);
+                        Console.WriteLine("\n\t'What treachery is this..?' he hisses, as his gaze roves " +
+                            "the dark thunderheads and blood moon. \n\t'I cast the spell,' he seethes," +
+                            " 'I spake the words that writ my ascension...' his voice quavers, before he" +
+                            " bellows to the tumult above. 'Now bring me my power!'");
+                        Console.ReadKey(true);
+                        Console.WriteLine("\n\t\t'BRING ME MY DESTINY!'");
+                        Console.ReadKey(true);
+                        Console.WriteLine("   Finally, as though heeding his words, the tumult once again stirs...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("The wind and sleet snatch at the young man's dark attire, whipping them " +
+                            "into a frenzy. His cloak is torn from him and whisked away by the fierce gale.");
+                        Console.WriteLine("\t'Yes...' he calls out, a zealotry lighting eyes darker than black. 'YES!'");
+                        Console.ReadKey(true);
+                        Console.WriteLine("The stormclouds roar with almighty thunder. " +
+                            "They're whisked by the wind, slowly twisting into a vortex crackling with lightning. " +
+                            "\n A vortex so powerful it " +
+                            "could obliterate the tower...  ");
+                        Console.ReadKey(true);
+                        Console.WriteLine("The CurseBreaker flings his arms open to it, tossing the book aside as though to embrace what comes." +
+                            "\n\nSlowly, the vortex spins faster and faster like a vast whirlpool tearing apart stars and galaxies; a tempest of the very heavens themselves." +
+                            " ");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Then the vortex strikes. It extends outwards; a tornado of lightning flashes and whorling smoke, smiting the towertop like the finger of god.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("But it doesn't embrace the CurseBreaker...");
+                        Console.ReadKey(true);
+                        if(player1.Stamina < 1)
+                        {
+                            Console.WriteLine("The vortex has become a portal for the terror in the oubliette. " +
+                                "");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Cackling, the Lady of Vipers is unleashed upon the world. After devouring the CurseBreaker, she shall become a " +
+                                "terrible shadow cast upon the land for aeons to come - A harbinger of innumerable curses that shall spread and fester like a plague." +
+                                "  As for you, the portal's remaining tidal forces tore your body asunder the moment you fell " +
+                                "into the portal after her. ");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Your adventure ends here...");
+                            Console.ReadKey(true);
+                            return;
+                        }
+                        else
+                        {
+                            Console.WriteLine("It strikes feet from where he stands, forcing him to stagger back from the roaring tumult. Lightning sparks and shatters flagstones, the sheer torque of the wind throws up masonry and grinds it to dust. " +
+                                "From within the eye of this storm, a lone silhouette stirs.");
+                            Console.ReadKey(true);
+                            Console.WriteLine("\t'What devilry is this...?' The CurseBreaker stares aghast as the vortex recedes, leaving behind a cloud of smoke and debris. As the storm returns, the moon's bloody hue vanishes, and the wind clears the last tendrils of smoke, a figure slowly rises from amidst the carnage.");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Delivered to the highest parapet of the wizard tower, you at last face the sorcerer who conspired to seal your fate. He glowers at you with cold, ungodly eyes - eyes as dark as the void between stars...");
+                            highestParapet.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                        }
+                    }
+                    else
+                    {
+                        // if midnight clock not null then time remaining determines 
+                        // how many turns you have in the fight.
+                    }
+                    
+                    if (!(a == 0 && b == 0))
                         {
                             Console.WriteLine("Now what will you do?");
                         }

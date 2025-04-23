@@ -405,11 +405,23 @@ namespace DungeonCrawler
             };
             if (b < 1 && (Name !="antechamber" || FirstVisit))
             {
-                Console.WriteLine($"Will you investigate the {Name}'s...");
-                Console.WriteLine("[1] Northern wall?");
-                Console.WriteLine("[2] Westernmost wall?");
-                Console.WriteLine("[3] South wall?");
-                Console.WriteLine("[4] Eastern Wall?");
+                if (Name == "highest parapet")
+                {
+                    Console.WriteLine("Will you glance over your surroundings?");
+                    Console.WriteLine("[1] To the north?");
+                    Console.WriteLine("[2] To the west?");
+                    Console.WriteLine("[3] To the south?");
+                    Console.WriteLine("[4] Above?");
+                }
+                else
+                {
+                    Console.WriteLine($"Will you investigate the {Name}'s...");
+                    Console.WriteLine("[1] Northern wall?");
+                    Console.WriteLine("[2] Westernmost wall?");
+                    Console.WriteLine("[3] South wall?");
+                    Console.WriteLine("[4] Eastern Wall?");
+                }
+                
                 
                 bool continueInvestigate = true;
                 int reply2 = 0;
@@ -480,7 +492,14 @@ namespace DungeonCrawler
                     {
                         Console.WriteLine("Please enter the number corresponding to a listed choice.");
                     }
-                    Console.WriteLine("Do you wish to investigate any of the other sides of the room?");
+                    if (Name == "highest parapet")
+                    {
+                        Console.WriteLine("Will you take a glance elsewhere?");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Do you wish to investigate any of the other sides of the room?");
+                    }
                     reply2 = 0;
                     while (true)
                     {
@@ -516,7 +535,7 @@ namespace DungeonCrawler
 
                 }
             }
-            if (Name == "oubliette")
+            if (Name == "oubliette" || Name == "highest parapet")
             {
                 return this;
             }

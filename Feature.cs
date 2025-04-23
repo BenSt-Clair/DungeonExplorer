@@ -25,6 +25,7 @@ namespace DungeonCrawler
         public bool Attribute { get; set; }
         public string SpecificAttribute { get; set; }
         public List<Item> ItemList { get; set; }
+        public int Stamina { get; set; }
         public Feature(string name = "", string description = "Nothing of note meets the eye.", bool attribute = true, string specificAttribute = "locked", List<Item> itemList = null)
         {
 
@@ -33,6 +34,14 @@ namespace DungeonCrawler
             Attribute = attribute;
             SpecificAttribute = specificAttribute;
             ItemList = itemList;
+        }
+        public Feature(string name, string description, bool attribute, string specificAttribute, int stamina)
+        {
+            Name=name;
+            Description = description;
+            Attribute = attribute;
+            SpecificAttribute = specificAttribute;
+            Stamina = stamina;
         }
         public Door CastDoor()
         {
