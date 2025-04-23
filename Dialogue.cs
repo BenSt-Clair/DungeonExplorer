@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.FileIO;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -624,7 +625,25 @@ namespace DungeonCrawler
                     }
                     else if (answer1 == y)
                     {
-                        Console.WriteLine(choice_answer[choices[y]]);
+                        
+                        if (choices[y] == "This is all too much. Your deception cannot last. You confess to Merigold everything. You are no adventurer like your fellow inmates. In fact, you were never anything other than a fraudster, a small-time con-artist, and general rapscallion..." 
+                            || choices[y] == "You tell him frankly that while you may be an adventurer, you're no hero. You tell him you're sorry to disappoint him but all you want is a way out of here...")
+                        {
+                            using(var audioFile = new AudioFileReader("courage-inside-monument-music-main-version-30423-02-42.mp3"))
+                            {
+                                using (var outputDevice = new WaveOutEvent())
+                                {
+                                    outputDevice.Init(audioFile);
+                                    outputDevice.Play();
+                                    Console.WriteLine(choice_answer[choices[y]]);
+                                    Console.ReadKey(true);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine(choice_answer[choices[y]]);
+                        }
                         return 1;
                     }
                     else if (answer1 == x)

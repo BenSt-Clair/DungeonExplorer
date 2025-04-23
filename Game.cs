@@ -1944,7 +1944,7 @@ namespace DungeonCrawler
             bool justGrazing = true;
             while (!escapedRoom1)
             {
-                /*
+                
                 player1.Inventory.Add(crystalBall);
                 player1.Inventory.Add(throwingKnife);
                 player1.Inventory.Add(lantern);
@@ -1960,7 +1960,7 @@ namespace DungeonCrawler
                 }
                 escapedRoom1 = true;
                 continue;
-                */
+                
                 //
                 //
                 //
@@ -2532,10 +2532,10 @@ namespace DungeonCrawler
             //
             //
             //
-            /*
+            
             newRoom1 = magicalManufactory;
             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-            */
+            
             //
             //
             //
@@ -7265,87 +7265,8 @@ namespace DungeonCrawler
                     if (!oubliette.FirstVisit)
                     {
                         Console.ReadKey(true);
-                        Console.WriteLine("\x1b[3J");
-                        Console.Clear();
-                        Console.WriteLine("Upon the highest parapet of the tower, the dark figure's" +
-                            " vile dirge escalates to a powerful crescendo, resonating across the" +
-                            " valleys below him. He raises his arms, beseeching an avalanche of thunderheads above" +
-                            " as they begin to stir, lightning flashing from within...");
-                        Console.ReadKey(true);
-                        Console.WriteLine("   His voice rises above the crash of thunder. The pages of the tome he reads glow hot, " +
-                            " as though its passages had been etched in fire. With each ghastly syllable, fanatically delivered to" +
-                            " the storm circling above, the full moon in the distance glows brighter and brighter... ");
-                        Console.ReadKey(true);
-                        Console.WriteLine("\n   Slowly, as drops of blood might despoil water, its glow garners" +
-                            " a scarlet hue as the diabolical rite nears completion...");
-                        Console.ReadKey(true);
-                        Console.WriteLine("  The storm abates its thunder.");
-                        Console.ReadKey(true);
-                        Console.WriteLine("  The fierce wind holds back its icy fury.");
-                        Console.ReadKey(true);
-                        Console.WriteLine("  The very forces of nature seem to recoil and pause with bated breath as the " +
-                            " CurseBreaker, with one final zealous flourish, booms the last words of the ritual...");
-                        Console.ReadKey(true);
-                        Console.WriteLine("There are no interruptions.");
-                        Console.ReadKey(true);
-                        Console.WriteLine("The young man in black attire, aged beyond his years, belts the last verse in rapturous triumph.");
-                        Console.ReadKey(true);
-                        Console.WriteLine("Then he waits...");
-                        Console.ReadKey(true);
-                        Console.WriteLine("Nothing stirs. \n\n\t\tAll is silent...");
-                        Console.ReadKey(true);
-                        Console.WriteLine("The CurseBreaker staggers back, uncomprehending. His arms fall limp to his sides as a vagary of wind ruffles his dark hair. ");
-                        Console.ReadKey(true);
-                        Console.WriteLine("\n\t'What treachery is this..?' he hisses, as his gaze roves " +
-                            "the dark thunderheads and blood moon. \n\t'I cast the spell,' he seethes," +
-                            " 'I spake the words that writ my ascension...' his voice quavers, before he" +
-                            " bellows to the tumult above. 'Now bring me my power!'");
-                        Console.ReadKey(true);
-                        Console.WriteLine("\n\t\t'BRING ME MY DESTINY!'");
-                        Console.ReadKey(true);
-                        Console.WriteLine("   Finally, as though heeding his words, the tumult once again stirs...");
-                        Console.ReadKey(true);
-                        Console.WriteLine("The wind and sleet snatch at the young man's dark attire, whipping them " +
-                            "into a frenzy. His cloak is torn from him and whisked away by the fierce gale.");
-                        Console.WriteLine("\t'Yes...' he calls out, a zealotry lighting eyes darker than black. 'YES!'");
-                        Console.ReadKey(true);
-                        Console.WriteLine("The stormclouds roar with almighty thunder. " +
-                            "They're whisked by the wind, slowly twisting into a vortex crackling with lightning. " +
-                            "\n A vortex so powerful it " +
-                            "could obliterate the tower...  ");
-                        Console.ReadKey(true);
-                        Console.WriteLine("The CurseBreaker flings his arms open to it, tossing the book aside as though to embrace what comes." +
-                            "\n\nSlowly, the vortex spins faster and faster like a vast whirlpool tearing apart stars and galaxies; a tempest of the very heavens themselves." +
-                            " ");
-                        Console.ReadKey(true);
-                        Console.WriteLine("Then the vortex strikes. It extends outwards; a tornado of lightning flashes and whorling smoke, smiting the towertop like the finger of god.");
-                        Console.ReadKey(true);
-                        Console.WriteLine("But it doesn't embrace the CurseBreaker...");
-                        Console.ReadKey(true);
-                        if(player1.Stamina < 1)
-                        {
-                            Console.WriteLine("The vortex has become a portal for the terror in the oubliette. " +
-                                "");
-                            Console.ReadKey(true);
-                            Console.WriteLine("Cackling, the Lady of Vipers is unleashed upon the world. After devouring the CurseBreaker, she shall become a " +
-                                "terrible shadow cast upon the land for aeons to come - A harbinger of innumerable curses that shall spread and fester like a plague." +
-                                "  As for you, the portal's remaining tidal forces tore your body asunder the moment you fell " +
-                                "into the portal after her. ");
-                            Console.ReadKey(true);
-                            Console.WriteLine("Your adventure ends here...");
-                            Console.ReadKey(true);
-                            return;
-                        }
-                        else
-                        {
-                            Console.WriteLine("It strikes feet from where he stands, forcing him to stagger back from the roaring tumult. Lightning sparks and shatters flagstones, the sheer torque of the wind throws up masonry and grinds it to dust. " +
-                                "From within the eye of this storm, a lone silhouette stirs.");
-                            Console.ReadKey(true);
-                            Console.WriteLine("\t'What devilry is this...?' The CurseBreaker stares aghast as the vortex recedes, leaving behind a cloud of smoke and debris. As the storm returns, the moon's bloody hue vanishes, and the wind clears the last tendrils of smoke, a figure slowly rises from amidst the carnage.");
-                            Console.ReadKey(true);
-                            Console.WriteLine("Delivered to the highest parapet of the wizard tower, you at last face the sorcerer who conspired to seal your fate. He glowers at you with cold, ungodly eyes - eyes as dark as the void between stars...");
-                            highestParapet.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
-                        }
+                        highestParapet.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                        
                     }
                     else
                     {

@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NAudio.Wave;
 
 namespace DungeonCrawler
 {
@@ -614,37 +615,134 @@ namespace DungeonCrawler
                 playerProgress += AdvanceForward(playerProgress, playerSpeed);
                 Console.ReadKey(true);
             }
-            Console.WriteLine("\x1b[3J");
-            Console.Clear();
-            Console.WriteLine("You are an instant from the portal's reach when within a breathless instant the Lady lunges forwards!");
-            monsterProgress += AdvanceForward(monsterProgress, monsterSpeed);
-            Console.ReadKey(true);
-            Console.WriteLine("As the monster's ''wings'' close around you, snatching the portal from sight, you have but one final chance - You throw yourself through her clutches! ");
-            Console.ReadKey(true);
-            Console.WriteLine("You both tumble then dive for the prize!");
-            Console.ReadKey(true);
-            if(playerProgress >= monsterProgress)
+            string mp3FilePath = "olimpians - dive for portal.mp3";
+            using (var audiofile = new AudioFileReader(mp3FilePath))
             {
-                Player.Speedy = false;
-                return true;
+                using (var outputDevice = new WaveOutEvent())
+                {
+                    outputDevice.Init(audiofile);
+                    outputDevice.Play();
+                    Console.WriteLine("\x1b[3J");
+                    Console.Clear();
+                    Console.WriteLine("You are an instant from the portal's reach when within a breathless instant the Lady lunges forwards!");
+                    monsterProgress += AdvanceForward(monsterProgress, monsterSpeed);
+                    Console.ReadKey(true);
+                    Console.WriteLine("As the monster's ''wings'' close around you, snatching the portal from sight, you have but one final chance - You throw yourself through her clutches! ");
+                    Console.ReadKey(true);
+                    Console.WriteLine("You both tumble then dive for the prize!");
+                    Console.ReadKey(true);
+                    Console.WriteLine("\x1b[3J");
+                    Console.Clear();
+                    Console.WriteLine("Upon the highest parapet of the tower, the dark figure's" +
+                        " vile dirge escalates to a powerful crescendo, resonating across the" +
+                        " valleys below him. He raises his arms, beseeching an avalanche of thunderheads above" +
+                        " as they begin to stir, lightning flashing from within...");
+                    Console.ReadKey(true);
+                    Console.WriteLine("   His voice rises above the crash of thunder. The pages of the tome he reads glow hot, " +
+                        " as though its passages had been etched in fire. With each ghastly syllable, fanatically delivered to" +
+                        " the storm circling above, the full moon in the distance glows brighter and brighter... ");
+                    Console.ReadKey(true);
+                    Console.WriteLine("\n   Slowly, as drops of blood might despoil water, its glow garners" +
+                        " a scarlet hue as the diabolical rite nears completion...");
+                    Console.ReadKey(true);
+                    Console.WriteLine("  The storm abates its thunder.");
+                    Console.ReadKey(true);
+                    Console.WriteLine("  The fierce wind holds back its icy fury.");
+                    Console.ReadKey(true);
+                    Console.WriteLine("  The very forces of nature seem to recoil and pause with bated breath as the " +
+                        " CurseBreaker, with one final zealous flourish, booms the last words of the ritual...");
+                    Console.ReadKey(true);
+                    Console.WriteLine("There are no interruptions.");
+                    Console.ReadKey(true);
+                    Console.WriteLine("The young man in black attire, aged beyond his years, belts the last verse in rapturous triumph.");
+                    Console.ReadKey(true);
+                    Console.WriteLine("Then he waits...");
+                    Console.ReadKey(true);
+                    Console.WriteLine("Nothing stirs. \n\n\t\tAll is silent...");
+                    Console.ReadKey(true);
+                    Console.WriteLine("The CurseBreaker staggers back, uncomprehending. His arms fall limp to his sides as a vagary of wind ruffles his dark hair. ");
+                    Console.ReadKey(true);
+                    Console.WriteLine("\n\t'What treachery is this..?' he hisses, as his gaze roves " +
+                        "the dark thunderheads and blood moon. \n\t'I cast the spell,' he seethes," +
+                        " 'I spake the words that writ my ascension...' his voice quavers, before he" +
+                        " bellows to the tumult above. 'Now bring me my power!'");
+                    Console.ReadKey(true);
+                    Console.WriteLine("\n\t\t'BRING ME MY DESTINY!'");
+                    Console.ReadKey(true);
+                    Console.WriteLine("   Finally, as though heeding his words, the tumult once again stirs...");
+                    Console.ReadKey(true);
+                }
             }
-            else
+            using (var audioFile2 = new AudioFileReader("olimpians - bring forth the vortex.mp3"))
             {
-                /*
-                Console.WriteLine("You're too late!");
+                using (var outputDevice2 = new WaveOutEvent())
+                {
+                    outputDevice2.Init(audioFile2);
+                    outputDevice2.Play();
+                    Console.WriteLine("The wind and sleet snatch at the young man's dark attire, whipping them " +
+                        "into a frenzy. His cloak is torn from him and whisked away by the fierce gale.");
+                    Console.WriteLine("\t'Yes...' he calls out, a zealotry lighting eyes darker than black. 'YES!'");
+                    Console.ReadKey(true);
+                    Console.WriteLine("The stormclouds roar with almighty thunder. " +
+                        "They're whisked by the wind, slowly twisting into a vortex crackling with lightning. " +
+                        "\n A vortex so powerful it " +
+                        "could obliterate the tower...  ");
+                    Console.ReadKey(true);
+                    Console.WriteLine("The CurseBreaker flings his arms open to it, tossing the book aside as though to embrace what comes." +
+                        "\n\nSlowly, the vortex spins faster and faster like a vast whirlpool tearing apart stars and galaxies; a tempest of the very heavens themselves." +
+                        " ");
+                    Console.ReadKey(true);
+                    Console.WriteLine("Then the vortex strikes. It extends outwards; a tornado of lightning flashes and whorling smoke, smiting the towertop like the finger of god.");
+                    Console.ReadKey(true);
+                    Console.WriteLine("But it doesn't embrace the CurseBreaker...");
+                    Console.ReadKey(true);
+                }
+            }
+            if (player.Stamina < 1)
+            {
+                Console.WriteLine("The vortex has become a portal for the terror in the oubliette. " +
+                    "");
                 Console.ReadKey(true);
-                Console.WriteLine("By the time you reach the portal the Eldritch" +
-                    " Queen of the ArchFey has already won her freedom. You are" +
-                    " crushed and torn asunder by the portals remaining tidal " +
-                    "forces, as it collapses in on you.");
+                Console.WriteLine("Cackling, the Lady of Vipers is unleashed upon the world. After devouring the CurseBreaker, she shall become a " +
+                    "terrible shadow cast upon the land for aeons to come - A harbinger of innumerable curses that shall spread and fester like a plague." +
+                    "  As for you, the portal's remaining tidal forces tore your body asunder the moment you fell " +
+                    "into the portal after her. ");
                 Console.ReadKey(true);
                 Console.WriteLine("Your adventure ends here...");
                 Console.ReadKey(true);
                 return false;
-                */
-                Player.Stamina = 0;
-                return true;
             }
+            else
+            {
+                using (var audioFile3 = new AudioFileReader("olimpians - deliverance.mp3"))
+                {
+                    using (var outputFile3 = new WaveOutEvent())
+                    {
+                        outputFile3.Init(audioFile3);
+                        outputFile3.Play();
+                        Stopwatch musicTime = new Stopwatch();
+                        musicTime.Start();
+                        Console.WriteLine("It strikes feet from where he stands, forcing him to stagger back from the roaring tumult. Lightning sparks and shatters flagstones, the sheer torque of the wind throws up masonry and grinds it to dust. " +
+                            "From within the eye of this storm, a lone silhouette stirs.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("\t'What devilry is this...?' The CurseBreaker stares aghast as the vortex recedes, leaving behind a cloud of smoke and debris. As the storm returns, the moon's bloody hue vanishes, and the wind clears the last tendrils of smoke, a figure slowly rises from amidst the carnage.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Delivered to the highest parapet of the wizard tower, you at last face the sorcerer who conspired to seal your fate. He glowers at you with cold, ungodly eyes - eyes as dark as the void between stars...");
+                        long time = 0;
+                        while(time < 41000)
+                        {
+                            musicTime.Stop();
+                            time = musicTime.ElapsedMilliseconds;
+                            musicTime.Start();
+                            Thread.Sleep(500);
+                        }
+                        return true;
+                    }
+                }
+            }
+                
+            
+            
 
         }
         public void WonFight(Room room)

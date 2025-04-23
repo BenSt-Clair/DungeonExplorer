@@ -851,7 +851,7 @@ namespace DungeonCrawler
                         " \n  What other hope is there bolstering those who suffer and keeping them waiting out the darkness, so that they might finally bask in the dawn.'" +
                         "  The eldritch creature turns to you, and for the first time you catch a glimmer of what she truly is," +
                         " the same force that turned colliding galaxies into new worlds. The cycle of creation and destruction." +
-                        "\n\t'You see,' her silky voice caresses your mind, 'I told you true when I first called to you in the darkness;" +
+                        "\n\t'You see,' her silky voice is treacherously soothing, 'I told you true when I first called to you in the darkness;" +
                         " \n\t'...he schemes for the downfall of the unruled, the whimsical, the free, \nAdventurers who dare stand up to power and restore the balance, \n\tlike you, \n\t\tlike me...'" +
                         "\n\n  Her head turns from you to face the dark silhouette through the portal. His evil chant picks up the pace, as lightning flashes above him and thunder roars... \n\n  'To defeat the one who'd make himself tyrant of hope and chance, your only choice is to unleash me...'",
 
