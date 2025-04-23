@@ -1029,330 +1029,194 @@ namespace DungeonCrawler
             }
             Dice D20 = new Dice(20);
             bool initiative = false;
-            if ((Player.Skill + D20.Roll(D20) >= Monster.Skill + D20.Roll(D20) && !fire)||_initiative)
+            using (var audioFile = new AudioFileReader("thunderstorm-in-kyoto-zac-tiessen-main-version-23958-01-30.mp3"))
             {
-                Console.WriteLine($"The {Monster.Name} is caught off guard. You take the initiative!");
-                initiative = true;
-            }
-            else
-            {
-                Console.WriteLine($"Your reactions aren't fast enough. {Monster.Name} takes the initiative!");
-            }
-            int turn = 0;
-            int round = 0;
-            if (initiative)
-            {
-
-                int damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling);
-                Monster.Stamina -= damageDealt;
-                Console.WriteLine($"The {Monster.Name} lost {damageDealt} points of stamina!");
-                turn = 1; 
-                if (player.Speedy)
+                using (var outputFile = new WaveOutEvent())
                 {
-                    Console.WriteLine("The enemy is scarcely able to respond to your first attack when you quickly jump in with another.");
-                    damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling);
-                    Monster.Stamina -= damageDealt;
-                    Console.WriteLine($"The {Monster.Name} lost {damageDealt} points of stamina!");
-                }
-                Console.ReadKey(true);
-            }
-
-            while (Monster.Stamina > 0 && Player.Stamina > 0)
-            {
-                bool start = false;
-                
-                
-                if (turn == 0)
-                {
-                    start = true;
-                }
-                if (Monster.Stamina < 1) { break; }
-                int damageDealt = Monster.Veapon.Attack(Monster.Skill, Player.Skill, Player.Stamina, false, Monster, player, another, room, holeInCeiling, start);
-                if (damageDealt >= 0)
-                {
-                    Player.Stamina -= damageDealt;
-                    
-                    Console.WriteLine($"You've lost {damageDealt} points of stamina!");
-                }
-                else if (damageDealt < 0)
-                {
-                    
-                    Monster.Stamina += damageDealt;
-                    
-                }
-                if (Monster.Stamina < 1) { break; }
-                if (Player.Stamina < 1) { break; }
-                if (round == 0 && fire)
-                {
-                    round++;
-                }
-                else if (round < 2 && fire)
-                {
-                    Console.WriteLine("The smouldering flames plume with smoke, stinging your eyes!");
-                    int burnt = D5.Roll(D5);
-                    Player.Stamina -= burnt;
-                    Console.WriteLine($"You lost {burnt} stamina!");
-                    round++;
-                }
-                else if (round < 3 && fire)
-                {
-                    Console.WriteLine($"The {room.Name} swells with smoke. You splutter and cough as the {Monster.Name}'s {Monster.Veapon.Name} slashes at you through the swirling haze!");
-                    int burnt = D5.Roll(D5) + D3.Roll(D3);
-                    Player.Stamina -= burnt;
-                    Console.WriteLine($"You lost {burnt} stamina!");
-                    round++;
-                }
-                else if (round < 4 && fire)
-                {
-                    Console.WriteLine($"The flames in the {room.Name} now begin to roar as they climb the walls!");
-                    int burnt = D5.Roll(D5) + D3.Roll(D3) + D5.Roll(D5);
-                    player.Stamina -= burnt;
-                    Console.WriteLine($"You lost {burnt} stamina!");
-                    round++;
-                }
-                else if (round < 5 && fire)
-                {
-                    Console.WriteLine($"The fire shows no sign of stopping. If you don't hurry t won't matter who wins this fight - the flames will engulf you both!");
-                    int burnt = D5.Roll(D5) + D3.Roll(D3) + D5.Roll(D3) + D4.Roll(D4);
-                    player.Stamina -= burnt;
-                    Console.WriteLine($"You lost {burnt} stamina!");
-                    round++;
-                }
-                else if (round < 6 && fire)
-                {
-                    Console.WriteLine("Between parries and blows you can only gaze in horror as the fire turns into a raging inferno. You hold your breath, your lungs aching for air...");
-                    int burnt = D5.Roll(D5) + D3.Roll(D3) + D5.Roll(D3) + D4.Roll(D4) + D3.Roll(D3);
-                    player.Stamina -= burnt;
-                    Console.WriteLine($"You've lost {burnt} stamina!");
-                    round++;
-                }
-                else if (round < 7 && fire)
-                {
-                    Console.WriteLine("The blazing cell begins to spin around you as you fight with mounting desperation. Flames lick at your exposed skin. You feel the hairs on the back of your neck singe.");
-                    int burnt = D5.Roll(D5) + D3.Roll(D3) + D5.Roll(D3) + D4.Roll(D4) + D3.Roll(D3);
-                    player.Stamina -= burnt;
-                    Console.WriteLine($"You've lost {burnt} stamina!");
-                    round++;
-                }
-                else if (round < 8 && fire)
-                {
-                    Console.WriteLine("You can hold your breath no longer! You begin inhaling the smoke only to stagger and splutter in a fit of hacking coughs. You can scarcely dodge the enemy's attacks as you double over, the furnace-like heat beating against you relentlessly from all sides.\n The end is near...");
-                    int burnt = D5.Roll(D5);
-                    player.Stamina -= burnt;
-                    if (player.Skill > 2)
+                    if (Monster.Name == "minotaur")
                     {
-                        player.Skill -= 2;
+                        outputFile.Init(audioFile);
+                        outputFile.Play();
                     }
-                    Console.WriteLine($"You've lost {burnt} stamina and 2 skill points!");
-                    round++;
-                }
-                else if (fire)
-                {
-                    int burnt = 9999;
-                    player.Stamina -= burnt;
-                    if (Monster.Stamina > 0)
+                    if ((Player.Skill + D20.Roll(D20) >= Monster.Skill + D20.Roll(D20) && !fire) || _initiative)
                     {
-                        Monster.Stamina -= burnt;
+                        Console.WriteLine($"The {Monster.Name} is caught off guard. You take the initiative!");
+                        initiative = true;
                     }
-                    Console.WriteLine($"The flames finally envelop and engulf your body. If there is one small mercy, it is that cremation is a far kinder fate than what your captors had in store for you, not that you'll ever know what that would've been...");
-                }
-                Console.ReadKey(true);
-                if (Monster.Stamina < 1) { break; }
-                if (Player.Stamina < 1) { break; }
-                
-                Console.WriteLine(Player.DescribeStamina());
-                Console.Write($"Do you wish to continue attacking with your {playerWeapon.Name}? ");
-                int speedyturn = 0;
-                while (true)
-                {
-                    string answer = Console.ReadLine().Trim().ToLower();
-                    // attack with weapon
-                    if (answer == "yes" || answer == "y")
+                    else
                     {
-                        pugilism = new List<Dice>();
-                        i = 0;
-                        while (i < (2 + Player.Skill) / 3)
-                        {
-                            if (i < 2)
-                            {
-                                pugilism.Add(D2);
-                            }
-                            else if (i < 3)
-                            {
-                                pugilism.Add(D3);
-                            }
-                            else
-                            {
-                                pugilism.Add(D5);
-                            }
-                            i++;
-                        }
-                        if (playerWeapon.Boon > 9)
-                        {
-                            if (Player.Skill < 4)
-                            {
-                                playerWeapon = new Weapon("fists", "Your tremulous hands aren't fast enough to swat a fly, let alone hurt anyone", pugilism, pugilismCritHits, pugilismGoodHits, 10);
-                            }
-                            else if (Player.Skill < 7)
-                            {
-                                playerWeapon = new Weapon("fists", "Your soft hands are less than accustomed to the rough life adventuring brings. They're more often used for leafing through a good book than fighting.", pugilism, pugilismCritHits, pugilismGoodHits, 10);
-                            }
-                            else if (Player.Skill < 10)
-                            {
-                                playerWeapon = new Weapon("fists", "Your callused hands are well accustomed to the rough life adventuring brings, and have made a noted debut at many a pub brawl.", pugilism, pugilismCritHits, pugilismGoodHits, 10);
-                            }
-                            else
-                            {
-                                playerWeapon = new Weapon("fists", "Your firm hands are deadly weapons in themselves; artfully precise implements of destruction that've been hardened by years of punching tree trunks and doing press ups on blazing hot coals.", pugilism, pugilismCritHits, pugilismGoodHits, 10);
-                            }
-                        }
-                        else
-                        {
-                            if (Player.Skill < 4)
-                            {
-                                playerWeapon = new Weapon("fists", "Your tremulous hands aren't fast enough to swat a fly, let alone hurt anyone", pugilism, pugilismCritHits, pugilismGoodHits);
-                            }
-                            else if (Player.Skill < 7)
-                            {
-                                playerWeapon = new Weapon("fists", "Your soft hands are less than accustomed to the rough life adventuring brings. They're more often used for leafing through a good book than fighting.", pugilism, pugilismCritHits, pugilismGoodHits);
-                            }
-                            else if (Player.Skill < 10)
-                            {
-                                playerWeapon = new Weapon("fists", "Your callused hands are well accustomed to the rough life adventuring brings, and have made a noted debut at many a pub brawl.", pugilism, pugilismCritHits, pugilismGoodHits);
-                            }
-                            else
-                            {
-                                playerWeapon = new Weapon("fists", "Your firm hands are deadly weapons in themselves; artfully precise implements of destruction that've been hardened by years of punching tree trunks and doing press ups on blazing hot coals.", pugilism, pugilismCritHits, pugilismGoodHits);
-                            }
-                        }
-                        foreach (Weapon y in Player.WeaponInventory)
-                        {
-                            if (y.Equipped) { playerWeapon = y; break; }
-                        }
-                        if (playerWeapon.Boon < 10 && player.Traits.ContainsKey("jinxed"))
-                        {
-                            playerWeapon.Boon = 6;
-                        }
-                        
-                        damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling);
+                        Console.WriteLine($"Your reactions aren't fast enough. {Monster.Name} takes the initiative!");
+                    }
+                    int turn = 0;
+                    int round = 0;
+                    if (initiative)
+                    {
+
+                        int damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling);
                         Monster.Stamina -= damageDealt;
-                        if (player.Speedy && speedyturn == 0)
+                        Console.WriteLine($"The {Monster.Name} lost {damageDealt} points of stamina!");
+                        turn = 1;
+                        if (player.Speedy)
                         {
+                            Console.WriteLine("The enemy is scarcely able to respond to your first attack when you quickly jump in with another.");
+                            damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling);
+                            Monster.Stamina -= damageDealt;
                             Console.WriteLine($"The {Monster.Name} lost {damageDealt} points of stamina!");
-                            Console.WriteLine("The enemy is scarcely able to respond to your rapid movements when you quickly make another action.");
-                            Console.Write($"Do you wish to continue attacking with your {playerWeapon.Name}? ");
-                            speedyturn++;
-                            continue;
-
-                        }
-
-                        Console.WriteLine("\n");
-                        if (damageDealt > 0)
-                        {
-                            Console.WriteLine($"The {Monster.Name} lost {damageDealt} points of stamina!");
-                            
-                        }
-                        else
-                        {
-                            turn = -1;
-                            Console.WriteLine($"{Monster.Name} seizes their chance to attack!");
                         }
                         Console.ReadKey(true);
-                        break;
                     }
-                    // try some other tactic
-                    else if ((answer == "no") || (answer == "n"))
+
+                    while (Monster.Stamina > 0 && Player.Stamina > 0)
                     {
-                        turn = -1;
-                        Console.WriteLine("Will you spend your turn \n[1] Equipping a new weapon?\n[2] Unequipping your weapon?\n[3] Using one of your items on something or someone?\n[4]Hesitating and considering your choices in life?");
+                        bool start = false;
+
+
+                        if (turn == 0)
+                        {
+                            start = true;
+                        }
+                        if (Monster.Stamina < 1) { break; }
+                        int damageDealt = Monster.Veapon.Attack(Monster.Skill, Player.Skill, Player.Stamina, false, Monster, player, another, room, holeInCeiling, start);
+                        if (damageDealt >= 0)
+                        {
+                            Player.Stamina -= damageDealt;
+
+                            Console.WriteLine($"You've lost {damageDealt} points of stamina!");
+                        }
+                        else if (damageDealt < 0)
+                        {
+
+                            Monster.Stamina += damageDealt;
+
+                        }
+                        if (Monster.Stamina < 1) { break; }
+                        if (Player.Stamina < 1) { break; }
+                        if (round == 0 && fire)
+                        {
+                            round++;
+                        }
+                        else if (round < 2 && fire)
+                        {
+                            Console.WriteLine("The smouldering flames plume with smoke, stinging your eyes!");
+                            int burnt = D5.Roll(D5);
+                            Player.Stamina -= burnt;
+                            Console.WriteLine($"You lost {burnt} stamina!");
+                            round++;
+                        }
+                        else if (round < 3 && fire)
+                        {
+                            Console.WriteLine($"The {room.Name} swells with smoke. You splutter and cough as the {Monster.Name}'s {Monster.Veapon.Name} slashes at you through the swirling haze!");
+                            int burnt = D5.Roll(D5) + D3.Roll(D3);
+                            Player.Stamina -= burnt;
+                            Console.WriteLine($"You lost {burnt} stamina!");
+                            round++;
+                        }
+                        else if (round < 4 && fire)
+                        {
+                            Console.WriteLine($"The flames in the {room.Name} now begin to roar as they climb the walls!");
+                            int burnt = D5.Roll(D5) + D3.Roll(D3) + D5.Roll(D5);
+                            player.Stamina -= burnt;
+                            Console.WriteLine($"You lost {burnt} stamina!");
+                            round++;
+                        }
+                        else if (round < 5 && fire)
+                        {
+                            Console.WriteLine($"The fire shows no sign of stopping. If you don't hurry t won't matter who wins this fight - the flames will engulf you both!");
+                            int burnt = D5.Roll(D5) + D3.Roll(D3) + D5.Roll(D3) + D4.Roll(D4);
+                            player.Stamina -= burnt;
+                            Console.WriteLine($"You lost {burnt} stamina!");
+                            round++;
+                        }
+                        else if (round < 6 && fire)
+                        {
+                            Console.WriteLine("Between parries and blows you can only gaze in horror as the fire turns into a raging inferno. You hold your breath, your lungs aching for air...");
+                            int burnt = D5.Roll(D5) + D3.Roll(D3) + D5.Roll(D3) + D4.Roll(D4) + D3.Roll(D3);
+                            player.Stamina -= burnt;
+                            Console.WriteLine($"You've lost {burnt} stamina!");
+                            round++;
+                        }
+                        else if (round < 7 && fire)
+                        {
+                            Console.WriteLine("The blazing cell begins to spin around you as you fight with mounting desperation. Flames lick at your exposed skin. You feel the hairs on the back of your neck singe.");
+                            int burnt = D5.Roll(D5) + D3.Roll(D3) + D5.Roll(D3) + D4.Roll(D4) + D3.Roll(D3);
+                            player.Stamina -= burnt;
+                            Console.WriteLine($"You've lost {burnt} stamina!");
+                            round++;
+                        }
+                        else if (round < 8 && fire)
+                        {
+                            Console.WriteLine("You can hold your breath no longer! You begin inhaling the smoke only to stagger and splutter in a fit of hacking coughs. You can scarcely dodge the enemy's attacks as you double over, the furnace-like heat beating against you relentlessly from all sides.\n The end is near...");
+                            int burnt = D5.Roll(D5);
+                            player.Stamina -= burnt;
+                            if (player.Skill > 2)
+                            {
+                                player.Skill -= 2;
+                            }
+                            Console.WriteLine($"You've lost {burnt} stamina and 2 skill points!");
+                            round++;
+                        }
+                        else if (fire)
+                        {
+                            int burnt = 9999;
+                            player.Stamina -= burnt;
+                            if (Monster.Stamina > 0)
+                            {
+                                Monster.Stamina -= burnt;
+                            }
+                            Console.WriteLine($"The flames finally envelop and engulf your body. If there is one small mercy, it is that cremation is a far kinder fate than what your captors had in store for you, not that you'll ever know what that would've been...");
+                        }
+                        Console.ReadKey(true);
+                        if (Monster.Stamina < 1) { break; }
+                        if (Player.Stamina < 1) { break; }
+
+                        Console.WriteLine(Player.DescribeStamina());
+                        Console.Write($"Do you wish to continue attacking with your {playerWeapon.Name}? ");
+                        int speedyturn = 0;
                         while (true)
                         {
-                            string answer1 = Console.ReadLine().Trim().ToLower();
-                            if (answer1 == "1" || answer1 == "one")
+                            string answer = Console.ReadLine().Trim().ToLower();
+                            // attack with weapon
+                            if (answer == "yes" || answer == "y")
                             {
-                                int j = 0;
-                                List<Weapon> availableWeapons = new List<Weapon>();
-                                foreach (Weapon h in Player.WeaponInventory)
+                                pugilism = new List<Dice>();
+                                i = 0;
+                                while (i < (2 + Player.Skill) / 3)
                                 {
-                                    j++;
-                                    if (!h.Equipped)
+                                    if (i < 2)
                                     {
-                                        availableWeapons.Add(h);
+                                        pugilism.Add(D2);
                                     }
-                                }
-                                if (j < 1)
-                                {
-                                    Console.WriteLine("You waste time frenziedly rummaging through your rucksack, but you've no new weapons to choose from!");
-                                    break;
-                                }
-                                string message = "You can choose from ";
-                                int numWeapons = availableWeapons.Count;
-                                int k = 1;
-                                foreach (Weapon h in availableWeapons)
-                                {
-                                    message += "\n[" + k + "] " + h.Name;
-                                    k++;
-                                }
-                                Console.WriteLine(message);
-                                while (true)
-                                {
-                                    string response = Console.ReadLine().Trim().ToLower();
-                                    try
+                                    else if (i < 3)
                                     {
-                                        int numResponse = int.Parse(response);
-                                        Player.Equip(availableWeapons[numResponse - 1], Player.WeaponInventory, player);
-                                        Console.WriteLine($"\n{availableWeapons[numResponse - 1].Description}");
-                                        foreach (Weapon y in Player.WeaponInventory)
-                                        {
-                                            if (y.Equipped) { playerWeapon = y; break; }
-                                        }
-                                        if (player.Speedy && speedyturn == 0)
-                                        {
-                                            Console.WriteLine($"You admire your {availableWeapons[numResponse - 1].Name} amidst a world sluggishly moving around you in slow motion, before instantly jumping to your next action.");
-                                            break;
-                                        }
-                                        Console.WriteLine($"You admire your {availableWeapons[numResponse - 1].Name} for only an instant before the {Monster.Name} lunges at you...");
-                                        break;
+                                        pugilism.Add(D3);
                                     }
-                                    catch
+                                    else
                                     {
-                                        Console.WriteLine($"Please enter a number from 1 to {numWeapons}");
-                                        continue;
+                                        pugilism.Add(D5);
                                     }
-
+                                    i++;
                                 }
-                                
-                                break;
-
-                            }
-                            else if (answer1 == "2" || answer1 == "two")
-                            {
-                                if (playerWeapon.Name == "fists")
+                                if (playerWeapon.Boon > 9)
                                 {
-                                    Console.WriteLine($"You're not sure how you might 'unequip' your own fists, and as you contemplate this conundrum the {Monster.Name} comes in for the attack...");
-                                    break;
+                                    if (Player.Skill < 4)
+                                    {
+                                        playerWeapon = new Weapon("fists", "Your tremulous hands aren't fast enough to swat a fly, let alone hurt anyone", pugilism, pugilismCritHits, pugilismGoodHits, 10);
+                                    }
+                                    else if (Player.Skill < 7)
+                                    {
+                                        playerWeapon = new Weapon("fists", "Your soft hands are less than accustomed to the rough life adventuring brings. They're more often used for leafing through a good book than fighting.", pugilism, pugilismCritHits, pugilismGoodHits, 10);
+                                    }
+                                    else if (Player.Skill < 10)
+                                    {
+                                        playerWeapon = new Weapon("fists", "Your callused hands are well accustomed to the rough life adventuring brings, and have made a noted debut at many a pub brawl.", pugilism, pugilismCritHits, pugilismGoodHits, 10);
+                                    }
+                                    else
+                                    {
+                                        playerWeapon = new Weapon("fists", "Your firm hands are deadly weapons in themselves; artfully precise implements of destruction that've been hardened by years of punching tree trunks and doing press ups on blazing hot coals.", pugilism, pugilismCritHits, pugilismGoodHits, 10);
+                                    }
                                 }
                                 else
                                 {
-                                    Player.Unequip(Player.WeaponInventory);
-                                    pugilism = new List<Dice>();
-                                    i = 0;
-                                    while (i < (2 + Player.Skill) / 3)
-                                    {
-                                        if (i < 2)
-                                        {
-                                            pugilism.Add(D2);
-                                        }
-                                        else if (i < 3)
-                                        {
-                                            pugilism.Add(D3);
-                                        }
-                                        else
-                                        {
-                                            pugilism.Add(D5);
-                                        }
-                                        i++;
-                                    }
                                     if (Player.Skill < 4)
                                     {
                                         playerWeapon = new Weapon("fists", "Your tremulous hands aren't fast enough to swat a fly, let alone hurt anyone", pugilism, pugilismCritHits, pugilismGoodHits);
@@ -1369,251 +1233,399 @@ namespace DungeonCrawler
                                     {
                                         playerWeapon = new Weapon("fists", "Your firm hands are deadly weapons in themselves; artfully precise implements of destruction that've been hardened by years of punching tree trunks and doing press ups on blazing hot coals.", pugilism, pugilismCritHits, pugilismGoodHits);
                                     }
-                                    if (player.Speedy && speedyturn == 0)
-                                    {
-                                        Console.WriteLine($"{playerWeapon.Description}\nYou resolve to fight bare fisted, mano e mano.");
-                                        break;
-                                    }
-                                    Console.WriteLine($"{playerWeapon.Description}\nYou resolve to fight bare fisted, mano e mano. \n Meanwhile, the {Monster.Name} charges towards you...");
-                                    break;
                                 }
-                            }
-                            ///The following is very similar to what you'll see in the game class 
-                            ///or the main method. It's the same formula for using an item on something else 
-                            ///but it lists objects the monster has too. as such it'll need to become
-                            ///its own separate method at a later date.
-
-                            else if (answer1 == "3" || answer1 == "three")
-                            {
-                                bool success = false;
-                                if (player.Inventory.Count > 0)
+                                foreach (Weapon y in Player.WeaponInventory)
                                 {
-                                    Console.WriteLine("Which item in your pack do you wish to use?");
-                                    int g = 1;
-                                    foreach (Item item in player.Inventory)
-                                    {
-                                        Console.WriteLine($"[{g}] {item.Name}");
-                                        g++;
-                                    }
-                                    Item chosenItem = null;
-                                    while (true)
-                                    {
-                                        string reply = Console.ReadLine().Trim().ToLower();
+                                    if (y.Equipped) { playerWeapon = y; break; }
+                                }
+                                if (playerWeapon.Boon < 10 && player.Traits.ContainsKey("jinxed"))
+                                {
+                                    playerWeapon.Boon = 6;
+                                }
 
-                                        try
-                                        {
-                                            int reply1 = int.Parse(reply) - 1;
-                                            try
-                                            {
-                                                chosenItem = player.Inventory[reply1];
-                                                break;
-                                            }
-                                            catch { Console.WriteLine("Please enter a number corresponding to an item listed above!"); }
+                                damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling);
+                                Monster.Stamina -= damageDealt;
+                                if (player.Speedy && speedyturn == 0)
+                                {
+                                    Console.WriteLine($"The {Monster.Name} lost {damageDealt} points of stamina!");
+                                    Console.WriteLine("The enemy is scarcely able to respond to your rapid movements when you quickly make another action.");
+                                    Console.Write($"Do you wish to continue attacking with your {playerWeapon.Name}? ");
+                                    speedyturn++;
+                                    continue;
 
-                                        }
-                                        catch
-                                        {
-                                            foreach (Item item in player.Inventory)
-                                            {
-                                                if (item.Name == reply)
-                                                {
-                                                    chosenItem = item;
+                                }
 
-                                                }
-
-                                            }
-                                        }
-                                        if (chosenItem == null)
-                                        {
-                                            Console.WriteLine($"{reply} could not be found in your backpack. Select another item.");
-                                        }
-                                        else
-                                        {
-                                            break;
-                                        }
-                                    }
-                                    Console.WriteLine("What or who would you like to use it on?");
-                                    
-                                    
-                                        g = 1;
-                                        foreach(Item item in room.ItemList)
-                                        {
-                                            Console.WriteLine($"[{g}] {item.Name} in the room.");
-                                            g++;
-                                        }
-
-                                        foreach (Item item in Monster.Items)
-                                        {
-                                            Console.WriteLine($"[{g}] The {Monster.Name}'s {item.Name}");
-                                            g++;
-                                        }
-                                        foreach (Feature feature in room.FeatureList)
-                                        {
-                                            Console.WriteLine($"[{g}] {feature.Name} in the room.");
-                                            g++;
-                                        }
-                                        Console.WriteLine($"[{g}] Yourself");
-                                    if (playerWeapon.Name != "fists")
-                                    {
-                                        Console.WriteLine($"[{g+1}] The weapon in your hand.");
-                                    }
-                                        
-                                    while (true)
-                                    {
-                                        string effectedItemString = Console.ReadLine().Trim().ToLower();
-                                        try
-                                        {
-                                            int effectedItemNum = int.Parse(effectedItemString);
-                                            if (effectedItemNum < 1 || effectedItemNum > g+1) { Console.WriteLine("Please select a number that corresponds with an item listed above."); }
-                                            else if (playerWeapon.Name != "fists" && effectedItemNum == g + 1)
-                                            {
-                                                try
-                                                {
-                                                    foreach(Weapon w in player.WeaponInventory)
-                                                    {
-                                                        if (w.Equipped)
-                                                        {
-                                                            success = w.UseItem(chosenItem, w, usesDictionaryItemItem, specialItems)[0];
-                                                            Console.WriteLine($"You coat your {playerWeapon} in the {chosenItem}");
-                                                            player.Inventory.Remove(chosenItem);
-                                                            break;
-                                                        }
-
-                                                    }
-                                                    break;
-                                                }
-                                                catch { Console.WriteLine($"You can't use {chosenItem} on that!"); break; }
-                                            }
-                                            else if ( effectedItemNum == g)
-                                            {
-                                                try
-                                                {
-                                                    success = chosenItem.UseItem3(chosenItem, player, usesDictionaryItemChar, masked);
-                                                    
-                                                    if (chosenItem.Name.Trim().ToLower() == "healing potion") {
-                                                        Console.WriteLine("Liquid rejuvenation trickles down your parched throat. A warm feeling swells from your heart as you feel your wounds salved and your flesh knitting itself back together.");
-                                                            }
-                                                    else if (chosenItem.Name.Trim().ToLower() == "elixir of feline guile")
-                                                    {
-                                                        Console.WriteLine("You glug the potent elixir down. Your stomach ties itself in knots for a moment, before you feel your instincts and reflexes sharpen.");
-                                                    }
-                                                    else if(chosenItem.Name.Trim().ToLower() == "potion of alacrity")
-                                                    {
-                                                        Console.WriteLine("The potion tastes as bad as it looks. However, you instantly discover the rest of the world looks as though it couldn't catch up with a snail. The enemy's lunges and attacks begin to look comically sluggish, as though they were moving through water.\n You fly into action...");
-                                                    }
-                                                    else if (success) // luck potion grants boon to all weapons.
-                                                    {
-                                                        Console.WriteLine("The sweet liquid tastes like nirvana. It's effervescent body dances on your tongue and delights the senses. Suddenly you feel like anything is possible...");
-                                                        playerWeapon.Boon = 10;
-                                                    }
-                                                    else
-                                                    {
-                                                        Console.WriteLine("Ermm...No. Upon reflection, you'd rather not use that on yourself.");
-                                                    }
-                                                    break;
-                                                }
-                                                catch { Console.WriteLine("Ermm...No. Upon reflection, you'd rather not use that on yourself.");break; }
-                                                    
-                                            }
-                                            else if (effectedItemNum < g && effectedItemNum > room.ItemList.Count + Monster.Items.Count)
-                                            {
-                                                try
-                                                {
-                                                    success = chosenItem.UseItem1(usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count], usesDictionaryItemFeature, player.Inventory, player.WeaponInventory, room, player, Monster, this, false);
-                                                    break;
-                                                }
-                                                catch { Console.WriteLine($"You try using the {chosenItem.Name} on the {room.FeatureList[effectedItemNum - 1-room.ItemList.Count-Monster.Items.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");break; }
-                                            }
-                                            else if( effectedItemNum > room.ItemList.Count)
-                                            {
-                                                try
-                                                {
-                                                    success = chosenItem.UseItem(chosenItem, Monster.Items[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling, null, null, null, null, Monster)[0];
-                                                    if (room.FeatureList.Contains(holeInCeiling)) 
-                                                    {
-                                                        Console.WriteLine(jinxedMisses[9]);
-                                                        Monster.Stamina -= 9999;
-                                                    }
-                                                    break;
-                                                }
-                                                catch { Console.WriteLine($"You try using the {chosenItem.Name} on the {Monster.Items[effectedItemNum - 1-room.ItemList.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised..."); break; }
-                                            }
-                                            else
-                                            {
-                                                try
-                                                {
-                                                    success = chosenItem.UseItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling)[0];
-                                                    if (room.FeatureList.Contains(holeInCeiling))
-                                                    {
-                                                        Console.WriteLine(jinxedMisses[9]);
-                                                        Monster.Stamina -= 9999;
-                                                    }
-                                                    break;
-                                                    
-                                                }
-                                                catch { Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum -1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised...");break; }
-                                            }
-                                        }
-                                        catch { Console.WriteLine("Please enter the number corresponding to the list above!"); }
-                                    }
+                                Console.WriteLine("\n");
+                                if (damageDealt > 0)
+                                {
+                                    Console.WriteLine($"The {Monster.Name} lost {damageDealt} points of stamina!");
 
                                 }
                                 else
                                 {
-                                    Console.WriteLine("You've no items in your backpack!");
+                                    turn = -1;
+                                    Console.WriteLine($"{Monster.Name} seizes their chance to attack!");
                                 }
-                                if (player.Speedy && speedyturn == 0)
-                                {
-                                    Console.WriteLine("You don't waste a moment before bounding into your next action...");
-                                    break;
-                                }
-                                if (success && !room.FeatureList.Contains(holeInCeiling))
-                                {
-                                    Console.WriteLine($"\nIt's not long after your actions take effect before the {Monster.Name} attacks you!");
-                                    break;
-                                }
-                                else if (!success && !room.FeatureList.Contains(holeInCeiling))
-                                {
-                                    Console.WriteLine($"\nYour actions have only given the {Monster.Name} the opportunity to attack again!");
-                                    break;
-                                }
-                                else { break; }
-                            }
-                                
-                                    
-                            // basically you lose a turn       
-                            else if (answer1 == "4" || answer1 == "four")
-                            {
-                                if (player.Speedy && speedyturn == 0)
-                                {
-                                    Console.WriteLine("You marvel at how easy it is to dodge incoming attacks as the world moves languidly about you.\nIt's like everyone else is moving underwater while you dart about like a humming bird...");
-                                    break;
-                                }
-                                Console.WriteLine($"The {Monster.Name} closes in for another vicious attack!");
+                                Console.ReadKey(true);
                                 break;
+                            }
+                            // try some other tactic
+                            else if ((answer == "no") || (answer == "n"))
+                            {
+                                turn = -1;
+                                Console.WriteLine("Will you spend your turn \n[1] Equipping a new weapon?\n[2] Unequipping your weapon?\n[3] Using one of your items on something or someone?\n[4]Hesitating and considering your choices in life?");
+                                while (true)
+                                {
+                                    string answer1 = Console.ReadLine().Trim().ToLower();
+                                    if (answer1 == "1" || answer1 == "one")
+                                    {
+                                        int j = 0;
+                                        List<Weapon> availableWeapons = new List<Weapon>();
+                                        foreach (Weapon h in Player.WeaponInventory)
+                                        {
+                                            j++;
+                                            if (!h.Equipped)
+                                            {
+                                                availableWeapons.Add(h);
+                                            }
+                                        }
+                                        if (j < 1)
+                                        {
+                                            Console.WriteLine("You waste time frenziedly rummaging through your rucksack, but you've no new weapons to choose from!");
+                                            break;
+                                        }
+                                        string message = "You can choose from ";
+                                        int numWeapons = availableWeapons.Count;
+                                        int k = 1;
+                                        foreach (Weapon h in availableWeapons)
+                                        {
+                                            message += "\n[" + k + "] " + h.Name;
+                                            k++;
+                                        }
+                                        Console.WriteLine(message);
+                                        while (true)
+                                        {
+                                            string response = Console.ReadLine().Trim().ToLower();
+                                            try
+                                            {
+                                                int numResponse = int.Parse(response);
+                                                Player.Equip(availableWeapons[numResponse - 1], Player.WeaponInventory, player);
+                                                Console.WriteLine($"\n{availableWeapons[numResponse - 1].Description}");
+                                                foreach (Weapon y in Player.WeaponInventory)
+                                                {
+                                                    if (y.Equipped) { playerWeapon = y; break; }
+                                                }
+                                                if (player.Speedy && speedyturn == 0)
+                                                {
+                                                    Console.WriteLine($"You admire your {availableWeapons[numResponse - 1].Name} amidst a world sluggishly moving around you in slow motion, before instantly jumping to your next action.");
+                                                    break;
+                                                }
+                                                Console.WriteLine($"You admire your {availableWeapons[numResponse - 1].Name} for only an instant before the {Monster.Name} lunges at you...");
+                                                break;
+                                            }
+                                            catch
+                                            {
+                                                Console.WriteLine($"Please enter a number from 1 to {numWeapons}");
+                                                continue;
+                                            }
+
+                                        }
+
+                                        break;
+
+                                    }
+                                    else if (answer1 == "2" || answer1 == "two")
+                                    {
+                                        if (playerWeapon.Name == "fists")
+                                        {
+                                            Console.WriteLine($"You're not sure how you might 'unequip' your own fists, and as you contemplate this conundrum the {Monster.Name} comes in for the attack...");
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            Player.Unequip(Player.WeaponInventory);
+                                            pugilism = new List<Dice>();
+                                            i = 0;
+                                            while (i < (2 + Player.Skill) / 3)
+                                            {
+                                                if (i < 2)
+                                                {
+                                                    pugilism.Add(D2);
+                                                }
+                                                else if (i < 3)
+                                                {
+                                                    pugilism.Add(D3);
+                                                }
+                                                else
+                                                {
+                                                    pugilism.Add(D5);
+                                                }
+                                                i++;
+                                            }
+                                            if (Player.Skill < 4)
+                                            {
+                                                playerWeapon = new Weapon("fists", "Your tremulous hands aren't fast enough to swat a fly, let alone hurt anyone", pugilism, pugilismCritHits, pugilismGoodHits);
+                                            }
+                                            else if (Player.Skill < 7)
+                                            {
+                                                playerWeapon = new Weapon("fists", "Your soft hands are less than accustomed to the rough life adventuring brings. They're more often used for leafing through a good book than fighting.", pugilism, pugilismCritHits, pugilismGoodHits);
+                                            }
+                                            else if (Player.Skill < 10)
+                                            {
+                                                playerWeapon = new Weapon("fists", "Your callused hands are well accustomed to the rough life adventuring brings, and have made a noted debut at many a pub brawl.", pugilism, pugilismCritHits, pugilismGoodHits);
+                                            }
+                                            else
+                                            {
+                                                playerWeapon = new Weapon("fists", "Your firm hands are deadly weapons in themselves; artfully precise implements of destruction that've been hardened by years of punching tree trunks and doing press ups on blazing hot coals.", pugilism, pugilismCritHits, pugilismGoodHits);
+                                            }
+                                            if (player.Speedy && speedyturn == 0)
+                                            {
+                                                Console.WriteLine($"{playerWeapon.Description}\nYou resolve to fight bare fisted, mano e mano.");
+                                                break;
+                                            }
+                                            Console.WriteLine($"{playerWeapon.Description}\nYou resolve to fight bare fisted, mano e mano. \n Meanwhile, the {Monster.Name} charges towards you...");
+                                            break;
+                                        }
+                                    }
+                                    ///The following is very similar to what you'll see in the game class 
+                                    ///or the main method. It's the same formula for using an item on something else 
+                                    ///but it lists objects the monster has too. as such it'll need to become
+                                    ///its own separate method at a later date.
+
+                                    else if (answer1 == "3" || answer1 == "three")
+                                    {
+                                        bool success = false;
+                                        if (player.Inventory.Count > 0)
+                                        {
+                                            Console.WriteLine("Which item in your pack do you wish to use?");
+                                            int g = 1;
+                                            foreach (Item item in player.Inventory)
+                                            {
+                                                Console.WriteLine($"[{g}] {item.Name}");
+                                                g++;
+                                            }
+                                            Item chosenItem = null;
+                                            while (true)
+                                            {
+                                                string reply = Console.ReadLine().Trim().ToLower();
+
+                                                try
+                                                {
+                                                    int reply1 = int.Parse(reply) - 1;
+                                                    try
+                                                    {
+                                                        chosenItem = player.Inventory[reply1];
+                                                        break;
+                                                    }
+                                                    catch { Console.WriteLine("Please enter a number corresponding to an item listed above!"); }
+
+                                                }
+                                                catch
+                                                {
+                                                    foreach (Item item in player.Inventory)
+                                                    {
+                                                        if (item.Name == reply)
+                                                        {
+                                                            chosenItem = item;
+
+                                                        }
+
+                                                    }
+                                                }
+                                                if (chosenItem == null)
+                                                {
+                                                    Console.WriteLine($"{reply} could not be found in your backpack. Select another item.");
+                                                }
+                                                else
+                                                {
+                                                    break;
+                                                }
+                                            }
+                                            Console.WriteLine("What or who would you like to use it on?");
+
+
+                                            g = 1;
+                                            foreach (Item item in room.ItemList)
+                                            {
+                                                Console.WriteLine($"[{g}] {item.Name} in the room.");
+                                                g++;
+                                            }
+
+                                            foreach (Item item in Monster.Items)
+                                            {
+                                                Console.WriteLine($"[{g}] The {Monster.Name}'s {item.Name}");
+                                                g++;
+                                            }
+                                            foreach (Feature feature in room.FeatureList)
+                                            {
+                                                Console.WriteLine($"[{g}] {feature.Name} in the room.");
+                                                g++;
+                                            }
+                                            Console.WriteLine($"[{g}] Yourself");
+                                            if (playerWeapon.Name != "fists")
+                                            {
+                                                Console.WriteLine($"[{g + 1}] The weapon in your hand.");
+                                            }
+
+                                            while (true)
+                                            {
+                                                string effectedItemString = Console.ReadLine().Trim().ToLower();
+                                                try
+                                                {
+                                                    int effectedItemNum = int.Parse(effectedItemString);
+                                                    if (effectedItemNum < 1 || effectedItemNum > g + 1) { Console.WriteLine("Please select a number that corresponds with an item listed above."); }
+                                                    else if (playerWeapon.Name != "fists" && effectedItemNum == g + 1)
+                                                    {
+                                                        try
+                                                        {
+                                                            foreach (Weapon w in player.WeaponInventory)
+                                                            {
+                                                                if (w.Equipped)
+                                                                {
+                                                                    success = w.UseItem(chosenItem, w, usesDictionaryItemItem, specialItems)[0];
+                                                                    Console.WriteLine($"You coat your {playerWeapon} in the {chosenItem}");
+                                                                    player.Inventory.Remove(chosenItem);
+                                                                    break;
+                                                                }
+
+                                                            }
+                                                            break;
+                                                        }
+                                                        catch { Console.WriteLine($"You can't use {chosenItem} on that!"); break; }
+                                                    }
+                                                    else if (effectedItemNum == g)
+                                                    {
+                                                        try
+                                                        {
+                                                            success = chosenItem.UseItem3(chosenItem, player, usesDictionaryItemChar, masked);
+
+                                                            if (chosenItem.Name.Trim().ToLower() == "healing potion")
+                                                            {
+                                                                Console.WriteLine("Liquid rejuvenation trickles down your parched throat. A warm feeling swells from your heart as you feel your wounds salved and your flesh knitting itself back together.");
+                                                            }
+                                                            else if (chosenItem.Name.Trim().ToLower() == "elixir of feline guile")
+                                                            {
+                                                                Console.WriteLine("You glug the potent elixir down. Your stomach ties itself in knots for a moment, before you feel your instincts and reflexes sharpen.");
+                                                            }
+                                                            else if (chosenItem.Name.Trim().ToLower() == "potion of alacrity")
+                                                            {
+                                                                Console.WriteLine("The potion tastes as bad as it looks. However, you instantly discover the rest of the world looks as though it couldn't catch up with a snail. The enemy's lunges and attacks begin to look comically sluggish, as though they were moving through water.\n You fly into action...");
+                                                            }
+                                                            else if (success) // luck potion grants boon to all weapons.
+                                                            {
+                                                                Console.WriteLine("The sweet liquid tastes like nirvana. It's effervescent body dances on your tongue and delights the senses. Suddenly you feel like anything is possible...");
+                                                                playerWeapon.Boon = 10;
+                                                            }
+                                                            else
+                                                            {
+                                                                Console.WriteLine("Ermm...No. Upon reflection, you'd rather not use that on yourself.");
+                                                            }
+                                                            break;
+                                                        }
+                                                        catch { Console.WriteLine("Ermm...No. Upon reflection, you'd rather not use that on yourself."); break; }
+
+                                                    }
+                                                    else if (effectedItemNum < g && effectedItemNum > room.ItemList.Count + Monster.Items.Count)
+                                                    {
+                                                        try
+                                                        {
+                                                            success = chosenItem.UseItem1(usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count], usesDictionaryItemFeature, player.Inventory, player.WeaponInventory, room, player, Monster, this, false);
+                                                            break;
+                                                        }
+                                                        catch { Console.WriteLine($"You try using the {chosenItem.Name} on the {room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised..."); break; }
+                                                    }
+                                                    else if (effectedItemNum > room.ItemList.Count)
+                                                    {
+                                                        try
+                                                        {
+                                                            success = chosenItem.UseItem(chosenItem, Monster.Items[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling, null, null, null, null, Monster)[0];
+                                                            if (room.FeatureList.Contains(holeInCeiling))
+                                                            {
+                                                                Console.WriteLine(jinxedMisses[9]);
+                                                                Monster.Stamina -= 9999;
+                                                            }
+                                                            break;
+                                                        }
+                                                        catch { Console.WriteLine($"You try using the {chosenItem.Name} on the {Monster.Items[effectedItemNum - 1 - room.ItemList.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised..."); break; }
+                                                    }
+                                                    else
+                                                    {
+                                                        try
+                                                        {
+                                                            success = chosenItem.UseItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling)[0];
+                                                            if (room.FeatureList.Contains(holeInCeiling))
+                                                            {
+                                                                Console.WriteLine(jinxedMisses[9]);
+                                                                Monster.Stamina -= 9999;
+                                                            }
+                                                            break;
+
+                                                        }
+                                                        catch { Console.WriteLine($"You try using the {chosenItem.Name} on the {room.ItemList[effectedItemNum - 1].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised..."); break; }
+                                                    }
+                                                }
+                                                catch { Console.WriteLine("Please enter the number corresponding to the list above!"); }
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("You've no items in your backpack!");
+                                        }
+                                        if (player.Speedy && speedyturn == 0)
+                                        {
+                                            Console.WriteLine("You don't waste a moment before bounding into your next action...");
+                                            break;
+                                        }
+                                        if (success && !room.FeatureList.Contains(holeInCeiling))
+                                        {
+                                            Console.WriteLine($"\nIt's not long after your actions take effect before the {Monster.Name} attacks you!");
+                                            break;
+                                        }
+                                        else if (!success && !room.FeatureList.Contains(holeInCeiling))
+                                        {
+                                            Console.WriteLine($"\nYour actions have only given the {Monster.Name} the opportunity to attack again!");
+                                            break;
+                                        }
+                                        else { break; }
+                                    }
+
+
+                                    // basically you lose a turn       
+                                    else if (answer1 == "4" || answer1 == "four")
+                                    {
+                                        if (player.Speedy && speedyturn == 0)
+                                        {
+                                            Console.WriteLine("You marvel at how easy it is to dodge incoming attacks as the world moves languidly about you.\nIt's like everyone else is moving underwater while you dart about like a humming bird...");
+                                            break;
+                                        }
+                                        Console.WriteLine($"The {Monster.Name} closes in for another vicious attack!");
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("ERROR! Please answer either '1', '2', '3' or '4'.");
+                                        continue;
+                                    }
+                                }
+                                if (player.Speedy && speedyturn == 0)
+                                {
+                                    speedyturn++;
+                                    Console.WriteLine($"Do you wish to attack with your {playerWeapon.Name}? ");
+                                    continue;
+                                }
                             }
                             else
                             {
-                                Console.WriteLine("ERROR! Please answer either '1', '2', '3' or '4'.");
+                                Console.WriteLine("Please enter either 'yes' or 'no'.");
                                 continue;
                             }
+                            break;
                         }
-                        if (player.Speedy && speedyturn == 0)
-                        {
-                            speedyturn++;
-                            Console.WriteLine($"Do you wish to attack with your {playerWeapon.Name}? ");
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Please enter either 'yes' or 'no'.");
+                        turn++;
                         continue;
                     }
-                    break;
                 }
-                turn++;
-                continue;
             }
             if (Player.Stamina > 0)
             {
