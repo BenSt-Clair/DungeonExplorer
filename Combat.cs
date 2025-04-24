@@ -727,9 +727,9 @@ namespace DungeonCrawler
                         Console.WriteLine("It strikes feet from where he stands, forcing him to stagger back from the roaring tumult. Lightning sparks and shatters flagstones, the sheer torque of the wind throws up masonry and grinds it to dust. " +
                             "From within the eye of this storm, a lone silhouette stirs.");
                         Console.ReadKey(true);
-                        Console.WriteLine("\t'What devilry is this...?' The CurseBreaker stares aghast as the vortex recedes, leaving behind a cloud of smoke and debris. As the storm returns, the moon's bloody hue vanishes, and the wind clears the last tendrils of smoke, a figure slowly rises from amidst the carnage.");
+                        Console.WriteLine("\t'What devilry is this...?' The CurseBreaker stares aghast. The vortex vanishes, leaving behind a cloud of smoke and debris. As the storm rumbles overhead once more, rain spots the flagstones and the moon's bloody hue vanishes, the lone silhouette rises from amidst the carnage.");
                         Console.ReadKey(true);
-                        Console.WriteLine("Delivered to the highest parapet of the wizard tower, you at last face the sorcerer who conspired to seal your fate. He glowers at you with cold, ungodly eyes - eyes as dark as the void between stars...");
+                        Console.WriteLine("Delivered to the highest parapet of the wizard tower, you at last face the sorcerer who conspired to weave you a fate worse than death...");
                         long time = 0;
                         Console.ReadKey(true);
                         Console.WriteLine("\n\t\t\t[Please wait until music stops...]");
@@ -1087,7 +1087,14 @@ namespace DungeonCrawler
                         {
                             curseBreaker = true;
                             divisor = -1;
-                            Console.WriteLine("The CurseBreaker slashes at you with his sabre!\n\n");
+                            if (start && Monster.Veapon.Name == "sabre")
+                            {
+                                Console.WriteLine("\nThe CurseBreaker slashes at you with his sabre!\n");
+                            }
+                            else if (start)
+                            {
+                                Console.WriteLine("\nThe CurseBreaker tosses his stiletto blade from hand to hand as he probes for an opening...\n");
+                            }
                             Console.ReadKey(true);
                         }
                         int damageDealt = Monster.Veapon.Attack(Monster.Skill, Player.Skill, Player.Stamina, curseBreaker, Monster, player, another, room, holeInCeiling, divisor, start);
@@ -1136,7 +1143,15 @@ namespace DungeonCrawler
                             }
                             else
                             {
-                                List<Item> gloves = new List<Item>{Monster.Items[3]};
+                                List<Item> gloves = new List<Item>();
+                                try
+                                {
+                                    gloves = new List<Item> { Monster.Items[3] };
+                                }
+                                catch
+                                {
+                                    gloves = new List<Item> { Monster.Items[2] };
+                                }
                                 List<Weapon> cursedGloves = gloves.Cast<Weapon>().ToList();
                                 Console.WriteLine("You hear electricity crackle at the CurseBreaker's fingertips as he points a gloved hand your way...");
                                 damageDealt = cursedGloves[0].Attack(Monster.Skill, Player.Skill, Player.Stamina, true, Monster, player, another, room, holeInCeiling, -1, start);

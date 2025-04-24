@@ -1166,7 +1166,7 @@ namespace DungeonCrawler
                         {
                             feature.Attribute = !feature.Attribute;
                             feature.SpecificAttribute = "blasted";
-                            
+                            feature.Name = "shattered " + feature.Name;
                             Console.WriteLine("Your blow breaks the crystal! Before your eyes intense light slices through the cracks as the magic inside surges with explosive force...");
                             Console.WriteLine("Test your skill to avoid the blast!\n[Roll 3 four sided dice under your skill score + 3]");
                             Dice D4 = new Dice(4);
@@ -1233,7 +1233,7 @@ namespace DungeonCrawler
                                 Console.WriteLine("fragments rain down on you. But it's not long before the CurseBreaker, brandishing his lethal sabre, closes in once more...");
                                 return true;
                             }
-                            feature.Name = "shattered " + feature.Name;
+                            
                             return true;
                         }
                         else
@@ -2482,27 +2482,59 @@ namespace DungeonCrawler
                             if (resultOfSkillTest <= player.Skill)
                             {
                                 Console.ReadKey(true);
-                                Console.WriteLine("You fling the throwing knife into your opponent's weapon. It is sent clattering away along the ground. Fuming, your enemy resolves to settle this fight with their bare hands...");
+                                if (monster.Name != "CurseBreaker")
+                                {
+                                    Console.WriteLine("You fling the throwing knife into your opponent's weapon. It is sent clattering away along the ground. Fuming, your enemy resolves to settle this fight with their bare hands...");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("The CurseBreaker's sabre is sent clattering across the flagstones as your throwing knife slashes the back of his hand. Scowling, he unsheathes a stiletto blade to finish what he started...");
+                                }
                             }
                             else
                             {
                                 Console.ReadKey(true);
-                                Console.WriteLine("Your throwing knife misses...");
+                                if (monster.Name != "CurseBreaker")
+                                {
+                                    Console.WriteLine("Your throwing knife misses...");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("The CurseBreaker deflects your throwing knife with a flourish of his sabre. The fight continues...");
+                                }
                                 return tlist;
                             }
                         }
                         else
                         {
-                            Console.WriteLine("With well practiced flair you fling the throwing knife into your opponent's weapon. It is sent clattering away along the ground. Fuming, your enemy resolves to settle this fight with their bare hands...");
+                            if (monster.Name != "CurseBreaker")
+                            {
+                                Console.WriteLine("With well practiced flair you fling the throwing knife into your opponent's weapon. It is sent clattering away along the ground. Fuming, your enemy resolves to settle this fight with their bare hands...");
+                            }
+                            else
+                            {
+                                Console.WriteLine("The CurseBreaker's sabre is sent clattering across the flagstones as your throwing knife slashes the back of his hand. Scowling, he unsheathes a stiletto blade to finish what he started...");
+                            }
                         }
 
                         player.Inventory.Remove(item1);
                         room.ItemList.Add(item1);
                         monster.Items.RemoveAt(0);
                         room.ItemList.Add(item2);
-                        List<Item> weaponcaster = new List<Item> { specialItems[8] };
-                        List<Weapon> weaponCasted = weaponcaster.Cast<Weapon>().ToList();
-                        monster.Veapon = weaponCasted[0];
+                        if (monster.Name != "CurseBreaker")
+                        {
+                            List<Item> weaponcaster = new List<Item> { specialItems[8] };
+                            List<Weapon> weaponCasted = weaponcaster.Cast<Weapon>().ToList();
+                            monster.Veapon = weaponCasted[0];
+                        }
+                        else
+                        {
+                            List<Item> weaponcaster = new List<Item> { specialItems[9] };
+                            List<Weapon> weaponCasted = weaponcaster.Cast<Weapon>().ToList();
+                            
+                            
+                            monster.Veapon = weaponCasted[0];
+                        }
 
                     }
                 }

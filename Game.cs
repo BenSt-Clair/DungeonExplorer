@@ -584,7 +584,7 @@ namespace DungeonCrawler
                 "The CurseBreaker breaks your defence before barrelling into you. He shunts you off the towertop, sending you plummeting to your death...",
                 "The CurseBreaker knocks your defence to pieces before his gleaming sabre slashes at your midsection...",
                 "The CurseBreaker watches you with those perturbing black eyes, probing for your weaknesses. When he strikes, you can scarcely counter him...",
-                "The CurseBreaker nimbly spins a parry into a thrust. He grazes your ribs with his vicious sabre...",
+                "The CurseBreaker nimbly spins a parry into a thrust. He nicks your ribs with his vicious sabre...",
 
                 "The CurseBreaker lobs a fragment of flagstone at your face! You stagger backwards, unable to stop him from running you through...",
                 "Wrestling with one another's wrists, you each struggle for the advantage, before the CurseBreaker knees your gut. His killing blow becomes a glancing strike as you scramble away...",
@@ -618,7 +618,28 @@ namespace DungeonCrawler
                 "The gloves bristle with electric charge, before unleashing a bolt your way! It sears your arm...",
                 "The gloves electrify the air around you, tiny jolts snapping at you with every move...",
             };
+            List<string> stilettoCrits = new List<string>
+                            {
+                                "With brutal efficiency, the CurseBreaker plunges his stiletto blade into your heart!",
+                                "The CurseBreaker stabs you in the shoulder!",
+                                "The CurseBreaker slashes your hand...",
+                                "The CurseBreaker makes a flurry of probing attacks...",
 
+                                "With one vicious thrust the stiletto blade sinks between your ribs! You splutter and cough up blood before collapsing to the cold flagstones...",
+                                "The CurseBreaker skewers your thigh!",
+                                "The CurseBreaker's stiletto blae breaks through your armour...",
+                                "The CurseBreaker grazes your leg...",
+
+                                "The CurseBreaker finds his opening! Before you can react he lunges up close and maliciously stabs you repeatedly in the kidneys. Your body crumples into darkness...",
+                                "The CurseBreaker drives his stiletto blade into your arm!",
+                                "The CurseBreaker slashes your side...",
+                                "The CurseBreaker kicks your shins...",
+
+                                "The CurseBreaker breaks past your defences! Before you know it he kicks you off the edge of the parapet. You scream as you plummet to your death...",
+                                "The CurseBreaker backfists you with a gloved hand!",
+                                "The CurseBreaker gets around your defences!",
+                                "The CurseBreaker's stiletto blade makes a glancing hit..."
+                            };
             string newNote = "Someone has scrawled upon the note in hasty erratic cursive. It reads, 'I don't have long now. If you're reading this then you're likely another foolhardy adventurer like myself who got his'self kidnapped just as I woz. I don' have much space so mark my words. Whatever they tell you - its a lie. They're going to harm you. They're most likely going to kill you in one of their mad experiments. There's a music box. I kept it locked away and hidden from sight. It's in the chest. It may look empty but set in its bottom is a panel that can be removed. You'll find it there. If you play it the guard loses his marbles about it. Can't stand the tune, the little blighter! It's like nails on a chalkboard to 'em creatures. When it enters, subdue the loathsome thing. It's the only way out of 'ere. Hopefully, if I don't make it, at least someone else will...' The rest deteriorates into an illegible scribble at the bottom of the page.";
             //Items to be located somewhere in the room or upon the player character
             Item binkySkull = new Item("Binky", "~~ He's a bonafide friend in need, a bonny true soul indeed, he's brimming with revelry when you bring bonhomie, Hey! don't be a bonana, 'cause you've got a BONANZA, of a friend in me! ~~");
@@ -913,12 +934,13 @@ namespace DungeonCrawler
             List<Dice> chainLightning = new List<Dice> {D7, D7 };
             Weapon cursedGloves = new Weapon("gloves of tempest", "Cursed gloves that crackle with tame lightning, the curseBreaker uses them to direct chain lightning at those who displease him...", chainLightning, sizzleCrits, sizzleCrits, -1);
             Weapon sabre = new Weapon("sabre", "Light but deadly-sharp, it slices the air like silk.", sabreDamage, sabreCrits, sabreGoodHits, 2);
+            Weapon stiletto1 = new Weapon("stiletto blade", "This slender blade has a needle-like point that's sharper than a drill sergeant's tongue and a fox's wits and a bag of lemons and... \nWell, you get the idea.", stilettoDamage, stilettoCrits, stilettoCrits, 1, false);
             List<Item> CurseBreakerPockets = new List<Item> {sabre, goldDoubloon, ruby, cursedGloves};
             Monster CurseBreaker = new Monster("CurseBreaker", "You face before you a striking young man, aged beyond his years. He fixes you with unsettling black eyes that he stole from a fell creature. You sense them probe you for weaknesses as he flourishes a vicious sabre and wields an arcane glove crackling with cursed magic. The CurseBreaker, the would-be-architect of your doom, closes in for the kill...", CurseBreakerPockets, 100, 8, sabre);
             //Special Items
             List<Item> throwables = new List<Item> {armBand, clunkySabaton, bracers, helmet, breastplate, knifeMG, musicBox, mops, brooms, emptyBottles, bookA1, bookA2, bookA3, bookEC1, bookEC2, bookSC1, bookSC2, bookSC3, messhallBook1, journal, binkySkull, box, belt, lantern, femur, legBone, rib, crystalBall, brassTrinket, copperTrinket, jar, plate, bowl, throwingKnife, throwingKnife2, throwingKnife3  };
             List<Item> stickyItems = new List<Item> { bowlFragments, garment, bobbyPins, clunkySabaton, breastplate, helmet, bracers, splinter, rug, looseNail, penny, crumbs, dustBunny, mops, dusters, brooms, dustpans, crumpledMissive, emptyBottles, cork, ruby, emerald, sapphire, goldDoubloon, silverBars };
-            List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys, lockpickingSet, bookA1, journal, fists };
+            List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys, lockpickingSet, bookA1, journal, fists, stiletto1 };
             List<Item> MGItems = new List<Item> { knifeMG, staffMG, merigoldRing, pocketWatch, bracelet, merigoldMedallion, merigoldBroach, belt, diadem, armBand, box, bookA2 };
 
             ///Rooms
@@ -7306,6 +7328,8 @@ namespace DungeonCrawler
                         if (climax.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, highestParapet, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 4, false, true))
                         {
                             Console.WriteLine("Yippee!");
+                            victorious = true;
+                            break;
                         }
                         else
                         {
