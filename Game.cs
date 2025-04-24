@@ -596,6 +596,29 @@ namespace DungeonCrawler
                 "Thunder crashes as you exchange blows. The CurseBreaker is steadily getting the upper hand...",
                 "The CurseBreaker unleashes a flurry of expert strikes that you can scarcely defend against..."
             };
+            List<string> sizzleCrits = new List<string>
+            {
+                "The CurseBreaker's gloves crackle, before casting their chain lightning at you! Your skin erupts in flames but not before you are hurled off the tower. You scream as you plummet to your death, a blazing fireball lighting up the night like a flare plunging the depths of a chasm of stormclouds and thunder...",
+                "The gloves' lightning cracks and snaps at you, jolting you backwards and into the parapet wall...",
+                "The gloves bristle with electric charge, before unleashing a bolt your way! It sears your arm...",
+                "The gloves electrify the air around you, tiny jolts snapping at you with every move...",
+
+                "The CurseBreaker's gloves crackle, before casting their chain lightning at you! Your skin erupts in flames but not before you are hurled off the tower. You scream as you plummet to your death, a blazing fireball lighting up the night like a flare plunging the depths of a chasm of stormclouds and thunder...",
+                "The gloves blast the flagstone by your feet with their fearsome charge! you reel backwards from the blast...",
+                "The CurseBreaker snaps his fingers and smiles grimly as a bolt of lightning sends you staggering backwards...",
+                "The gloves roar with static as you approach! You get jolted by their charge...",
+
+                "The CurseBreaker's gloves crackle, before casting their chain lightning at you! Your skin erupts in flames but not before you are hurled off the tower. You scream as you plummet to your death, a blazing fireball lighting up the night like a flare plunging the depths of a chasm of stormclouds and thunder...",
+                "The gloves' lightning cracks and snaps at you, jolting you backwards and into the parapet wall...",                     
+                "The CurseBreaker snaps his fingers and smiles grimly as a bolt of lightning sends you staggering backwards...",
+                "The gloves roar with static as you approach! You get jolted by their charge...",
+
+                "The CurseBreaker's gloves crackle, before casting their chain lightning at you! Your skin erupts in flames but not before you are hurled off the tower. You scream as you plummet to your death, a blazing fireball lighting up the night like a flare plunging the depths of a chasm of stormclouds and thunder...",
+                "The gloves blast the flagstone by your feet with their fearsome charge! you reel backwards from the blast...",
+                "The gloves bristle with electric charge, before unleashing a bolt your way! It sears your arm...",
+                "The gloves electrify the air around you, tiny jolts snapping at you with every move...",
+            };
+
             string newNote = "Someone has scrawled upon the note in hasty erratic cursive. It reads, 'I don't have long now. If you're reading this then you're likely another foolhardy adventurer like myself who got his'self kidnapped just as I woz. I don' have much space so mark my words. Whatever they tell you - its a lie. They're going to harm you. They're most likely going to kill you in one of their mad experiments. There's a music box. I kept it locked away and hidden from sight. It's in the chest. It may look empty but set in its bottom is a panel that can be removed. You'll find it there. If you play it the guard loses his marbles about it. Can't stand the tune, the little blighter! It's like nails on a chalkboard to 'em creatures. When it enters, subdue the loathsome thing. It's the only way out of 'ere. Hopefully, if I don't make it, at least someone else will...' The rest deteriorates into an illegible scribble at the bottom of the page.";
             //Items to be located somewhere in the room or upon the player character
             Item binkySkull = new Item("Binky", "~~ He's a bonafide friend in need, a bonny true soul indeed, he's brimming with revelry when you bring bonhomie, Hey! don't be a bonana, 'cause you've got a BONANZA, of a friend in me! ~~");
@@ -886,8 +909,11 @@ namespace DungeonCrawler
             List<Feature> highestParapetFeatures = new List<Feature> {crenellations, crystalTotem1, crystalTotem2, crystalTotem3};
             List<Item> highestParapetItems = new List<Item> {brokenFlagstone, crackedFlagstone, flagstoneShards, shatteredFlagstone };
             List<Dice> sabreDamage = new List<Dice> {D3, D3, D2, D2 };
+            Dice D7 = new Dice(7);
+            List<Dice> chainLightning = new List<Dice> {D7, D7 };
+            Weapon cursedGloves = new Weapon("gloves of tempest", "Cursed gloves that crackle with tame lightning, the curseBreaker uses them to direct chain lightning at those who displease him...", chainLightning, sizzleCrits, sizzleCrits, -1);
             Weapon sabre = new Weapon("sabre", "Light but deadly-sharp, it slices the air like silk.", sabreDamage, sabreCrits, sabreGoodHits, 2);
-            List<Item> CurseBreakerPockets = new List<Item> {sabre, goldDoubloon, ruby};
+            List<Item> CurseBreakerPockets = new List<Item> {sabre, goldDoubloon, ruby, cursedGloves};
             Monster CurseBreaker = new Monster("CurseBreaker", "You face before you a striking young man, aged beyond his years. He fixes you with unsettling black eyes that he stole from a fell creature. You sense them probe you for weaknesses as he flourishes a vicious sabre and wields an arcane glove crackling with cursed magic. The CurseBreaker, the would-be-architect of your doom, closes in for the kill...", CurseBreakerPockets, 100, 8, sabre);
             //Special Items
             List<Item> throwables = new List<Item> {armBand, clunkySabaton, bracers, helmet, breastplate, knifeMG, musicBox, mops, brooms, emptyBottles, bookA1, bookA2, bookA3, bookEC1, bookEC2, bookSC1, bookSC2, bookSC3, messhallBook1, journal, binkySkull, box, belt, lantern, femur, legBone, rib, crystalBall, brassTrinket, copperTrinket, jar, plate, bowl, throwingKnife, throwingKnife2, throwingKnife3  };
@@ -1503,7 +1529,7 @@ namespace DungeonCrawler
                                     break;
                             }
                         }
-                        if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, oldRoom, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                        if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, oldRoom, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                         {
                             minotaurKafuffle.WonFight(newRoom1);
                             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
@@ -1573,7 +1599,7 @@ namespace DungeonCrawler
                                     break;
                             }
                         }
-                        if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, minotaur.Location, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, true, player1.Masked))
+                        if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, minotaur.Location, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, true, player1.Masked))
                         {
                             minotaurKafuffle.WonFight(newRoom1);
                             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
@@ -1944,14 +1970,14 @@ namespace DungeonCrawler
             bool justGrazing = true;
             while (!escapedRoom1)
             {
-                
+                /*
                 player1.Inventory.Add(crystalBall);
                 player1.Inventory.Add(throwingKnife);
                 player1.Inventory.Add(lantern);
                 player1.Inventory.Add(copperTrinket);
                 player1.WeaponInventory.Add(vanquisher);
                 player1.WeaponInventory.Add(stiletto);
-                
+                oubliette.FirstVisit = false;
                 MGItems.Remove(staffMG);
                 mosaic.SpecificAttribute = "studied";
                 foreach(Item item in MGItems)
@@ -1960,7 +1986,7 @@ namespace DungeonCrawler
                 }
                 escapedRoom1 = true;
                 continue;
-                
+                */
                 //
                 //
                 //
@@ -2048,7 +2074,7 @@ namespace DungeonCrawler
                         {
                             if (player1.WeaponInventory[0].Equipped)
                             {
-                                if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false))
+                                if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false))
                                 {
                                     trialBattle.WonFight(room);
                                     escapedThroughDoor = true;
@@ -2532,10 +2558,10 @@ namespace DungeonCrawler
             //
             //
             //
-            
-            newRoom1 = magicalManufactory;
+            /*
+            newRoom1 = highestParapet;
             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-            
+            */
             //
             //
             //
@@ -2645,7 +2671,7 @@ namespace DungeonCrawler
                                 }
                                 if (minotaur.Location == corridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, corridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, corridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(corridor);
                                     }
@@ -2673,7 +2699,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, corridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, corridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(corridor);
                                 }
@@ -2722,7 +2748,7 @@ namespace DungeonCrawler
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 == corridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -2734,7 +2760,7 @@ namespace DungeonCrawler
                                 }
                                 else if (newRoom1 == minotaur.Location)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -2879,7 +2905,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == room)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(room);
                                     }
@@ -2906,7 +2932,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(room);
                                 }
@@ -3264,7 +3290,7 @@ namespace DungeonCrawler
                                 }
                                 if (minotaur.Location == antechamber)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, antechamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, antechamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(antechamber);
                                     }
@@ -3293,7 +3319,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, antechamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, antechamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(antechamber);
                                 }
@@ -3344,7 +3370,7 @@ namespace DungeonCrawler
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 == antechamber)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -3356,7 +3382,7 @@ namespace DungeonCrawler
                                 }
                                 else if (newRoom1 == minotaur.Location)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -3493,7 +3519,7 @@ namespace DungeonCrawler
                         {
                             if (minotaur.Location == cellOpposite)
                             {
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, cellOpposite, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, cellOpposite, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(cellOpposite);
                                 }
@@ -3520,7 +3546,7 @@ namespace DungeonCrawler
                             Console.ReadKey(true);
                             Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                             Console.ReadKey(true);
-                            if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, cellOpposite, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                            if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, cellOpposite, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                             {
                                 minotaurKafuffle.WonFight(cellOpposite);
                             }
@@ -3653,7 +3679,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == armoury)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(armoury);
                                     }
@@ -3680,7 +3706,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(armoury);
                                 }
@@ -5755,7 +5781,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == messHall)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, messHall, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, messHall, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(messHall);
                                     }
@@ -5782,7 +5808,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, messHall, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, messHall, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(messHall);
                                 }
@@ -5823,7 +5849,7 @@ namespace DungeonCrawler
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 == messHall)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -5835,7 +5861,7 @@ namespace DungeonCrawler
                                 }
                                 else if (newRoom1 == minotaur.Location)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -5999,7 +6025,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == westernmostCorridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, westernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, westernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(westernmostCorridor);
                                     }
@@ -6027,7 +6053,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, westernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, westernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1,false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(westernmostCorridor);
                                 }
@@ -6068,7 +6094,7 @@ namespace DungeonCrawler
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 == westernmostCorridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -6080,7 +6106,7 @@ namespace DungeonCrawler
                                 }
                                 else if(newRoom1 == minotaur.Location)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -6242,7 +6268,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == northernmostCorridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, northernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, northernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(northernmostCorridor);
                                     }
@@ -6269,7 +6295,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, northernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, northernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(northernmostCorridor);
                                 }
@@ -6309,7 +6335,7 @@ namespace DungeonCrawler
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 == northernmostCorridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -6321,7 +6347,7 @@ namespace DungeonCrawler
                                 }
                                 else if (newRoom1 == minotaur.Location)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -6468,7 +6494,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == easternmostCorridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, easternmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, easternmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(easternmostCorridor);
                                     }
@@ -6495,7 +6521,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, easternmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, easternmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(easternmostCorridor);
                                 }
@@ -6543,7 +6569,7 @@ namespace DungeonCrawler
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 == easternmostCorridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -6555,7 +6581,7 @@ namespace DungeonCrawler
                                 }
                                 else if (newRoom1 == minotaur.Location)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -6711,7 +6737,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == southernmostCorridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, southernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, southernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(southernmostCorridor);
                                     }
@@ -6738,7 +6764,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, southernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, southernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(southernmostCorridor);
                                 }
@@ -6788,7 +6814,7 @@ namespace DungeonCrawler
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 == southernmostCorridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -6800,7 +6826,7 @@ namespace DungeonCrawler
                                 }
                                 else if (newRoom1 == minotaur.Location)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -6919,7 +6945,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == emptyCell)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, emptyCell, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, emptyCell, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(emptyCell);
                                     }
@@ -6946,7 +6972,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, emptyCell, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, emptyCell, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(emptyCell);
                                 }
@@ -7271,7 +7297,20 @@ namespace DungeonCrawler
                     {
                         Console.ReadKey(true);
                         highestParapet.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+
+                        FinalAct denouement = new FinalAct(player1, CurseBreaker);
+
+                        Combat climax = new Combat(CurseBreaker, player1);
                         
+                        
+                        if (climax.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, highestParapet, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 4, false, true))
+                        {
+                            Console.WriteLine("Yippee!");
+                        }
+                        else
+                        {
+                            return;
+                        }
                     }
                     else
                     {
@@ -7447,7 +7486,7 @@ namespace DungeonCrawler
                             Console.ReadKey(true);
                             Console.WriteLine("You mutter something disparaging about wizards and their kooky calculations before drawing your weapon in a futile show of defiance against fate.\n\nMeanwhile, the gold dragon stretches sedately, takes a deep inhale and prepares to turn you into cinders...");
                             
-                            if (goldDragonBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, true, false))
+                            if (goldDragonBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, true, false))
                             {
                                 Console.WriteLine("Just kidding!\n\nThe dragon incinerates you alive...");
                                 Console.ReadKey(true);
@@ -7547,7 +7586,7 @@ namespace DungeonCrawler
                                     if(answer == "done")
                                     {
                                         Console.WriteLine("'You give up? So be it...' the dragon intones with relish. \n\nYou're barely able to draw your weapon before the dragon lunges at you.");
-                                        if (goldDragonBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, false))
+                                        if (goldDragonBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, false))
                                         {
                                             Console.WriteLine("Just kidding!\n\nThe dragon incinerates you alive...");
                                             Console.ReadKey(true);
@@ -7593,7 +7632,7 @@ namespace DungeonCrawler
                                             Console.WriteLine("The dragon's eyes narrow dangerously as it surveys you. 'You misunderstand, ape-thing,' it replies with in soft and deadly tones, 'literally means not a simile or metaphor. For example, saying you are literally paper would be wrong, but saying you are metaphorically paper would be right, seeing as you share the property of burning to ashes whenever I feel like it...'");
                                             Console.ReadKey(true);
                                             Console.WriteLine("You're about to respond when the dragon continues, 'Or perhaps you need a more *palpable* demonstration...'");
-                                            if (goldDragonBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, false))
+                                            if (goldDragonBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, false))
                                             {
                                                 Console.WriteLine("Just kidding!\n\nThe dragon incinerates you alive...");
                                                 Console.ReadKey(true);
@@ -7658,7 +7697,7 @@ namespace DungeonCrawler
                                     else
                                     {
                                         Console.WriteLine("'Wrong answer...' the dragon intones with relish. \n\nYou're barely able to draw your weapon before the dragon lunges at you.");
-                                        if (goldDragonBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, false))
+                                        if (goldDragonBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, false))
                                         {
                                             Console.WriteLine("Just kidding!\n\nThe dragon incinerates you alive...");
                                             Console.ReadKey(true);
@@ -7773,7 +7812,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == secretChamber)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, secretChamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, secretChamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(secretChamber);
                                     }
@@ -7800,7 +7839,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, secretChamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, secretChamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(secretChamber);
                                 }

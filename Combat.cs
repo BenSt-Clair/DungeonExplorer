@@ -491,7 +491,7 @@ namespace DungeonCrawler
                 Console.WriteLine("'So you wish to fight me, little fly?' her voice" +
                     " is the vespine buzzing of a thousand wasps, as her once bewitching smile" +
                     " becomes a jagged maw of razors. 'How I shall enjoy plucking your limbs one by one!'");
-                if (Fight(usesDictionaryItemItem, usesDictionaryItemFeature, oubliette, Player, usesDictionaryItemChar, holeInCeiling, specialItems, false, false))
+                if (Fight(usesDictionaryItemItem, usesDictionaryItemFeature, oubliette, Player, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false))
                 {
                     Console.WriteLine("Wasting no more time you stagger your way to the portal and finally take the plunge...");
                     return true;
@@ -731,8 +731,11 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         Console.WriteLine("Delivered to the highest parapet of the wizard tower, you at last face the sorcerer who conspired to seal your fate. He glowers at you with cold, ungodly eyes - eyes as dark as the void between stars...");
                         long time = 0;
+                        Console.ReadKey(true);
+                        Console.WriteLine("\n\t\t\t[Please wait until music stops...]");
                         while(time < 41000)
                         {
+                            
                             musicTime.Stop();
                             time = musicTime.ElapsedMilliseconds;
                             musicTime.Start();
@@ -841,7 +844,7 @@ namespace DungeonCrawler
         /// <param name="usesDictionaryItemChar"></param>
         /// <param name="holeInCeiling"></param>
         /// <returns>boolean: true or false</returns>
-        public bool Fight(Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, List<Item> specialItems, bool fire = false, bool _initiative = false, bool masked = false)
+        public bool Fight(Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, List<Item> specialItems, int totemCount = 1, bool fire = false, bool _initiative = false, bool masked = false)
         {
             player = Player;
             Dice D2 = new Dice(2);
@@ -1054,14 +1057,14 @@ namespace DungeonCrawler
                     if (initiative)
                     {
 
-                        int damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling);
+                        int damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling, totemCount);
                         Monster.Stamina -= damageDealt;
                         Console.WriteLine($"The {Monster.Name} lost {damageDealt} points of stamina!");
                         turn = 1;
                         if (player.Speedy)
                         {
                             Console.WriteLine("The enemy is scarcely able to respond to your first attack when you quickly jump in with another.");
-                            damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling);
+                            damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling, totemCount);
                             Monster.Stamina -= damageDealt;
                             Console.WriteLine($"The {Monster.Name} lost {damageDealt} points of stamina!");
                         }
@@ -1078,7 +1081,16 @@ namespace DungeonCrawler
                             start = true;
                         }
                         if (Monster.Stamina < 1) { break; }
-                        int damageDealt = Monster.Veapon.Attack(Monster.Skill, Player.Skill, Player.Stamina, false, Monster, player, another, room, holeInCeiling, start);
+                        bool curseBreaker = false;
+                        int divisor = 1;
+                        if(Monster.Name == "CurseBreaker")
+                        {
+                            curseBreaker = true;
+                            divisor = -1;
+                            Console.WriteLine("The CurseBreaker slashes at you with his sabre!\n\n");
+                            Console.ReadKey(true);
+                        }
+                        int damageDealt = Monster.Veapon.Attack(Monster.Skill, Player.Skill, Player.Stamina, curseBreaker, Monster, player, another, room, holeInCeiling, divisor, start);
                         if (damageDealt >= 0)
                         {
                             Player.Stamina -= damageDealt;
@@ -1093,6 +1105,57 @@ namespace DungeonCrawler
                         }
                         if (Monster.Stamina < 1) { break; }
                         if (Player.Stamina < 1) { break; }
+
+                        if (Monster.Name == "CurseBreaker")
+                        {
+                            bool protection = false;
+                            foreach (Weapon w in player.WeaponInventory)
+                            {
+                                if ((w.Name.ToLower() == "sword of sealed souls" || w.Name == "Marvellous Merigold's Magical Staff of Whacking") && w.Equipped)
+                                {
+                                    protection = true;
+                                }
+                            }
+                            if (protection)
+                            {
+                                List<string> expression = new List<string>
+                                {
+                                    "glowers",
+                                    "scowls",
+                                    "becomes vexed",
+                                    "hisses",
+                                    "seethes",
+                                    "curls his lip",
+                                    "becomes enraged",
+                                    "fumes"
+                                };
+                                Dice D8 = new Dice(8);
+                                Console.ReadKey(true);
+                                Console.WriteLine($"The CurseBreaker {expression[D8.Roll(D8) - 1]} as his magic is negated by your weapon...");
+                                
+                            }
+                            else
+                            {
+                                List<Item> gloves = new List<Item>{Monster.Items[3]};
+                                List<Weapon> cursedGloves = gloves.Cast<Weapon>().ToList();
+                                Console.WriteLine("You hear electricity crackle at the CurseBreaker's fingertips as he points a gloved hand your way...");
+                                damageDealt = cursedGloves[0].Attack(Monster.Skill, Player.Skill, Player.Stamina, true, Monster, player, another, room, holeInCeiling, -1, start);
+                                if (damageDealt >= 0)
+                                {
+                                    Player.Stamina -= damageDealt;
+                                    Console.ReadKey(true);
+                                    Console.WriteLine($"You've lost {damageDealt} points of stamina!");
+                                }
+                                else if (damageDealt < 0)
+                                {
+
+                                    Monster.Stamina += damageDealt;
+
+                                }
+                                if (Monster.Stamina < 1) { break; }
+                                if (Player.Stamina < 1) { break; }
+                            }
+                        }
                         if (round == 0 && fire)
                         {
                             round++;
@@ -1245,7 +1308,7 @@ namespace DungeonCrawler
                                     playerWeapon.Boon = 6;
                                 }
 
-                                damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling);
+                                damageDealt = playerWeapon.Attack(Player.Skill, Monster.Skill, Monster.Stamina, true, Monster, player, another, room, holeInCeiling, totemCount);
                                 Monster.Stamina -= damageDealt;
                                 if (player.Speedy && speedyturn == 0)
                                 {
@@ -1406,6 +1469,15 @@ namespace DungeonCrawler
                                                 Console.WriteLine($"[{g}] {item.Name}");
                                                 g++;
                                             }
+                                            bool useWeapon = false;
+                                            foreach(Weapon w in player.WeaponInventory)
+                                            {
+                                                if (w.Equipped)
+                                                {
+                                                    Console.WriteLine($"[{g}] {w.Name}");
+                                                    useWeapon = true;
+                                                }
+                                            }
                                             Item chosenItem = null;
                                             while (true)
                                             {
@@ -1419,7 +1491,26 @@ namespace DungeonCrawler
                                                         chosenItem = player.Inventory[reply1];
                                                         break;
                                                     }
-                                                    catch { Console.WriteLine("Please enter a number corresponding to an item listed above!"); }
+                                                    catch 
+                                                    {
+                                                        if (reply1 == g - 1 && useWeapon)
+                                                        {
+                                                            int count = 0;
+                                                            foreach (Weapon w in player.WeaponInventory)
+                                                            {
+                                                                if (w.Equipped)
+                                                                {
+                                                                    chosenItem = player.WeaponInventory[count];
+                                                                }
+                                                                count++;
+                                                            }
+
+                                                        }
+                                                        else
+                                                        {
+                                                            Console.WriteLine("Please enter a number corresponding to an item listed above!");
+                                                        }
+                                                    }
 
                                                 }
                                                 catch
@@ -1432,6 +1523,13 @@ namespace DungeonCrawler
 
                                                         }
 
+                                                    }
+                                                    foreach (Weapon w in player.WeaponInventory)
+                                                    {
+                                                        if (w.Name == reply)
+                                                        {
+                                                            chosenItem = w;
+                                                        }
                                                     }
                                                 }
                                                 if (chosenItem == null)
@@ -1532,9 +1630,22 @@ namespace DungeonCrawler
                                                         try
                                                         {
                                                             success = chosenItem.UseItem1(usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count], usesDictionaryItemFeature, player.Inventory, player.WeaponInventory, room, player, Monster, this, false);
+                                                            if ((chosenItem.Name.ToLower() == "sword of sealed souls" 
+                                                                || chosenItem.Name == "Marvellous Merigold's Magical Staff of Whacking") 
+                                                                && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count].Name.Contains("totem") 
+                                                                && success)
+                                                            {
+                                                                Feature effectedFeature = room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count];
+                                                                if (effectedFeature.Stamina < 1)
+                                                                {
+                                                                    totemCount--;
+                                                                    if (totemCount == 0) { throw new DivideByZeroException("Check to ensure the correct value for totemCount has been implemented on the Highest Parapet!"); }
+                                                                }
+                                                            }
                                                             break;
                                                         }
                                                         catch { Console.WriteLine($"You try using the {chosenItem.Name} on the {room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised..."); break; }
+                                                    
                                                     }
                                                     else if (effectedItemNum > room.ItemList.Count)
                                                     {
@@ -1546,6 +1657,7 @@ namespace DungeonCrawler
                                                                 Console.WriteLine(jinxedMisses[9]);
                                                                 Monster.Stamina -= 9999;
                                                             }
+                                                             
                                                             break;
                                                         }
                                                         catch { Console.WriteLine($"You try using the {chosenItem.Name} on the {Monster.Items[effectedItemNum - 1 - room.ItemList.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised..."); break; }
@@ -2031,7 +2143,7 @@ namespace DungeonCrawler
                     if (Monster.Stamina > 0)
                     {
 
-                        damageDealt = Monster.Veapon.Attack(Monster.Skill, Player.Skill, Player.Stamina, false, Monster, player, another, room, holeInCeiling, start, attackedMonster2);
+                        damageDealt = Monster.Veapon.Attack(Monster.Skill, Player.Skill, Player.Stamina, false, Monster, player, another, room, holeInCeiling, 1, start, attackedMonster2);
                         if (damageDealt >= 0)
                         {
                             Player.Stamina -= damageDealt;
@@ -2048,7 +2160,7 @@ namespace DungeonCrawler
                     if (Monster2.Stamina > 0)
                     {
                         Console.WriteLine($"While you're distracted the {Monster2.Name} attacks!");
-                        damageDealt = Monster2.Veapon.Attack(Monster2.Skill, Player.Skill, Player.Stamina, false, Monster2, player, another, room, holeInCeiling, start, !attackedMonster2);
+                        damageDealt = Monster2.Veapon.Attack(Monster2.Skill, Player.Skill, Player.Stamina, false, Monster2, player, another, room, holeInCeiling, 1, start, !attackedMonster2);
                         if (damageDealt >= 0)
                         {
                             Player.Stamina -= damageDealt;
@@ -2066,7 +2178,7 @@ namespace DungeonCrawler
                 {
                     if (Monster2.Stamina > 0)
                     {
-                        damageDealt = Monster2.Veapon.Attack(Monster2.Skill, Player.Skill, Player.Stamina, false, Monster2, player, another, room, holeInCeiling, start, !attackedMonster2);
+                        damageDealt = Monster2.Veapon.Attack(Monster2.Skill, Player.Skill, Player.Stamina, false, Monster2, player, another, room, holeInCeiling, 1, start, !attackedMonster2);
                         if (damageDealt >= 0)
                         {
                             Player.Stamina -= damageDealt;
@@ -2083,7 +2195,7 @@ namespace DungeonCrawler
                     if (Monster.Stamina > 0)
                     {
                         Console.WriteLine($"While you're distracted the {Monster.Name} strikes!");
-                        damageDealt = Monster.Veapon.Attack(Monster.Skill, Player.Skill, Player.Stamina, false, Monster, player, another, room, holeInCeiling, start, attackedMonster2);
+                        damageDealt = Monster.Veapon.Attack(Monster.Skill, Player.Skill, Player.Stamina, false, Monster, player, another, room, holeInCeiling, 1, start, attackedMonster2);
                         if (damageDealt >= 0)
                         {
                             Player.Stamina -= damageDealt;
@@ -3101,7 +3213,7 @@ namespace DungeonCrawler
                     if (w.Boon > 9)
                     {
                         w.Boon = 0;
-                        if (w.Name == "sword of sealed souls")
+                        if (w.Name.ToLower() == "sword of sealed souls")
                         {
                             w.Boon = 2;
                         }
