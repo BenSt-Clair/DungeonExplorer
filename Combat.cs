@@ -620,6 +620,7 @@ namespace DungeonCrawler
             {
                 using (var outputDevice = new WaveOutEvent())
                 {
+                                   
                     outputDevice.Init(audiofile);
                     outputDevice.Play();
                     Console.WriteLine("\x1b[3J");
@@ -627,9 +628,9 @@ namespace DungeonCrawler
                     Console.WriteLine("You are an instant from the portal's reach when within a breathless instant the Lady lunges forwards!");
                     monsterProgress += AdvanceForward(monsterProgress, monsterSpeed);
                     Console.ReadKey(true);
-                    Console.WriteLine("As the monster's ''wings'' close around you, snatching the portal from sight, you have but one final chance - You throw yourself through her clutches! ");
+                    Console.WriteLine("As the monster's talons close around you, snatching the portal from sight, you have but one final chance - You hurl yourself through her clutches! ");
                     Console.ReadKey(true);
-                    Console.WriteLine("You both tumble then dive for the prize!");
+                    Console.WriteLine("You both dive for the prize!");
                     Console.ReadKey(true);
                     Console.WriteLine("\x1b[3J");
                     Console.Clear();
@@ -642,7 +643,7 @@ namespace DungeonCrawler
                         " as though its passages had been etched in fire. With each ghastly syllable, fanatically delivered to" +
                         " the storm circling above, the full moon in the distance glows brighter and brighter... ");
                     Console.ReadKey(true);
-                    Console.WriteLine("\n   Slowly, as drops of blood might despoil water, its glow garners" +
+                    Console.WriteLine("\n   Slowly, as drops of blood might taint water, its glow garners" +
                         " a scarlet hue as the diabolical rite nears completion...");
                     Console.ReadKey(true);
                     Console.WriteLine("  The storm abates its thunder.");
@@ -650,22 +651,23 @@ namespace DungeonCrawler
                     Console.WriteLine("  The fierce wind holds back its icy fury.");
                     Console.ReadKey(true);
                     Console.WriteLine("  The very forces of nature seem to recoil and pause with bated breath as the " +
-                        " CurseBreaker, with one final zealous flourish, booms the last words of the ritual...");
+                        " CurseBreaker, with a zealous flourish, begins booming the last words of the ritual...");
                     Console.ReadKey(true);
                     Console.WriteLine("There are no interruptions.");
                     Console.ReadKey(true);
-                    Console.WriteLine("The young man in black attire, aged beyond his years, belts the last verse in rapturous triumph.");
+                    Console.WriteLine("The young man in black attire bellows the last verse in rapturous triumph.");
                     Console.ReadKey(true);
                     Console.WriteLine("Then he waits...");
                     Console.ReadKey(true);
-                    Console.WriteLine("Nothing stirs. \n\n\t\tAll is silent...");
+                    Console.WriteLine("Nothing stirs. ");
                     Console.ReadKey(true);
-                    Console.WriteLine("The CurseBreaker staggers back, uncomprehending. His arms fall limp to his sides as a vagary of wind ruffles his dark hair. ");
+                    Console.WriteLine("\n\t\tAll is silent...");
                     Console.ReadKey(true);
-                    Console.WriteLine("\n\t'What treachery is this..?' he hisses, as his gaze roves " +
-                        "the dark thunderheads and blood moon. \n\t'I cast the spell,' he seethes," +
-                        " 'I spake the words that writ my ascension...' his voice quavers, before he" +
-                        " bellows to the tumult above. 'Now bring me my power!'");
+                    Console.WriteLine("The CurseBreaker takes a step back, uncomprehending. His arms lower to his sides as a vagary of wind sweeps back his dark hair. ");
+                    Console.ReadKey(true);
+                    Console.WriteLine("'What are you waiting for?' he breathes to the storm tossed heavens. 'The words are spoken. The pact is made!'");
+                    Console.WriteLine("'The very fates can no longer deny me my place,' he seethes as though his voice carries to the gods themselves. " +
+                        "'Humanity shall be united under one justice - under my justice!'");
                     Console.ReadKey(true);
                     Console.WriteLine("\n\t\t'BRING ME MY DESTINY!'");
                     Console.ReadKey(true);
@@ -692,7 +694,7 @@ namespace DungeonCrawler
                         "\n\nSlowly, the vortex spins faster and faster like a vast whirlpool tearing apart stars and galaxies; a tempest of the very heavens themselves." +
                         " ");
                     Console.ReadKey(true);
-                    Console.WriteLine("Then the vortex strikes. It extends outwards; a tornado of lightning flashes and whorling smoke, smiting the towertop like the finger of god.");
+                    Console.WriteLine("Then the vortex strikes. It extends outwards like the finger of god; a tornado of lightning flashes and whorling smoke that smites the towertop.");
                     Console.ReadKey(true);
                     Console.WriteLine("But it doesn't embrace the CurseBreaker...");
                     Console.ReadKey(true);

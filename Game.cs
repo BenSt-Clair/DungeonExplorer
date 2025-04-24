@@ -875,9 +875,9 @@ namespace DungeonCrawler
             Weapon fists = new Weapon("fists", "", fistDamage, defaultCritHits, defaultGoodHits, 0);
 
             //Highest Parapet
-            Feature crystalTotem1 = new Feature("totem of shielding", "A knot of gnarled roots in the shape of a large hand clutches a gem that exudes waves of magic with its pulsating glow. Summoned through some confluence of sinister magic and Fey sorcery, it creates a protective shield about the caster and dampens any harm that might befall them...", false, "unshattered");
-            Feature crystalTotem2 = new Feature("totem of invincibility", "Gnarled roots extend through the flagstones in the form of a fist, clasping a gem that makes the air around it shimmer with magic. Summoned through some confluence of dark necromancy and Fey magicks, it conspires to reduce all incoming damage for its caster...", false, "unshattered");
-            Feature crystalTotem3 = new Feature("totem of invulnerability", "A writhing tangle of roots stretch from the cracked flagstones in the shape of a fist. Within, a strange ethereal gem pulses with light, casting a protective shield about the summoner, which absorbs most incoming damage...", false, "unshattered");
+            Feature crystalTotem1 = new Feature("totem of shielding", "A knot of gnarled roots in the shape of a large hand clutches a gem that exudes waves of magic with its pulsating glow. Summoned through some confluence of sinister magic and Fey sorcery, it creates a protective shield about the caster and dampens any harm that might befall them...", false, "unshattered", 3);
+            Feature crystalTotem2 = new Feature("totem of invincibility", "Gnarled roots extend through the flagstones in the form of a fist, clasping a gem that makes the air around it shimmer with magic. Summoned through some confluence of dark necromancy and Fey magicks, it conspires to reduce all incoming damage for its caster...", false, "unshattered", 3);
+            Feature crystalTotem3 = new Feature("totem of invulnerability", "A writhing tangle of roots stretch from the cracked flagstones in the shape of a fist. Within, a strange ethereal gem pulses with light, casting a protective shield about the summoner, which absorbs most incoming damage...", false, "unshattered", 3);
             Feature crenellations = new Feature("crenellations", "Over the towertop's low battlements you survey a moonlit valley and in the distance the spires of Myrovia...", true, "imposing");
             Item brokenFlagstone = new Item("broken flagstone", "Many of the flagstones are cracked and broken. The rest have been worn down over the centuries...");
             Item crackedFlagstone = new Item("cracked flagstone", "Many of the flagstones are cracked and broken. The rest have been worn down over the centuries...");
@@ -1944,7 +1944,7 @@ namespace DungeonCrawler
             bool justGrazing = true;
             while (!escapedRoom1)
             {
-                /*
+                
                 player1.Inventory.Add(crystalBall);
                 player1.Inventory.Add(throwingKnife);
                 player1.Inventory.Add(lantern);
@@ -1960,7 +1960,7 @@ namespace DungeonCrawler
                 }
                 escapedRoom1 = true;
                 continue;
-                */
+                
                 //
                 //
                 //
@@ -2532,10 +2532,10 @@ namespace DungeonCrawler
             //
             //
             //
-            /*
+            
             newRoom1 = magicalManufactory;
             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-            */
+            
             //
             //
             //
@@ -7249,7 +7249,8 @@ namespace DungeonCrawler
                     a = 0;
                     while (!leftWhichRooms[11])//highest parapet
                     {
-                        visitedRoom = true;
+                    player1.Speedy = false;    
+                    visitedRoom = true;
                         usesDictionaryItemItem.Clear();
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
@@ -7257,6 +7258,10 @@ namespace DungeonCrawler
                     usesDictionaryItemItem.Add(throwingKnife2, new List<Item>());
                     usesDictionaryItemItem.Add(throwingKnife3, new List<Item>());
                     usesDictionaryItemFeature.Remove(yourRustyChains);
+                    usesDictionaryItemFeature[vanquisher].Add(crystalTotem1);
+                    usesDictionaryItemFeature[vanquisher].Add(crystalTotem2);
+                    usesDictionaryItemFeature[vanquisher].Add(crystalTotem3);
+                    usesDictionaryItemFeature.Add(staffMG, new List<Feature> { crystalTotem1, crystalTotem2, crystalTotem3 });
                     ///enter new Dictionaries for item use here
                     ///lockpick on door, jailors keys on various doors not cell doors (prisoners taken)
                     ///red herring in room above

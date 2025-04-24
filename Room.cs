@@ -535,6 +535,19 @@ namespace DungeonCrawler
 
                 }
             }
+            if (Name == "highest parapet")
+            {
+                Console.WriteLine("Would you like to peer closer at the strange totems about the CurseBreaker?");
+                Dialogue totem = new Dialogue(FeatureList[0]);
+                if (totem.getYesNoResponse())
+                {
+                    foreach (Feature feature in FeatureList)
+                    {
+                        Console.WriteLine($"{feature.Name}:");
+                        Console.WriteLine(feature.Description);
+                    }
+                }
+            }
             if (Name == "oubliette" || Name == "highest parapet")
             {
                 return this;

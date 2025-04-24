@@ -1027,9 +1027,10 @@ namespace DungeonCrawler
                         " laughter. And once again you are struck by its melody. It almost seems" +
                         " to resonate and chime with every lustrous and beautiful memory you can" +
                         " conjure to mind. But there is also something else underneath that laugh" +
-                        " now. Something terrible, something that turns that resonance into the" +
-                        " tremors of prey about to be caught, the shiver of an animal starving" +
-                        " in the dead of winter. And for once, upon the horizon of your senses," +
+                        " now. Something terrible, something that turns that resonance into the " +
+                        "shiver of an animal starving in the dead of winter, the" +
+                        " tremors of prey about to be caught. " +
+                        "And for once, upon the horizon of your senses," +
                         " you detect a stranger; some amorphous silhouette of " +
                         "pure, undiluted terror - distant, but" +
                         " closing in fast...");

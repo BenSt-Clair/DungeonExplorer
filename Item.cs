@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime;
@@ -1140,12 +1141,97 @@ namespace DungeonCrawler
             List<Room> roomlist = new List<Room>(); // empty lists for filling in Search function unused parameters
             if (usesDictionary[item].Contains(feature))
             {
-                
-                feature.Attribute = !feature.Attribute; // key lock unlock, weapon intact broken, magical charm uncharmed charmed, etc
+                if (!feature.Name.Contains("totem"))
+                {
+                    feature.Attribute = !feature.Attribute;
+                } // key lock unlock, weapon intact broken, magical charm uncharmed charmed, etc
                 if (feature.Attribute == false)
                 {
-                    feature.SpecificAttribute = "un" + feature.SpecificAttribute;
-                    if (item.Name == "jailor keys" && (feature.Name == "far door" || feature.Name == "near door"))
+                    if (!feature.Name.Contains("totem"))
+                    {
+                        feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                    }
+                    if (feature.Name.Contains("totem"))
+                    {
+                        List<Item> weapon = new List<Item> { item};
+                        List<Weapon> nowWeapon = weapon.Cast<Weapon>().ToList();
+                        Weapon cursedWeapon = nowWeapon[0];
+                        int sum = 0;
+                        foreach (Dice dice in cursedWeapon.GetDamage())
+                        {
+                            sum += dice.Roll(dice);
+                        }
+                        feature.Stamina -= sum;
+                        if (feature.Stamina < 1)
+                        {
+                            feature.Attribute = !feature.Attribute;
+                            feature.SpecificAttribute = "blasted";
+                            
+                            Console.WriteLine("Your blow breaks the crystal! Before your eyes intense light slices through the cracks as the magic inside surges with explosive force...");
+                            Console.WriteLine("Test your skill to avoid the blast!\n[Roll 3 four sided dice under your skill score + 3]");
+                            Dice D4 = new Dice(4);
+                            List<Dice> boom = new List<Dice> {D4, D4, D4 };
+                            int score = 0;
+                            foreach(Dice d in boom)
+                            {
+                                score += D4.Roll(D4);
+                            }
+                            if (player.Traits.ContainsKey("jinxed"))
+                            {
+                                score -= 4;
+                            }
+                            bool felix = false;
+                            int count = 0;
+                            foreach(Weapon w in player.WeaponInventory)
+                            {
+                                if (w.Boon > 9)
+                                {
+                                    count++;
+                                }
+                            }
+                            if (count != 0 && count == player.WeaponInventory.Count)
+                            {
+                                felix = true;
+                            }
+                            if (felix)
+                            {
+                                score -= 6;
+                            }
+                            if (player.Skill + 3 > score)
+                            {
+                                Console.WriteLine("You're too slow!");
+                                Console.ReadKey(true);
+                                
+                                List<string> kablam = new List<string>
+                                {
+                                    $"You stare transfixed as a web of cracks rapidly splinter the crystal. Before you know it you've been thrown through the air by the explosive force wrought by its destruction!\n[You lose {score} stamina!]",
+                                    $"You try to wheel away but are instead launched back as the crystal erupts!\n[You lose {score} stamina!]",
+                                    $"You begin to recoil but are instead lifted off your feet by the crystal's blast!\n[You lose {score} stamina!]",
+                                    $"You jolt backwards but find no cover from the blast of sharp fragments. They lacerate your arms as you cover your face!\n[You lose {score} stamina!]"
+                                };
+                                Console.WriteLine(kablam[D4.Roll(D4) - 1]);
+                                player.Stamina -= score;
+                                return true;
+                            }
+                            else if (player.Skill + 3 <= score)
+                            {
+                                Console.WriteLine("You dive out of the way just before the crystal explodes!");
+                                Console.ReadKey(true);
+                                Console.WriteLine("fragments rain down on you. But it's not long before the CurseBreaker, brandishing his lethal sabre, closes in once more...");
+                                return true;
+                            }
+                            return true;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Your {item.Name} cracks the crystal, but not with enough force to shatter it...");
+                            Console.ReadKey(true);
+                            return true;
+                        }
+                        
+
+                    }
+                    else if (item.Name == "jailor keys" && (feature.Name == "far door" || feature.Name == "near door"))
                     {
                         int index = feature.SpecificAttribute.IndexOf("ed");
                         string strand = feature.SpecificAttribute.Substring(0, index);
@@ -3151,6 +3237,10 @@ namespace DungeonCrawler
                 }
                 return damageDealt;
             }
+        }
+        public List<Dice> GetDamage()
+        {
+            return this.Damage;
         }
 
 
