@@ -317,7 +317,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         playerProgress = 30;
                     }
-                    else if (chosenItem.Name == "throwing knife")
+                    else if (chosenItem.Name.Contains("throwing knife"))
                     {
                         Console.WriteLine($"As you take the {chosenItem.Name} out of your pack, the creature calls to you...");
                         Console.ReadKey(true);
@@ -1757,6 +1757,11 @@ namespace DungeonCrawler
                             }
                             else
                             {
+                                if(answer.Trim().ToLower() == "kill")
+                                {
+                                    Monster.Stamina = 0;
+                                    break;
+                                }
                                 Console.WriteLine("Please enter either 'yes' or 'no'.");
                                 continue;
                             }

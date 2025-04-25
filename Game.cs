@@ -656,7 +656,7 @@ namespace DungeonCrawler
             //Items to be located somewhere in the room or upon the player character
             Item binkySkull = new Item("Binky", "~~ He's a bonafide friend in need, a bonny true soul indeed, he's brimming with revelry when you bring bonhomie, Hey! don't be a bonana, 'cause you've got a BONANZA, of a friend in me! ~~");
             Item steelKey = new Item("steel key", "You find it under the skeleton's bones. You guess whoever it was had swallowed it before death. The key itself is rather nondescript - just a humble key. You suppose it must unlock something...");
-            Item healPotion = new Item("healing potion", "It has flecks of gold floating amidst a gel like suspension. The label reads; 'When you're feeling blue, down with the flu, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!'", true, "used", 0, "Stamina: When you're blue, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!");
+            Item healPotion = new Item("half-empty healing potion", "It has flecks of gold floating amidst a gel like suspension. The label reads; 'When you're feeling blue, down with the flu, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!'", true, "used", 0, "Stamina: When you're blue, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!");
             Item note = new Item("note", "The note is dogeared and yellowed with age.\nSomeone has scrawled upon it but the writing is too small to make out. Snatches of words, poorly spelt, unveil themselves to you when you strain your eyes. However, no coherent message can be deciphered. Something about a false bottom? If only there was some spell to enlarge letters, you muse... If only you knew any spells!", true, "unread");
             Item halfOfCrackedBowl = new Item("half a cracked bowl", "Its a cheap bowl made of clay - half of one anyway - chipped in places around the rim and bearing a hairline crack down its left side.");
             Item otherHalfOfCrackedBowl = new Item("other half of a cracked bowl", "It's not much less damaged than its counterpart");
@@ -748,9 +748,9 @@ namespace DungeonCrawler
             Weapon bastardSword = new Weapon("bastard sword", "The one and half handed sword glints with singular purpose. Wielded with any proficiency this blade would be formidable indeed.", bastardswordDamage, defaultCritHits, defaultGoodHits, 2, false);
             Weapon sai = new Weapon("sai-daggers", "They're oriental ninja weapons that, by the looks of the knocks they've received, have been used by anything other than ninjas - good ones anyway...", damage, defaultCritHits, defaultGoodHits, 1, false);
             Weapon axe = new Weapon("battle-axe", "It's a no-nonsense, true-to-its-purpose axe. If it can't cleave a goblin in two, it might at last give it something to think about...", damage1, defaultCritHits, defaultGoodHits, 1, false);
-            Item throwingKnife = new Item("throwing knife", "Despite its humble appearance, it's well made, sharp, perfectly balanced and heavy enough to, I don't know, say... knock a weapon out of an enemy's hand...?", false, "unbroken");
-            Item throwingKnife2 = new Item("throwing knife", "Despite its humble appearance, it's well made, sharp, perfectly balanced and heavy enough to, I don't know, say... knock a weapon out of an enemy's hand...?", false, "unbroken");
-            Item throwingKnife3 = new Item("throwing knife", "Despite its humble appearance, it's well made, sharp, perfectly balanced and heavy enough to, I don't know, say... knock a weapon out of an enemy's hand...?", false, "unbroken");
+            Item throwingKnife = new Item("lethal throwing knife", "Despite its humble appearance, it's well made, sharp, perfectly balanced and heavy enough to, I don't know, say... knock a weapon out of an enemy's hand...?", false, "unbroken");
+            Item throwingKnife2 = new Item("sharp throwing knife", "Despite its humble appearance, it's well made, sharp, perfectly balanced and heavy enough to, I don't know, say... knock a weapon out of an enemy's hand...?", false, "unbroken");
+            Item throwingKnife3 = new Item("deadly throwing knife", "Despite its humble appearance, it's well made, sharp, perfectly balanced and heavy enough to, I don't know, say... knock a weapon out of an enemy's hand...?", false, "unbroken");
             Weapon rustySword = new Weapon("rusty shortsword", "A tinge of rust traces the blade around the handle. It's been recently sharpened on a grindstone, but it probably still couldn't pierce a good set of armour worthy of the name.", damage1, defaultCritHits, defaultGoodHits);
             Weapon stiletto = new Weapon("stiletto blade", "This slender blade has a needle-like point that's sharper than a drill sergeant's tongue and a fox's wits and a bag of lemons and... \nWell, you get the idea.", stilettoDamage, defaultCritHits, defaultGoodHits, 1, false);
             Item bagOfCoins = new Item("bag of coins", "Most of the coins are scattered all over the table, with a few mounds forming the winnings of previous games. There is, however, a lovely large leather bag to stash them all in close by...", false, "unspent");
@@ -768,7 +768,7 @@ namespace DungeonCrawler
             Feature armouryBookcase = new Feature("bookcase", "A rosewood bookcase that seems to have been left behind from when this place was something other than an armoury (a library perhaps). It is still stocked with books.", false, "unshattered", armouryBookcaseItems);
             Feature normalBrazier = new Feature("fiery brazier", "Unlike the braziers in your former cell and downstairs, this one's fire radiates warmth and its soft flickering flame casts an altogether more natural light about the room", true, "lit");
             List<Feature> armouryFeatures = new List<Feature> {gamblingTable, goodWeaponRack, normalBrazier, worseWeaponRack, armouryBookcase, armouryDoor };
-            Item throwingKnife1 = new Item("broken throwing knife", "It's blade has been detached from the handle. Either its been tossed aside or else someone couldn't be bothered fixing it.", false, "unfixed");
+            Item throwingKnife1 = new Item("broken knife", "It's blade has been detached from the handle. Either its been tossed aside or else someone couldn't be bothered fixing it.", false, "unfixed");
             Item clunkySabaton = new Item("sabatons", "scattered throughout the room along with other pieces of clunky armour are these armoured footwear. Spiked and brutal, you nevertheless sense they wouldn't fit you...", false, "undamaged");
             Item breastplate = new Item("breastplates", "They come in all shapes and sizes, but none that fit you it seems...", false, "undamaged");
             Item helmet = new Item ("helmets", "They're a bit tight around the... everything. Besides who wants their sight restricted by a visor anyway?", false, "undamaged");
@@ -5956,9 +5956,9 @@ namespace DungeonCrawler
                                         return;
                                     }
                                 }
-
+                                continue;
                             }
-                            continue;
+                            
                         }
                         sw.Start();
                         try
@@ -6207,9 +6207,9 @@ namespace DungeonCrawler
                                         return;
                                     }
                                 }
-                                
+                                continue;
                             }
-                            continue;
+                            
                         }
                         sw.Start();
                         try
@@ -6454,9 +6454,9 @@ namespace DungeonCrawler
                                         return;
                                     }
                                 }
-
+                                continue;
                             }
-                            continue;
+                            
                         }
                         sw.Start();
                         try
@@ -6694,9 +6694,9 @@ namespace DungeonCrawler
                                         return;
                                     }
                                 }
-
+                                continue;
                             }
-                            continue;
+                            
                         }
                         sw.Start();
                         try
@@ -6944,9 +6944,10 @@ namespace DungeonCrawler
                                         return;
                                     }
                                 }
-
+                                
+                                continue;
                             }
-                            continue;
+                            
                         }
                         sw.Start();
                         try

@@ -2463,7 +2463,7 @@ namespace DungeonCrawler
             {
                 if (monster != null)
                 {
-                    if (item2.Name == monster.Veapon.Name && item1.Name == "throwing knife")
+                    if (item2.Name == monster.Veapon.Name && item1.Name.Contains("throwing knife"))
                     {
                         int resultOfSkillTest = 0;
                         if (player.Skill < 7)
