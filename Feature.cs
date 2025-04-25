@@ -294,7 +294,7 @@ namespace DungeonCrawler
         /// </summary>
         /// <param name="inventory"></param>
         /// <param name="weaponInventory"></param>
-        public Room Search(Dictionary<Item, List<Player>> usesDictionaryItemChar, List<Room> choiceVersusDestination, int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, Room room, bool fieryEscape, Player player, Door stairwayToLower, List<Room> destinations, List<Item> specialItems = null, Combat battle = null, Room secretChamber = null, Monster goblin = null, Monster gnoll = null, List<Item> MGItems = null)
+        public Room Search(bool music, Dictionary<Item, List<Player>> usesDictionaryItemChar, List<Room> choiceVersusDestination, int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, Room room, bool fieryEscape, Player player, Door stairwayToLower, List<Room> destinations, List<Item> specialItems = null, Combat battle = null, Room secretChamber = null, Monster goblin = null, Monster gnoll = null, List<Item> MGItems = null)
         {
             Console.WriteLine($"Rummaging about the {Name}, you find the following;");
             int r = 1;
@@ -1001,7 +1001,7 @@ namespace DungeonCrawler
 
                     if (merigold.getYesNoResponse())
                     {
-                        List<Dice> endOfMidGameChoice = merigold.MerigoldPlotPoint(specialItems, battle, secretChamber, goblin, gnoll, MGItems, stairwayToLower, usesDictionaryItemChar);
+                        List<Dice> endOfMidGameChoice = merigold.MerigoldPlotPoint(music, specialItems, battle, secretChamber, goblin, gnoll, MGItems, stairwayToLower, usesDictionaryItemChar);
                         Attribute = true;
                         SpecificAttribute = "dishevelled";
                         int destination = 0;
@@ -4492,7 +4492,7 @@ namespace DungeonCrawler
                     Dice D2 = new Dice(2);
                     Dice D3 = new Dice(3);
                     Dice D4 = new Dice(4);
-                    List<Dice> endOfMidGameChoice = merigold.ReturnToMerigoldDialogue(specialItems, battle, secretChamber, goblin, gnoll, MGItems, stairwayToLower, choiceVersusDestination);
+                    List<Dice> endOfMidGameChoice = merigold.ReturnToMerigoldDialogue(music, specialItems, battle, secretChamber, goblin, gnoll, MGItems, stairwayToLower, choiceVersusDestination);
                     int destination = 0;
                     if (endOfMidGameChoice.Count == 1)
                     {

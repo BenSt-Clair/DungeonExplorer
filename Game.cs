@@ -18,13 +18,24 @@ namespace DungeonCrawler
     internal class Game
     {
         string GameName { get; set; }
+        bool Music { get; set; }
 
-        public Game(string gameName)
+        public Game(string gameName, bool music)
         {
             GameName = gameName;
-
+            Music = music;
         }
-        
+        public bool MusicOnOff()
+        {
+            Console.WriteLine("Would you like music during some dramatic scenes or battles?");
+            Feature f = new Feature();
+            Dialogue music = new Dialogue(f);
+            if(music.getYesNoResponse())
+            {
+                return true;
+            }
+            return false;
+        }
         private void Prologue(Room room)
         {
             Console.Write("Would you like to skip the prologue? ");
@@ -495,8 +506,9 @@ namespace DungeonCrawler
             }
             
         }
-        public void Start()
+        public void Start(bool music)
         {
+            this.Music = music;
             //Instantiating a six sided dice to be used for dealing damage with a particular weapon. 
             // Damage works in combat by rolling dice. Each weapon has a different set of dice. Hence,
             // one might deal a different range, with different prob distribution, of damage amounts
@@ -1551,7 +1563,7 @@ namespace DungeonCrawler
                                     break;
                             }
                         }
-                        if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, oldRoom, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                        if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, oldRoom, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                         {
                             minotaurKafuffle.WonFight(newRoom1);
                             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
@@ -1621,7 +1633,7 @@ namespace DungeonCrawler
                                     break;
                             }
                         }
-                        if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, minotaur.Location, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, true, player1.Masked))
+                        if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, minotaur.Location, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, true, player1.Masked))
                         {
                             minotaurKafuffle.WonFight(newRoom1);
                             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
@@ -1974,6 +1986,7 @@ namespace DungeonCrawler
             Console.WriteLine($" You resolve to find a way out of your predicament and this {room.Name}, and you intend to do it fast...");
             Console.ReadKey(true);
             Console.WriteLine("Will you...");
+            
             Console.WriteLine("[1] Check what items are still on your person?");
             Console.WriteLine("[2] Investigate the room?");
             Console.WriteLine("[3] Try calling for help?");
@@ -2037,7 +2050,7 @@ namespace DungeonCrawler
                         ///when player discards rusty chains they may appear more than once. 
                         ///fungshui() is present to preempt that and prevent duplicates.
                         
-                        room.Investigate(usesDictionaryItemChar, aq, minotaurdoesnothing, justGrazing, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                        room.Investigate(music, usesDictionaryItemChar, aq, minotaurdoesnothing, justGrazing, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                         b++;
                     }
                     else if (reply1 == 3)
@@ -2066,7 +2079,7 @@ namespace DungeonCrawler
                         e++;
                         List<bool> success = new List<bool>();
                         
-                        success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                        success = player1.UseItemOutsideCombat(music, room, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                         if (player1.Inventory.Contains(jailorKeys))
                         {
                             escapedThroughDoor = true;
@@ -2096,7 +2109,7 @@ namespace DungeonCrawler
                         {
                             if (player1.WeaponInventory[0].Equipped)
                             {
-                                if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false))
+                                if (trialBattle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false))
                                 {
                                     trialBattle.WonFight(room);
                                     escapedThroughDoor = true;
@@ -2138,7 +2151,7 @@ namespace DungeonCrawler
                             {
                                 
                                 Console.WriteLine("You prise open the music box. Immediately its brass cogs begin to whir as a jaunty melody fills the room. You find the tune to be lively and cheery, but it's not long before a furious, rage-filled roar erupts from beyond the door. In a flurry of instants, boots have pounded closer, someone fumbles at the lock of your door, and finally a frenzied goblin bursts inside, scimitar drawn. For a moment you think he'll smash the music box, but instead he lunges towards you...");
-                                if (trialBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems))
+                                if (trialBattle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems))
                                 {
                                     if (player1.Inventory.Contains(binkySkull))
                                     {
@@ -2693,7 +2706,7 @@ namespace DungeonCrawler
                                 }
                                 if (minotaur.Location == corridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, corridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, corridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(corridor);
                                     }
@@ -2721,7 +2734,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, corridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, corridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(corridor);
                                 }
@@ -2770,7 +2783,7 @@ namespace DungeonCrawler
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 == corridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -2782,7 +2795,7 @@ namespace DungeonCrawler
                                 }
                                 else if (newRoom1 == minotaur.Location)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -2827,7 +2840,7 @@ namespace DungeonCrawler
                                 corridor.ItemList.Remove(rustyChains);
                                 corridor.ItemList.Remove(bowlFragments);
                                 corridor.ItemList.Remove(looseNail);
-                                Room newRoom = corridor.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b1, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = corridor.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b1, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != corridor.Name)
                                 {
 
@@ -2853,7 +2866,7 @@ namespace DungeonCrawler
                                 corridor.ItemList.Remove(rustyChains);
                                 corridor.ItemList.Remove(bowlFragments);
                                 corridor.ItemList.Remove(looseNail);
-                                success = player1.UseItemOutsideCombat(corridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, corridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                                 fireProgress = FireProgress(fireProgress, player1, corridor);
                                 if (fireProgress > 999)
                                 {
@@ -2927,7 +2940,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == room)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(room);
                                     }
@@ -2954,7 +2967,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(room);
                                 }
@@ -3012,7 +3025,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = room.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = room.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != room.Name)
                                 {
 
@@ -3028,7 +3041,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(room, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, room, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                     catch
@@ -3121,7 +3134,7 @@ namespace DungeonCrawler
                             List<Item> purse = new List<Item> { venomousSting, dustBunny };
                             Monster ArchFeyQueen = new Monster("Lady of Vipers", "Transfigured into one of her most frightful avatars, mounted on frayed bat wings that scuttle blindly towards you like a tarantula, this powerful creature will find all kinds of fun ways to make your demise slow and enjoyable... if she can catch you.", purse, 666, -10, deadlyClaws);
                             Combat LadyOfVipersRace = new Combat(ArchFeyQueen, player1);
-                            if(LadyOfVipersRace.Race(speedPotion, throwables, oubliette, usesDictionaryItemItem, usesDictionaryItemFeature, player1, usesDictionaryItemChar, holeInCeiling, specialItems))
+                            if(LadyOfVipersRace.Race(music, speedPotion, throwables, oubliette, usesDictionaryItemItem, usesDictionaryItemFeature, player1, usesDictionaryItemChar, holeInCeiling, specialItems))
                             {
                                 newRoom1 = highestParapet;
                                 leftWhichRooms = highestParapet.WhichRoom(leftWhichRooms);
@@ -3171,7 +3184,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = oubliette.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = oubliette.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != oubliette.Name)
                                 {
 
@@ -3187,7 +3200,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, oubliette, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                     catch
@@ -3312,7 +3325,7 @@ namespace DungeonCrawler
                                 }
                                 if (minotaur.Location == antechamber)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, antechamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, antechamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(antechamber);
                                     }
@@ -3341,7 +3354,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, antechamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, antechamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(antechamber);
                                 }
@@ -3392,7 +3405,7 @@ namespace DungeonCrawler
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 == antechamber)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -3404,7 +3417,7 @@ namespace DungeonCrawler
                                 }
                                 else if (newRoom1 == minotaur.Location)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -3449,7 +3462,7 @@ namespace DungeonCrawler
                                 antechamber.ItemList.Remove(breastplate);
                                 antechamber.ItemList.Remove(helmet);
                                 antechamber.ItemList.Remove(bracers);
-                                Room newRoom = antechamber.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = antechamber.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 antechamber.FirstVisit = false;
                                 if (newRoom.Name != antechamber.Name)
                                 {
@@ -3473,7 +3486,7 @@ namespace DungeonCrawler
                                 antechamber.ItemList.Remove(breastplate);
                                 antechamber.ItemList.Remove(helmet);
                                 antechamber.ItemList.Remove(bracers);
-                                success = player1.UseItemOutsideCombat(antechamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, antechamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                                 fireProgress = FireProgress(fireProgress, player1, antechamber);
                                 if (fireProgress > 999)
                                 {
@@ -3541,7 +3554,7 @@ namespace DungeonCrawler
                         {
                             if (minotaur.Location == cellOpposite)
                             {
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, cellOpposite, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, cellOpposite, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(cellOpposite);
                                 }
@@ -3568,7 +3581,7 @@ namespace DungeonCrawler
                             Console.ReadKey(true);
                             Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                             Console.ReadKey(true);
-                            if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, cellOpposite, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                            if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, cellOpposite, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                             {
                                 minotaurKafuffle.WonFight(cellOpposite);
                             }
@@ -3626,7 +3639,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = cellOpposite.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = cellOpposite.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != cellOpposite.Name)
                                 {
 
@@ -3642,7 +3655,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(cellOpposite, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, cellOpposite, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                     catch
@@ -3701,7 +3714,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == armoury)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(armoury);
                                     }
@@ -3728,7 +3741,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(armoury);
                                 }
@@ -3836,7 +3849,7 @@ namespace DungeonCrawler
                             if (answer_and_time[1]> 12000)
                             {
                                 Console.WriteLine("Tongue-tied, you're unable to give an adequate response before your enemies draw their weapons...");
-                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                 {
                                     dualDuel.WonFight(armoury);
                                     dualDuel.Monster = dualDuel.Monster2;
@@ -3855,7 +3868,7 @@ namespace DungeonCrawler
                                 {
                                     case 0:
                                         Console.WriteLine("The two mercenaries take notice of your nervousness. Chairs scrape across the floor as the goblin and gnoll rise and draw their weapons.\nIt looks like you're going to have to fight...");
-                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                         {
                                             dualDuel.WonFight(armoury);
                                             dualDuel.Monster = dualDuel.Monster2;
@@ -3868,7 +3881,7 @@ namespace DungeonCrawler
                                         }
                                     case 1:
                                         Console.WriteLine("They are bold words, but unconvincingly delivered. The two mercenaries take notice of your nervousness. Chairs scrape across the floor as the goblin and gnoll rise and draw their weapons.\nIt looks like you're going to have to fight...");
-                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                         {
                                             dualDuel.WonFight(armoury);
                                             dualDuel.Monster = dualDuel.Monster2;
@@ -3881,7 +3894,7 @@ namespace DungeonCrawler
                                         }
                                     case 2:
                                         Console.WriteLine("It appears the answer is no, they are not, because soon after you asked chairs scrape across the floor and the goblin and gnoll rise and draw their weapons.\nDid you mistake them for merchants?...");
-                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                         {
                                             dualDuel.WonFight(armoury);
                                             dualDuel.Monster = dualDuel.Monster2;
@@ -3899,7 +3912,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nUpon mention of Merigold the two mercenaries' features darken. They rise from their seats, drawing their weapons. It seems they know all too well who and where Merigold is, and they also know that no friend of theirs would be traipsing through this place looking for him...\nYou shrug. Oh well, it was worth a shot. You prepare to fight...");
                                                 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -3986,7 +3999,7 @@ namespace DungeonCrawler
                                                 Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4024,7 +4037,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
                                                         
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4039,7 +4052,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4054,7 +4067,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4069,7 +4082,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4084,7 +4097,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4099,7 +4112,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4169,7 +4182,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4193,7 +4206,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nHow *dare* you insult the grand and noble game of coins! The gnoll and goblin both rise from their seats to fight you...");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4218,7 +4231,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nThey peer their heads around you and out towards the antechamber. They don't see much evidence of fire...\nYou assure them it's really, REALLY big.\n\t'Maybe so, stranger,' the goblin answers darkly. He draws his weapon and the gnoll follows suit. 'But I reckon we've got ourselves enough time to kill us some spies, or wotevers the hell you are.'\nBother! It looks like you're going to have to fight...'");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4234,7 +4247,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nUpon mention of Merigold the two mercenaries' features darken. They rise from their seats, drawing their weapons. It seems they know all too well who and where Merigold is, and they also know that no friend of theirs would be traipsing through this place looking for him...\nYou shrug. Oh well, it was worth a shot. You prepare to fight...");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4248,7 +4261,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[3] == "You leer as you draw your weapon and tell them that you're going to enjoy this...")
                                             {
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4262,7 +4275,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[3] == "You seize the initiative and attack while you have the advantage!")
                                             {
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4356,7 +4369,7 @@ namespace DungeonCrawler
                                                 Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4394,7 +4407,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4409,7 +4422,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4424,7 +4437,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4439,7 +4452,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4454,7 +4467,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4469,7 +4482,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4539,7 +4552,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4563,7 +4576,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nHow *dare* you insult the grand and noble game of coins! The gnoll and goblin both rise from their seats to fight you...");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4588,7 +4601,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nThey peer their heads around you and out towards the antechamber. They don't see much evidence of fire...\nYou assure them it's really, REALLY big.\n\t'Maybe so, stranger,' the goblin answers darkly. He draws his weapon and the gnoll follows suit. 'But I reckon we've got ourselves enough time to kill us some spies, or wotevers the hell you are.'\nBother! It looks like you're going to have to fight...'");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4604,7 +4617,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nThe two mercenaries each break out into a leer as they rise from their seats, drawing their weapons...\nYou shrug. Oh well. At least you tried to warn them. You prepare to fight...");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4618,7 +4631,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[4] == "You leer as you draw your weapon and tell them that you're going to enjoy this...")
                                             {
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4632,7 +4645,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[4] == "You seize the initiative and attack while you have the advantage!")
                                             {
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4657,7 +4670,7 @@ namespace DungeonCrawler
                                                 Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4695,7 +4708,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4710,7 +4723,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4725,7 +4738,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4740,7 +4753,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4755,7 +4768,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4770,7 +4783,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4840,7 +4853,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -4864,7 +4877,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nHow *dare* you insult the grand and noble game of coins! The gnoll and goblin both rise from their seats to fight you...");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4889,7 +4902,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nThey peer their heads around you and out towards the antechamber. They don't see much evidence of fire...\nYou assure them it's really, REALLY big.\n\t'Maybe so, stranger,' the goblin answers darkly. He draws his weapon and the gnoll follows suit. 'But I reckon we've got ourselves enough time to kill us some spies, or wotevers the hell you are.'\nBother! It looks like you're going to have to fight...'");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4905,7 +4918,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nThe two mercenaries each break out into a leer as they rise from their seats, drawing their weapons...\nYou shrug. Oh well. At least you tried to warn them. You prepare to fight...");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4919,7 +4932,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[5] == "You leer as you draw your weapon and tell them that you're going to enjoy this...")
                                             {
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4933,7 +4946,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[5] == "You seize the initiative and attack while you have the advantage!")
                                             {
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4957,7 +4970,7 @@ namespace DungeonCrawler
                                                 Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -4995,7 +5008,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -5010,7 +5023,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -5025,7 +5038,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -5040,7 +5053,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -5055,7 +5068,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -5070,7 +5083,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -5140,7 +5153,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -5164,7 +5177,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nHow *dare* you insult the grand and noble game of coins! The gnoll and goblin both rise from their seats to fight you...");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5189,7 +5202,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nThey peer their heads around you and out towards the antechamber. They don't see much evidence of fire...\nYou assure them it's really, REALLY big.\n\t'Maybe so, stranger,' the goblin answers darkly. He draws his weapon and the gnoll follows suit. 'But I reckon we've got ourselves enough time to kill us some spies, or wotevers the hell you are.'\nBother! It looks like you're going to have to fight...'");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5205,7 +5218,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nThe two mercenaries each break out into a leer as they rise from their seats, drawing their weapons...\nYou shrug. Oh well. At least you tried to warn them. You prepare to fight...");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5219,7 +5232,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[6] == "You leer as you draw your weapon and tell them that you're going to enjoy this...")
                                             {
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5233,7 +5246,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[6] == "You seize the initiative and attack while you have the advantage!")
                                             {
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5258,7 +5271,7 @@ namespace DungeonCrawler
                                                 Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
                                                 Console.ReadKey(true);
                                                 Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5295,7 +5308,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -5310,7 +5323,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -5325,7 +5338,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -5340,7 +5353,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -5355,7 +5368,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -5370,7 +5383,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -5440,7 +5453,7 @@ namespace DungeonCrawler
                                                         Console.WriteLine("The suspicion that the goblin greeted you with earlier curdles into outright hostility. Meanwhile the gnoll eyes you like your its next meal.");
 
                                                         Console.WriteLine("They draw their weapons. It looks like you're going to have to fight...");
-                                                        if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                         {
                                                             dualDuel.WonFight(armoury);
                                                             dualDuel.Monster = dualDuel.Monster2;
@@ -5464,7 +5477,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nHow *dare* you insult the grand and noble game of coins! The gnoll and goblin both rise from their seats to fight you...");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5489,7 +5502,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nThey peer their heads around you and out towards the antechamber. They don't see much evidence of fire...\nYou assure them it's really, REALLY big.\n\t'Maybe so, stranger,' the goblin answers darkly. He draws his weapon and the gnoll follows suit. 'But I reckon we've got ourselves enough time to kill us some spies, or wotevers the hell you are.'\nBother! It looks like you're going to have to fight...'");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5505,7 +5518,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nThe two mercenaries each break out into a leer as they rise from their seats, drawing their weapons...\nYou shrug. Oh well. At least you tried to warn them. You prepare to fight...");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5519,7 +5532,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[7] == "You leer as you draw your weapon and tell them that you're going to enjoy this...")
                                             {
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5533,7 +5546,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[7] == "You seize the initiative and attack while you have the advantage!")
                                             {
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5564,7 +5577,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nThey peer their heads around you and out towards the antechamber. They don't see much evidence of fire...\nYou assure them it's really, REALLY big.\n\t'Maybe so, stranger,' the goblin answers darkly. He draws his weapon and the gnoll follows suit. 'But I reckon we've got ourselves enough time to kill us some spies, or wotevers the hell you are.'\nBother! It looks like you're going to have to fight...'");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5580,7 +5593,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nThe two mercenaries each break out into a leer as they rise from their seats, drawing their weapons...\nYou shrug. Oh well. At least you tried to warn them. You prepare to fight...");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5594,7 +5607,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[8] == "You leer as you draw your weapon and tell them that you're going to enjoy this...")
                                             {
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5608,7 +5621,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[8] == "You seize the initiative and attack while you have the advantage!")
                                             {
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5630,7 +5643,7 @@ namespace DungeonCrawler
                                             {
                                                 Console.WriteLine("\nUpon mention of Merigold the two mercenaries' features darken. They rise from their seats, drawing their weapons. It seems they know all too well who and where Merigold is, and they also know that no friend of theirs would be traipsing through this place looking for him...\nYou shrug. Oh well, it was worth a shot. You prepare to fight...");
 
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5644,7 +5657,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[9] == "You leer as you draw your weapon and tell them that you're going to enjoy this...")
                                             {
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5658,7 +5671,7 @@ namespace DungeonCrawler
                                             }
                                             else if (palaver[9] == "You seize the initiative and attack while you have the advantage!")
                                             {
-                                                if (dualDuel.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
+                                                if (dualDuel.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, true))
                                                 {
                                                     dualDuel.WonFight(armoury);
                                                     dualDuel.Monster = dualDuel.Monster2;
@@ -5713,7 +5726,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = armoury.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = armoury.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != armoury.Name)
                                 {
 
@@ -5729,7 +5742,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(armoury, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, armoury, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                                 if (player1.Stamina < 1)
                                 {
                                     return;
@@ -5803,7 +5816,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == messHall)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, messHall, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, messHall, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(messHall);
                                     }
@@ -5830,7 +5843,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, messHall, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, messHall, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(messHall);
                                 }
@@ -5871,7 +5884,7 @@ namespace DungeonCrawler
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 == messHall)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -5883,7 +5896,7 @@ namespace DungeonCrawler
                                 }
                                 else if (newRoom1 == minotaur.Location)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -5924,7 +5937,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = messHall.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = messHall.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (noteForJanitor.SpecifyAttribute == "read" && bucket.ItemList.Count == 0)
                                 {
                                     bucket.ItemList.Add(magManKey);
@@ -5953,7 +5966,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(messHall, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, messHall, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                                 minotaurAlertedBy = D6.Roll(D6) * 1000;
                                 sw = new Stopwatch();
                                 justStalked = false;
@@ -6047,7 +6060,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == westernmostCorridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, westernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, westernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(westernmostCorridor);
                                     }
@@ -6075,7 +6088,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, westernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1,false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, westernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1,false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(westernmostCorridor);
                                 }
@@ -6116,7 +6129,7 @@ namespace DungeonCrawler
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 == westernmostCorridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -6128,7 +6141,7 @@ namespace DungeonCrawler
                                 }
                                 else if(newRoom1 == minotaur.Location)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -6176,7 +6189,7 @@ namespace DungeonCrawler
                                 {
                                     northwestCorner.Description = "The corner turns sharply right...";
                                 }
-                                Room newRoom = westernmostCorridor.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, null, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = westernmostCorridor.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, null, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != westernmostCorridor.Name)
                                 {
                                     
@@ -6198,7 +6211,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(westernmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, westernmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                                 minotaurAlertedBy = D6.Roll(D6) * 1000;
                                 sw = new Stopwatch();
                                 justStalked = false;
@@ -6290,7 +6303,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == northernmostCorridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, northernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, northernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(northernmostCorridor);
                                     }
@@ -6317,7 +6330,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, northernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, northernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(northernmostCorridor);
                                 }
@@ -6357,7 +6370,7 @@ namespace DungeonCrawler
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 == northernmostCorridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -6369,7 +6382,7 @@ namespace DungeonCrawler
                                 }
                                 else if (newRoom1 == minotaur.Location)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -6410,7 +6423,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = northernmostCorridor.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = northernmostCorridor.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != northernmostCorridor.Name)
                                 {
 
@@ -6432,7 +6445,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(northernmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, northernmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                                 minotaurAlertedBy = D6.Roll(D6) * 1000;
                                 sw = new Stopwatch();
                                 justStalked = false;
@@ -6516,7 +6529,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == easternmostCorridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, easternmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, easternmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(easternmostCorridor);
                                     }
@@ -6543,7 +6556,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, easternmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, easternmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(easternmostCorridor);
                                 }
@@ -6591,7 +6604,7 @@ namespace DungeonCrawler
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 == easternmostCorridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -6603,7 +6616,7 @@ namespace DungeonCrawler
                                 }
                                 else if (newRoom1 == minotaur.Location)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -6651,7 +6664,7 @@ namespace DungeonCrawler
                                 {
                                     northeastCorner.Description = "The corner turns sharply left...";
                                 }
-                                Room newRoom = easternmostCorridor.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, null, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = easternmostCorridor.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, null, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != easternmostCorridor.Name)
                                 {
 
@@ -6673,7 +6686,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 test3.RunForCombat();
-                                success = player1.UseItemOutsideCombat(easternmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, easternmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                                 minotaurAlertedBy = D6.Roll(D6) * 1000;
                                 sw = new Stopwatch();
                                 justStalked = false;
@@ -6759,7 +6772,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == southernmostCorridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, southernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, southernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(southernmostCorridor);
                                     }
@@ -6786,7 +6799,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, southernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, southernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(southernmostCorridor);
                                 }
@@ -6836,7 +6849,7 @@ namespace DungeonCrawler
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 == southernmostCorridor)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -6848,7 +6861,7 @@ namespace DungeonCrawler
                                 }
                                 else if (newRoom1 == minotaur.Location)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(newRoom1);
                                     }
@@ -6889,7 +6902,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = southernmostCorridor.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = southernmostCorridor.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != southernmostCorridor.Name)
                                 {
 
@@ -6910,7 +6923,7 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                success = player1.UseItemOutsideCombat(southernmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, southernmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                                 minotaurAlertedBy = D6.Roll(D6) * 1000;
                                 sw = new Stopwatch();
                                 justStalked = false;
@@ -6967,7 +6980,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == emptyCell)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, emptyCell, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, emptyCell, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(emptyCell);
                                     }
@@ -6994,7 +7007,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, emptyCell, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, emptyCell, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(emptyCell);
                                 }
@@ -7052,7 +7065,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = emptyCell.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = emptyCell.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != emptyCell.Name)
                                 {
 
@@ -7068,7 +7081,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(emptyCell, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, emptyCell, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                     catch
@@ -7148,7 +7161,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = magicalManufactory.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower, choiceVersusDestination, worktop);
+                                Room newRoom = magicalManufactory.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower, choiceVersusDestination, worktop);
                                 if (newRoom.Name != magicalManufactory.Name)
                                 {
 
@@ -7158,7 +7171,7 @@ namespace DungeonCrawler
                                 }
                                 else if (worktop.Description.Contains("It's been thoroughly trashed after your fight with Merigold..."))
                                 {
-                                    if (mageBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature,
+                                    if (mageBattle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature,
                                         magicalManufactory, player1, usesDictionaryItemChar, holeInCeiling, specialItems))
                                     {
                                         mageBattle.WonFight(magicalManufactory);
@@ -7177,7 +7190,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(magicalManufactory, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, magicalManufactory, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                     catch
@@ -7256,7 +7269,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = broomCloset.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = broomCloset.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != broomCloset.Name)
                                 {
 
@@ -7272,7 +7285,7 @@ namespace DungeonCrawler
                             {
                                 List<bool> success = new List<bool>();
                                 
-                                success = player1.UseItemOutsideCombat(broomCloset, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, broomCloset, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                     catch
@@ -7318,14 +7331,14 @@ namespace DungeonCrawler
                     if (!oubliette.FirstVisit)
                     {
                         Console.ReadKey(true);
-                        highestParapet.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                        highestParapet.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
 
                         FinalAct denouement = new FinalAct(player1, CurseBreaker);
 
                         Combat climax = new Combat(CurseBreaker, player1);
                         
                         
-                        if (climax.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, highestParapet, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 4, false, true))
+                        if (climax.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, highestParapet, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 4, false, true))
                         {
                             Console.WriteLine("Yippee!");
                             victorious = true;
@@ -7373,7 +7386,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = highestParapet.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = highestParapet.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != highestParapet.Name)
                                 {
 
@@ -7388,7 +7401,7 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                success = player1.UseItemOutsideCombat(highestParapet, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, highestParapet, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                     catch
@@ -7510,7 +7523,7 @@ namespace DungeonCrawler
                             Console.ReadKey(true);
                             Console.WriteLine("You mutter something disparaging about wizards and their kooky calculations before drawing your weapon in a futile show of defiance against fate.\n\nMeanwhile, the gold dragon stretches sedately, takes a deep inhale and prepares to turn you into cinders...");
                             
-                            if (goldDragonBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, true, false))
+                            if (goldDragonBattle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, true, false))
                             {
                                 Console.WriteLine("Just kidding!\n\nThe dragon incinerates you alive...");
                                 Console.ReadKey(true);
@@ -7610,7 +7623,7 @@ namespace DungeonCrawler
                                     if(answer == "done")
                                     {
                                         Console.WriteLine("'You give up? So be it...' the dragon intones with relish. \n\nYou're barely able to draw your weapon before the dragon lunges at you.");
-                                        if (goldDragonBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, false))
+                                        if (goldDragonBattle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, false))
                                         {
                                             Console.WriteLine("Just kidding!\n\nThe dragon incinerates you alive...");
                                             Console.ReadKey(true);
@@ -7656,7 +7669,7 @@ namespace DungeonCrawler
                                             Console.WriteLine("The dragon's eyes narrow dangerously as it surveys you. 'You misunderstand, ape-thing,' it replies with in soft and deadly tones, 'literally means not a simile or metaphor. For example, saying you are literally paper would be wrong, but saying you are metaphorically paper would be right, seeing as you share the property of burning to ashes whenever I feel like it...'");
                                             Console.ReadKey(true);
                                             Console.WriteLine("You're about to respond when the dragon continues, 'Or perhaps you need a more *palpable* demonstration...'");
-                                            if (goldDragonBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, false))
+                                            if (goldDragonBattle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, false))
                                             {
                                                 Console.WriteLine("Just kidding!\n\nThe dragon incinerates you alive...");
                                                 Console.ReadKey(true);
@@ -7721,7 +7734,7 @@ namespace DungeonCrawler
                                     else
                                     {
                                         Console.WriteLine("'Wrong answer...' the dragon intones with relish. \n\nYou're barely able to draw your weapon before the dragon lunges at you.");
-                                        if (goldDragonBattle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, false))
+                                        if (goldDragonBattle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, dragonLair, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, false))
                                         {
                                             Console.WriteLine("Just kidding!\n\nThe dragon incinerates you alive...");
                                             Console.ReadKey(true);
@@ -7768,7 +7781,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = dragonLair.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                                Room newRoom = dragonLair.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                                 if (newRoom.Name != dragonLair.Name)
                                 {
 
@@ -7783,7 +7796,7 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                success = player1.UseItemOutsideCombat(dragonLair, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, dragonLair, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                     catch
@@ -7836,7 +7849,7 @@ namespace DungeonCrawler
                             {
                                 if (minotaur.Location == secretChamber)
                                 {
-                                    if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, secretChamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                    if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, secretChamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                     {
                                         minotaurKafuffle.WonFight(secretChamber);
                                     }
@@ -7863,7 +7876,7 @@ namespace DungeonCrawler
                                 Console.ReadKey(true);
                                 Console.WriteLine("With a icy jolt of dread you brace yourself for battle...");
                                 Console.ReadKey(true);
-                                if (minotaurKafuffle.Fight(usesDictionaryItemItem, usesDictionaryItemFeature, secretChamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                                if (minotaurKafuffle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, secretChamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(secretChamber);
                                 }
@@ -7921,7 +7934,7 @@ namespace DungeonCrawler
                                 ///when player discards rusty chains they may appear more than once. 
                                 ///fungshui() is present to preempt that and prevent duplicates.
 
-                                Room newRoom = secretChamber.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower, null, null, mosaicPortal);
+                                Room newRoom = secretChamber.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower, null, null, mosaicPortal);
                                 if (newRoom.Name != secretChamber.Name)
                                 {
 
@@ -7943,7 +7956,7 @@ namespace DungeonCrawler
                             else
                             {
                                 List<bool> success = new List<bool>();
-                                success = player1.UseItemOutsideCombat(secretChamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                success = player1.UseItemOutsideCombat(music, secretChamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                             }
                         }
                     catch
@@ -8539,7 +8552,7 @@ namespace DungeonCrawler
                             ///when player discards rusty chains they may appear more than once. 
                             ///fungshui() is present to preempt that and prevent duplicates.
 
-                            Room newRoom = dungeonChamber.Investigate(usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
+                            Room newRoom = dungeonChamber.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
                             if (newRoom.Name != dungeonChamber.Name)
                             {
 
@@ -8555,7 +8568,7 @@ namespace DungeonCrawler
                         {
                             List<bool> success = new List<bool>();
                             test3.RunForCombat();
-                            success = player1.UseItemOutsideCombat(dungeonChamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                            success = player1.UseItemOutsideCombat(music, dungeonChamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                         }
                     }
                     catch

@@ -109,7 +109,7 @@ namespace DungeonCrawler
             }
             return result;
         }
-        public bool Race(Item speedPotion, List<Item> throwables, Room oubliette, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, List<Item> specialItems, bool fire = false, bool _initiative = false, bool masked = false)
+        public bool Race(bool music, Item speedPotion, List<Item> throwables, Room oubliette, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, List<Item> specialItems, bool fire = false, bool _initiative = false, bool masked = false)
         {
             int options = 1;
             string message = "How will you proceed?";
@@ -491,7 +491,7 @@ namespace DungeonCrawler
                 Console.WriteLine("'So you wish to fight me, little fly?' her voice" +
                     " is the vespine buzzing of a thousand wasps, as her once bewitching smile" +
                     " becomes a jagged maw of razors. 'How I shall enjoy plucking your limbs one by one!'");
-                if (Fight(usesDictionaryItemItem, usesDictionaryItemFeature, oubliette, Player, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false))
+                if (Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, oubliette, Player, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false))
                 {
                     Console.WriteLine("Wasting no more time you stagger your way to the portal and finally take the plunge...");
                     return true;
@@ -620,9 +620,11 @@ namespace DungeonCrawler
             {
                 using (var outputDevice = new WaveOutEvent())
                 {
-                                   
-                    outputDevice.Init(audiofile);
-                    outputDevice.Play();
+                    if (music)
+                    {
+                        outputDevice.Init(audiofile);
+                        outputDevice.Play();
+                    }
                     Console.WriteLine("\x1b[3J");
                     Console.Clear();
                     Console.WriteLine("You are an instant from the portal's reach when within a breathless instant the Lady lunges forwards!");
@@ -679,8 +681,11 @@ namespace DungeonCrawler
             {
                 using (var outputDevice2 = new WaveOutEvent())
                 {
-                    outputDevice2.Init(audioFile2);
-                    outputDevice2.Play();
+                    if (music)
+                    {
+                        outputDevice2.Init(audioFile2);
+                        outputDevice2.Play();
+                    }
                     Console.WriteLine("The wind and sleet snatch at the young man's dark attire, whipping them " +
                         "into a frenzy. His cloak is torn from him and whisked away by the fierce gale.");
                     Console.WriteLine("\t'Yes...' he calls out, a zealotry lighting eyes darker than black. 'YES!'");
@@ -720,8 +725,11 @@ namespace DungeonCrawler
                 {
                     using (var outputFile3 = new WaveOutEvent())
                     {
-                        outputFile3.Init(audioFile3);
-                        outputFile3.Play();
+                        if (music)
+                        {
+                            outputFile3.Init(audioFile3);
+                            outputFile3.Play();
+                        }
                         Stopwatch musicTime = new Stopwatch();
                         musicTime.Start();
                         Console.WriteLine("It strikes feet from where he stands, forcing him to stagger back from the roaring tumult. Lightning sparks and shatters flagstones, the sheer torque of the wind throws up masonry and grinds it to dust. " +
@@ -732,14 +740,17 @@ namespace DungeonCrawler
                         Console.WriteLine("Delivered to the highest parapet of the wizard tower, you at last face the sorcerer who conspired to weave you a fate worse than death...");
                         long time = 0;
                         Console.ReadKey(true);
-                        Console.WriteLine("\n\t\t\t[Please wait until music stops...]");
-                        while(time < 41000)
+                        if (music)
                         {
-                            
-                            musicTime.Stop();
-                            time = musicTime.ElapsedMilliseconds;
-                            musicTime.Start();
-                            Thread.Sleep(500);
+                            Console.WriteLine("\n\t\t\t[Please wait. Music lasts for 30 seconds...]");
+                            while (time < 41000)
+                            {
+
+                                musicTime.Stop();
+                                time = musicTime.ElapsedMilliseconds;
+                                musicTime.Start();
+                                Thread.Sleep(500);
+                            }
                         }
                         return true;
                     }
@@ -844,7 +855,7 @@ namespace DungeonCrawler
         /// <param name="usesDictionaryItemChar"></param>
         /// <param name="holeInCeiling"></param>
         /// <returns>boolean: true or false</returns>
-        public bool Fight(Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, List<Item> specialItems, int totemCount = 1, bool fire = false, bool _initiative = false, bool masked = false)
+        public bool Fight(bool music, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, List<Item> specialItems, int totemCount = 1, bool fire = false, bool _initiative = false, bool masked = false)
         {
             player = Player;
             Dice D2 = new Dice(2);
@@ -1038,7 +1049,7 @@ namespace DungeonCrawler
             {
                 using (var outputFile = new WaveOutEvent())
                 {
-                    if (Monster.Name == "minotaur")
+                    if (Monster.Name == "minotaur" && music)
                     {
                         outputFile.Init(audioFile);
                         outputFile.Play();
@@ -1597,7 +1608,7 @@ namespace DungeonCrawler
                                                             {
                                                                 if (w.Equipped)
                                                                 {
-                                                                    success = w.UseItem(chosenItem, w, usesDictionaryItemItem, specialItems)[0];
+                                                                    success = w.UseItem(music, chosenItem, w, usesDictionaryItemItem, specialItems)[0];
                                                                     Console.WriteLine($"You coat your {playerWeapon} in the {chosenItem}");
                                                                     player.Inventory.Remove(chosenItem);
                                                                     break;
@@ -1644,7 +1655,7 @@ namespace DungeonCrawler
                                                     {
                                                         try
                                                         {
-                                                            success = chosenItem.UseItem1(usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count], usesDictionaryItemFeature, player.Inventory, player.WeaponInventory, room, player, Monster, this, false);
+                                                            success = chosenItem.UseItem1(music, usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count], usesDictionaryItemFeature, player.Inventory, player.WeaponInventory, room, player, Monster, this, false);
                                                             if ((chosenItem.Name.ToLower() == "sword of sealed souls" 
                                                                 || chosenItem.Name == "Marvellous Merigold's Magical Staff of Whacking") 
                                                                 && room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count].Name.Contains("totem") 
@@ -1666,7 +1677,7 @@ namespace DungeonCrawler
                                                     {
                                                         try
                                                         {
-                                                            success = chosenItem.UseItem(chosenItem, Monster.Items[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling, null, null, null, null, Monster)[0];
+                                                            success = chosenItem.UseItem(music, chosenItem, Monster.Items[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling, null, null, null, null, Monster)[0];
                                                             if (room.FeatureList.Contains(holeInCeiling))
                                                             {
                                                                 Console.WriteLine(jinxedMisses[9]);
@@ -1681,7 +1692,7 @@ namespace DungeonCrawler
                                                     {
                                                         try
                                                         {
-                                                            success = chosenItem.UseItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling)[0];
+                                                            success = chosenItem.UseItem(music, chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling)[0];
                                                             if (room.FeatureList.Contains(holeInCeiling))
                                                             {
                                                                 Console.WriteLine(jinxedMisses[9]);
@@ -1798,7 +1809,7 @@ namespace DungeonCrawler
                 return false;
             }
         }
-        public bool Fight(Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, bool dualBattle, Feature holeInCeiling, List<Item> specialItems, bool fire = false, bool _initiative = false, bool masked = false)
+        public bool Fight(bool music, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, bool dualBattle, Feature holeInCeiling, List<Item> specialItems, bool fire = false, bool _initiative = false, bool masked = false)
         {
             player = Player;
             Dice D2 = new Dice(2);
@@ -3024,7 +3035,7 @@ namespace DungeonCrawler
                                                     {
                                                         if (w.Equipped)
                                                         {
-                                                            success = w.UseItem(chosenItem, w, usesDictionaryItemItem, specialItems)[0];
+                                                            success = w.UseItem(music, chosenItem, w, usesDictionaryItemItem, specialItems)[0];
                                                             Console.WriteLine($"You coat your {playerWeapon} in the {chosenItem}");
                                                             player.Inventory.Remove(chosenItem);
                                                             break;
@@ -3071,7 +3082,7 @@ namespace DungeonCrawler
                                             {
                                                 try
                                                 {
-                                                    success = chosenItem.UseItem1(usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count], usesDictionaryItemFeature, player.Inventory, player.WeaponInventory, room, player, Monster, this, false);
+                                                    success = chosenItem.UseItem1(music, usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count], usesDictionaryItemFeature, player.Inventory, player.WeaponInventory, room, player, Monster, this, false);
                                                     break;
                                                 }
                                                 catch { Console.WriteLine($"You try using the {chosenItem.Name} on the {room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Monster.Items.Count].Name}. You're not sure what results you were expecting to happen, but sufficed to say they haven't materialised..."); break; }
@@ -3080,7 +3091,7 @@ namespace DungeonCrawler
                                             {
                                                 try
                                                 {
-                                                    success = chosenItem.UseItem(chosenItem, Monster2.Items[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling)[0];
+                                                    success = chosenItem.UseItem(music, chosenItem, Monster2.Items[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling)[0];
                                                     if (room.FeatureList.Contains(holeInCeiling))
                                                     {
                                                         Console.WriteLine(jinxedMisses[9]);
@@ -3094,7 +3105,7 @@ namespace DungeonCrawler
                                             {
                                                 try
                                                 {
-                                                    success = chosenItem.UseItem(chosenItem, Monster.Items[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling)[0];
+                                                    success = chosenItem.UseItem(music, chosenItem, Monster.Items[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling)[0];
                                                     if (room.FeatureList.Contains(holeInCeiling))
                                                     {
                                                         Console.WriteLine(jinxedMisses[9]);
@@ -3108,7 +3119,7 @@ namespace DungeonCrawler
                                             {
                                                 try
                                                 {
-                                                    success = chosenItem.UseItem(chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling)[0];
+                                                    success = chosenItem.UseItem(music, chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, specialItems, null, null, room, player, holeInCeiling)[0];
                                                     if (room.FeatureList.Contains(holeInCeiling))
                                                     {
                                                         Console.WriteLine(jinxedMisses[9]);

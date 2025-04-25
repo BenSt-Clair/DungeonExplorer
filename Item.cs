@@ -1135,7 +1135,7 @@ namespace DungeonCrawler
         /// <param name="weaponInventory"></param>
         /// <param name="binkySkull"></param>
         /// <returns></returns>
-        public bool UseItem1(Dictionary<Item, List<Player>> usesDictionaryItemChar,Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Monster monster, Combat battle, bool fieryEscape, List<Room> choiceVersusDestination = null, Item binkySkull = null, Item musicBox = null, Item note = null, Item jailorKeys = null)
+        public bool UseItem1(bool music, Dictionary<Item, List<Player>> usesDictionaryItemChar,Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Monster monster, Combat battle, bool fieryEscape, List<Room> choiceVersusDestination = null, Item binkySkull = null, Item musicBox = null, Item note = null, Item jailorKeys = null)
         {
             Door door1 = new Door();
             List<Room> roomlist = new List<Room>(); // empty lists for filling in Search function unused parameters
@@ -1287,7 +1287,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(usesDictionaryItemChar, choiceVersusDestination, player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
+                                feature.Search(music, usesDictionaryItemChar, choiceVersusDestination, player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -1373,7 +1373,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(usesDictionaryItemChar, choiceVersusDestination, player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
+                                feature.Search(music, usesDictionaryItemChar, choiceVersusDestination, player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -1468,7 +1468,7 @@ namespace DungeonCrawler
                                     }
                                     else if (answer == "yes" || answer == "y")
                                     {
-                                        feature.Search(usesDictionaryItemChar, choiceVersusDestination, player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
+                                        feature.Search(music, usesDictionaryItemChar, choiceVersusDestination, player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
                                         break;
                                     }
                                     else if (answer == "no" || answer == "n")
@@ -2350,7 +2350,7 @@ namespace DungeonCrawler
                 return false; 
             }
         }
-        public List<bool> UseItem(Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, List<Item> specialItems, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, Dictionary<Item, List<Player>> usesDictionaryItemChar = null, Player player1 = null, Combat trialBattle = null, Monster monster = null)
+        public List<bool> UseItem(bool music, Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, List<Item> specialItems, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, Dictionary<Item, List<Player>> usesDictionaryItemChar = null, Player player1 = null, Combat trialBattle = null, Monster monster = null)
         {
             List<bool> tlist = new List<bool> { false, false };
             if (usesDictionary[item1].Contains(item2))
@@ -2394,7 +2394,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         player.Inventory.Remove(item2);
                         bool fire = true;
-                        if (trialBattle.Fight(usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, specialItems, 1, fire))
+                        if (trialBattle.Fight(music, usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, specialItems, 1, fire))
                         {
                             tlist[0] = true;
                             tlist[1] = true;
@@ -2422,7 +2422,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         player.Inventory.Remove(item2);
                         bool fire = true;
-                        if (trialBattle.Fight(usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, specialItems, 1, fire))
+                        if (trialBattle.Fight(music, usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, specialItems, 1, fire))
                         {
                             tlist[0] = true;
                             tlist[1] = true;

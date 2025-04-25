@@ -575,7 +575,7 @@ namespace DungeonCrawler
             }
             
         }
-        public int LoopParle(Dictionary<string, string> choice_answer, List<string> choices, string description, string parlance, int y1, int x1, int z1)
+        public int LoopParle(bool music, Dictionary<string, string> choice_answer, List<string> choices, string description, string parlance, int y1, int x1, int z1)
         {
             Console.WriteLine($"{description}\n\t{parlance}\nHow will you respond?");
             int x = x1;
@@ -633,8 +633,11 @@ namespace DungeonCrawler
                             {
                                 using (var outputDevice = new WaveOutEvent())
                                 {
-                                    outputDevice.Init(audioFile);
-                                    outputDevice.Play();
+                                    if (music)
+                                    {
+                                        outputDevice.Init(audioFile);
+                                        outputDevice.Play();
+                                    }
                                     Console.WriteLine(choice_answer[choices[y]]);
                                     Console.ReadKey(true);
                                 }

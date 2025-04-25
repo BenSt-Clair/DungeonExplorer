@@ -15,7 +15,7 @@ namespace DungeonCrawler
             _player = player;
             _room = room;
         }
-        public List<Dice> MerigoldPlotPoint(List<Item> specialItems, Combat battle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, Door stairwayToLower, Dictionary<Item, List<Player>> usesDictionaryItemChar)
+        public List<Dice> MerigoldPlotPoint(bool music, List<Item> specialItems, Combat battle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, Door stairwayToLower, Dictionary<Item, List<Player>> usesDictionaryItemChar)
         {
             Dice D1 = new Dice(1);
             string message = "";
@@ -556,7 +556,7 @@ namespace DungeonCrawler
                     if (!_player.FieryEscape)
                     {
                         _room.FirstVisit = false;
-                        switch (LoopParle(choice_answer, playerchoices1, description1, parlance, 8, 9, 10))
+                        switch (LoopParle(music, choice_answer, playerchoices1, description1, parlance, 8, 9, 10))
                         {
                             case 1:
                                 Console.WriteLine("Will you accept the quest that has fallen upon you?");
@@ -1148,7 +1148,7 @@ namespace DungeonCrawler
             
             
         }
-        public List<Dice> ReturnToMerigoldDialogue(List<Item> specialItems, Combat battle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, Door stairwayToLower, List<Room> choiceVersusDestination)
+        public List<Dice> ReturnToMerigoldDialogue(bool music, List<Item> specialItems, Combat battle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, Door stairwayToLower, List<Room> choiceVersusDestination)
         {
             Dice D1 = new Dice(1);
             string excerpt = "";
@@ -1485,7 +1485,7 @@ namespace DungeonCrawler
                 Monster backpack = new Monster("backpack", "", new List<Item>(), 1, 1, flap);
                 if (!_player.FieryEscape)
                 {
-                    switch (LoopParle(choice_answer, playerchoices1, description1, parlance, 8, 9, 10))
+                    switch (LoopParle(music, choice_answer, playerchoices1, description1, parlance, 8, 9, 10))
                     {
                         case 1:
                             Console.WriteLine("Will you accept the quest that has fallen upon you?");
