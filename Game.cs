@@ -662,7 +662,7 @@ namespace DungeonCrawler
             Item otherHalfOfCrackedBowl = new Item("other half of a cracked bowl", "It's not much less damaged than its counterpart");
             Item musicBox = new Item("music box", "A curious artefact with a hand-crafted rosewood exterior, inlaid with gold. It has glass panels displaying well oiled brass cogs gently whirring inside.", false, "unopened", 1, "strange lullaby");
             Weapon rustyChains = new Weapon("rusty chains", "They're so caked with rust that they're links have stiffened with age. You doubt these could hold any prisoner. Perhaps that's why they weren't used on you. Handling one of them, you figure it'd make a halfway decent, impromptu weapon - if you've really no other choice.", chainDamage, defaultCritHits, defaultGoodHits);
-            Item garment = new Item("garment", "Haphazardly strewn about the rickety floor of your cell, they're worn, faded and moth-eaten. Hardly a fashion accessory.", true, "unburned");
+            Item garment = new Item("garment", "Haphazardly strewn about the rickety floor of your cell, they're worn, faded and moth-eaten. Hardly a fashion accessory.\nThey're also dry. And very, very flammable. Hmmm...", true, "unburned");
             Item elixirFeline = new Item("Elixir of Feline Guile", "It's pungent aroma makes you recoil. Upon the label it reads, 'Is 'butter-fingers' your middle name? Do you like jumping from great heights, but don't like the dying that usually follows? Merigold's Wondrous Elixir of Feline Guile is the thing for you! Please note Merigold is not responsible for fatal falls during or after this potion takes effect. Please use responsibly. Pleasant fragrance not included.'", true, "unshattered", 1, "Skill: Boosts your skill by 1 point. Caution: excessive use may cause an over-fondness for catnip.");
             Item FelixFelicis = new Item("Felix Felicis", "It bubbles, roils and froths within its bottle. You almost sense a quiver through the glass, like the crystalline liquid inside is trying to escape. The label on the side is illegible; someone has written over it with a shaky cursive, 'Don't drink it! Whatever you do, don't drink it! For the love of all that is holy, if you care for anyone around you keep the stopper on!!! ~ Yours sincerely, Merigold.'", true, "unshattered", 10, "Luck: Drink and accomplish your wildest dreams..."); // access to 'jinxed' critmisses for 1 battle only
             Item magnifyingGlass = new Item("magnifying glass", "Peering through its slightly misted lens objects appear at least three times their size. You wonder why the skeleton had hold of it...");
@@ -781,7 +781,10 @@ namespace DungeonCrawler
             // I instantiate a room with a list of items and features inside it and a description and room name
             List<Feature> cellfeatures = new List<Feature> { rosewoodDoor, rosewoodChest, bookCase, skeleton, leftbrazier, rightbrazier };
             List<Item> corridorItems = new List<Item> ();
-            List<Feature> corridorFeatures = new List<Feature> { stairwayToLower, leftbrazier, rosewoodDoor, otherRosewoodDoor, rightbrazier, emptyCellDoor, anotherBrazier, stairwayToUpper };
+            Item healPotionq = new Item("healing potion", "It has flecks of gold floating amidst a gel like suspension. The label reads; 'When you're feeling blue, down with the flu, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!'", true, "used", 20, "Stamina: When you're blue, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!");
+            List<Item> trunkItems1 = new List<Item> { speedPotion, healPotionq };
+            Feature trunkofconfiscatedstuff = new Feature("weathered old trunk", "The leather of its sides is faded and worn. Unlike the rosewood chest in your room it hasn't been looked after and there's no hidden compartment.\nScrawled atop the lid in scratchy letters are the words 'confizkatedd Stoof'", false, "unlocked", trunkItems1);
+            List<Feature> corridorFeatures = new List<Feature> { stairwayToLower, leftbrazier, rosewoodDoor, otherRosewoodDoor, rightbrazier, emptyCellDoor, trunkofconfiscatedstuff, stairwayToUpper };
             List<Feature> antechamberFeatures = new List<Feature> { stairwayToUpper, pillar, plaque, armouryDoor, pillar, mosaic, circleDoor};
             List<Item> antechamberItems = new List<Item>();
             List<Item> emptyCellItems = new List<Item> { garment, rustyChains, bobbyPins, redThread};
@@ -824,7 +827,8 @@ namespace DungeonCrawler
             /// The Magical Manufactory Items and Features
             Feature copperPipes = new Feature("whistling pipes", "They rattle and shake and bounce up and down in an excitable fashion, dribbling alchemical residue amidst jets of steam.");
             Feature brassTanks = new Feature("brass tanks", "They have porthole windows bolted into their sides through which you see chains of bubbles endlessly cascade upwards through some gloopy concoction or other...");
-            Feature conveyorBelts = new Feature("conveyor belts", "They form a web of pure steampunkery, rattling overhead and spanning from brass tanks to spurting pipes to the next clunky clockwork mechanism, carrying potions galore before spiralling in on some kind of magic portal to distant planes.");
+            List<Item> conveyerItems = new List<Item> { elixirFeline};
+            Feature conveyorBelts = new Feature("conveyor belts", "They form a web of pure steampunkery, rattling overhead and spanning from brass tanks to spurting pipes to the next clunky clockwork mechanism, carrying potions galore before spiralling in on some kind of magic portal to distant planes.", true, "clanky", conveyerItems);
             Door merigoldPortal = new Door("magic portal", "It crackles and sparks with unstable magical force. It's so large you can peer through it from where you're stood, your gaze encountering distant landscapes, foreign wonders, exotic lands and the armies of the CurseBreaker, all visions flitting from one to the next - a different delivery point for each order of elixirs...", true, "blocked", null, null, "Placing your trust in Merigold's dubious calculations and whatever magic he can muster, you take a deep breath and plunge through the swirling vortex of chaotic energy...");
             Feature teslaCoil = new Feature("tesla coil", "Crackling and sparking with tame lightning you wonder if they power this whole th- youch! You shake off the jolt you received, your zapped finger smarting. Best steer clear of that thing...");
             Feature magicalBookcase = new Feature("magic bookcase", "You can scarcely grab a book from its shelves before the entire edifice whisks up at alarming speed, more shelves rising from through the floor, and books fly from the shelves, flapping their way to the wizard at the manufactory's centre; the conductor to this mad orchestra of glooping pipes and whirling cacophony.");
@@ -854,7 +858,8 @@ namespace DungeonCrawler
             Item jar = new Item("assorted jars", "They contain all sorts of ingredients that sorcerers presumably everywhere need, from pig trotters, to chiropteric (that means bat-like) wings.", false);
             Item brassTrinket = new Item("wizardly gizmo", "A whirling artefact of brass cogs and spinning gyroscopes. No matter how long you study it, you cannot divine its purpose...");
             Item copperTrinket = new Item("sorcerous gadget", "It's a copper sphere with dials and intricate tiny levers. You put it down before your fumbling hands cause it to... uh, do whatever it is it's designed to do.");
-            List<Item> bookcaseSCItems = new List<Item> {bookSC2, bookSC1, bookSC3 };
+            Item elixirFeline1 = new Item("Elixir of Feline Guile", "It's pungent aroma makes you recoil. Upon the label it reads, 'Is 'butter-fingers' your middle name? Do you like jumping from great heights, but don't like the dying that usually follows? Merigold's Wondrous Elixir of Feline Guile is the thing for you! Please note Merigold is not responsible for fatal falls during or after this potion takes effect. Please use responsibly. Pleasant fragrance not included.'", true, "unshattered", 1, "Skill: Boosts your skill by 1 point. Caution: excessive use may cause an over-fondness for catnip.");
+            List<Item> bookcaseSCItems = new List<Item> {bookSC2, bookSC1, bookSC3,  elixirFeline1};
             Feature bookcaseSC = new Feature("bookcase", "Judging from the grain and fine burnished finish, this bookcase is elegantly crafted rosewood and feels warm to the touch even within this chilly room. It is replete with books.", false, "unshattered", bookcaseSCItems);
             
             List<Item> secretChamberItems = new List<Item> { crystalBall, jar, brassTrinket, copperTrinket};
@@ -1883,13 +1888,15 @@ namespace DungeonCrawler
             Weapon dagger = new Weapon("dagger", "The dagger's blade gleams like a crooked smile in some dubious tavern.", damage1, defaultCritHits, defaultGoodHits);
             // player1.WeaponInventory.Add(breadKnife);
             // player1.Inventory.Add(healPotion);
+            /*
             player1.Inventory.Add(FelixFelicis);
             player1.Inventory.Add(elixirFeline);
             player1.Inventory.Add(speedPotion);
-
+            */
             ///Instantiating monsters to be fought later
             Item magManKey = new Item("copper key", "Found amongst the minotaur's possessions, this key has a tarnished look about it as though it could do with a good polish. You suppose it must unlock one of the doors in this landing. The question is, which one...", false);
-            List<Item> goblinInventory = new List<Item> { scimitar };
+            Item crudeJournal = new Item("dogeared journal", "A rather chaotic compilation of lewd drawings, crude scribblings and truly awful grammar. Aside from that it seems to be a diary of some kind. The latest passage reads, 'Got Gribhook an' that gnoll to play coins with me. Been raking in the moolah! Little do thoze idiots know ah've been taking a drop of ol' Felix before each game - heh heh. Jus' gotta make sure the cap' don't catch on I been usin' military materials fer robbin' 'im blind. Anyway - feel it wearing off now. Will save for after I dealt with the next prisoner...'", false, "unburned");
+            List<Item> goblinInventory = new List<Item> { scimitar, FelixFelicis, crudeJournal };
             List<Item> gnollInventory = new List<Item> { dagger };
             
             Item mercInsignia = new Item("insignia", "The insignia depicts a serpent with feathered wings. In the form of a broach it might look rather fetching on you...");
@@ -1957,7 +1964,7 @@ namespace DungeonCrawler
 
             usesDictionaryItemItem[magnifyingGlass].Add(garment);
 
-            Dictionary<Item, List<Player>> usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [soot] = new List<Player> { player1}, [speedPotion] = new List<Player> { player1} };
+            Dictionary<Item, List<Player>> usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 },[FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [soot] = new List<Player> { player1}, [speedPotion] = new List<Player> { player1} };
             List<Feature> features = new List<Feature>();
             /*
             Combat tester = new Combat(goblin, gnoll, player1, null);
@@ -1986,10 +1993,10 @@ namespace DungeonCrawler
             Console.WriteLine($" You resolve to find a way out of your predicament and this {room.Name}, and you intend to do it fast...");
             Console.ReadKey(true);
             Console.WriteLine("Will you...");
-            
             Console.WriteLine("[1] Check what items are still on your person?");
             Console.WriteLine("[2] Investigate the room?");
             Console.WriteLine("[3] Try calling for help?");
+            Console.WriteLine("\n[s] Change game settings?");
             int a = 0;//tracks how many times you search your pack
             int b = 0;//tracks how many times you investigate the room
             int c = 0;//tracks how many times you try to call the guard
@@ -2037,7 +2044,7 @@ namespace DungeonCrawler
                     int reply1 = int.Parse(reply);
                     if (((a < 1 || b < 1) && (reply1 < 1 || reply1 > 3)) || (reply1 > 4) && (!player1.Inventory.Contains(musicBox) || !note.Description.Contains("blighter")) || reply1 > 5)
                     {
-                        Console.WriteLine("Please enter a number corresponding to a choice of action.");
+                        Console.WriteLine("Please enter a number or letter corresponding to a choice of action.");
                         continue;
                     }
                     else if (reply1 == 1)
@@ -2278,7 +2285,12 @@ namespace DungeonCrawler
                 }
                 catch //and a check to make sure they know the correct input.
                 {
-                    Console.WriteLine("Please enter a number corresponding to your choice of action.");
+                    if (reply.ToLower().Trim() == "s")
+                    {
+                        music = this.MusicOnOff();
+                        continue;
+                    }
+                    Console.WriteLine("Please enter a number or letter corresponding to your choice of action.");
                     continue;
                 }
 
@@ -2765,6 +2777,7 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("Now what will you do?");
                         }
+                    
                     Console.WriteLine("[c] Check your character's status?");
                     Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine("[2] Investigate the corridor?");
@@ -2772,7 +2785,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                         if (!justStalked && minotaurAlerted > minotaurAlertedBy && (minotaur.Location == cellOpposite || minotaur.Location == emptyCell || minotaur.Location == room || minotaur.Location == dungeonChamber || minotaur.Location == antechamber))
                         {
 
@@ -2883,6 +2897,11 @@ namespace DungeonCrawler
                             corridor.ItemList.Remove(bowlFragments);
                             corridor.ItemList.Remove(looseNail);
                             player1.CheckStatus();
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
+                            continue;                            
                         }
                         else
                         {
@@ -3005,7 +3024,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                         try
                         {
                             int reply1 = int.Parse(reply);
@@ -3049,6 +3069,11 @@ namespace DungeonCrawler
                         if (reply == "c")
                         {
                             player1.CheckStatus();
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
+                            continue;
                         }
                         else
                         {
@@ -3164,7 +3189,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                         try
                         {
                             int reply1 = int.Parse(reply);
@@ -3208,6 +3234,11 @@ namespace DungeonCrawler
                         if (reply == "c")
                         {
                             player1.CheckStatus();
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
+                            continue;
                         }
                         else
                         {
@@ -3394,7 +3425,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                         if (!justStalked && minotaurAlerted > minotaurAlertedBy && (minotaur.Location == westernmostCorridor || minotaur.Location == armoury || minotaur.Location == corridor))
                         {
 
@@ -3503,6 +3535,11 @@ namespace DungeonCrawler
                             antechamber.ItemList.Remove(helmet);
                             antechamber.ItemList.Remove(bracers);
                             player1.CheckStatus();
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
+                            continue;
                         }
                         else
                         {
@@ -3619,7 +3656,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                         try
                         {
                             int reply1 = int.Parse(reply);
@@ -3663,6 +3701,11 @@ namespace DungeonCrawler
                         if (reply == "c")
                         {
                             player1.CheckStatus();
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
+                            continue;
                         }
                         else
                         {
@@ -5706,7 +5749,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                         try
                         {
                             int reply1 = int.Parse(reply);
@@ -5762,6 +5806,11 @@ namespace DungeonCrawler
                         if (reply == "c")
                         {
                             player1.CheckStatus();
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
+                            continue;
                         }
                         else
                         {
@@ -5874,9 +5923,10 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                         sw.Stop();
-                        if (!justStalked && sw.ElapsedMilliseconds > minotaurAlertedBy && minotaur.Location == easternmostCorridor)
+                        if (!justStalked && sw.ElapsedMilliseconds > minotaurAlertedBy && minotaur.Location == easternmostCorridor && minotaur.Stamina > 0)
                         {
                             if (minotaur.Path.Count > 1)
                             {
@@ -5977,6 +6027,11 @@ namespace DungeonCrawler
                         if (reply == "c")
                         {
                             player1.CheckStatus();
+                            continue;
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
                             continue;
                         }
                         Console.WriteLine("Please enter a number corresponding to your choice of action...");
@@ -6116,10 +6171,11 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                         sw.Stop();
                         minotaurAlerted = sw.ElapsedMilliseconds;
-                        if (!justStalked && minotaurAlerted > minotaurAlertedBy && (minotaur.Location == northernmostCorridor || minotaur.Location == southernmostCorridor || minotaur.Location == antechamber))
+                        if (!justStalked && minotaurAlerted > minotaurAlertedBy && (minotaur.Location == northernmostCorridor || minotaur.Location == southernmostCorridor || minotaur.Location == antechamber) && minotaur.Stamina >0)
                         {
 
 
@@ -6222,6 +6278,11 @@ namespace DungeonCrawler
                         if (reply == "c")
                         {
                             player1.CheckStatus();
+                            continue;
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
                             continue;
                         }
                         Console.WriteLine("Please enter a number corresponding to your choice of action...");
@@ -6360,9 +6421,10 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                         sw.Stop();
-                        if (!justStalked && sw.ElapsedMilliseconds > minotaurAlertedBy &&(minotaur.Location == westernmostCorridor || minotaur.Location == easternmostCorridor ))
+                        if (!justStalked && sw.ElapsedMilliseconds > minotaurAlertedBy &&(minotaur.Location == westernmostCorridor || minotaur.Location == easternmostCorridor ) && minotaur.Stamina > 0)
                         {
                             if (minotaur.Path.Count > 1)
                             {
@@ -6456,6 +6518,11 @@ namespace DungeonCrawler
                         if (reply == "c")
                         {
                             player1.CheckStatus();
+                            continue;
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
                             continue;
                         }
                         Console.WriteLine("Please enter a number corresponding to your choice of action...");
@@ -6594,9 +6661,10 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                         sw.Stop();
-                        if (!justStalked && sw.ElapsedMilliseconds > minotaurAlertedBy && (minotaur.Location == messHall || minotaur.Location == northernmostCorridor || minotaur.Location == southernmostCorridor))
+                        if (!justStalked && sw.ElapsedMilliseconds > minotaurAlertedBy && (minotaur.Location == messHall || minotaur.Location == northernmostCorridor || minotaur.Location == southernmostCorridor) && minotaur.Stamina > 0)
                         {
                             if (minotaur.Path.Count > 1)
                             {
@@ -6697,6 +6765,11 @@ namespace DungeonCrawler
                         if (reply == "c")
                         {
                             player1.CheckStatus();
+                            continue;
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
                             continue;
                         }
                         Console.WriteLine("Please enter a number corresponding to your choice of action...");
@@ -6837,11 +6910,11 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        
-                        
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+
+                    string reply = Console.ReadLine().ToLower().Trim();
                         sw.Stop();
-                        if (sw.ElapsedMilliseconds > minotaurAlertedBy && !justStalked && (minotaur.Location == easternmostCorridor || minotaur.Location == westernmostCorridor))
+                        if (sw.ElapsedMilliseconds > minotaurAlertedBy && !justStalked && (minotaur.Location == easternmostCorridor || minotaur.Location == westernmostCorridor) && minotaur.Stamina > 0)
                         {
                             if (minotaur.Path.Count > 1)
                             {
@@ -6934,6 +7007,11 @@ namespace DungeonCrawler
                         if (reply == "c")
                         {
                             player1.CheckStatus();
+                            continue;
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
                             continue;
                         }
                         Console.WriteLine("Please enter a number corresponding to your choice of action...");
@@ -7045,7 +7123,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                         try
                         {
                             int reply1 = int.Parse(reply);
@@ -7089,6 +7168,11 @@ namespace DungeonCrawler
                         if (reply == "c")
                         {
                             player1.CheckStatus();
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
+                            continue;
                         }
                         else
                         {
@@ -7141,7 +7225,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                         try
                         {
                             int reply1 = int.Parse(reply);
@@ -7199,6 +7284,11 @@ namespace DungeonCrawler
                         {
                             player1.CheckStatus();
                         }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
+                            continue;
+                        }
                         else
                         {
                             Console.WriteLine("Please enter a number corresponding to your choice of action...");
@@ -7249,7 +7339,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                         try
                         {
                             int reply1 = int.Parse(reply);
@@ -7293,6 +7384,11 @@ namespace DungeonCrawler
                         if (reply == "c")
                         {
                             player1.CheckStatus();
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
+                            continue;
                         }
                         else
                         {
@@ -7366,7 +7462,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                         try
                         {
                             int reply1 = int.Parse(reply);
@@ -7409,6 +7506,11 @@ namespace DungeonCrawler
                         if (reply == "c")
                         {
                             player1.CheckStatus();
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
+                            continue;
                         }
                         else
                         {
@@ -7760,8 +7862,8 @@ namespace DungeonCrawler
                     Console.WriteLine("[c] Check your character's status?");
                     Console.WriteLine("[1] Check what items are still on your person?");
                         Console.WriteLine($"[2] Investigate the {newRoom1.Name}?");
-                        
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                         try
                         {
                             int reply1 = int.Parse(reply);
@@ -7804,6 +7906,11 @@ namespace DungeonCrawler
                         if (reply == "c")
                         {
                             player1.CheckStatus();
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
+                            continue;
                         }
                         else
                         {
@@ -7914,7 +8021,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                         try
                         {
                             int reply1 = int.Parse(reply);
@@ -7964,6 +8072,11 @@ namespace DungeonCrawler
                         if (reply == "c")
                         {
                             player1.CheckStatus();
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
+                            continue;
                         }
                         else
                         {
@@ -8532,7 +8645,8 @@ namespace DungeonCrawler
                         {
                             Console.WriteLine("[3] Use one of your items on something?");
                         }
-                        string reply = Console.ReadLine().ToLower().Trim();
+                    Console.WriteLine("\n[s] Change game settings?");
+                    string reply = Console.ReadLine().ToLower().Trim();
                     try
                     {
                         int reply1 = int.Parse(reply);
@@ -8576,6 +8690,11 @@ namespace DungeonCrawler
                         if (reply == "c")
                         {
                             player1.CheckStatus();
+                        }
+                        else if (reply == "s")
+                        {
+                            music = this.MusicOnOff();
+                            continue;
                         }
                         else
                         {
