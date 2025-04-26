@@ -29,7 +29,14 @@ namespace DungeonCrawler
 
                     "  \n\t'Do you imagine' he intones as his unsettling darker than black eyes " +
                     "appraise you, 'that I don't know your past deeds, your regrets, your every weakness?'" +
-                    $"  He leers. 'I see them all, {_player.Name}, a litany of sins laid bare before me...'"
+                    $"  He leers. 'I see them all, {_player.Name}, a litany of sins laid bare before me...'",
+
+                    "\n\t'Such an irony, then, that I should be stalled by the greatest curse of them all; adventurers and their ilk. " +
+                        " And now,' the CurseBreaker scoffs, 'you dare to pontificate to *me*? Your kind are a bane unto this " +
+                        "world. Your capricious meting of frontier justice and exploitation of the desperate is nothing more" +
+                        " than naked vandalism of the righteous order. Like a Curse you spread. You exploit the vulnerable, impoverish them, and exacerbate feuds," +
+                        $"endlessly repeating a vicious cycle of violence and chaos. " +
+                        $"\n\t'No, {_player.Name},' The CurseBreaker intones icily, 'the hero of this story is not you. It's me...'"
                 };
                 List<List<string>> choices = new List<List<string>>
                 {
@@ -40,6 +47,12 @@ namespace DungeonCrawler
                         "You make evident your relish at a chance for vengeance...",
                         "Flippantly tell him Merigold sends his regards..."
                         
+                    },
+                    new List<string>
+                    {
+                        "You scoff. Whatever you might've done in the past pales by comparison to the CurseBreaker's own deeds...",
+                        "You rebuke his presumptive verdict - you've done nothing you're ashamed of. The CurseBreaker, on the other hand...",
+                        "You threaten that you'll sin more yet, and he'll have a first-hand account of it..."
                     }
                 };
                 
@@ -130,7 +143,7 @@ namespace DungeonCrawler
 
                     {
                         "Flippantly tell him Merigold sends his regards...",
-                        
+
                         "  His expression curdles into a scowl for only a moment, before his eyes narrow and he regards you" +
                         " with icy disdain. " +
                         "\n\t'So,' he breathes, his voice as smooth as dark lakes with treacherous depths, 'the old fool" +
@@ -235,7 +248,7 @@ namespace DungeonCrawler
                     {
                         "Tell him Merigold says 'Sayonara'... Or is it 'konnichiwa'? You're not sure...",
 
-                        
+
                         "\n\t'What?!' the CurseBreaker retorts, somehow both derisive and completely baffled." +
                         " \n  You explain its... its another language. You think..." +
                         "\n  You were trying to sound cool. Nevermind. " +
@@ -317,21 +330,120 @@ namespace DungeonCrawler
                         " 'I am this world's last chance for order, for justice upon wicked souls such as yours. Do you truly believe I'd let" +
                         " a villain such as you throw that all away to satisfy your debauched sadistic desires? No..." +
                         "\n'The days of adventurers and the crude 'justice' they mete out - of mercenaries wearing the guise of heroes - is over...'"
+                    },
+
+                    {
+                        "You scoff. Whatever you might've done in the past pales by comparison to the CurseBreaker's own deeds...",
+                        
+                        "The CurseBreaker responds with scorn. 'Spare me your mercenary morals and " +
+                        "principles bandied and sold to the highest bidder!' he spits contemptuously." +
+                        " 'Had you not intervened I would've ascended to such power that no one need" +
+                        " ever suffer injustice again. With powers that span the Fey Realms and the " +
+                        "material plane, I'd have been able to keep any and all curses at bay. And " +
+                        "the world would be unified under justice, uncontested and irrefutable! No " +
+                        "longer would the arbitrations and whims of the corrupt go unchecked, no longer would " +
+                        "mercenaries ply their trade under the maxim of 'might makes right!' I will " +
+                        "deliver the world into an age of righteous order - one where no villain can hide" +
+                        " their secrets without fear, one where it is the wicked who are hunted and punished" +
+                        " - not the good..."
+                        
+                    },
+
+                    {
+                        "You rebuke his presumptive verdict - you've done nothing you're ashamed of. The CurseBreaker, on the other hand...",
+                        
+                        ""
+                    },
+
+                    {
+                        "You threaten that you'll sin more yet, and he'll have a first-hand account of it...",
+                        
+                        ""
+                    },
+
+                    {
+                        "Uhh...",
+
+                        ""
+                    },
+
+                    {
+                        "You object! Your various 'cons' and play-pretend was just some good sport...",
+
+                        ""
+                    },
+
+                    {
+                        "What you did, who you were, may have been bad - but at least you're taking a stand now...",
+
+                        ""
+                    },
+
+                    {
+                        "You reply that even if you're a fraud, you are closer to a hero than the CurseBreaker will ever be...",
+
+                        ""
+                    },
+
+                    {
+                        "Yessss....?",
+                        
+                        "The CurseBreaker balks. 'This is madness!'"
                     }
+
 
 
                 };
                 if (_player.Traits.ContainsKey("jinxed"))
                 {
+                    parlances[1] = "  \n\t'Do you imagine' he intones as his unsettling darker than black eyes " +
+                    "appraise you, 'that you stand a chance against me? When your very presence here is no more than some comical aberration of chance - a twist of fate..." +
+                    "I see before me your every weakness. All of them. You're nothing! Not to mention another adventurer whose crimes have gone unanswered for too long.'" +
+                    $"  He leers. 'Do you dare think I can't see them, {_player.Name}, the litany of your sins laid bare before me...'";
 
+                    choices[1].Add("Uhh...");
                 }
                 if (_player.Traits.ContainsKey("thespian"))
                 {
+                    parlances[1] = "  \n\t'Do you imagine' he intones as his unsettling darker than black eyes " +
+                    "appraise you, 'that I don't know your past deeds, your many cons, your every weakness?'" +
+                    $"  He leers. 'I see them all, {_player.Name}. You are no adventurer. You're certainly no hero. You don't even come close. You've been scamming " +
+                    $"innocent folk for years. Revelling in stolen glory for free booze, gold and copious sexual exploits. You stand" +
+                    $" before me now, with your false bravado, brandishing a weapon you scarcely know how to use, and expect... what?" +
+                    $"' He tilts his head bemusedly, 'that I'll be bamboozled somehow. That your tricks will once again save" +
+                    $" your hide?'  The CurseBreaker lets out a cruel laugh. And for once your general air of swashbuckling derring-do slips as " +
+                    $"you realise that this man cannot be lied to, cannot be deceived or beguiled and sees you for what you are; a fraud" +
+                    $"\n  Have you finally met your match?" +
+                    $"\n\t'So many crimes, sins stretching back your whole life with every lie you told, and each of them gone without punishment… Until now.'";
 
+                    choices[1].Clear();
+                    choices[1].Add("You object! Your various 'cons' and play-pretend was just some good sport...");
+                    choices[1].Add("What you did, who you were, may have been bad - but at least you're taking a stand now...");
+                    choices[1].Add("You reply that even if you're a fraud, you are closer to a hero than the CurseBreaker will ever be...");
                 }
                 if (_player.Traits.ContainsKey("friends with fairies"))
                 {
+                    parlances[1] = "‘Aargh! ’ The CurseBreaker screams before clasping his " +
+                        "hands over those dark eyes, ‘What..?’ he splutters, ‘What the hell " +
+                        "is this..? Why..? How you got here, your journey…? None of it makes" +
+                        " any sense! ’\n  You openly wonder what he’s talking about to " +
+                        "your fairy friends, but they only offer shrugs in response – the " +
+                        "guy’s clearly barking.\n  The CurseBreaker recovers somewhat. " +
+                        "With great strain he glowers your way, a nervous tic appearing " +
+                        "in his left eye. \n  ‘What sort of sorcery is this?’ he seethes. " +
+                        "‘Is this Merigold’s doing? But no, I took away most of his magic… " +
+                        "This is… This…’";
 
+                    choices[1].Clear();
+                    choices[1].Add("Yessss....?");
+                    parlances[2] = "";
+
+                    choices[2].Clear();
+                    choices[2].Add("THIS. IS. MYROVIA! - kick the CurseBreaker off the tower...");
+                    choices[2].Add("THIS. IS. OBJECT ORIENTED PROGRAMMING ASSESSMENT TWO! - send the CurseBreaker plummeting to his death...");
+                    choices[2].Add("YOU DANCING FOOL!");
+                    choices[2].Add("Erm... Actually, no. You'd rather just fight him...");
+                    
                 }
 
                 // change parlances depending on player traits, thespian response, jinxed response, FwF response

@@ -3152,6 +3152,17 @@ namespace DungeonCrawler
                                 "The Lady gropes for you in the dark with her many talons!"
 
                             };
+                            if (player1.Traits.ContainsKey("friends with fairies"))
+                            {
+                                LadyGoodHits.Insert(3, "The Lady does the Macarena!");
+                                LadyGoodHits.RemoveAt(4);
+                                LadyGoodHits.Insert(7, "The Lady does the Charleston!");
+                                LadyGoodHits.RemoveAt(8);
+                                LadyGoodHits.Insert(11, "The Lady moves like Grease Lightning!");
+                                LadyGoodHits.RemoveAt(12);
+                                LadyGoodHits.Insert(15, "The Lady does the Macarena!");
+                                LadyGoodHits.RemoveAt(16);
+                            }
                             Dice D80 = new Dice(80);
                             List<Dice> clawDamage = new List<Dice> { D80 };
                             Weapon deadlyClaws = new Weapon("claws", "They're going to hurt...", clawDamage, defaultCritHits, LadyGoodHits, 0);
