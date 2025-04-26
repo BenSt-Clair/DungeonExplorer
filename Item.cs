@@ -1393,6 +1393,22 @@ namespace DungeonCrawler
             }
             else 
             {
+                if (feature.Name.Contains("totem"))
+                {
+                    if(item is Weapon)
+                    {
+                        
+                        Console.WriteLine("Your blow is countered by some impenetrable enchanted forcefield!\n" +
+                            "Mundane weapons have no effect on these totems summoned through dark Fey Sorcery...");
+                        
+                        return false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("That does nothing to counter the totem's magic!");
+                        return false;
+                    }
+                }
                 if (feature.Description == "Replete with weapons of all descriptions, their oiled and well-polished blades gleam at you.\nIt's a shame someone was foresighted enough to lock them all behind an enchanted glass panel...")
                 {
                     if (Name == "lockpicking set" || Name.Contains(" key"))

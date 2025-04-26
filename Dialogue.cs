@@ -223,7 +223,7 @@ namespace DungeonCrawler
                             Console.WriteLine($"Please enter a number between 1 and {option}");
                             continue;
                         }
-                        
+
                         if (choice_CustomResponse[playerChoices[node][answer1]] == "You decide to stop reading the literature for now.")
                         {
                             Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]]);
@@ -247,6 +247,39 @@ namespace DungeonCrawler
                             Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]]);
                             Console.ReadKey(true);
                             return -50;
+                        }
+                        else if (playerChoices[node][answer1] == "Unsheathe your weapon and prepare for the duel of your life...")
+                        {
+                            if (player != null)
+                            {
+                                player.Equip(player.WeaponInventory[0], player.WeaponInventory, player);
+                            }
+                        }
+                        else if ((playerChoices[node][answer1] == "Tighten your grip on Merigold's staff and brace yourself..."))
+                        {
+                            if (player != null)
+                            {
+                                foreach (Weapon w in player.WeaponInventory)
+                                {
+                                    if (w.Name == "Marvellous Merigold's Magical Staff of Whacking")
+                                    {
+                                        player.Equip(w, player.WeaponInventory, player);
+                                    }
+                                }
+                            }
+                        }
+                        else if ((playerChoices[node][answer1] == "Unsheathe the sword of sealed souls before the CurseBreaker..."))
+                        {
+                            if (player != null)
+                            {
+                                foreach (Weapon w in player.WeaponInventory)
+                                {
+                                    if (w.Name == "Sword of Sealed Souls")
+                                    {
+                                        player.Equip(w, player.WeaponInventory, player);
+                                    }
+                                }
+                            }
                         }
                         if (player != null)
                         {

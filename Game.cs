@@ -936,9 +936,9 @@ namespace DungeonCrawler
             Weapon fists = new Weapon("fists", "", fistDamage, defaultCritHits, defaultGoodHits, 0);
 
             //Highest Parapet
-            Feature crystalTotem1 = new Feature("totem of shielding", "A knot of gnarled roots in the shape of a large hand clutches a gem that exudes waves of magic with its pulsating glow. Summoned through some confluence of sinister magic and Fey sorcery, it creates a protective shield about the caster and dampens any harm that might befall them...", false, "unshattered", 3);
-            Feature crystalTotem2 = new Feature("totem of invincibility", "Gnarled roots extend through the flagstones in the form of a fist, clasping a gem that makes the air around it shimmer with magic. Summoned through some confluence of dark necromancy and Fey magicks, it conspires to reduce all incoming damage for its caster...", false, "unshattered", 3);
-            Feature crystalTotem3 = new Feature("totem of invulnerability", "A writhing tangle of roots stretch from the cracked flagstones in the shape of a fist. Within, a strange ethereal gem pulses with light, casting a protective shield about the summoner, which absorbs most incoming damage...", false, "unshattered", 3);
+            Feature crystalTotem1 = new Feature("totem of shielding", "A knot of gnarled roots in the shape of a large hand clutches a gem that exudes waves of magic with its pulsating glow. Summoned through some confluence of sinister magic and Fey sorcery, it creates a protective shield about the caster and dampens any harm that might befall them...", false, "unshattered", 5);
+            Feature crystalTotem2 = new Feature("totem of invincibility", "Gnarled roots extend through the flagstones in the form of a fist, clasping a gem that makes the air around it shimmer with magic. Summoned through some confluence of dark necromancy and Fey magicks, it conspires to reduce all incoming damage for its caster...", false, "unshattered", 5);
+            Feature crystalTotem3 = new Feature("totem of invulnerability", "A writhing tangle of roots stretch from the cracked flagstones in the shape of a fist. Within, a strange ethereal gem pulses with light, casting a protective shield about the summoner, which absorbs most incoming damage...", false, "unshattered", 5);
             Feature crenellations = new Feature("crenellations", "Over the towertop's low battlements you survey a moonlit valley and in the distance the spires of Myrovia...", true, "imposing");
             Item brokenFlagstone = new Item("broken flagstone", "Many of the flagstones are cracked and broken. The rest have been worn down over the centuries...");
             Item crackedFlagstone = new Item("cracked flagstone", "Many of the flagstones are cracked and broken. The rest have been worn down over the centuries...");
@@ -7196,6 +7196,30 @@ namespace DungeonCrawler
                     if (minotaur.Location == antechamber && !antechamber.Description.Contains("You are struck by the carnage of the monster's obsessive hunt.")) { antechamber.ItemList.Add(breastplate); antechamber.ItemList.Add(helmet); antechamber.ItemList.Add(clunkySabaton); antechamber.Description = "You are struck by the carnage of the monster's obsessive hunt. The once wondrous and spacious antechamber is strewn with smashed breastplates and other detritus from the armoury. The monster also seems to have taken out its rage on the pillars, for you find them hacked with chunks of that fabulous marble scattered everywhere. The unscathed mosaic, high above the double doors, surveys it all.\nGazing northwards you see a heavyset door studded with steel bolts, Above it a bronze plaque has been blackened as though blasted by some spell or fireball. \t\nTo the west you see the brightly illuminated stairway you just ascended.\t\nTurning your gaze to the south wall you find bare patches where once were probably opulent oil-paintings and portraits. Their absence adds to the ominous sense of some recent tragedy befalling this place.\t\nTo the east is another door leading out of the antechamber - this one a far more inviting set of oak-panelled double doors framed by fluted pillars and a grand archway enclosing some strange mosaic.\t\t"; }
                     while (!leftWhichRooms[9])//magical manufactory
                     {
+                        if (player1.midnightClock != null)
+                        {
+                            player1.midnightClock.Stop();
+                            long timeTaken = player1.midnightClock.ElapsedMilliseconds;
+                            player1.midnightClock.Start();
+                            long timeToMidnight = 1800000;
+                            long timeLeft = (timeToMidnight - timeTaken) / 60000;
+                            if (timeLeft < 0)
+                            {
+                                Console.WriteLine("\nMidnight is upon you!");
+                                Console.ReadKey(true);
+                                    Console.WriteLine("Throughout the tower all the clocks chime the hour. Even above the din of the magical manufactory you hear " +
+                                    "them. Merigold catches your final look of fright, before all the lights go out and darkness falls." +
+                                    " \n\t'What have you done?' Merigold laments. " +
+                                    "  \n  Dreading what is to follow, anything you might've said in response catches in your throat. Only a few seconds later a blood-curdling howl erupts from above" +
+                                    " as something new and terrible is brought into the world. Soon afterwards, the tower collapses in on you both... ");
+                                Console.ReadKey(true);
+                                Console.WriteLine("At least you never caught sight of the horror your lack of urgency unleashed.");
+                                Console.ReadKey(true);
+                                Console.WriteLine("Your adventure ends here...");
+                                return;
+                            }
+
+                        }
                         broomCloset.Description = "Your stomach lurches the moment you find yourself consumed, sucked in, by the crackling magics of the portal. In an instant you've left gravity behind as you weightlessly float through exotic landscapes and distant places, all surging by you at breakneck speed. Time becomes a flurry of disjointed instants, snapshots of places beheld amidst the enveloping whorl of energy. It's not long before the vortex hurls you bodily into some dank claustrophobic and frankly smelly closet. As you stagger to your feet your eyes clap sight of an Aladdin's cave of custodian conglomerations, janitorial jumbles and maidly menageries all agglomerated within a cosy 4 foot by 4 foot room. Somewhat ironically, it's a mess. \nYou see a broom.\t\nYou see another broom.\t\nCould that be another broom?\t\nanother br- oh, wait! That's a mop.\t\t";
                         if (!room.FeatureList.Contains(holeInCeiling))
                         {
@@ -7428,7 +7452,6 @@ namespace DungeonCrawler
                     if (!oubliette.FirstVisit)
                     {
                         Console.ReadKey(true);
-                        highestParapet.Investigate(music, usesDictionaryItemChar, sw, minotaurAlertedBy, justStalked, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
 
                         FinalAct denouement = new FinalAct(player1, CurseBreaker);
 

@@ -733,11 +733,11 @@ namespace DungeonCrawler
                         Stopwatch musicTime = new Stopwatch();
                         musicTime.Start();
                         Console.WriteLine("It strikes feet from where he stands, forcing him to stagger back from the roaring tumult. Lightning sparks and shatters flagstones, the sheer torque of the wind throws up masonry and grinds it to dust. " +
-                            "From within the eye of this storm, a lone silhouette stirs.");
+                            "From within the eye of this storm, something stirs.");
                         Console.ReadKey(true);
-                        Console.WriteLine("\t'What devilry is this...?' The CurseBreaker stares aghast. The vortex vanishes, leaving behind a cloud of smoke and debris. As the storm rumbles overhead once more, rain spots the flagstones and the moon's bloody hue vanishes, the lone silhouette rises from amidst the carnage.");
+                        Console.WriteLine("\t'What devilry is this...?' The CurseBreaker breathes as the vortex vanishes, leaving behind a cloud of smoke and debris. \n  The storm rages more fiercely than before. Rain spots the flagstones, the moon's bloody hue vanishes and from within the smoke and carnage a lone silhouette rises.");
                         Console.ReadKey(true);
-                        Console.WriteLine("Delivered to the highest parapet of the wizard tower, you at last face the sorcerer who conspired to weave you a fate worse than death...");
+                        Console.WriteLine("Delivered to the highest parapet of the wizard tower, you at last face the sorcerer who conspired to weave you and so many others a fate worse than death...");
                         long time = 0;
                         Console.ReadKey(true);
                         if (music)
