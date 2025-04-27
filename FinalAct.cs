@@ -17,7 +17,7 @@ namespace DungeonCrawler
                 CurseBreaker = curseBreaker;
             }
         }
-        public bool Denouement(Room oubliette, List<Item> specialItems, Weapon staffMG, Weapon vanquisher, Monster ghoul)
+        public int Denouement(Room oubliette, List<Item> specialItems, Weapon staffMG, Weapon vanquisher, Monster ghoul)
         {
             Dialogue denouement = new Dialogue(_player, CurseBreaker);
             if (!oubliette.FirstVisit) 
@@ -36,7 +36,12 @@ namespace DungeonCrawler
                         "world. Your capricious meting of frontier justice and exploitation of the desperate is nothing more" +
                         " than naked vandalism of the righteous order. Like a Curse you spread. You exploit the vulnerable, impoverish them, and exacerbate feuds," +
                         $"endlessly repeating a vicious cycle of violence and chaos. " +
-                        $"\n\t'No, {_player.Name},' The CurseBreaker intones icily, 'the hero of this story is not you. It's me...'"
+                        $"\n\t'No, {_player.Name},' The CurseBreaker intones icily, 'the hero of this story is not you. It's me...'",
+                
+                        "\n\n\t'Now...' the CurseBreaker hisses as he paces, 'enough of this! I shall ascend and if it has to be upon the next full moon - So be it! I'll deliver Merigold the final sentence that he deserves. Directly after I eliminate you!'" +
+                        "  It is then that the CurseBreaker reveals a gloved hand - some cursed artefact that he'd been patiently charging with magic all whilst he" +
+                        " bought time exchanging words with you. He booms an incantation and instantly the flagstones beneath your feet crack and crumble as three eerie totems rise out of the ground. They are each knotted roots in the shape of hands and they clutch gemstones in their vice like grip that cast a protective aura about the CurseBreaker. " +
+                        "\n   Assured of his invulnerability, he leers at you as he turns that cursed glove your way and casts a lightning bolt at you!"
                 };
                 List<List<string>> choices = new List<List<string>>
                 {
@@ -53,6 +58,24 @@ namespace DungeonCrawler
                         "You scoff. Whatever you might've done in the past pales by comparison to the CurseBreaker's own deeds...",
                         "You rebuke his presumptive verdict - you've done nothing you're ashamed of. The CurseBreaker, on the other hand...",
                         "You threaten that you'll sin more yet, and he'll have a first-hand account of it..."
+                    },
+                    new List<string>
+                    {
+                        "You challenge him; if he's justice then why'd he rob Merigold of his home and enslave him?",
+                        "You assert that taking all that power for himself would corrupt him more than any of those he deems 'wicked'...",
+                        "You tell him that taking the power to gaze into people's secrets and blackmailing them won't 'prevent' evil, only inhibit them from being free to do what's right...",
+                        "You argue that he's wrong. Justice is too much for any one person or group. Power to administer it needs to be shared...",
+                        "You retort; how can he call what he does justice when he hires an evil mercenary company to do his bidding?",
+                        "You accept that The CurseBreaker's right...",
+                        "You tell him you don't give a damn about his arguments. You're just here to bring him down..."
+
+                    },
+                    new List<string>
+                    {
+                        "Dodge to the left...",
+                        "Dive to the right...",
+                        "Leap backwards...",
+                        "Lunge forwards..."
                     }
                 };
                 
@@ -311,7 +334,7 @@ namespace DungeonCrawler
                     },
 
                     {
-                        "Tell him you're here with your fairy friends to place him under fairy arrest. Read him his fairy rights...",
+                        "Tell him you're here with your fairy friends to place him under fairy arrest. Read him his rights...",
 
                         "You are about to tell him he has the right to a fairy lawyer when the" +
                         " CurseBreaker focuses his black eyes. Darker than the void between stars," +
@@ -334,7 +357,7 @@ namespace DungeonCrawler
 
                     {
                         "You scoff. Whatever you might've done in the past pales by comparison to the CurseBreaker's own deeds...",
-                        
+
                         "The CurseBreaker responds with scorn. 'Spare me your mercenary morals and " +
                         "principles bandied and sold to the highest bidder!' he spits contemptuously." +
                         " 'Had you not intervened I would've ascended to such power that no one need" +
@@ -346,51 +369,198 @@ namespace DungeonCrawler
                         "deliver the world into an age of righteous order - one where no villain can hide" +
                         " their secrets without fear, one where it is the wicked who are hunted and punished" +
                         " - not the good..."
-                        
+
                     },
 
                     {
                         "You rebuke his presumptive verdict - you've done nothing you're ashamed of. The CurseBreaker, on the other hand...",
-                        
-                        ""
+
+                        "\t'You've done nothing to be ashamed of?' the CurseBreaker treats your rebuke with disdain. " +
+                        "'You are scarcely any different from any of the other sellswords that plague these lands." +
+                        " You all take on quests, selling your services to the highest bidder, and mete out frontier justice" +
+                        " without questioning the motives of those handing out the reward. In the end your principles" +
+                        " are shallow. Your morals negotiable. Something to be bartered like trinkets at a market." +
+                        "\n\t'And I?' he intones. The timbre of his voice is deadly soft yet still cuts through the " +
+                        "storm raging above. 'I have dedicated my life to being the justice that this world needs. A" +
+                        " justice that is all-powerful. A justice that cannot be refused or compromised or escaped. A " +
+                        "justice that would create a new and righteous order, where curses brought about by the selfish actions of villains" +
+                        " and their unanswered abuses won't terrorise the innocent but will instead hunt down those deemed wicked. " +
+                        "I seek a world where the innocent live without fear. *You* would keep the world languishing " +
+                        "in anarchy..."
                     },
 
                     {
                         "You threaten that you'll sin more yet, and he'll have a first-hand account of it...",
-                        
-                        ""
+
+                        "The CurseBreaker sneers. 'It's so refreshing to finally meet an adventurer who recognises" +
+                        " their own villainy,' he says, his tone as slippery as ice. 'Most of your kind ply their trade" +
+                        " under the treacherous pretence that they're heroes - delivering people from injustices and" +
+                        " oppression. I'm heartened to be so vindicated by the presence of an adventurer that knows their" +
+                        " brand of frontier justice is nought but arbitrary at best, hypocritical and devastating at worst, and always" +
+                        " sold to the highest bidder." +
+                        "\n\t'But your efforts shall be in vain,' he continues, regarding you once again with imperious derision as " +
+                        "thunder crashes overhead, 'Once I've dealt with you I shall redouble my efforts. I shall rebind that creature in the Oubliette," +
+                        " or else summon one anew, and the rite shall be remade upon the next full moon. You have" +
+                        " merely stalled my plans. Had you but stayed in your cell, accepted your well-deserved fate, " +
+                        "then I would have ascended to such power that your kind would never again be free to dish out mercenary justice at the behest " +
+                        " of the highest bidder. I would've become a justice that is all-powerful and all-encompassing...'"
+
                     },
 
                     {
                         "Uhh...",
 
-                        ""
+                        "\t'You're no different from every other adventurer with mercenary morals and ethics" +
+                        " to be bartered for by the highest bidder,' The CurseBreaker proclaims with a haughty swish of his sabre." +
+                        " 'You just happen to be, from what I can see, the very worst adventuring hero" +
+                        " that I've ever met! I mean... How on earth did you ever earn any money when you've botched every quest" +
+                        " you ever went on?! How is it things always just work out for you? You're a walking catastrophe!' The CurseBreaker lets out a " +
+                        "cruel laugh. 'And this..!' he jeers, 'This is Merigold's champion?! Bwa ha ha... It's all" +
+                        " too perfect... '" +
+                        "\n  You blurt that he doesn't seem to have the upperhand to you. It looks" +
+                        " like his rite has already been ruined..." +
+                        "\n  Then you catch yourself as the CurseBreaker's laughter abruptly stops, his cruel black eyes chill " +
+                        "you as you are fixed with the most baleful glower you've ever seen." +
+                        "\n\t'That's right,' he breathes in icy tones, 'even the very worst adventurer of them all is still" +
+                        " an adventurer in need of extirpation. For too long have these lands endured your kind and your" +
+                        " mercenary morals bargained for and sold to the highest bidder. You make a price for your arbitrary" +
+                        " brand of frontier justice and think yourselves proud without any sef-reflection for the choices you make." +
+                        " Had you not intervened, for example, I would have ascended to power that would've brought true justice" +
+                        " to these lands - an all-powerful justice that sees all and controls everything...' "
                     },
 
                     {
                         "You object! Your various 'cons' and play-pretend was just some good sport...",
 
-                        ""
+                        "\t'Good sport?' the CurseBreaker treats your rebuke with disdain. " +
+                        "'As far as your lack of self-reflection goes, you are scarcely any different from any of the other sellswords that plague these lands." +
+                        " They all take on quests, selling their services to the highest bidder, and mete out frontier justice" +
+                        " without questioning the motives of those handing out the reward. In the end *their* principles" +
+                        " are shallow. *Their* morals negotiable. Something to be bartered like trinkets at a market. But yours?' " +
+                        "he scoffs. 'I reckon you never had any to begin with - A trivial oddity whose theatrics belong on a cheap, backalley stageshow.'" +
+                        "\n\t'And I?' he intones. The timbre of his voice is deadly soft yet still cuts through the " +
+                        "storm raging above. 'I have dedicated my life to being the justice that this world needs. A" +
+                        " justice that is all-powerful. A justice that cannot be refused or compromised or escaped. A " +
+                        "justice that would create a new and righteous order, where curses brought about by the selfish actions of villains" +
+                        " and their unanswered abuses won't terrorise the innocent but will instead hunt down those deemed wicked. " +
+                        "I seek a world where the innocent live without fear. *You* would rather the world kept on languishing " +
+                        "in anarchy, for so long as you could steal false glory..."
                     },
 
                     {
                         "What you did, who you were, may have been bad - but at least you're taking a stand now...",
 
-                        ""
+                        "\t'You have no idea what you stand against,' the CurseBreaker ripostes, 'I was on the cusp" +
+                        " of ascending to such power that I could administer true justice unto the world like the god" +
+                        " this world needs. Yet you brandish your sword before me, once more the thespian taking up an all" +
+                        " too desperate role of saviour. The only people you're saving are the wicked adventurers and those that hire them." +
+                        " Those sellswords you so often mimicked who barter their principles like goods at market. Who mete" +
+                        " out frontier justice and then leave others to deal with the consequences. " +
+                        "\n\t'I've strived for years to deliver the world from the anarchy of adventurers and their ilk." +
+                        " Had I succeeded tonight, it would've only been the villains of this world that would live " +
+                        "in fear. The lies and secrets of the wicked would be the only ones to suffer the consequences of the" +
+                        " curses they'd otherwise set upon the land. I would create a new and righteous order out of the old -" +
+                        " a true justice that would be all-powerful and irrefutable...'"
                     },
 
                     {
                         "You reply that even if you're a fraud, you are closer to a hero than the CurseBreaker will ever be...",
 
-                        ""
+                        "\t'You?' the CurseBreaker scoffs." +
+                        "\n\t'I've strived for years to deliver the world from the anarchy of adventurers and their ilk." +
+                        " Had I succeeded tonight, it would've only been the villains of this world that would live " +
+                        "in fear. The lies and secrets of the wicked would be the only ones to suffer the consequences of the" +
+                        " curses they'd otherwise set upon the land. I would create a new and righteous order out of the old -" +
+                        " a true justice that would be all-powerful and irrefutable...'"
                     },
 
                     {
                         "Yessss....?",
-                        
-                        "The CurseBreaker balks. 'This is madness!'"
-                    }
 
+                        "The CurseBreaker balks. 'This is madness!'"
+                    },
+
+                    {
+                        "You challenge him; if he's justice then why'd he rob Merigold of his home and enslave him?",
+
+                        "'Merigold?' The CurseBreaker huffs, a wry smile slipping upon his lips. 'Why, he committed " +
+                        "the worst sin of them all,' he breathes, his voice treacherously smooth. 'He challenged me. " +
+                        "And therefore he opposed justice...'"
+                    },
+
+                    {
+                        "You assert that taking all that power for himself would corrupt him more than any of those he deems 'wicked'...",
+
+                        "  You tell him that absolute power corrupts absolutely. He's already employing the most nefarious" +
+                        " mercenary company who loot and pillage unopposed. Sooner or later he's going to have to choose between" +
+                        " using power to do good and using power to gain more power or to destroy those who'd challenge it..." +
+                        "\n  The CurseBreaker remains unfazed. 'Using power to do good and using it to destroy those who challenge it?'" +
+                        " he remarks imperiously. 'Who says they can't be one and the same thing?'"
+                    },
+
+                    {
+                        "You tell him that taking the power to gaze into people's secrets and blackmailing them won't 'prevent' evil, only inhibit them from being free to do what's right...",
+
+                        "  Making people afraid someone can peer into every moment of their life won't just stop them " +
+                        "from wrongdoing in secret, you assert. It will also make them actively seek to do no action that could" +
+                        " be *mistaken* for wrongdoing for fear of reprisals. It would be too restrictive and destroy their autonomy. " +
+                        "And without autonomy, without agency, there's no such thing as a moral choice anymore..." +
+                        "\n  The CurseBreaker responds icily. 'Good,' he says. 'Freedom is the illness that permits" +
+                        " adventurers to be heroes to a hundred people, whilst wreaking havoc on a thousand more. What" +
+                        " I strive for is a perfect righteous order...'" +
+                        "  \n  You tell him that that sounds like a sentence everyone would suffer from regardless of " +
+                        "whether they're innocent or not... \n  Everyone except him." +
+                        "\n  The CurseBreaker scowls. 'I don't need to explain myself to you. Your hour is already at hand...'"
+                    },
+
+                    {
+                        "You argue that he's wrong. Justice is too much for any one person or group. Power to administer it needs to be shared...",
+
+                        "  You assert that those who wield power must be kept in check to ensure they don't themselves" +
+                        " become corrupt. Or even just so that they don't overlook an alternative way of seeing things. Justice" +
+                        " needs to be inclusive and equitable to get it right. Who else would there be to hold tyrants to account if" +
+                        " not adventurers, or those brave enough to speak out against them..." +
+                        "\n\t'Power that is challenged,' the CurseBreaker asserts in acerbic tones, 'is no power " +
+                        "at all. What you speak of is just anarchy and would be too weak. So weak that it'd let criminals slip through the" +
+                        " cracks.'" +
+                        "   \n  You ask, what if power is concentrated so much that the innocent suffer along with the guilty?" +
+                        " What if, for example, the foot soldiers of justice can plunder a home unchecked, or those in charge can" +
+                        " kidnap people and vanish them?" +
+                        "  \n  The CurseBreaker surveys you haughtily. 'Then it'd be done in the name of justice...'"
+                    },
+
+                    {
+                        "You retort; how can he call what he does justice when he hires an evil mercenary company to do his bidding?",
+
+                        "'How else might justice enforce itself?' The CurseBreaker counters. 'When all is said and done," +
+                        " only force can deliver justice. It must be imposed upon people and brought to bear upon the wicked. Power,' he asserts, '" +
+                        "is necessary. Justice must be strong even if it means being tyrannical. Otherwise there is only" +
+                        " anarchy, and the rule of might makes right..." +
+                        "\n\t'If that means that Justice has to make exceptions to maintain the power that it - that *I* - wield, " +
+                        "then so be it...'"
+                    },
+
+                    {
+                        "You rebuke him; how can he think he's the hero when he spares the 'wicked' mayor for his subservience and favours?",
+
+                        "'Ah, yes... our mayor of Myrovia...' his gaze momentarily turns to the steeples far below, caught in the raging storm." +
+                        " 'His crimes are beyond heinous and unspeakable, but in so far as he collaborates with me, his is an evil that I tolerate" +
+                        " for the greater purpose of bringing true justice to the world...' he then turns back to you and your skin crawls with gooseflesh as he fixes you with a chilling smile." +
+                        " 'At least for the present...'"
+                    },
+
+                    {
+                        "You accept that The CurseBreaker's right...",
+
+                        "'Good,' the CurseBreaker replies silkily. 'What follows next shall be so much easier" +
+                        " if you accept your fate...'"
+                    },
+
+                    {
+                        "You tell him you don't give a damn about his arguments. You're just here to bring him down...",
+
+                        "The CurseBreaker tilts his head back, regarding you coldly..."
+                    }
 
 
                 };
@@ -420,6 +590,16 @@ namespace DungeonCrawler
                     choices[1].Add("You object! Your various 'cons' and play-pretend was just some good sport...");
                     choices[1].Add("What you did, who you were, may have been bad - but at least you're taking a stand now...");
                     choices[1].Add("You reply that even if you're a fraud, you are closer to a hero than the CurseBreaker will ever be...");
+
+                    parlances[2] = "\n\t'But the greatest curse? The greatest curse of them all are adventurers and their ilk. " +
+                        " And now,' the CurseBreaker scoffs, 'before me stands a false pretender, a conman who profits from the mayhem " +
+                        "that adventurers cause throughout the land and reaps undeserved rewards from under their shadow. And you dare to pontificate to *me*?  " +
+                        "\n\t'Adventurers are a bane unto this " +
+                        "world. Their capricious meting of frontier justice and exploitation of the desperate is nothing more" +
+                        " than naked vandalism of the righteous order. And you are nothing more than another symptom of the Curse they spread. " +
+                        "You exploit " +
+                        $" the endless vicious cycle of violence and chaos adventurers cause. " +
+                        $"\n\t'No, {_player.Name},' The CurseBreaker intones icily, 'the hero of this story is not you. It's me...'";
                 }
                 if (_player.Traits.ContainsKey("friends with fairies"))
                 {
@@ -443,15 +623,22 @@ namespace DungeonCrawler
                     choices[2].Add("THIS. IS. OBJECT ORIENTED PROGRAMMING ASSESSMENT TWO! - send the CurseBreaker plummeting to his death...");
                     choices[2].Add("YOU DANCING FOOL!");
                     choices[2].Add("Erm... Actually, no. You'd rather just fight him...");
+
+                    choices.RemoveAt(3);
+                    parlances.RemoveAt(3);
                     
+                }
+                if (_player.UncoverSecretOfMyrovia == 2 || _player.UncoverSecretOfMyrovia == 3 || _player.UncoverSecretOfMyrovia == 6 || _player.UncoverSecretOfMyrovia == 7)
+                {
+                    choices[3].Add("You rebuke him; how can he think he's the hero when he spares the 'wicked' mayor for his subservience and favours?");
                 }
 
                 // change parlances depending on player traits, thespian response, jinxed response, FwF response
-
+                return denouement.LinearParle(choices_response, parlances, choices, description, _player);
 
 
             }
-            return true;
+            return 0;
         }
     }
 }

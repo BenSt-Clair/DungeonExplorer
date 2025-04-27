@@ -1795,7 +1795,7 @@ namespace DungeonCrawler
             }
             else if (Monster.Stamina > 0)
             {
-                if(Monster.Name == "golden dragon")
+                if (Monster.Name == "golden dragon")
                 {
                     Console.WriteLine("The dragon's fiery breath cremates you in the blink of an eye. Your smoking boots are all that remains of your folly.");
                     Console.ReadKey(true);
@@ -1803,7 +1803,13 @@ namespace DungeonCrawler
                     Console.ReadKey(true);
                     return false;
                 }
-                Console.WriteLine($"The {Monster.Name}'s last attack proves fatal. You collapse in shameful defeat, a trickle of blood running from your mouth as your limp body drops to its knees. The {Monster.Name} has proven too much for you. Your adventure ends here...");
+                else if (Monster.Name != "CurseBreaker")
+                {
+                    Console.WriteLine($"The {Monster.Name}'s last attack proves fatal. You collapse in shameful defeat, a trickle of blood running from your mouth as your limp body drops to its knees. The {Monster.Name} has proven too much for you. Your adventure ends here...");
+                    Console.ReadKey(true);
+                    return false;
+                }
+                Console.WriteLine("Your adventure ends here...");
                 Console.ReadKey(true);
                 return false;
             }

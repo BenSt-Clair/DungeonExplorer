@@ -1,4 +1,5 @@
 ﻿using DungeonCrawler;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -2605,8 +2606,9 @@ namespace DungeonCrawler
             //
             //
             //
+            
             /*
-            newRoom1 = highestParapet;
+            newRoom1 = magicalManufactory;
             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
             */
             //
@@ -7465,7 +7467,107 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
 
                         FinalAct denouement = new FinalAct(player1, CurseBreaker);
-
+                        int result = denouement.Denouement(oubliette, specialItems, staffMG, vanquisher, ghoul1);
+                        if (result == 0 && !player1.Traits.ContainsKey("friends with fairies"))
+                        {
+                            Console.WriteLine($"You crash into the {highestParapet.FeatureList[1].Name} only for it to hurl you forwards by some invisible force! \n\n{highestParapet.FeatureList[1].Description}\n\n  You graze your knee (lose 5 stamina!)...");
+                            player1.Stamina -= 5;
+                            if (player1.Stamina < 1)
+                            {
+                                Console.WriteLine("Having been on the edge of death for too long, the shock of the totems force has finally sealed your fate...");
+                                Console.ReadKey(true);
+                                Console.WriteLine("Your adventure ends here...");
+                                Console.ReadKey(true);
+                                return;
+                            }
+                        }
+                        else if (result == 1 && !player1.Traits.ContainsKey("friends with fairies"))
+                        {
+                            Console.WriteLine($"You barrel into the {highestParapet.FeatureList[2].Name} only for it to rebound you forwards by some invisible force! \n\n{highestParapet.FeatureList[2].Description}\n\n  The CurseBreaker's bolt of lightning seared your arm (lose 15 stamina!)...");
+                            player1.Stamina -= 15;
+                            if (player1.Stamina < 1)
+                            {
+                                Console.WriteLine("Having been on the edge of death for too long, the electric shock has finally sealed your fate...");
+                                Console.ReadKey(true);
+                                Console.WriteLine("Your adventure ends here...");
+                                Console.ReadKey(true);
+                                return;
+                            }
+                        }
+                        else if (result == 2 && !player1.Traits.ContainsKey("friends with fairies"))
+                        {
+                            Console.WriteLine("You intend a nimble leap out of the CurseBreaker's reach, but the force of his lightning jolts your muscles, sending you hurtling over the crenallations and plummetting to your doom...");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Your adventure ends here...");
+                            Console.ReadKey(true);
+                            return;
+                        }
+                        else if (result == 3 && !player1.Traits.ContainsKey("friends with fairies"))
+                        {
+                            Console.WriteLine("You bound forward to attack and the lightning hits you full on in the chest! You lose 30 stamina and are sent careering into {oubliette.FeatureList[2].Name}, before it rebounds you bodily away! \n\n {oubliette.FeaureList[2].Description}");
+                            player1.Stamina -= 30;
+                            if (player1.Stamina < 1)
+                            {
+                                Console.WriteLine("The electric shock has finally sealed your fate...");
+                                Console.ReadKey(true);
+                                Console.WriteLine("Your adventure ends here...");
+                                Console.ReadKey(true);
+                                return;
+                            }
+                        }
+                        else if (result == 0)
+                        {
+                            return;
+                        }
+                        else if (result == 1)
+                        {
+                            return;
+                        }
+                        else if (result == 2) 
+                        {
+                            Console.WriteLine("The CurseBreaker vanishes!\n In his place appears the Lady...");
+                            Console.ReadKey(true);
+                            string message =
+                                "\n\t\t_______________________________________________________" +
+                                "\n\t\t-------------------------------------------------------" +
+                                "\n\t\t           THE LADY DOES THE MACARENA!                 " +
+                                "\n\t\t_______________________________________________________" +
+                                "\n\t\t-------------------------------------------------------";
+                            if (music)
+                            {
+                                using (var audiofile = new AudioFileReader("The Lady does the Macarena!.mp3"))
+                                {
+                                    using (var output = new WaveOutEvent())
+                                    {
+                                        Stopwatch zv = new Stopwatch();
+                                        zv.Start();
+                                        long time = 0;
+                                        output.Init(audiofile);
+                                        output.Play(); 
+                                        Console.WriteLine("\x1b[3J");
+                                        Console.Clear();
+                                        while (time < 224000)
+                                        {
+                                            Console.WriteLine(message);
+                                            Thread.Sleep(1000);
+                                            Console.WriteLine("\x1b[3J");
+                                            Console.Clear();
+                                            Thread.Sleep(300);
+                                            zv.Stop();
+                                            time = zv.ElapsedMilliseconds;
+                                            zv.Start();
+                                        }
+                                        return;
+                                    }
+                                }
+                            }
+                            Console.WriteLine("Ermm... who dances with the music switched off?");
+                            Console.ReadKey(true);
+                        }
+                        else
+                        {
+                            
+                        }
                         Combat climax = new Combat(CurseBreaker, player1);
                         
                         
