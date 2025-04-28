@@ -340,6 +340,19 @@ namespace DungeonCrawler
 
                 return roomList;
             }
+            else if (Name == "mirror world")
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    roomList[i] = true;
+                    if (i == 24)
+                    {
+                        roomList[i] = false;
+                    }
+                }
+
+                return roomList;
+            }
             return roomList;
         }
         /// <summary>
@@ -350,7 +363,7 @@ namespace DungeonCrawler
         /// <param name="weaponInventory"></param>
         /// <param name="b"></param>
         /// <param name="player"></param>
-        public Room Investigate(Stopwatch sw, long minotaurAlertedBy, bool justStalked, List<Room> threadPath, List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains, List<Item> stickyItems, List<Item> specialItems, Monster minotaur, Combat mageBattle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, List<Room> destinations, Door stairwayToLower, Feature laboratory = null, List<Room> mosaicPortal = null)
+        public Room Investigate(bool music, Dictionary<Item, List<Player>> usesDictionaryItemChar, Stopwatch sw, long minotaurAlertedBy, bool justStalked, List<Room> threadPath, List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains, List<Item> stickyItems, List<Item> specialItems, Monster minotaur, Combat mageBattle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, List<Room> destinations, Door stairwayToLower, List<Room> choiceVersusDestination = null, Feature laboratory = null, List<Room> mosaicPortal = null)
         {
             
             Dice D20 = new Dice(20);
@@ -392,11 +405,23 @@ namespace DungeonCrawler
             };
             if (b < 1 && (Name !="antechamber" || FirstVisit))
             {
-                Console.WriteLine($"Will you investigate the {Name}'s...");
-                Console.WriteLine("[1] Northern wall?");
-                Console.WriteLine("[2] Westernmost wall?");
-                Console.WriteLine("[3] South wall?");
-                Console.WriteLine("[4] Eastern Wall?");
+                if (Name == "highest parapet")
+                {
+                    Console.WriteLine("Will you glance over your surroundings?");
+                    Console.WriteLine("[1] To the north?");
+                    Console.WriteLine("[2] To the west?");
+                    Console.WriteLine("[3] To the south?");
+                    Console.WriteLine("[4] Above?");
+                }
+                else
+                {
+                    Console.WriteLine($"Will you investigate the {Name}'s...");
+                    Console.WriteLine("[1] Northern wall?");
+                    Console.WriteLine("[2] Westernmost wall?");
+                    Console.WriteLine("[3] South wall?");
+                    Console.WriteLine("[4] Eastern Wall?");
+                }
+                
                 
                 bool continueInvestigate = true;
                 int reply2 = 0;
@@ -467,7 +492,14 @@ namespace DungeonCrawler
                     {
                         Console.WriteLine("Please enter the number corresponding to a listed choice.");
                     }
-                    Console.WriteLine("Do you wish to investigate any of the other sides of the room?");
+                    if (Name == "highest parapet")
+                    {
+                        Console.WriteLine("Will you take a glance elsewhere?");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Do you wish to investigate any of the other sides of the room?");
+                    }
                     reply2 = 0;
                     while (true)
                     {
@@ -502,6 +534,23 @@ namespace DungeonCrawler
 
 
                 }
+            }
+            if (Name == "highest parapet")
+            {
+                Console.WriteLine("Would you like to peer closer at the strange totems about the CurseBreaker?");
+                Dialogue totem = new Dialogue(FeatureList[0]);
+                if (totem.getYesNoResponse())
+                {
+                    foreach (Feature feature in FeatureList)
+                    {
+                        Console.WriteLine($"{feature.Name}:");
+                        Console.WriteLine(feature.Description);
+                    }
+                }
+            }
+            if (Name == "oubliette" || Name == "highest parapet")
+            {
+                return this;
             }
             ///What now follows are a list of options whereby the player can pick up
             ///items in the room, investigate features of the room, or try something else, i.e.
@@ -553,7 +602,7 @@ namespace DungeonCrawler
                 long timeout = sw.ElapsedMilliseconds;
                 try
                 {
-                    if (!justStalked && timeout > minotaurAlertedBy && adjacentRoom.Contains(minotaur.Location) && minotaur.Path.Count == 1)
+                    if (!justStalked && timeout > minotaurAlertedBy && adjacentRoom.Contains(minotaur.Location) && minotaur.Path.Count == 1 && minotaur.Location.Name != "astral planes" && this.Name != "magical manufactory")
                     {
                         Console.WriteLine("You suddenly halt what you are doing...");
                         Console.ReadKey(true);
@@ -596,12 +645,19 @@ namespace DungeonCrawler
                                 Console.WriteLine($"\n{ministryOfSillyWalks[19+D6.Roll(D6)]} to the {FeatureList[answer1].Name}...\n");
                             }
                             Console.ReadKey(true);
-                            Room newRoom = FeatureList[answer1].Search(player.CarryCapacity, inventory, weaponInventory, this, player.FieryEscape, player, stairwayToLower, destinations, specialItems, mageBattle, secretChamber, goblin, gnoll, MGItems);
+                            Room newRoom = FeatureList[answer1].Search(music, usesDictionaryItemChar, choiceVersusDestination, player.CarryCapacity, inventory, weaponInventory, this, player.FieryEscape, player, stairwayToLower, destinations, specialItems, mageBattle, secretChamber, goblin, gnoll, MGItems);
                             FeatureList[answer1].investigateFeature(specialItems, minotaur, player, mosaicPortal);
                             
-                            if ( newRoom.Name != this.Name || laboratory.Description.Contains("It's been thoroughly trashed after your fight with Merigold..."))
+                            if ( newRoom.Name != this.Name )
                             {
                                 return newRoom;
+                            }
+                            if (laboratory != null)
+                            {
+                                if (laboratory.Description.Contains("It's been thoroughly trashed after your fight with Merigold..."))
+                                {
+                                    return newRoom;
+                                }
                             }
                             Console.ReadKey(true);
                             Console.WriteLine(options);
@@ -634,7 +690,7 @@ namespace DungeonCrawler
                                 if (freshLoop) { continue; }
                                 List<Item> weaponSplice = new List<Item> { itemList[answer1 - FeatureList.Count] };
                                 List<Weapon> weapon1 = weaponSplice.Cast<Weapon>().ToList();
-                                weapon1[0].PickUpItem( player.CarryCapacity, inventory, weaponInventory, 4, 0, null, weapon1[0], null, ItemList, yourRustyChains, stickyItems, null, threadPath, this);
+                                weapon1[0].PickUpItem( player, player.CarryCapacity, inventory, weaponInventory, 4, 0, null, weapon1[0], null, ItemList, yourRustyChains, stickyItems, null, threadPath, this);
                             }
                             catch // if not a weapon that is to be picked up...
                             {
@@ -659,7 +715,7 @@ namespace DungeonCrawler
                                     }
                                 }
                                 if (freshLoop) { continue; }
-                                itemList[answer1 - FeatureList.Count].PickUpItem( player.CarryCapacity, inventory, weaponInventory, 4, 0, itemList[answer1 - FeatureList.Count], null, null, ItemList, null, stickyItems, null, threadPath, this); 
+                                itemList[answer1 - FeatureList.Count].PickUpItem( player, player.CarryCapacity, inventory, weaponInventory, 4, 0, itemList[answer1 - FeatureList.Count], null, null, ItemList, null, stickyItems, null, threadPath, this); 
                                     
                                 
                             }

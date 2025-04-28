@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.FileIO;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -186,7 +187,7 @@ namespace DungeonCrawler
                 }
             }
         }
-        public int LinearParle(Dictionary<string, string> choice_CustomResponse, List<string>parlances, List<List<string>> playerChoices, string description)
+        public int LinearParle(Dictionary<string, string> choice_CustomResponse, List<string>parlances, List<List<string>> playerChoices, string description, Player player = null)
         {
             int node = 0;
             int answer1 = 0;
@@ -222,6 +223,7 @@ namespace DungeonCrawler
                             Console.WriteLine($"Please enter a number between 1 and {option}");
                             continue;
                         }
+
                         if (choice_CustomResponse[playerChoices[node][answer1]] == "You decide to stop reading the literature for now.")
                         {
                             Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]]);
@@ -246,7 +248,57 @@ namespace DungeonCrawler
                             Console.ReadKey(true);
                             return -50;
                         }
-                        
+                        else if (playerChoices[node][answer1] == "Unsheathe your weapon and prepare for the duel of your life...")
+                        {
+                            if (player != null)
+                            {
+                                player.Equip(player.WeaponInventory[0], player.WeaponInventory, player);
+                            }
+                        }
+                        else if ((playerChoices[node][answer1] == "Tighten your grip on Merigold's staff and brace yourself..."))
+                        {
+                            if (player != null)
+                            {
+                                foreach (Weapon w in player.WeaponInventory)
+                                {
+                                    if (w.Name == "Marvellous Merigold's Magical Staff of Whacking")
+                                    {
+                                        player.Equip(w, player.WeaponInventory, player);
+                                    }
+                                }
+                            }
+                        }
+                        else if ((playerChoices[node][answer1] == "Unsheathe the sword of sealed souls before the CurseBreaker..."))
+                        {
+                            if (player != null)
+                            {
+                                foreach (Weapon w in player.WeaponInventory)
+                                {
+                                    if (w.Name == "Sword of Sealed Souls")
+                                    {
+                                        player.Equip(w, player.WeaponInventory, player);
+                                    }
+                                }
+                            }
+                        }
+                        if (player != null)
+                        {
+                            if (node == 1 && parlances[2].Contains("This report sends a jolt through you, as the name of that accursed village that'd abducted you leaps out of the page at you;"))
+                            {
+                                
+                                if (player.UncoverSecretOfMyrovia == 1 || player.UncoverSecretOfMyrovia == 4 || player.UncoverSecretOfMyrovia == 5 || player.UncoverSecretOfMyrovia == 0)
+                                {
+                                    player.UncoverSecretOfMyrovia += 2;
+                                }
+                            }
+                            else if (node == 2 && parlances[3].Contains("You watch as the guests, rather unsteadily, rise from their seats and take their leave. One of the last to do so is a figure who stirs within you some disquieting unease; an unwelcome, nauseating deja vu. The ghostly apparition is more tremulous than most as he heads for the door..."))
+                            {
+                                if (player.UncoverSecretOfMyrovia < 4)
+                                {
+                                    player.UncoverSecretOfMyrovia += 4;
+                                }
+                            }
+                        }
                         Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]] + " " + parlances[node + 1]);
                         
                         break;
@@ -557,7 +609,7 @@ namespace DungeonCrawler
             }
             
         }
-        public int LoopParle(Dictionary<string, string> choice_answer, List<string> choices, string description, string parlance, int y1, int x1, int z1)
+        public int LoopParle(bool music, Dictionary<string, string> choice_answer, List<string> choices, string description, string parlance, int y1, int x1, int z1)
         {
             Console.WriteLine($"{description}\n\t{parlance}\nHow will you respond?");
             int x = x1;
@@ -589,6 +641,17 @@ namespace DungeonCrawler
                 try
                 {
                     int answer1 = int.Parse(answer) - 1;
+                    if (choices[answer1] == "You remind him of what he said about only having until midnight to stop some profane ritual - you ask him to tell you everything he knows about it...")
+                    {
+                        _player.Fooled = false;
+                    }
+                    if (choices[answer1] == "You tell him that the strange innkeeper made it clear you were abducted and exchanged in the hope that the CurseBreaker might somehow break Myrovia's curse. How does this villain intend to commit such a feat?")
+                    {
+                        if (_player.UncoverSecretOfMyrovia == 0 || _player.UncoverSecretOfMyrovia == 2 || _player.UncoverSecretOfMyrovia == 4 || _player.UncoverSecretOfMyrovia == 6)
+                        {
+                            _player.UncoverSecretOfMyrovia++;
+                        }
+                    }
                     if (answer1 < 0 || answer1 > choices.Count - 1)
                     {
                         Console.WriteLine($"Please enter a number between 1 and {option}");
@@ -596,7 +659,28 @@ namespace DungeonCrawler
                     }
                     else if (answer1 == y)
                     {
-                        Console.WriteLine(choice_answer[choices[y]]);
+                        
+                        if (choices[y] == "This is all too much. Your deception cannot last. You confess to Merigold everything. You are no adventurer like your fellow inmates. In fact, you were never anything other than a fraudster, a small-time con-artist, and general rapscallion..." 
+                            || choices[y] == "You tell him frankly that while you may be an adventurer, you're no hero. You tell him you're sorry to disappoint him but all you want is a way out of here...")
+                        {
+                            using(var audioFile = new AudioFileReader("courage-inside-monument-music-main-version-30423-02-42.mp3"))
+                            {
+                                using (var outputDevice = new WaveOutEvent())
+                                {
+                                    if (music)
+                                    {
+                                        outputDevice.Init(audioFile);
+                                        outputDevice.Play();
+                                    }
+                                    Console.WriteLine(choice_answer[choices[y]]);
+                                    Console.ReadKey(true);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine(choice_answer[choices[y]]);
+                        }
                         return 1;
                     }
                     else if (answer1 == x)

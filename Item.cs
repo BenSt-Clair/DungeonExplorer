@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime;
@@ -36,7 +37,7 @@ namespace DungeonCrawler
         {
             weaponInventory.Add(weapon);
         }
-        public void StudyItem(Item item)
+        public void StudyItem(Item item, Player player)
         {
             if (item.Name.Contains("newsletter"))
             {
@@ -554,7 +555,7 @@ namespace DungeonCrawler
                     int x = 0;
                     while (x == 0)
                     {
-                        x = history_curses.LinearParle(action, pages, playerchoice, description);
+                        x = history_curses.LinearParle(action, pages, playerchoice, description, player);
                     }
                 }
                 else
@@ -654,7 +655,7 @@ namespace DungeonCrawler
         /// <param name="weapon"></param>
         /// <param name="featureItems"></param>
         /// <param name="roomItems"></param>
-        public void PickUpItem( int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null, Weapon yourRustyChains = null, List<Item> stickyItems = null, Monster monster = null, List<Room> threadPath = null, Room room = null)
+        public void PickUpItem( Player player, int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null, Weapon yourRustyChains = null, List<Item> stickyItems = null, Monster monster = null, List<Room> threadPath = null, Room room = null)
         {
             try
             {
@@ -776,7 +777,7 @@ namespace DungeonCrawler
                     {
                         if (weapon == null)//if item is not a weapon
                         {
-                            StudyItem(item);
+                            StudyItem(item, player);
                             
                             if (range == 3 || range == 4 || range == 6)
                             {
@@ -791,7 +792,7 @@ namespace DungeonCrawler
                         }
                         else//if item is a weapon
                         {
-                            StudyItem(weapon);
+                            StudyItem(weapon, player);
                             if (range == 3 || range == 4 || range == 6)
                             {
                                 Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it upon your person \n[3]place it back where you found it?");
@@ -1134,18 +1135,117 @@ namespace DungeonCrawler
         /// <param name="weaponInventory"></param>
         /// <param name="binkySkull"></param>
         /// <returns></returns>
-        public bool UseItem1(Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Monster monster, Combat battle, bool fieryEscape, Item binkySkull = null, Item musicBox = null, Item note = null, Item jailorKeys = null)
+        public bool UseItem1(bool music, Dictionary<Item, List<Player>> usesDictionaryItemChar,Item item, Feature feature, Dictionary<Item, List<Feature>> usesDictionary, List<Item> inventory, List<Weapon> weaponInventory, Room room, Player player, Monster monster, Combat battle, bool fieryEscape, List<Room> choiceVersusDestination = null, Item binkySkull = null, Item musicBox = null, Item note = null, Item jailorKeys = null)
         {
             Door door1 = new Door();
             List<Room> roomlist = new List<Room>(); // empty lists for filling in Search function unused parameters
             if (usesDictionary[item].Contains(feature))
             {
-                
-                feature.Attribute = !feature.Attribute; // key lock unlock, weapon intact broken, magical charm uncharmed charmed, etc
+                if (!feature.Name.Contains("totem"))
+                {
+                    feature.Attribute = !feature.Attribute;
+                } // key lock unlock, weapon intact broken, magical charm uncharmed charmed, etc
                 if (feature.Attribute == false)
                 {
-                    feature.SpecificAttribute = "un" + feature.SpecificAttribute;
-                    if (item.Name == "jailor keys" && (feature.Name == "far door" || feature.Name == "near door"))
+                    if (!feature.Name.Contains("totem"))
+                    {
+                        feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                    }
+                    if (feature.Name.Contains("totem"))
+                    {
+                        List<Item> weapon = new List<Item> { item};
+                        List<Weapon> nowWeapon = weapon.Cast<Weapon>().ToList();
+                        Weapon cursedWeapon = nowWeapon[0];
+                        int sum = 0;
+                        foreach (Dice dice in cursedWeapon.GetDamage())
+                        {
+                            sum += dice.Roll(dice);
+                        }
+                        feature.Stamina -= sum;
+                        if (feature.Stamina < 1)
+                        {
+                            feature.Attribute = !feature.Attribute;
+                            feature.SpecificAttribute = "blasted";
+                            feature.Name = "shattered " + feature.Name;
+                            Console.WriteLine("Your blow breaks the crystal! Before your eyes intense light slices through the cracks as the magic inside surges with explosive force...");
+                            Console.WriteLine("Test your skill to avoid the blast!\n[Roll 3 four sided dice under your skill score + 3]");
+                            Dice D4 = new Dice(4);
+                            List<Dice> boom = new List<Dice> {D4, D4, D4 };
+                            int score = 0;
+                            Console.ReadKey(true);
+                            string messae = "";
+                            foreach(Dice d in boom)
+                            {
+                                int result = D4.Roll(D4);
+                                score += result;
+                                Console.WriteLine($"You rolled a {result}");
+                                Console.ReadKey(true);
+                            }
+                            messae += $"You rolled a total of {score}";
+                            string plus = "";
+                            if (player.Traits.ContainsKey("jinxed"))
+                            {
+                                score -= 4;
+                                messae += " to which 4 is subtracted because of your jinxy nature!";
+                                plus = "also";
+                            }
+                            bool felix = false;
+                            int count = 0;
+                            foreach(Weapon w in player.WeaponInventory)
+                            {
+                                if (w.Boon > 9)
+                                {
+                                    count++;
+                                }
+                            }
+                            if (count != 0 && count == player.WeaponInventory.Count)
+                            {
+                                felix = true;
+                            }
+                            if (felix)
+                            {
+                                score -= 6;
+                                messae += $"\nYour Felix Felicis {plus} deducts 6 points from your roll!";
+                            }
+                            Console.WriteLine(messae);
+                            Console.ReadKey(true);
+                            if (player.Skill + 3 < score)
+                            {
+                                
+                                Console.WriteLine("You're too slow!");
+                                Console.ReadKey(true);
+                                
+                                List<string> kablam = new List<string>
+                                {
+                                    $"You stare transfixed as a web of cracks rapidly splinter the crystal. Before you know it you've been thrown through the air by the explosive force wrought by its destruction!\n[You lose {score} stamina!]",
+                                    $"You try to wheel away but are instead launched back as the crystal erupts!\n[You lose {score} stamina!]",
+                                    $"You begin to recoil but are instead lifted off your feet by the crystal's blast!\n[You lose {score} stamina!]",
+                                    $"You jolt backwards but find no cover from the blast of sharp fragments. They lacerate your arms as you cover your face!\n[You lose {score} stamina!]"
+                                };
+                                Console.WriteLine(kablam[D4.Roll(D4) - 1]);
+                                player.Stamina -= score;
+                                return true;
+                            }
+                            else if (player.Skill + 3 >= score)
+                            {
+                                Console.WriteLine("You dive out of the way just before the crystal explodes!");
+                                Console.ReadKey(true);
+                                Console.WriteLine("fragments rain down on you. But it's not long before the CurseBreaker, brandishing his lethal sabre, closes in once more...");
+                                return true;
+                            }
+                            
+                            return true;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Your {item.Name} cracks the crystal, but not with enough force to shatter it...");
+                            Console.ReadKey(true);
+                            return true;
+                        }
+                        
+
+                    }
+                    else if (item.Name == "jailor keys" && (feature.Name == "far door" || feature.Name == "near door"))
                     {
                         int index = feature.SpecificAttribute.IndexOf("ed");
                         string strand = feature.SpecificAttribute.Substring(0, index);
@@ -1187,7 +1287,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
+                                feature.Search(music, usesDictionaryItemChar, choiceVersusDestination, player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -1223,6 +1323,10 @@ namespace DungeonCrawler
                 }
                 else
                 {
+                    if (feature.Name.Contains("totem"))
+                    {
+                        return false;
+                    }
                     feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
                     if (item.Name == "jailor keys" && (feature.Name == "far door" || feature.Name == "near door"))
                     {
@@ -1269,7 +1373,7 @@ namespace DungeonCrawler
                             }
                             else if (answer == "yes" || answer == "y")
                             {
-                                feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
+                                feature.Search(music, usesDictionaryItemChar, choiceVersusDestination, player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
                                 break;
                             }
                             else if (answer == "no" || answer == "n")
@@ -1289,6 +1393,22 @@ namespace DungeonCrawler
             }
             else 
             {
+                if (feature.Name.Contains("totem"))
+                {
+                    if(item is Weapon)
+                    {
+                        
+                        Console.WriteLine("Your blow is countered by some impenetrable enchanted forcefield!\n" +
+                            "Mundane weapons have no effect on these totems summoned through dark Fey Sorcery...");
+                        
+                        return false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("That does nothing to counter the totem's magic!");
+                        return false;
+                    }
+                }
                 if (feature.Description == "Replete with weapons of all descriptions, their oiled and well-polished blades gleam at you.\nIt's a shame someone was foresighted enough to lock them all behind an enchanted glass panel...")
                 {
                     if (Name == "lockpicking set" || Name.Contains(" key"))
@@ -1364,7 +1484,7 @@ namespace DungeonCrawler
                                     }
                                     else if (answer == "yes" || answer == "y")
                                     {
-                                        feature.Search(player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
+                                        feature.Search(music, usesDictionaryItemChar, choiceVersusDestination, player.CarryCapacity, inventory, weaponInventory, room, fieryEscape, null, door1, roomlist);
                                         break;
                                     }
                                     else if (answer == "no" || answer == "n")
@@ -2246,7 +2366,7 @@ namespace DungeonCrawler
                 return false; 
             }
         }
-        public List<bool> UseItem(Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, List<Item> specialItems, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, Dictionary<Item, List<Player>> usesDictionaryItemChar = null, Player player1 = null, Combat trialBattle = null)
+        public List<bool> UseItem(bool music, Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, List<Item> specialItems, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, Dictionary<Item, List<Player>> usesDictionaryItemChar = null, Player player1 = null, Combat trialBattle = null, Monster monster = null)
         {
             List<bool> tlist = new List<bool> { false, false };
             if (usesDictionary[item1].Contains(item2))
@@ -2290,7 +2410,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         player.Inventory.Remove(item2);
                         bool fire = true;
-                        if (trialBattle.Fight(usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, specialItems, fire))
+                        if (trialBattle.Fight(music, usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, specialItems, 1, fire))
                         {
                             tlist[0] = true;
                             tlist[1] = true;
@@ -2318,7 +2438,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         player.Inventory.Remove(item2);
                         bool fire = true;
-                        if (trialBattle.Fight(usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, specialItems, fire))
+                        if (trialBattle.Fight(music, usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, specialItems, 1, fire))
                         {
                             tlist[0] = true;
                             tlist[1] = true;
@@ -2355,7 +2475,88 @@ namespace DungeonCrawler
                 tlist[0] = true;
                 return tlist;
             }
-            else { return tlist; }
+            else 
+            {
+                if (monster != null)
+                {
+                    if (item2.Name == monster.Veapon.Name && item1.Name.Contains("throwing knife"))
+                    {
+                        int resultOfSkillTest = 0;
+                        if (player.Skill < 7)
+                        {
+                            Console.WriteLine("In the heat of battle you hurl your throwing knife and pray it hits your target...");
+                            Console.ReadKey(true);
+                            Console.WriteLine("[Test your skill: Roll a D7 equal to or under your skill score]");
+                            Console.ReadKey(true);
+                            Dice D7 = new Dice(7);
+                            resultOfSkillTest = D7.Roll(D7);
+                            if (resultOfSkillTest > 3 && player.Traits.ContainsKey("jinxed"))
+                            {
+                                resultOfSkillTest -= 3;
+                            }
+                            Console.WriteLine($"You rolled a {resultOfSkillTest}");
+                            if (resultOfSkillTest <= player.Skill)
+                            {
+                                Console.ReadKey(true);
+                                if (monster.Name != "CurseBreaker")
+                                {
+                                    Console.WriteLine("You fling the throwing knife into your opponent's weapon. It is sent clattering away along the ground. Fuming, your enemy resolves to settle this fight with their bare hands...");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("The CurseBreaker's sabre is sent clattering across the flagstones as your throwing knife slashes the back of his hand. Scowling, he unsheathes a stiletto blade to finish what he started...");
+                                }
+                            }
+                            else
+                            {
+                                Console.ReadKey(true);
+                                if (monster.Name != "CurseBreaker")
+                                {
+                                    Console.WriteLine("Your throwing knife misses...");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("The CurseBreaker deflects your throwing knife with a flourish of his sabre. The fight continues...");
+                                }
+                                return tlist;
+                            }
+                        }
+                        else
+                        {
+                            if (monster.Name != "CurseBreaker")
+                            {
+                                Console.WriteLine("With well practiced flair you fling the throwing knife into your opponent's weapon. It is sent clattering away along the ground. Fuming, your enemy resolves to settle this fight with their bare hands...");
+                            }
+                            else
+                            {
+                                Console.WriteLine("The CurseBreaker's sabre is sent clattering across the flagstones as your throwing knife slashes the back of his hand. Scowling, he unsheathes a stiletto blade to finish what he started...");
+                            }
+                        }
+
+                        player.Inventory.Remove(item1);
+                        room.ItemList.Add(item1);
+                        monster.Items.RemoveAt(0);
+                        room.ItemList.Add(item2);
+                        if (monster.Name != "CurseBreaker")
+                        {
+                            List<Item> weaponcaster = new List<Item> { specialItems[8] };
+                            List<Weapon> weaponCasted = weaponcaster.Cast<Weapon>().ToList();
+                            monster.Veapon = weaponCasted[0];
+                        }
+                        else
+                        {
+                            List<Item> weaponcaster = new List<Item> { specialItems[9] };
+                            List<Weapon> weaponCasted = weaponcaster.Cast<Weapon>().ToList();
+                            
+                            
+                            monster.Veapon = weaponCasted[0];
+                        }
+
+                    }
+                }
+                
+                return tlist; 
+            }
 
         }
         public bool UseItem3(Item item1, Player player, Dictionary<Item, List<Player>> usesDictionary, bool masked)
@@ -2556,7 +2757,7 @@ namespace DungeonCrawler
         /// <param name="holeInCeiling"></param>
         /// <param name="start"></param>
         /// <returns></returns>
-        public int Attack(int skill, int opponentSkill, int enemyStamina, bool commentary, Monster monsterName, Player player, string another, Room room, Feature holeInCeiling, bool start = false, bool attackedMonster2 = false)
+        public int Attack(int skill, int opponentSkill, int enemyStamina, bool commentary, Monster monsterName, Player player, string another, Room room, Feature holeInCeiling, int totemCount = 1, bool start = false, bool attackedMonster2 = false)
         {
             Dice D18 = new Dice(18);
             Dice D16 = new Dice(16);
@@ -2612,19 +2813,33 @@ namespace DungeonCrawler
             {
                 if (commentary) //if the player is attacking...
                 {
-                    Console.WriteLine($"Roll for your {Name}...");
-                    foreach (Dice d in Damage)
+                    if (skill == -10 || totemCount == -1)
                     {
-                        Console.ReadKey(true);
-                        int roll = d.Roll(d);
-                        damageDealt += roll;
-                        Console.WriteLine($"You rolled a {roll}");
+                        foreach (Dice d in Damage)
+                        {
 
+                            int roll = d.Roll(d);
+                            damageDealt += roll;
+
+
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Roll for your {Name}...");
+                        foreach (Dice d in Damage)
+                        {
+                            Console.ReadKey(true);
+                            int roll = d.Roll(d);
+                            damageDealt += roll;
+                            Console.WriteLine($"You rolled a {roll}");
+
+                        }
                     }
                 }
                 else
                 {
-                    if (!start && !attackedMonster2)
+                    if (!start && !attackedMonster2 && player.Skill != -10)
                     {
                         List<string> enemyCounters = new List<string>
                             {
@@ -2670,7 +2885,7 @@ namespace DungeonCrawler
 
 
 
-                if ((hitThreshold - hitRoll) - 3 > opponentSkill)
+                if ((hitThreshold - hitRoll) - 3 > opponentSkill || (skill == -10))
                 {
                     goodHit = (hitThreshold - opponentSkill);
                     good = true;
@@ -2704,186 +2919,475 @@ namespace DungeonCrawler
                     ///there are specific comments for whether a good attack or a crit attack
                     ///lands and determined by both player skill and how much relative damage they do as a proportion 
                     ///to the enemy's remaining stamina.
-                    if (crit)
+                    if (!player.Traits.ContainsKey("thick-skinned"))
                     {
+                        if (crit)
+                        {
+                            int LadyDeathStrike = 0;
+                            if (skill == -10 || totemCount == -1)
+                            {
+                                LadyDeathStrike = D4.Roll(D4);
+                            }
+                            if (skill > 8 || LadyDeathStrike == 4)
+                            {
+                                if (enemyStamina - (damageDealt + goodHit / 2) < 1)
+                                {
+                                    Console.WriteLine(CritAttack[0]);
+                                }
+                                else if (enemyStamina - (damageDealt + goodHit / 2) < enemyStamina / 3)
+                                {
+                                    Console.WriteLine(CritAttack[1]);
+                                }
+                                else if (enemyStamina - (damageDealt + goodHit / 2) < 2 * enemyStamina / 3)
+                                {
+                                    Console.WriteLine(CritAttack[2]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(CritAttack[3]);
+                                }
 
-                        if (skill > 8)
-                        {
-                            if (enemyStamina - (damageDealt + goodHit / 2) < 1)
-                            {
-                                Console.WriteLine(CritAttack[0]);
                             }
-                            else if (enemyStamina - (damageDealt + goodHit / 2) < enemyStamina / 3)
+                            else if (skill > 5 || LadyDeathStrike == 3)
                             {
-                                Console.WriteLine(CritAttack[1]);
+                                if (enemyStamina - (damageDealt + goodHit / 2) < 1)
+                                {
+                                    Console.WriteLine(CritAttack[4]);
+                                }
+                                else if (enemyStamina - (damageDealt + goodHit / 2) < enemyStamina / 3)
+                                {
+                                    Console.WriteLine(CritAttack[5]);
+                                }
+                                else if (enemyStamina - (damageDealt + goodHit / 2) < 2 * enemyStamina / 3)
+                                {
+                                    Console.WriteLine(CritAttack[6]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(CritAttack[7]);
+                                }
                             }
-                            else if (enemyStamina - (damageDealt + goodHit / 2) < 2 * enemyStamina / 3)
+                            else if (skill > 2 || LadyDeathStrike == 2)
                             {
-                                Console.WriteLine(CritAttack[2]);
+                                if (enemyStamina - (damageDealt + goodHit / 2) < 1)
+                                {
+                                    Console.WriteLine(CritAttack[8]);
+                                }
+                                else if (enemyStamina - (damageDealt + goodHit / 2) < enemyStamina / 3)
+                                {
+                                    Console.WriteLine(CritAttack[9]);
+                                }
+                                else if (enemyStamina - (damageDealt + goodHit / 2) < 2 * enemyStamina / 3)
+                                {
+                                    Console.WriteLine(CritAttack[10]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(CritAttack[11]);
+                                }
                             }
                             else
                             {
-                                Console.WriteLine(CritAttack[3]);
+                                if (enemyStamina - (damageDealt + goodHit / 2) < 1)
+                                {
+                                    Console.WriteLine(CritAttack[12]);
+                                }
+                                else if (enemyStamina - (damageDealt + goodHit / 2) < enemyStamina / 3)
+                                {
+                                    Console.WriteLine(CritAttack[13]);
+                                }
+                                else if (enemyStamina - (damageDealt + goodHit / 2) < 2 * enemyStamina / 3)
+                                {
+                                    Console.WriteLine(CritAttack[14]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(CritAttack[15]);
+                                }
                             }
+                            Console.WriteLine("\n");
+                        }
+                        else if (good)
+                        {
+                            int LadyDeathStrike = 0;
+                            if (skill == -10 || totemCount == -1)
+                            {
+                                LadyDeathStrike = D4.Roll(D4);
+                            }
+                            Console.WriteLine("\n");
+                            if (skill > 8 || LadyDeathStrike == 4)
+                            {
+                                if (enemyStamina - (damageDealt + goodHit / 2) < 1)
+                                {
+                                    Console.WriteLine(GoodAttack[0]);
+                                }
+                                else if (enemyStamina - (damageDealt + goodHit / 2) < enemyStamina / 3)
+                                {
+                                    Console.WriteLine(GoodAttack[1]);
+                                }
+                                else if (enemyStamina - (damageDealt + goodHit / 2) < 2 * enemyStamina / 3)
+                                {
+                                    Console.WriteLine(GoodAttack[2]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(GoodAttack[3]);
+                                }
 
-                        }
-                        else if (skill > 5)
-                        {
-                            if (enemyStamina - (damageDealt + goodHit / 2) < 1)
-                            {
-                                Console.WriteLine(CritAttack[4]);
                             }
-                            else if (enemyStamina - (damageDealt + goodHit / 2) < enemyStamina / 3)
+                            else if (skill > 5 || LadyDeathStrike == 3)
                             {
-                                Console.WriteLine(CritAttack[5]);
+                                if (enemyStamina - (damageDealt + goodHit / 2) < 1)
+                                {
+                                    Console.WriteLine(GoodAttack[4]);
+                                }
+                                else if (enemyStamina - (damageDealt + goodHit / 2) < enemyStamina / 3)
+                                {
+                                    Console.WriteLine(GoodAttack[5]);
+                                }
+                                else if (enemyStamina - (damageDealt + goodHit / 2) < 2 * enemyStamina / 3)
+                                {
+                                    Console.WriteLine(GoodAttack[6]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(GoodAttack[7]);
+                                }
                             }
-                            else if (enemyStamina - (damageDealt + goodHit / 2) < 2 * enemyStamina / 3)
+                            else if (skill > 2 || LadyDeathStrike == 2)
                             {
-                                Console.WriteLine(CritAttack[6]);
-                            }
-                            else
-                            {
-                                Console.WriteLine(CritAttack[7]);
-                            }
-                        }
-                        else if (skill > 2)
-                        {
-                            if (enemyStamina - (damageDealt + goodHit / 2) < 1)
-                            {
-                                Console.WriteLine(CritAttack[8]);
-                            }
-                            else if (enemyStamina - (damageDealt + goodHit / 2) < enemyStamina / 3)
-                            {
-                                Console.WriteLine(CritAttack[9]);
-                            }
-                            else if (enemyStamina - (damageDealt + goodHit / 2) < 2 * enemyStamina / 3)
-                            {
-                                Console.WriteLine(CritAttack[10]);
-                            }
-                            else
-                            {
-                                Console.WriteLine(CritAttack[11]);
-                            }
-                        }
-                        else
-                        {
-                            if (enemyStamina - (damageDealt + goodHit / 2) < 1)
-                            {
-                                Console.WriteLine(CritAttack[12]);
-                            }
-                            else if (enemyStamina - (damageDealt + goodHit / 2) < enemyStamina / 3)
-                            {
-                                Console.WriteLine(CritAttack[13]);
-                            }
-                            else if (enemyStamina - (damageDealt + goodHit / 2) < 2 * enemyStamina / 3)
-                            {
-                                Console.WriteLine(CritAttack[14]);
+                                if (enemyStamina - (damageDealt + goodHit / 2) < 1)
+                                {
+                                    Console.WriteLine(GoodAttack[8]);
+                                }
+                                else if (enemyStamina - (damageDealt + goodHit / 2) < enemyStamina / 3)
+                                {
+                                    Console.WriteLine(GoodAttack[9]);
+                                }
+                                else if (enemyStamina - (damageDealt + goodHit / 2) < 2 * enemyStamina / 3)
+                                {
+                                    Console.WriteLine(GoodAttack[10]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(GoodAttack[11]);
+                                }
                             }
                             else
                             {
-                                Console.WriteLine(CritAttack[15]);
+                                if (enemyStamina - (damageDealt + goodHit / 2) < 1)
+                                {
+                                    Console.WriteLine(GoodAttack[12]);
+                                }
+                                else if (enemyStamina - (damageDealt + goodHit / 2) < enemyStamina / 3)
+                                {
+                                    Console.WriteLine(GoodAttack[13]);
+                                }
+                                else if (enemyStamina - (damageDealt + goodHit / 2) < 2 * enemyStamina / 3)
+                                {
+                                    Console.WriteLine(GoodAttack[14]);
+                                    another = "another";
+                                }
+                                else
+                                {
+                                    Console.WriteLine(GoodAttack[15]);
+                                    another = "another";
+                                }
                             }
+                            Console.WriteLine("\n");
                         }
-                        Console.WriteLine("\n");
                     }
-                    else if (good)
+                    else
                     {
-                        Console.WriteLine("\n");
-                        if (skill > 8)
+                        if (crit)
                         {
-                            if (enemyStamina - (damageDealt + goodHit / 2) < 1)
+                            int LadyDeathStrike = 0;
+                            if (skill == -10 || totemCount == -1)
                             {
-                                Console.WriteLine(GoodAttack[0]);
+                                LadyDeathStrike = D4.Roll(D4);
                             }
-                            else if (enemyStamina - (damageDealt + goodHit / 2) < enemyStamina / 3)
+                            if (skill > 8 || LadyDeathStrike == 4)
                             {
-                                Console.WriteLine(GoodAttack[1]);
-                            }
-                            else if (enemyStamina - (damageDealt + goodHit / 2) < 2 * enemyStamina / 3)
-                            {
-                                Console.WriteLine(GoodAttack[2]);
-                            }
-                            else
-                            {
-                                Console.WriteLine(GoodAttack[3]);
-                            }
+                                if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < 1)
+                                {
+                                    Console.WriteLine(CritAttack[0]);
+                                }
+                                else if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < enemyStamina / 3)
+                                {
+                                    Console.WriteLine(CritAttack[1]);
+                                }
+                                else if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < 2 * enemyStamina / 3)
+                                {
+                                    Console.WriteLine(CritAttack[2]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(CritAttack[3]);
+                                }
 
-                        }
-                        else if (skill > 5)
-                        {
-                            if (enemyStamina - (damageDealt + goodHit / 2) < 1)
-                            {
-                                Console.WriteLine(GoodAttack[4]);
                             }
-                            else if (enemyStamina - (damageDealt + goodHit / 2) < enemyStamina / 3)
+                            else if (skill > 5 || LadyDeathStrike == 3)
                             {
-                                Console.WriteLine(GoodAttack[5]);
+                                if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < 1)
+                                {
+                                    Console.WriteLine(CritAttack[4]);
+                                }
+                                else if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < enemyStamina / 3)
+                                {
+                                    Console.WriteLine(CritAttack[5]);
+                                }
+                                else if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < 2 * enemyStamina / 3)
+                                {
+                                    Console.WriteLine(CritAttack[6]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(CritAttack[7]);
+                                }
                             }
-                            else if (enemyStamina - (damageDealt + goodHit / 2) < 2 * enemyStamina / 3)
+                            else if (skill > 2 || LadyDeathStrike == 2)
                             {
-                                Console.WriteLine(GoodAttack[6]);
-                            }
-                            else
-                            {
-                                Console.WriteLine(GoodAttack[7]);
-                            }
-                        }
-                        else if (skill > 2)
-                        {
-                            if (enemyStamina - (damageDealt + goodHit / 2) < 1)
-                            {
-                                Console.WriteLine(GoodAttack[8]);
-                            }
-                            else if (enemyStamina - (damageDealt + goodHit / 2) < enemyStamina / 3)
-                            {
-                                Console.WriteLine(GoodAttack[9]);
-                            }
-                            else if (enemyStamina - (damageDealt + goodHit / 2) < 2 * enemyStamina / 3)
-                            {
-                                Console.WriteLine(GoodAttack[10]);
-                            }
-                            else
-                            {
-                                Console.WriteLine(GoodAttack[11]);
-                            }
-                        }
-                        else
-                        {
-                            if (enemyStamina - (damageDealt + goodHit / 2) < 1)
-                            {
-                                Console.WriteLine(GoodAttack[12]);
-                            }
-                            else if (enemyStamina - (damageDealt + goodHit / 2) < enemyStamina / 3)
-                            {
-                                Console.WriteLine(GoodAttack[13]);
-                            }
-                            else if (enemyStamina - (damageDealt + goodHit / 2) < 2 * enemyStamina / 3)
-                            {
-                                Console.WriteLine(GoodAttack[14]);
-                                another = "another";
+                                if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < 1)
+                                {
+                                    Console.WriteLine(CritAttack[8]);
+                                }
+                                else if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < enemyStamina / 3)
+                                {
+                                    Console.WriteLine(CritAttack[9]);
+                                }
+                                else if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < 2 * enemyStamina / 3)
+                                {
+                                    Console.WriteLine(CritAttack[10]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(CritAttack[11]);
+                                }
                             }
                             else
                             {
-                                Console.WriteLine(GoodAttack[15]);
-                                another = "another";
+                                if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < 1)
+                                {
+                                    Console.WriteLine(CritAttack[12]);
+                                }
+                                else if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < enemyStamina / 3)
+                                {
+                                    Console.WriteLine(CritAttack[13]);
+                                }
+                                else if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < 2 * enemyStamina / 3)
+                                {
+                                    Console.WriteLine(CritAttack[14]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(CritAttack[15]);
+                                }
                             }
+                            Console.WriteLine("\n");
                         }
-                        Console.WriteLine("\n");
+                        else if (good)
+                        {
+                            int LadyDeathStrike = 0;
+                            if (skill == -10 || totemCount == -1)
+                            {
+                                LadyDeathStrike = D4.Roll(D4);
+                            }
+                            Console.WriteLine("\n");
+                            if (skill > 8 || LadyDeathStrike == 4)
+                            {
+                                if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < 1)
+                                {
+                                    Console.WriteLine(GoodAttack[0]);
+                                }
+                                else if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < enemyStamina / 3)
+                                {
+                                    Console.WriteLine(GoodAttack[1]);
+                                }
+                                else if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < 2 * enemyStamina / 3)
+                                {
+                                    Console.WriteLine(GoodAttack[2]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(GoodAttack[3]);
+                                }
+
+                            }
+                            else if (skill > 5 || LadyDeathStrike == 3)
+                            {
+                                if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < 1)
+                                {
+                                    Console.WriteLine(GoodAttack[4]);
+                                }
+                                else if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < enemyStamina / 3)
+                                {
+                                    Console.WriteLine(GoodAttack[5]);
+                                }
+                                else if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < 2 * enemyStamina / 3)
+                                {
+                                    Console.WriteLine(GoodAttack[6]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(GoodAttack[7]);
+                                }
+                            }
+                            else if (skill > 2 || LadyDeathStrike == 2)
+                            {
+                                if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < 1)
+                                {
+                                    Console.WriteLine(GoodAttack[8]);
+                                }
+                                else if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < enemyStamina / 3)
+                                {
+                                    Console.WriteLine(GoodAttack[9]);
+                                }
+                                else if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < 2 * enemyStamina / 3)
+                                {
+                                    Console.WriteLine(GoodAttack[10]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(GoodAttack[11]);
+                                }
+                            }
+                            else
+                            {
+                                if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < 1)
+                                {
+                                    Console.WriteLine(GoodAttack[12]);
+                                }
+                                else if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < enemyStamina / 3)
+                                {
+                                    Console.WriteLine(GoodAttack[13]);
+                                }
+                                else if (enemyStamina - 4*(damageDealt + goodHit / 2)/5 < 2 * enemyStamina / 3)
+                                {
+                                    Console.WriteLine(GoodAttack[14]);
+                                    another = "another";
+                                }
+                                else
+                                {
+                                    Console.WriteLine(GoodAttack[15]);
+                                    another = "another";
+                                }
+                            }
+                            Console.WriteLine("\n");
+                        }
                     }
                 }
+                
 
-
-                if (!commentary && player.Traits.ContainsKey("thick-skinned")) { return (4 * (damageDealt + goodHit / 2) / 5); }
-                else
+                if (!commentary && player.Traits.ContainsKey("thick-skinned"))
                 {
-                    return (damageDealt + (goodHit / 2));
+                    return (4 * (damageDealt + goodHit / 2) / 5); 
                 }
+                else if ((skill == -10 || totemCount == -1) && player.Traits.ContainsKey("thick-skinned"))
+                {
+                    return (4 * (damageDealt + goodHit / 2) / 5);
+                }
+                if (totemCount == -1)
+                {
+                    totemCount = 1;
+                }
+                return ((damageDealt + goodHit / 2) / totemCount);
             }
             else // you or the monster misses!
             {
                 if (commentary)
                 {
-                    Console.WriteLine("Your attack misses!");
+                    if (skill == -10)
+                    {
+                        List<string> dodge = new List<string>
+                        {
+                            "\nYou dodge it just in time!",
+                            "\nYou swerve out of the way!",
+                            "\nYou dive before the blow lands!",
+                            "\nYou lunge out of reach!",
+                            "\nYou sidestep before the blow cleaves you in two!",
+                            "\nYou nip out of the way!",
+                            "\nYou duck under her flailing talons!",
+                            "\nYou scramble from her clutches!"
+                        };
+                        Console.WriteLine("The Lady of Vipers attacks!");
+                        Console.ReadKey(true);
+                        Console.WriteLine(dodge[(D16.Roll(D16) - 1) / 2]);
+
+                    }
+                    else if (totemCount == -1)
+                    {
+                        bool felix = false;
+                        int count = 0;
+                        foreach (Weapon w in player.WeaponInventory)
+                        {
+                            if(w.Boon > 9)
+                            {
+                                count++;
+                            }
+                        }
+                        if(count != 0 && count == player.WeaponInventory.Count)
+                        {
+                            felix = true;
+                        }
+                        Dice D8 = new Dice(8);
+                        Dice D12 = new Dice(12);
+                        List<string> CBMiss = new List<string>
+                        {
+                            "\nYou dart back from the CurseBreaker's attack!",
+                            "\nYou duck the CurseBreaker's strike!",
+                            "\nYou dodge the incoming blow by the skin of your teeth!",
+                            "\nYou dive and scramble away from the CurseBreaker's onslaught!",
+                            "\n You swerve left and evade the CurseBreaker's attack!",
+                            "\n You sidestep right and dodge the incoming attack!",
+                            "\n You duck and roll before the incoming blow strikes!",
+                            "\nYou dash backwards - out of the CurseBreaker's reach!"
+                        };
+                        if (opponentSkill > 8)
+                        {
+                            CBMiss.Add("Like a leaf upon the wind, you dodge and swerve between the CurseBreaker's attacks!");
+                            CBMiss.Add("Floating like a butterfly and stinging like a bee, you triple flip around the CurseBreaker's strike!");
+                            CBMiss.Add("Hands held behind your back, you display your martial prowess as you parry each incoming strike with a flurry of kicks!");
+                            CBMiss.Add("The CurseBreaker thrusts with his sabre! You leap and balance upon the blade before kicking him in the face!");
+                        }
+                        else if (player.Traits.ContainsKey("jinxed") || felix)
+                        {
+                            CBMiss.Add("The CurseBreaker swears as you trip him up while you scramble away!");
+                            CBMiss.Add("The CurseBreaker's strikes are no match for your jinxy antics! He gets red in the face as you jig out of the way of each attack...");
+                            CBMiss.Add("The CurseBreaker thrusts, parries, slashes with expert finesse, but thanks to your oafish fortune all his blows come to nought!");
+                            CBMiss.Add("The CurseBreaker's sabre somehow gets stuck in your armour. He loses his temper, then loses his balance after your buffoonish attempt to help him free it...");
+                        }
+                        if (player.Traits.ContainsKey("jinxed") || felix)
+                        {
+                            Console.WriteLine($"The CurseBreaker attacks with his {this.Name}!");
+                            Console.ReadKey(true);
+                            Console.WriteLine(CBMiss[D12.Roll(D12) - 1]);
+                        }
+                        else if (skill < 9)
+                        {
+                            Console.WriteLine($"The CurseBreaker attacks with his {this.Name}!");
+                            Console.ReadKey(true);
+                            Console.WriteLine(CBMiss[D8.Roll(D8) - 1]);
+                        }
+                        else
+                        {
+                            if (Name.ToLower() == "sabre")
+                            {
+                                Console.WriteLine($"The CurseBreaker attacks with his {this.Name}!");
+                                Console.ReadKey(true);
+                                Console.WriteLine(CBMiss[D12.Roll(D12) - 1]);
+                            }
+                            else
+                            {
+                                Console.WriteLine("The CurseBreaker attacks with his cursed gloves!");
+                                Console.ReadKey(true);
+                                Console.WriteLine(CBMiss[D8.Roll(D8) - 1]);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Your attack misses!");
+                    }
                 }
                 else
                 {
@@ -3059,6 +3563,10 @@ namespace DungeonCrawler
                 }
                 return damageDealt;
             }
+        }
+        public List<Dice> GetDamage()
+        {
+            return this.Damage;
         }
 
 

@@ -15,7 +15,7 @@ namespace DungeonCrawler
             _player = player;
             _room = room;
         }
-        public List<Dice> MerigoldPlotPoint(List<Item> specialItems, Combat battle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, Door stairwayToLower)
+        public List<Dice> MerigoldPlotPoint(bool music, List<Item> specialItems, Combat battle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, Door stairwayToLower, Dictionary<Item, List<Player>> usesDictionaryItemChar)
         {
             Dice D1 = new Dice(1);
             string message = "";
@@ -231,8 +231,10 @@ namespace DungeonCrawler
                 case 0:
                     //moves on to explaining you've only until midnight to succeed before asking questions...
                     string description1 = "Merigold becomes animated by boundless energy. ";
-                    Item healPotion1 = new Item("healing potion", "It has flecks of gold floating amidst a gel like suspension. The label reads; 'When you're feeling blue, down with the flu, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!'", true, "used", 20, "Stamina: When you're blue, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!");
-                    Item healPotion2 = new Item("healing potion", "It has flecks of gold floating amidst a gel like suspension. The label reads; 'When you're feeling blue, down with the flu, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!'", true, "used", 20, "Stamina: When you're blue, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!");
+                    Item healPotion1 = new Item("healing potion", "It has flecks of gold floating amidst a gel like suspension. The label reads; 'When you're feeling blue, down with the flu, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!'", true, "used", 60, "Stamina: When you're blue, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!");
+                    Item healPotion2 = new Item("healing potion", "It has flecks of gold floating amidst a gel like suspension. The label reads; 'When you're feeling blue, down with the flu, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!'", true, "used", 60, "Stamina: When you're blue, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!");
+                    usesDictionaryItemChar[healPotion1] = new List<Player> { _player};
+                    usesDictionaryItemChar[healPotion2] = new List<Player> { _player};
                     if (_player.Stamina < _player.InitialStamina / 2)
                     {
                         description1 += "\n\t'Well, first things first. You look frightful, dear fellow - like death warmed up. A few of my finest elixirs will mend those ghastly wounds.'\nHe rummages under the laboratory's worktop and produces a few bottles of his healing potion. You notice the hue is slightly different to the ones you've come across elsewhere in the tower. When you point this out, he taps his nose wryly. \n\t'Little does the CurseBreaker know that I've been supplying his forces with potions of a somewhat subpar standard. A small act of defiance for sure, but one I've been all too willing to make and for minimal risk... Here,' he proffers one of the bottles, 'to your health. And keep the others for later - I fear you may need them for what lies ahead...'\nYou glug it down and to your surprise, it tastes delicious. You feel incredible. Merigold waves away the compliments with faux-modesty, though you can tell he's pleased. \n";
@@ -553,7 +555,8 @@ namespace DungeonCrawler
                     Monster backpack = new Monster("backpack", "", new List<Item>(), 1, 1, flap);
                     if (!_player.FieryEscape)
                     {
-                        switch (LoopParle(choice_answer, playerchoices1, description1, parlance, 8, 9, 10))
+                        _room.FirstVisit = false;
+                        switch (LoopParle(music, choice_answer, playerchoices1, description1, parlance, 8, 9, 10))
                         {
                             case 1:
                                 Console.WriteLine("Will you accept the quest that has fallen upon you?");
@@ -599,7 +602,7 @@ namespace DungeonCrawler
                                             Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                            backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                            backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                         }
                                         else
                                         {
@@ -706,7 +709,7 @@ namespace DungeonCrawler
                                         Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                     }
                                     numOfMGItems = numOfMGItems - backpack.Items.Count;
                                     _player.MGItemsDonated = numOfMGItems;
@@ -788,7 +791,7 @@ namespace DungeonCrawler
                                     Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                 }
                                 numOfMGItems = numOfMGItems - backpack.Items.Count;
                                 _player.MGItemsDonated = numOfMGItems;
@@ -849,6 +852,7 @@ namespace DungeonCrawler
                     }
                     else
                     {
+                        _room.FirstVisit = false;
                         switch (LoopParle(choice_answer, playerchoices1, description1, parlance, 8, 9))
                         {
                             case 1: //flee
@@ -895,7 +899,7 @@ namespace DungeonCrawler
                                             Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                            backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                            backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                         }
                                         numOfMGItems = numOfMGItems - backpack.Items.Count;
                                         _player.MGItemsDonated = numOfMGItems;
@@ -998,7 +1002,7 @@ namespace DungeonCrawler
                                         Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                     }
                                     numOfMGItems = numOfMGItems - backpack.Items.Count;
                                     _player.MGItemsDonated = numOfMGItems;
@@ -1083,7 +1087,7 @@ namespace DungeonCrawler
                                     Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                 }
                                 numOfMGItems = numOfMGItems - backpack.Items.Count;
                                 _player.MGItemsDonated = numOfMGItems;
@@ -1144,10 +1148,77 @@ namespace DungeonCrawler
             
             
         }
-        public List<Dice> ReturnToMerigoldDialogue(List<Item> specialItems, Combat battle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, Door stairwayToLower)
+        public List<Dice> ReturnToMerigoldDialogue(bool music, List<Item> specialItems, Combat battle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, Door stairwayToLower, List<Room> choiceVersusDestination)
         {
             Dice D1 = new Dice(1);
-            Console.WriteLine("Upon the sight of you Merigold immediately perks up from his unruly laboratory. 'You're back,' he bursts excitably. 'Am I to understand you would like my assistance?'");
+            string excerpt = "";
+            if (choiceVersusDestination.Count == 2)
+            {
+                if (choiceVersusDestination[0].Name != choiceVersusDestination[1].Name)
+                {
+                    if (choiceVersusDestination[1].Name == "secret chamber")
+                    {
+                        excerpt= "Upon the sight of you Merigold immediately perks up from his unruly laboratory. 'You're back,' he blurts. He takes in your look of disquiet. 'Just where did you end up?'" +
+                            "\n   You reply that you found a hidden chamber with a maddening mosaic and too many disturbing secrets... it doesn't matter, the less said of it the better." +
+                            "\n   Merigold peers at you through those spectacles, but he doesn't press the subject any further. 'Can I be of any further assistance? Answer any more questions? I still" +
+                            " have some control of the portal,' his voice is tentative, 'if you'd like you could try your luck again...'";
+                    }
+                    else if (choiceVersusDestination[1].Name == "dragon's lair")
+                    {
+                        excerpt = "You decide you have a bone or two to pick with the old wizard. \n  Upon the sight of you stomping moodily his way, Merigold immediately perks up from his dishevelled laboratory. 'You're back,' he bursts excitably, oblivious to your less than affable countenance." +
+                            "\nYou proceed to fume about dragons and riddles and thinking you were going to be burned alive. All the while Merigold nods along, infuriatingly empathetic." +
+                            "\n\t'Yes I know quite what you mean,' he replies absently, 'its like when you expect a spell to turn out one way but somehow you just can't *quite* get the incantation right, and before you know it you have bright pink geraniums rather than the lovely blue hue you'd been hoping for...'" +
+                            "\n You're about to make a heated and incredulous retort - How can this dotty man possibly be comparing such a trivial matter with your life-or-death ordeal? But then Merigold briskly claps his hands, bounces to his feet and exuberantly declares; 'Well, never mind, I believe I've corrected the calculations now - so if you want to try again...? Or would you prefer to ask some questions first?'" +
+                            "\nYou bluster for a moment, tongue-tied, before finally heaving a heavy sigh. There really is no reasoning with wizards..." +
+                            "\n\nWill you accept Merigold'S help?";
+                    }
+                    else if (choiceVersusDestination[1].Name == "broom closet")
+                    {
+                        excerpt = "Upon the sight of you Merigold immediately perks up from his unruly laboratory. 'You're back,' he blurts. He takes in your scuffed knees, your clothes dripping with dirty bucket water and the dust you ruffle out of your hair. 'Just where exactly have you been?'" +
+                            "\n  You tell Merigold the portal whisked you to the broom closet only a few feet outside the door. " +
+                            "\n\t'Hmm, fascinating fascinating...' Merigold ponders absent-mindedly for a moment, 'It seems I got my calculations a little off.'" +
+                            "\nYou tell Merigold that somehow doesn't surprise you..." +
+                            "\n\t'Well, no matter,' he claps his hands and bounces to his feet. 'I'll just do some reconfigurations... Am I right in presuming you'd still like to use the portal? Or do you wish to ask more questions from me first?'";
+                    }
+                    else
+                    {
+                        excerpt = "Upon the sight of you Merigold immediately perks up from his unruly laboratory. 'You're back,' he bursts excitably. 'Am I to understand you would like my assistance?'";
+                    }
+                }
+                else if (choiceVersusDestination[0].Name == "secret chamber")
+                {
+                    excerpt = "Upon the sight of you Merigold immediately perks up from his unruly laboratory. 'You're back,' he bursts excitably. 'So how was it? Did you uncover what you were looking for?'" +
+                        "\nYou reply you found more than you bargained for..." +
+                        "\n\t'Well, the CurseBreaker always was a disturbed individual. Can I be of further assistance? Do you need the portal again? Or would you like to ask some more questions?'";
+                }
+                else if (choiceVersusDestination[0].Name == "dragon's lair")
+                {
+                    excerpt = "You decide you have a bone or two to pick with the old wizard." +
+                        " \n  Upon the sight of you stomping moodily his way, Merigold immediately" +
+                        " perks up from his dishevelled laboratory. 'You're back,' he bursts excitably," +
+                        " oblivious to your less than affable countenance." +
+                        "\nYou proceed to fume about dragons and riddles and thinking you were" +
+                        " going to be burned alive. All the while Merigold nods along, infuriatingly empathetic.\n\t" +
+                        "'Yes I know quite what you mean,' he replies absently, 'its like when you expect a spell to turn out one way but somehow you just can't *quite* get the incantation right, and before you know it you have bright pink geraniums rather than the lovely blue hue you'd been hoping for...'" +
+                        "\n You're about to make a heated and incredulous retort - How can this dotty man possibly" +
+                        " be comparing such a trivial matter with your life-or-death ordeal?" +
+                        " But then Merigold briskly claps his hands, bounces to his feet and exuberantly declares;" +
+                        " 'Well, never mind, I believe I've corrected the calculations now - so if you want to try again...?" +
+                        "Perhaps we'll have better luck directing you to somewhere within this tower, hmm? Or would you prefer to ask some questions first?'" +
+                        "\nYou bluster for a moment, tongue-tied, before finally heaving a heavy sigh. There really is no reasoning with wizards..." +
+                        "\n\nWill you accept Merigold's help?";
+                }
+                else
+                {
+                    excerpt = "Upon the sight of you Merigold immediately perks up from his unruly laboratory. 'You're back,' he bursts excitably. 'Am I to understand you would like my assistance?'";
+                }
+            }
+            else
+            {
+                excerpt = "Upon the sight of you Merigold immediately perks up from his unruly laboratory. 'You're back,' he bursts excitably. 'Am I to understand you would like my assistance?'";
+            }
+            Console.WriteLine(excerpt);
+            choiceVersusDestination.Clear();
             if (getYesNoResponse())
             {
                 string description1 = "Merigold becomes animated by boundless energy. ";
@@ -1414,7 +1485,7 @@ namespace DungeonCrawler
                 Monster backpack = new Monster("backpack", "", new List<Item>(), 1, 1, flap);
                 if (!_player.FieryEscape)
                 {
-                    switch (LoopParle(choice_answer, playerchoices1, description1, parlance, 8, 9, 10))
+                    switch (LoopParle(music, choice_answer, playerchoices1, description1, parlance, 8, 9, 10))
                     {
                         case 1:
                             Console.WriteLine("Will you accept the quest that has fallen upon you?");
@@ -1460,7 +1531,7 @@ namespace DungeonCrawler
                                         Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                     }
                                     numOfMGItems = numOfMGItems - backpack.Items.Count + _player.MGItemsDonated;
                                     _player.MGItemsDonated = numOfMGItems;
@@ -1562,7 +1633,7 @@ namespace DungeonCrawler
                                     Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                 }
                                 numOfMGItems = numOfMGItems - backpack.Items.Count + _player.MGItemsDonated;
                                 _player.MGItemsDonated = numOfMGItems;
@@ -1644,7 +1715,7 @@ namespace DungeonCrawler
                                 Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                             }
                             numOfMGItems = numOfMGItems - backpack.Items.Count + _player.MGItemsDonated;
                             _player.MGItemsDonated = numOfMGItems;
@@ -1760,7 +1831,7 @@ namespace DungeonCrawler
                                         Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                        backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                     }
                                     numOfMGItems = numOfMGItems - backpack.Items.Count + _player.MGItemsDonated;
                                     _player.MGItemsDonated = numOfMGItems;
@@ -1863,7 +1934,7 @@ namespace DungeonCrawler
                                     Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                    backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                                 }
                                 numOfMGItems = numOfMGItems - backpack.Items.Count + _player.MGItemsDonated;
                                 _player.MGItemsDonated = numOfMGItems;
@@ -1948,7 +2019,7 @@ namespace DungeonCrawler
                                 Console.WriteLine("How many are you willing to give to Merigold?");
 
 
-                                backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory);
+                                backpack.search(_player.CarryCapacity, _player.Inventory, _player.WeaponInventory, _player);
                             }
                             numOfMGItems = numOfMGItems - backpack.Items.Count + _player.MGItemsDonated;
                             _player.MGItemsDonated = numOfMGItems;
