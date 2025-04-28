@@ -855,7 +855,7 @@ namespace DungeonCrawler
         /// <param name="usesDictionaryItemChar"></param>
         /// <param name="holeInCeiling"></param>
         /// <returns>boolean: true or false</returns>
-        public bool Fight(bool music, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, List<Item> specialItems, int totemCount = 1, bool fire = false, bool _initiative = false, bool masked = false)
+        public bool Fight(bool music, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, List<Item> specialItems, int totemCount = 1, bool fire = false, bool _initiative = false, bool masked = false, int finalCountdown = 0)
         {
             player = Player;
             Dice D2 = new Dice(2);
@@ -863,6 +863,11 @@ namespace DungeonCrawler
             Dice D4 = new Dice(4);
             Dice D5 = new Dice(5);
             Dice D6 = new Dice(6);
+            int rite = -1;
+            if (finalCountdown > 0) 
+            { 
+                rite = finalCountdown;// 4 to 10
+            }
             //pugilism is FormatException the players unhanded fighting capability
             List<Dice> pugilism = new List<Dice>();
             int i = 0;
@@ -1082,7 +1087,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                     }
 
-                    while (Monster.Stamina > 0 && Player.Stamina > 0)
+                    while (Monster.Stamina > 0 && Player.Stamina > 0 && rite != 0)
                     {
                         bool start = false;
 
@@ -1181,6 +1186,37 @@ namespace DungeonCrawler
                                 if (Monster.Stamina < 1) { break; }
                                 if (Player.Stamina < 1) { break; }
                             }
+                            if (rite == 9)
+                            {
+                                Console.ReadKey(true);
+                                Console.WriteLine("The CurseBreaker bellows the next verse of his ghastly rite while your on the backfoot!");
+                            }
+                            else if (rite == 7)
+                            {
+                                Console.ReadKey(true);
+                                Console.WriteLine("The CurseBreaker leers as he belts out the next ghastly syllables of his diabolical ritual!");
+                            }
+                            else if(rite == 5)
+                            {
+                                Console.ReadKey(true);
+                                Console.WriteLine("Thunder crashes and stormclouds roil above as the CurseBreaker booms his vile dirge. As you stagger back, you see his eyes gleam as his ritual draws ever closer to completion... ");
+                            }
+                            else if (rite == 3)
+                            {
+                                Console.ReadKey(true);
+                                Console.WriteLine("Lightning sparks and tears the night sky asunder! Whilst the CurseBreaker presses the advantage, he feverish incants the next passage of the diabolical rite...");
+                            }
+                            else if (rite == 2)
+                            {
+                                Console.ReadKey(true);
+                                Console.WriteLine("The stormclouds overhead begin to circle like a vast whirlpool, as a vast vortex of whorling smoke and lightning opens above...\n Desperation grips hold as you recall Merigold's warning; should the rite be completed, no one stands any chance against what follows...\n   \n  You feverishly give your next attacks all you've got!");
+                            }
+                            else if (rite == 1)
+                            {
+                                Console.ReadKey(true);
+                                Console.WriteLine("The Vortex tears asunder the storm-tossed heavens. Around you the air bristles with palpable dark magic. The CurseBreaker's eyes are alight with a zealous gleam as he voices the last few words. \n  He is now upon the cusp of his victory, and his dark metamorphosis...\n\n You have only one chance left.");
+                            }
+                            rite--;
                         }
                         if (round == 0 && fire)
                         {
@@ -1772,7 +1808,21 @@ namespace DungeonCrawler
                     }
                 }
             }
-            if (Player.Stamina > 0)
+            if (rite == 0)
+            {
+                Console.WriteLine("You are too late!");
+                Console.ReadKey(true);
+                Console.WriteLine("The CurseBreaker booms the last ghastly syllable with rapturous" +
+                    " triumph. The moon is tainted scarlet casting everything in a bloody glow. " +
+                    "Meanwhile, you are hurled backwards as the vortex strikes the tower. It " +
+                    "extends forth like the finger of God; a whorling tornado of black smoke and" +
+                    " lightning grinding flagstones to dust. It embraces the CurseBreaker and what" +
+                    " follows is the birth of a terrible god and the enslavement of humankind...");
+                Console.ReadKey(true);
+                Console.WriteLine("Your adventure ends here...");
+                return false;
+            }
+            else if (Player.Stamina > 0)
             {
                 Console.WriteLine("Congratulations! You've slain the monster!");
                 player.Speedy = false;

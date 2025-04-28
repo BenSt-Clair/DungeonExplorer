@@ -2013,7 +2013,7 @@ namespace DungeonCrawler
             bool justGrazing = true;
             while (!escapedRoom1)
             {
-                /*
+                
                 player1.Inventory.Add(crystalBall);
                 player1.Inventory.Add(throwingKnife);
                 player1.Inventory.Add(lantern);
@@ -2028,8 +2028,9 @@ namespace DungeonCrawler
                     player1.Inventory.Add(item);
                 }
                 escapedRoom1 = true;
+                oubliette.FirstVisit = false;
                 continue;
-                */
+                
                 //
                 //
                 //
@@ -2607,10 +2608,10 @@ namespace DungeonCrawler
             //
             //
             
-            /*
+            
             newRoom1 = magicalManufactory;
             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-            */
+            victorious = true;
             //
             //
             //
@@ -7462,8 +7463,7 @@ namespace DungeonCrawler
                     ///red herring in room above
                     ///Specific for each room, tailored.
 
-                    if (!oubliette.FirstVisit)
-                    {
+                    
                         Console.ReadKey(true);
 
                         FinalAct denouement = new FinalAct(player1, CurseBreaker);
@@ -7504,7 +7504,7 @@ namespace DungeonCrawler
                         }
                         else if (result == 3 && !player1.Traits.ContainsKey("friends with fairies"))
                         {
-                            Console.WriteLine("You bound forward to attack and the lightning hits you full on in the chest! You lose 30 stamina and are sent careering into {oubliette.FeatureList[2].Name}, before it rebounds you bodily away! \n\n {oubliette.FeaureList[2].Description}");
+                            Console.WriteLine($"You bound forward to attack and the lightning hits you full on in the chest! You lose 30 stamina and are sent careering into the {oubliette.FeatureList[2].Name}, before it rebounds you bodily away! \n\n {oubliette.FeatureList[3].Description}");
                             player1.Stamina -= 30;
                             if (player1.Stamina < 1)
                             {
@@ -7522,71 +7522,119 @@ namespace DungeonCrawler
                         else if (result == 1)
                         {
                             return;
-                        }
-                        else if (result == 2) 
-                        {
-                            Console.WriteLine("The CurseBreaker vanishes!\n In his place appears the Lady...");
-                            Console.ReadKey(true);
-                            string message =
-                                "\n\t\t_______________________________________________________" +
-                                "\n\t\t-------------------------------------------------------" +
-                                "\n\t\t           THE LADY DOES THE MACARENA!                 " +
-                                "\n\t\t_______________________________________________________" +
-                                "\n\t\t-------------------------------------------------------";
-                            if (music)
-                            {
-                                using (var audiofile = new AudioFileReader("The Lady does the Macarena!.mp3"))
-                                {
-                                    using (var output = new WaveOutEvent())
-                                    {
-                                        Stopwatch zv = new Stopwatch();
-                                        zv.Start();
-                                        long time = 0;
-                                        output.Init(audiofile);
-                                        output.Play(); 
-                                        Console.WriteLine("\x1b[3J");
-                                        Console.Clear();
-                                        while (time < 224000)
-                                        {
-                                            Console.WriteLine(message);
-                                            Thread.Sleep(1000);
-                                            Console.WriteLine("\x1b[3J");
-                                            Console.Clear();
-                                            Thread.Sleep(300);
-                                            zv.Stop();
-                                            time = zv.ElapsedMilliseconds;
-                                            zv.Start();
-                                        }
-                                        return;
-                                    }
-                                }
-                            }
-                            Console.WriteLine("Ermm... who dances with the music switched off?");
-                            Console.ReadKey(true);
-                        }
+                        }                           
                         else
                         {
                             
                         }
                         Combat climax = new Combat(CurseBreaker, player1);
-                        
-                        
-                        if (climax.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, highestParapet, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 4, false, true))
+
+                        int finalCountdown = result / 10;
+                    if (player1.midnightClock != null)
+                    {
+                        player1.midnightClock.Stop();
+                        long time = player1.midnightClock.ElapsedMilliseconds / 60000;
+                        int time1 = unchecked((int)time);
+                        finalCountdown *= 4 + time1 / 5;
+                    }
+                        if (climax.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, highestParapet, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 4, false, false, false, finalCountdown))
                         {
-                            Console.WriteLine("Yippee!");
+                            Console.WriteLine("The skies clear, stormclouds parting as the moon's bright glow once again beams through them. " +
+                                "The CurseBreaker lies dead at your feet, the threat he posed to so many, finally undone.");
+                        Console.ReadKey(true);
+                        if (player1.Traits.ContainsKey("sadist"))
+                        {
+                            Console.WriteLine("Within this moment you notice an opportunity aval itself to you." +
+                                " You notice the CurseBreaker's tome lying open upon the flagstones. The CurseBreaker was" +
+                                " clearly to weak to seize the power he craved - all his talk of 'justice' and righteous order..." +
+                                " \n   You on the other hand...");
+                            Console.WriteLine("Will you complete the ritual in the CurseBreaker's place and reap for yourself unspeakable power?");
+                            if (denouement.getYesNoResponse())
+                            {
+
+                                Console.WriteLine("You heft up the tome and recite the verses. It's not before long you let out a mad cackle " +
+                                    " as the storm resumes once more and a vortex opens in the sky. It strikes you and all becomes dark. The next thing you know you are clawing your way towards" +
+                                    " a scarlet glow. Once you emerge you find the moon to be deep red, the world a sea of blood under its glow. You find yourself with a new body, one of immense power. Having crawled your way out of " +
+                                    "some creatures corpse, offal and intestines lathered over you, you finally unleash a roar of triumph.");
+                                Console.ReadKey(true);
+                                Console.WriteLine("\n  You shall be the terror that the CurseBreaker could only dream of...");
+                            }
+                        }
+                        if (player1.UncoverSecretOfMyrovia < 3)
+                        {
+                            Console.WriteLine("You find yourself wondering what will happen to Myrovia," +
+                                " wondering if someone like Merigold will be able to help them with their curse" +
+                                " now that the CurseBreaker has been felled. However, from everything you" +
+                                " learnt in this wizard's tower, it is with a heavy heart that " +
+                                "you face the likelihood that Myrovia's curse will never be resolved and " +
+                                "will simply plague the land for eons to come." +
+                                "\n  If only there was some way of uncovering what caused it...");
+                            Console.ReadKey(true);
+                            Console.WriteLine("As for yourself, you think you've had enough excursions " +
+                                "into Myrovia. You think of perhaps travelling somewhere sunny...");
+                            if (mage.Stamina > 0)
+                            {
+                                Console.WriteLine("Perhaps Merigold can still use that portal to whisk you there...");
+                            }
+                            Console.ReadKey(true);
+                            if (player1.Traits.ContainsKey("thespian"))
+                            {
+                                Console.WriteLine("This is one victory party you won't crash, ironic seeing as its the first time you actually " +
+                                    "lived up to your adventuring ruse. But you see a different future on your horizon. One that's a lot" +
+                                    " quieter and a lot calmer...");
+                                Console.WriteLine("Bidding Myrovia farewell with a theatrical bow, you set out for more tranquil climes...");
+                                Console.ReadKey(true);
+                                return;
+                            }
+                            Console.WriteLine("Bidding Myrovia a final farewell, you set out for more tranquil climes...");
+                            return;
+                        }
+                        else if (player1.UncoverSecretOfMyrovia < 6)
+                        {
+                            Console.WriteLine("You bristle at the thought of the Mayor of Myrovia's actions, " +
+                                "abducting you and helping the Cursebreaker in his schemes. The revelation of his complicity" +
+                                " will no doubt rankle you for days to come. You only calm yourself by supposing that the man" +
+                                " didn't really have a choice." +
+                                "  \n  And his fate is not one you envy; Myrovia is still beset by its mysterious curse with no resolution in sight." +
+                                " You suppose at least, that that shall come as some recompense for your troubles, though it's more than " +
+                                "unfortunate that so many innocents should have to suffer to.");
+                            Console.WriteLine("  If only there'd been some way of finding out how it started?");
+                            Console.ReadKey(true);
+                            Console.WriteLine("As for yourself, you think you've had enough excursions " +
+                               "into Myrovia. You think of perhaps travelling somewhere sunny...");
+                            if (mage.Stamina > 0)
+                            {
+                                Console.WriteLine("Perhaps Merigold can still use that portal to whisk you there...");
+                            }
+                            Console.ReadKey(true);
+                            if (player1.Traits.ContainsKey("thespian"))
+                            {
+                                Console.WriteLine("This is one victory party you won't crash, ironic seeing as its the first time you actually " +
+                                    "lived up to your adventuring ruse. But you see a different future on your horizon. One that's a lot" +
+                                    " quieter and a lot calmer...");
+                                Console.WriteLine("Bidding Myrovia farewell with a theatrical bow, you set out for more tranquil climes...");
+                                Console.ReadKey(true);
+                                return;
+                            }
+                            Console.WriteLine("Bidding Myrovia a final farewell, you set out for more tranquil climes...");
+                            return;
+                        }
+                        else
+                        {
                             victorious = true;
                             break;
+                        }
                         }
                         else
                         {
                             return;
                         }
-                    }
-                    else
-                    {
+                    
+                    
+                    
                         // if midnight clock not null then time remaining determines 
                         // how many turns you have in the fight.
-                    }
+                    
                     
                     if (!(a == 0 && b == 0))
                         {
@@ -8851,6 +8899,108 @@ namespace DungeonCrawler
 
 
                 }
+            Console.ReadKey(true);
+            Console.WriteLine("You turn your gaze from the sprawled corpse of the CurseBreaker to the town of Myrovia far below. Your eyes narrow, your grip on your weapon tightens, as you reckon you've got one more score to settle. And a curse to be undone...");
+            Console.ReadKey(true);
+            Console.WriteLine("\x1b[3J");
+            Console.Clear();
+            Console.WriteLine("Two weeks later, as the full moon once again rises over the steeples of Myrovia," +
+                " the mayor scrambles inside his tavern, hastily bolting the doors as howls echo through the " +
+                "settlement. He shivers in response..." +
+                "\n  How long must he run from his past? How long must he be tormented by the harrowing echo of his deeds?" +
+                "");
+            Console.ReadKey(true);
+            Console.WriteLine("  He stumbles backwards, jolted by yet another howl as he unsteadily retreats back into the dark tavern of creaking floorboards and deserted tables - this horror was closer than the one before. They're hunting him, " +
+                "trying to find him, seeking answers...");
+            Console.ReadKey(true);
+            Console.WriteLine("Suddenly, a voice calls out to him from the dark...");
+            Console.ReadKey(true);
+            Console.WriteLine("[1] You greet him coldly...");
+            Console.WriteLine("[2] You inquire if he'd like a drink to steady his nerves...");
+            Console.WriteLine("[3] You ask if the tremulous man remembers who you are...");
+            int response = getIntResponse(4);
+            Console.WriteLine("The innkeep swivels to you with a start, before peering into the shadows towards the corner where you sit, reclined and sedate, in a chair across from him.");
+            Console.ReadKey(true);
+            Console.WriteLine("\t'You..?' the innkeep stammers, 'But you're not... I mean you're supposed to be...'");
+            Console.ReadKey(true);
+            Console.WriteLine("[1] ...dead?");
+            Console.WriteLine("[2] ...vanished?");
+            Console.WriteLine("[3] ...defiled?");
+            getIntResponse(4);
+            Console.WriteLine("  The innkeeper, this mayor of Myrovia, gulps as he starts to back away to the door," +
+                "  only to stop dead as some wight, some monster, scrapes just outside, trapping him. His face goes as white as a sheet as the creature whines, but this time" +
+                " beneath it, you faintly detect a cadence - as though its beastly utterances were trying to form themselves around" +
+                " the shape of words.");
+            Console.ReadKey(true);
+            Console.WriteLine("\t'I had no choice,' he beseeches you, 'The Cursebreaker... he... he...'");
+            Console.ReadKey(true);
+            Console.WriteLine("  'He threatened you,' you finish his sentence for him, before sweeping to your feet and striding past him, 'He threatened you with exposure if you didn't " +
+                "comply. So to keep your secret concealed you trapped adventurers, allowed them to be defiled and all the while" +
+                " cowered here each night, like tonight, where you once again pray your crimes go unanswered and let the curse continue to " +
+                " effect the innocent lives around you...' You step up to the door a hand on the handle.");
+            Console.ReadKey(true);
+            Console.WriteLine("\t'Are you mad,' he hisses. 'They'll tear us both apart!'");
+            Console.WriteLine("You reply that you don't think that you're the one they're after, all while fixing him with your implacable stare.");
+            Console.ReadKey(true);
+            Console.WriteLine("As your fist twitches on the handle, the shuffling a the door grows more intense. You hear four creatures out there now, restless and howling." +
+                " However, now their howls almost form words - 'father...' Your gaze claps upon the door, instantly verifying your suspicions and turning your blood cold...");
+            Console.ReadKey(true);
+            Console.WriteLine("Desperation gleams in the mayor's eyes as cold sweat beads his brow. " +
+                "\n\t 'Your an adventurer,' he stammers. 'You want money, right? Riches? How much for your silence...'");
+            Console.ReadKey(true);
+            Console.WriteLine("You merely fix him with a cold stare. \n\t'No,' you intone, 'Not this time, mayor...'");
+            Console.ReadKey(true);
+            Console.WriteLine("You open the door...");
+            Console.ReadKey(true);
+            Console.WriteLine("The moment the 'wights' step inside and out of the moonlight they transfigure from white beasts to spectral maidens. " +
+                "The mayor's three daughters and their mother glide forth, closing in towards the mayor with outsretched arms. There is a dreadful inexorability about there approach." +
+                "\n\t  'No! Keep back!' He sputters flailing at them, trying to wrest out of their icy grip. But before your very eyes they seize hold of him and begin to drag him away into the shadows - into something or some place *beyond* the shadows...");
+            Console.ReadKey(true);
+            Console.WriteLine("\t'NOOOOOOoooo!' his bloodcurdling cry rings out before fading forever - his sins finally able to be forgotten, his crimes finally answered for. The Curse breaks as once more the moon's glow seems to capture the last spectre remaining; the mother.");
+            Console.ReadKey(true);
+            if (music)
+            {
+                using (var audioEpilogue = new AudioFileReader("Epilogue.mp3"))
+                {
+                    using (var outputEpilogue = new WaveOutEvent())
+                    {
+                        outputEpilogue.Init(audioEpilogue);
+                        outputEpilogue.Play();
+                        Console.WriteLine("You clasp eyes upon a beautiful woman, momentarily spellbound by her apparition. She turns to you, and haunts you with a rueful smile, before she too fades into some more tranquil plane...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("To the same place reflections go when we aren't looking...?");
+                        Console.ReadKey(true);
+                        Console.WriteLine("\tTo where exists the sound of a cat's paws...?");
+                        Console.ReadKey(true);
+                        Console.WriteLine("\t\tOr perhaps to where the roots of mountains reside?");
+                        Console.ReadKey(true);
+                        Console.WriteLine("You may not know where that is, but you do know with certainty that you have " +
+                            "delivered Myrovia from its fate and finally brought it peace...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("...For YOU are their CurseBreaker.");
+                        Console.ReadKey(true);
+                        Console.WriteLine("\t\t\tEND");
+                        return;
+                    }
+                }
+            }
+            Console.WriteLine("You clasp eyes upon a beautiful woman, momentarily spellbound by her apparition. She turns to you, and haunts you with a rueful smile, before she too fades into some more tranquil plane...");
+            Console.ReadKey(true);
+            Console.WriteLine("To the same place reflections go when we aren't looking...?");
+            Console.ReadKey(true);
+            Console.WriteLine("\tTo where exists the sound of a cat's paws...?");
+            Console.ReadKey(true);
+            Console.WriteLine("\t\tOr perhaps to where the roots of mountains reside?");
+            Console.ReadKey(true);
+            Console.WriteLine("You may not know where that is, but you do know with certainty that you have " +
+                "delivered Myrovia from its fate and finally brought it peace...");
+            Console.ReadKey(true);
+            Console.WriteLine("...For YOU are their CurseBreaker.");
+            Console.ReadKey(true);
+            Console.WriteLine("\t\t\tEND");
+            Console.ReadKey(true);
+
+            return;
 
             
             

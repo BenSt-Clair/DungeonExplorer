@@ -285,16 +285,17 @@ namespace DungeonCrawler
                         {
                             if (node == 1 && parlances[2].Contains("This report sends a jolt through you, as the name of that accursed village that'd abducted you leaps out of the page at you;"))
                             {
-                                if (player.UncoverSecretOfMyrovia < 4)
+                                
+                                if (player.UncoverSecretOfMyrovia == 1 || player.UncoverSecretOfMyrovia == 4 || player.UncoverSecretOfMyrovia == 5 || player.UncoverSecretOfMyrovia == 0)
                                 {
-                                    player.UncoverSecretOfMyrovia += 4;
+                                    player.UncoverSecretOfMyrovia += 2;
                                 }
                             }
                             else if (node == 2 && parlances[3].Contains("You watch as the guests, rather unsteadily, rise from their seats and take their leave. One of the last to do so is a figure who stirs within you some disquieting unease; an unwelcome, nauseating deja vu. The ghostly apparition is more tremulous than most as he heads for the door..."))
                             {
-                                if (player.UncoverSecretOfMyrovia == 1 || player.UncoverSecretOfMyrovia == 4 || player.UncoverSecretOfMyrovia == 5 || player.UncoverSecretOfMyrovia == 0)
+                                if (player.UncoverSecretOfMyrovia < 4)
                                 {
-                                    player.UncoverSecretOfMyrovia += 2;
+                                    player.UncoverSecretOfMyrovia += 4;
                                 }
                             }
                         }
