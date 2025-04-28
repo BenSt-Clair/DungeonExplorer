@@ -2028,7 +2028,7 @@ namespace DungeonCrawler
                     player1.Inventory.Add(item);
                 }
                 escapedRoom1 = true;
-                oubliette.FirstVisit = false;
+                oubliette.FirstVisit = true;
                 continue;
                 
                 //
@@ -2607,11 +2607,12 @@ namespace DungeonCrawler
             //
             //
             //
-            
-            
-            newRoom1 = magicalManufactory;
+
+            player1.midnightClock = new Stopwatch();
+            player1.midnightClock.Start();
+            newRoom1 = highestParapet;
             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-            victorious = true;
+            
             //
             //
             //
@@ -7468,7 +7469,7 @@ namespace DungeonCrawler
 
                         FinalAct denouement = new FinalAct(player1, CurseBreaker);
                         int result = denouement.Denouement(oubliette, specialItems, staffMG, vanquisher, ghoul1);
-                        if (result == 0 && !player1.Traits.ContainsKey("friends with fairies"))
+                        if ((result == 0 || result == 10) && !player1.Traits.ContainsKey("friends with fairies"))
                         {
                             Console.WriteLine($"You crash into the {highestParapet.FeatureList[1].Name} only for it to hurl you forwards by some invisible force! \n\n{highestParapet.FeatureList[1].Description}\n\n  You graze your knee (lose 5 stamina!)...");
                             player1.Stamina -= 5;
@@ -7481,7 +7482,7 @@ namespace DungeonCrawler
                                 return;
                             }
                         }
-                        else if (result == 1 && !player1.Traits.ContainsKey("friends with fairies"))
+                        else if ((result == 1 || result == 11) && !player1.Traits.ContainsKey("friends with fairies"))
                         {
                             Console.WriteLine($"You barrel into the {highestParapet.FeatureList[2].Name} only for it to rebound you forwards by some invisible force! \n\n{highestParapet.FeatureList[2].Description}\n\n  The CurseBreaker's bolt of lightning seared your arm (lose 15 stamina!)...");
                             player1.Stamina -= 15;
@@ -7494,7 +7495,7 @@ namespace DungeonCrawler
                                 return;
                             }
                         }
-                        else if (result == 2 && !player1.Traits.ContainsKey("friends with fairies"))
+                        else if ((result == 2 || result == 12) && !player1.Traits.ContainsKey("friends with fairies"))
                         {
                             Console.WriteLine("You intend a nimble leap out of the CurseBreaker's reach, but the force of his lightning jolts your muscles, sending you hurtling over the crenallations and plummetting to your doom...");
                             Console.ReadKey(true);
@@ -7502,7 +7503,7 @@ namespace DungeonCrawler
                             Console.ReadKey(true);
                             return;
                         }
-                        else if (result == 3 && !player1.Traits.ContainsKey("friends with fairies"))
+                        else if ((result == 3 || result == 13) && !player1.Traits.ContainsKey("friends with fairies"))
                         {
                             Console.WriteLine($"You bound forward to attack and the lightning hits you full on in the chest! You lose 30 stamina and are sent careering into the {oubliette.FeatureList[2].Name}, before it rebounds you bodily away! \n\n {oubliette.FeatureList[3].Description}");
                             player1.Stamina -= 30;
@@ -7515,14 +7516,20 @@ namespace DungeonCrawler
                                 return;
                             }
                         }
-                        else if (result == 0)
+                        else if (result == 0 || result == 10)
                         {
-                            return;
+                        Console.WriteLine("You kick the CurseBreaker off the tower." +
+                            " He plummets to his death and looks all funny once he hits the bottom... Ouch!");
+                        victorious = true;
+                        break;
                         }
-                        else if (result == 1)
+                        else if (result == 1 || result == 11)
                         {
-                            return;
-                        }                           
+                        Console.WriteLine("You kick the CurseBreaker off the tower. " +
+                            "He plummets to his death and looks all funny once he hits the bottom... Ouch!");
+                        victorious = true;
+                        break;
+                    }                           
                         else
                         {
                             
@@ -7533,8 +7540,11 @@ namespace DungeonCrawler
                     if (player1.midnightClock != null)
                     {
                         player1.midnightClock.Stop();
-                        long time = player1.midnightClock.ElapsedMilliseconds / 60000;
-                        int time1 = unchecked((int)time);
+                        long timeTaken = player1.midnightClock.ElapsedMilliseconds;
+                        
+                        long timeToMidnight = 1800000;
+                        long timeLeft = (timeToMidnight - timeTaken) / 60000;
+                        int time1 = unchecked((int)timeLeft);
                         finalCountdown *= 4 + time1 / 5;
                     }
                         if (climax.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, highestParapet, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 4, false, false, false, finalCountdown))
@@ -7587,6 +7597,7 @@ namespace DungeonCrawler
                                 return;
                             }
                             Console.WriteLine("Bidding Myrovia a final farewell, you set out for more tranquil climes...");
+                            Console.ReadKey(true);
                             return;
                         }
                         else if (player1.UncoverSecretOfMyrovia < 6)
@@ -7617,6 +7628,7 @@ namespace DungeonCrawler
                                 return;
                             }
                             Console.WriteLine("Bidding Myrovia a final farewell, you set out for more tranquil climes...");
+                            Console.ReadKey(true);
                             return;
                         }
                         else
