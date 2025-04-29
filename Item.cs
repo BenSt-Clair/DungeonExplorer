@@ -808,8 +808,13 @@ namespace DungeonCrawler
                     {
                         if (range == 3) // monsters must always carry only things the player does not already have.
                         {
+                            
                             if (item == null)
                             {
+                                if (weapon != null)
+                                {
+                                    weapon.Handled = true;
+                                }
                                 if (weaponInventory.Count > 1)
                                 {
                                     Console.WriteLine("You can only carry two weapons at a time!\n  Would you like to exchange this weapon for another?");
@@ -839,10 +844,18 @@ namespace DungeonCrawler
                                         }
                                         Console.WriteLine($"{Name} has been stashed in inventory.");
                                     }
-                                    else { continue; }
+                                    else 
+                                    {
+                                        if (weapon != null)
+                                        {
+                                            weapon.Handled = false;
+                                        }
+                                        continue; 
+                                    }
                                 }
                                 else
                                 {
+                                    
                                     StashWeapon(weapon, weaponInventory);
                                     monster.Items.Remove(weapon);
                                     Console.WriteLine($"{Name} has been stashed in inventory.");
@@ -884,6 +897,10 @@ namespace DungeonCrawler
                                 {
                                     if (weaponInventory.Count > 1)
                                     {
+                                        if(weapon != null)
+                                        {
+                                            weapon.Handled = true;
+                                        }
                                         Console.WriteLine("You can only carry two weapons at a time!\n  Would you like to exchange this weapon for another?");
                                         Dialogue exchangeWeapon = new Dialogue(weapon);
                                         if (Dialogue.getYesNoResponse(true))
@@ -909,12 +926,19 @@ namespace DungeonCrawler
                                             }
                                             
                                         }
-                                        else { continue; }
+                                        else 
+                                        { 
+                                            if(weapon != null)
+                                            {
+                                                weapon.Handled = false;
+                                            }
+                                            continue; 
+                                        }
                                     }
                                     else
                                     {
                                         StashWeapon(weapon, weaponInventory);
-                                        
+                                        weapon.Handled = true;
                                     }
                                 }
                                 if (weapon.Name != "bowl fragments" && weapon.Name != "garment")
@@ -977,6 +1001,10 @@ namespace DungeonCrawler
                             {
                                 if (weaponInventory.Count > 1)
                                 {
+                                    if(weapon != null)
+                                    {
+                                        weapon.Handled = true;
+                                    }
                                     Console.WriteLine("You can only carry two weapons at a time!\n  Would you like to exchange this weapon for another?");
                                     Dialogue exchangeWeapon = new Dialogue(weapon);
                                     if (Dialogue.getYesNoResponse(true))
@@ -1004,12 +1032,17 @@ namespace DungeonCrawler
                                         }
 
                                     }
-                                    else { continue; }
+                                    else 
+                                    {
+                                        weapon.Handled = false;
+                                        continue; 
+                                    }
                                 }
                                 else
                                 {
                                     StashWeapon(weapon, weaponInventory);
                                     featureItems.Remove(weapon);
+                                    weapon.Handled = true;
                                 }
                                 Console.WriteLine($"{Name} has been stashed in inventory.");
 
@@ -2730,6 +2763,7 @@ namespace DungeonCrawler
         private List<string> GoodAttack { get; }
         public int Boon { get; set; }
         public bool Equipped { get; set; }
+        public bool Handled { get; set; }
         public Weapon(string name, string description, List<Dice> damage, List<string> critAttack, List<string> goodAttack, int boon = 0, bool equipped = false) : base(name, description)
         {
             Name = name;
@@ -2739,7 +2773,7 @@ namespace DungeonCrawler
             GoodAttack = goodAttack;
             Boon = boon;
             Equipped = equipped;
-
+            Handled = false;
         }
         /// <summary>
         /// the following calculates the damagedealt and any other special comments to be 

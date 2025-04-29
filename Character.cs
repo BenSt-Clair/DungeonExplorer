@@ -237,7 +237,7 @@ namespace DungeonCrawler
         /// the formula for this code is very similar to searchfeature.
         /// </summary>
         /// <param name="roomItems"></param>
-        public void SearchPack(List<Item> roomItems, Room room, List<Room> threadPath, Dictionary<Item, List<Item>>usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar)
+        public void SearchPack(List<Item> roomItems, Room room, List<Room> threadPath, Dictionary<Item, List<Item>>usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar, List<Item> AllItems)
         {
             Console.WriteLine("Rummaging through your effects you find the following;");
             int r = 1;
@@ -271,7 +271,7 @@ namespace DungeonCrawler
             
             while (continueLoop)
             {
-                Console.WriteLine($"[A] Show all personal effects...\n[W] Show WEAPONS only...\n[I] Show ITEMS only...\n[U] Order by USEFULNESS within {room.Name}...\n");
+                Console.WriteLine($"[A] Show all personal effects...\n[W] Show WEAPONS only...\n[I] Show ITEMS only...\n[U] Order by USEFULNESS within {room.Name}...\n[D] Review past and current weapons by AVERAGE DAMAGE they deal...\n[X] Review past and current weapons by MAX DAMAGE they can deal...\n[H] Review past and current weapons by hit chance...\n");
                 Console.WriteLine(message);
                 if (a > 0) 
                 { 
@@ -473,6 +473,369 @@ namespace DungeonCrawler
                         message += $"[{r}] Try something else...";
                         continue;
                     }
+                    else if (reply == "d")
+                    {
+                        List<Weapon> handledWeapons = new List<Weapon>();
+                        Dictionary<Weapon, double> averages = new Dictionary<Weapon, double>();
+                        foreach(Item i in AllItems)
+                        {
+                            if(i is Weapon)
+                            {
+                                List<Item> items = new List<Item> {i };
+                                List<Weapon> weapon = items.Cast<Weapon>().ToList();
+                                if (weapon[0].Handled)
+                                {
+                                    handledWeapons.Add(weapon[0]);
+                                }
+                            }
+                        }
+                        foreach(Weapon w in handledWeapons)
+                        {
+                            List<Dice> dice = w.GetDamage();
+                            double average = 0;
+                            foreach(Dice d in dice)
+                            {
+                                average += unchecked((double)(d.faces + 1)) / 2;
+                            }
+                            averages[w] = average;
+                        }
+                        IEnumerable<Weapon> query = from Weapon weapon
+                                                    in handledWeapons
+                                                    orderby averages[weapon] descending
+                                                    select weapon;
+                        message = "";
+                        r = 1;
+                        foreach (Weapon weapon in query)
+                        {
+                            message += $"[{r}] {weapon.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        continue;
+                    }
+                    else if (reply == "x")
+                    {
+                        List<Weapon> handledWeapons = new List<Weapon>();
+                        Dictionary<Weapon, int> maximum = new Dictionary<Weapon, int>();
+                        foreach (Item i in AllItems)
+                        {
+                            if (i is Weapon)
+                            {
+                                List<Item> items = new List<Item> { i };
+                                List<Weapon> weapon = items.Cast<Weapon>().ToList();
+                                if (weapon[0].Handled)
+                                {
+                                    handledWeapons.Add(weapon[0]);
+                                }
+                            }
+                        }
+                        foreach (Weapon w in handledWeapons)
+                        {
+                            List<Dice> dice = w.GetDamage();
+                            int max = 0;
+                            foreach (Dice d in dice)
+                            {
+                                max += d.faces;
+                            }
+                            maximum[w] = max;
+                        }
+                        IEnumerable<Weapon> query = from Weapon weapon
+                                                    in handledWeapons
+                                                    orderby maximum[weapon] descending
+                                                    select weapon;
+                        message = "";
+                        r = 1;
+                        foreach (Weapon weapon in query)
+                        {
+                            message += $"[{r}] {weapon.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        continue;
+                    }
+                    else if(reply == "h")
+                    {
+                        List<Weapon> handledWeapons = new List<Weapon>();
+                        Dictionary<Weapon, int> hitChance = new Dictionary<Weapon, int>();
+                        foreach (Item i in AllItems)
+                        {
+                            if (i is Weapon)
+                            {
+                                List<Item> items = new List<Item> { i };
+                                List<Weapon> weapon = items.Cast<Weapon>().ToList();
+                                if (weapon[0].Handled)
+                                {
+                                    handledWeapons.Add(weapon[0]);
+                                }
+                            }
+                        }
+                        foreach (Weapon w in handledWeapons)
+                        {
+                            
+                            
+                            
+                            hitChance[w] = w.Boon;
+                        }
+                        IEnumerable<Weapon> query = from Weapon weapon
+                                                    in handledWeapons
+                                                    orderby hitChance[weapon] descending
+                                                    select weapon;
+                        message = "";
+                        r = 1;
+                        foreach (Weapon weapon in query)
+                        {
+                            message += $"[{r}] {weapon.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        continue;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please enter a number or letter corresponding to your choice of action.");
+                        continue;
+                    }
+                }
+
+            }
+        }
+        public void SearchPack(List<Item> roomItems, Room room, List<Room> threadPath, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar)
+        {
+            Console.WriteLine("Rummaging through your effects you find the following;");
+            int r = 1;
+            string message = "";
+            foreach (Weapon w in WeaponInventory)
+            {
+                message += $"[{r}] {w.Name}\n";
+                r++;
+            }
+            foreach (Item item in Inventory)
+            {
+                message += $"[{r}] {item.Name}\n";
+                r++;
+            }
+
+            if (r == 1)
+            {
+                message = "You have no items or weapons in your pack. \nIt's as empty as the word of that mysterious innkeeper who betrayed you. Better get moving...";
+                Console.WriteLine(message);
+                Console.ReadKey(true);
+                return;
+            }
+            else
+            {
+                message += $"[{r}] Try something else...";
+            }
+
+
+            bool continueLoop = true;
+            int a = 0;
+
+            while (continueLoop)
+            {
+                Console.WriteLine($"[A] Show all personal effects...\n[W] Show WEAPONS only...\n[I] Show ITEMS only...\n[U] Order by USEFULNESS within {room.Name}...\n");
+                Console.WriteLine(message);
+                if (a > 0)
+                {
+
+                    Console.WriteLine("Select another item from the list above.");
+                }
+                else { Console.WriteLine("\nWhich of these items will you take a closer look at?"); }
+                string reply = Console.ReadLine().Trim().ToLower();
+
+                try
+                {
+                    int reply1 = int.Parse(reply);
+                    if (reply1 < 1 || reply1 > r)
+                    {
+                        Console.WriteLine($"Please enter a number between 1 and {r}.");
+                        continue;
+                    }
+                    else
+                    {
+                        if (reply1 == r)
+                        {
+                            Console.WriteLine("closing your backpack you turn your attention elsewhere...");
+                            Console.ReadKey(true);
+                            return;
+                        }
+                        try
+                        {
+                            bool success = false;
+                            string objName = message.Substring(message.IndexOf(reply1.ToString()) + 3, message.IndexOf((reply1 + 1).ToString()) - 2 - (message.IndexOf(reply1.ToString()) + 3)).Trim();
+                            Console.WriteLine(objName);
+                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            if (!success) { Console.WriteLine($"You threw your {objName} away!"); }
+
+                        }
+                        catch
+                        {
+                            bool success = false;
+                            string objName = message.Substring(message.IndexOf((r - 1).ToString()) + 3, message.Length - 1 - (message.IndexOf((r - 1).ToString()) + 3)).Trim();
+                            Console.WriteLine(objName);
+                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            if (!success) { Console.WriteLine($"You threw your {objName} away!"); }
+                        }
+                    }
+                    Console.WriteLine("Would you like to peruse another item from your pack?");
+
+                    while (true)
+                    {
+                        string answer = Console.ReadLine().Trim().ToLower();
+                        if (answer == "yes" || answer == "y")
+                        {
+                            continueLoop = true;
+                            break;
+                        }
+                        else if (answer == "no" || answer == "n")
+                        {
+                            continueLoop = false;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error! Please answer 'yes' or 'no'.");
+                        }
+                    }
+                    a++;
+                }
+                catch
+                {
+                    if (reply == "a")
+                    {
+                        r = 1;
+                        message = "";
+                        foreach (Weapon w in WeaponInventory)
+                        {
+                            message += $"[{r}] {w.Name}\n";
+                            r++;
+                        }
+                        foreach (Item item in Inventory)
+                        {
+                            message += $"[{r}] {item.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        continue;
+                    }
+                    else if (reply == "w")
+                    {
+                        r = 1;
+                        message = "";
+                        foreach (Weapon w in WeaponInventory)
+                        {
+                            message += $"[{r}] {w.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        if (r == 1)
+                        {
+                            message = "";
+                            Console.WriteLine("You possess no weapons! You feel as vulnerable as a wizard without his staff, a rogue without his tools or... well, an adventurer without a sword");
+                            foreach (Item item in Inventory)
+                            {
+                                message += $"[{r}] {item.Name}\n";
+                                r++;
+                            }
+                            message += $"[{r}] Try something else...";
+                            Console.ReadKey(true);
+
+                        }
+                        continue;
+                    }
+                    else if (reply == "i")
+                    {
+                        r = 1;
+                        message = "";
+                        foreach (Item item in Inventory)
+                        {
+                            message += $"[{r}] {item.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        if (r == 1)
+                        {
+                            message = "";
+                            Console.WriteLine("You possess no items!");
+                            foreach (Weapon w in WeaponInventory)
+                            {
+                                message += $"[{r}] {w.Name}\n";
+                                r++;
+                            }
+                            message += $"[{r}] Try something else...";
+                            Console.ReadKey(true);
+
+                        }
+                        continue;
+                    }
+                    else if (reply == "u")
+                    {
+                        List<Item> usefulList = new List<Item>();
+
+                        foreach (Item w in WeaponInventory)
+                        {
+                            usefulList.Add((Item)w);
+                        }
+                        foreach (Item i in Inventory)
+                        {
+                            usefulList.Add(i);
+                        }
+                        Dictionary<Item, int> usefulness = new Dictionary<Item, int>();
+                        foreach (Item item in usefulList)
+                        {
+                            int count = 0;
+                            try
+                            {
+                                foreach (Item i in usesDictionaryItemItem[item])
+                                {
+                                    if (room.ItemList.Contains(i))
+                                    {
+                                        count++;
+                                    }
+                                    else if (Inventory.Contains(i))
+                                    {
+                                        count++;
+                                    }
+
+                                }
+
+                            }
+                            catch { }
+                            try
+                            {
+                                foreach (Feature f in usesDictionaryItemFeature[item])
+                                {
+                                    if (room.FeatureList.Contains(f))
+                                    {
+                                        count++;
+                                    }
+
+                                }
+                            }
+                            catch { }
+                            try
+                            {
+                                count += usesDictionaryItemChar[item].Count;
+                            }
+                            catch { }
+                            usefulness[item] = count;
+                        }
+                        IEnumerable<Item> query = from item in usefulList
+                                                  orderby usefulness[item] descending
+                                                  select item;
+                        message = "";
+                        r = 1;
+                        foreach (Item item in query)
+                        {
+                            message += $"[{r}] {item.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        continue;
+                    }
+                    
                     else
                     {
                         Console.WriteLine("Please enter a number or letter corresponding to your choice of action.");
