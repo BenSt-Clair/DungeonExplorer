@@ -11,12 +11,12 @@ namespace DungeonCrawler
 {
     internal class Dialogue
     {
-        Player _player { get; set; }
-        Monster _interlocutor { get; set; }
-        Combat _combat { get; set; }
-        Room _room { get; set; }
-        Item _item { get; set; }
-        Feature _feature { get; set; }
+        protected Player _player { get; set; }
+        protected Monster _interlocutor { get; set; }
+        protected Combat _combat { get; set; }
+        protected Room _room { get; set; }
+        protected Item _item { get; set; }
+        protected Feature _feature { get; set; }
         public Dialogue(Player player, Monster monster, Combat combat, Room room)
         {
             _player = player;
@@ -42,7 +42,31 @@ namespace DungeonCrawler
         {
             _feature = feature;
         }
-        public bool getYesNoResponse()
+        static public bool getYesNoResponse(bool y)
+        {
+            while (true)
+            {
+                string answer = Console.ReadLine().Trim().ToLower();
+                if (string.IsNullOrWhiteSpace(answer))
+                {
+                    continue;
+                }
+                else if (answer == "yes" || answer == "y")
+                {
+                    return y;
+                }
+                else if (answer == "no" || answer == "n")
+                {
+                    return !y;
+                }
+                else
+                {
+                    Console.WriteLine("PLease answer either 'yes' or 'no'.");
+                    continue;
+                }
+            }
+        }
+        protected bool getYesNoResponse()
         {
             while (true)
             {
@@ -65,6 +89,37 @@ namespace DungeonCrawler
                     continue;
                 }
             }
+        }
+        static public int getIntResponse(int option, bool isStatic, int min)
+        {
+            int answer1 = 0;
+            while (true)
+            {
+                string answer = Console.ReadLine().Trim().ToLower();
+                if (string.IsNullOrWhiteSpace(answer))
+                {
+                    continue;
+                }
+                else
+                {
+                    try
+                    {
+
+                        answer1 = int.Parse(answer);
+                        if (answer1 < min || answer1 >= option)
+                        {
+                            Console.WriteLine($"Please enter a number between {min} and {option - 1}!");
+                        }
+                        else { break; }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Please enter a number corresponding to your choice of action!");
+                        continue;
+                    }
+                }
+            }
+            return answer1;
         }
 
         public int getIntResponse(int option, int min = 1)

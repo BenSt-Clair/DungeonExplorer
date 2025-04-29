@@ -181,8 +181,7 @@ namespace DungeonCrawler
                 options++;
             }
             Console.WriteLine(message);
-            Dialogue race = new Dialogue(speedPotion);
-            int answer = race.getIntResponse(options);
+            int answer = Dialogue.getIntResponse(options, true, 1);
             int index = message.IndexOf($"{answer}") + 3;
             if (message[index] == 'S')
             {
@@ -277,7 +276,7 @@ namespace DungeonCrawler
                         Console.WriteLine($"[{options}] {item.Name}");
                         options++;
                     }
-                    answer = race.getIntResponse(options);
+                    answer = Dialogue.getIntResponse(options, true, 1);
                     Item chosenItem = backpack.Items[answer - 1];
                     if (!Player.Inventory.Remove(chosenItem)) 
                     {
@@ -370,7 +369,7 @@ namespace DungeonCrawler
                 else
                 {
                     Console.WriteLine("You have nothing here that you can throw! \n\nWill you scuff the pentagram with your foot instead?");
-                    if (race.getYesNoResponse())
+                    if (Dialogue.getYesNoResponse(true))
                     {
                         if (Player.Speedy)
                         {

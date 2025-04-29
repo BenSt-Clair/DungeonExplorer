@@ -538,8 +538,8 @@ namespace DungeonCrawler
             if (Name == "highest parapet")
             {
                 Console.WriteLine("Would you like to peer closer at the strange totems about the CurseBreaker?");
-                Dialogue totem = new Dialogue(FeatureList[0]);
-                if (totem.getYesNoResponse())
+                
+                if (Dialogue.getYesNoResponse(true))
                 {
                     foreach (Feature feature in FeatureList)
                     {

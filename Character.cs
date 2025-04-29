@@ -28,7 +28,7 @@ namespace DungeonCrawler
             Inventory = inventory;
 
         }
-        public void Equip(Weapon weapon, List<Weapon> inventory, Player player)
+        virtual public void Equip(Weapon weapon, List<Weapon> inventory, Player player)
         {
             foreach (Weapon x in inventory)
             {
@@ -673,7 +673,7 @@ namespace DungeonCrawler
                             {
                                 if (chosenItem.Name == "rusty chain-flail")
                                 {
-                                    success[0] = chosenItem.UseItem1(music, usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, steelKey, null, null, jailorKeys);
+                                    success[0] = chosenItem.UseItem1(music, usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, steelKey, musicBox, note, jailorKeys);
                                     List<Weapon> _weapons = new List<Weapon>();
                                     List<Item> _weaponItem = new List<Item> { chosenItem};
                                     _weapons = _weaponItem.Cast<Weapon>().ToList();
@@ -688,11 +688,11 @@ namespace DungeonCrawler
                                 }
                                 else if (chosenItem.Name == "healing potion"|| chosenItem.Name=="Felix Felicis"|| chosenItem.Name=="elixir of feline guile")
                                 {
-                                    success[0] = chosenItem.UseItem1(music, usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, binkySkull, musicBox, note);
+                                    success[0] = chosenItem.UseItem1(music, usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, binkySkull, musicBox, note, jailorKeys);
                                 }
                                 else
                                 {
-                                    success[0] = chosenItem.UseItem1(music, usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, musicBox, note);
+                                    success[0] = chosenItem.UseItem1(music, usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, binkySkull, musicBox, note, jailorKeys);
                                 }
                                 if (!success[0])
                                 {
@@ -936,7 +936,7 @@ namespace DungeonCrawler
             else { Console.WriteLine("You've no items in your backpack!"); return success; }
         }
     }
-    public class Monster : Character
+    public class Monster : Character, INotSoCute
     {
         /// <summary>
         /// Monsters have unique weapons, descriptions and a list of items in addition to
@@ -976,6 +976,70 @@ namespace DungeonCrawler
             Patrol = patrol;
             Time = (Path.Count - 1) * 20000;
         }
+        int Attack(int Skill, Player player, List<Item> specialItems, Room room, Feature holeInCeiling)
+        {
+            List<Item> items = new List<Item> { specialItems[8] };
+            List<Weapon> fisticuffs = items.Cast<Weapon>().ToList();
+            List<string> emptyCrits = new List<string> 
+            {
+                "",
+                "",
+                "",
+                "",
+
+                "",
+                "",
+                "",
+                "",
+
+                "",
+                "",
+                "",
+                "",
+
+                "",
+                "",
+                "",
+                ""
+            };
+            Dice D2 = new Dice(2);
+            Dice D3 = new Dice(3);
+            Dice D5 = new Dice(5);
+            Weapon fists = fisticuffs[0];
+            if (Skill < 4)
+            {
+                fists = new Weapon(fists.Name, fists.Description, new List<Dice> { D2, D2 }, emptyCrits, emptyCrits, fists.Boon);
+            }
+            else if (Skill < 7)
+            {
+                fists = new Weapon(fists.Name, fists.Description, new List<Dice> { D2, D2, D3 }, emptyCrits, emptyCrits, fists.Boon);
+            }
+            else
+            {
+                fists = new Weapon(fists.Name, fists.Description, new List<Dice> { D2, D2, D3, D5 }, emptyCrits, emptyCrits, fists.Boon + 1);
+            }
+            
+            return fists.Attack(Skill, player.Skill, player.Stamina, false, this, player, "", room, holeInCeiling);
+        }
+        public override void Equip(Weapon weapon, List<Weapon> inventory, Player player)
+        {
+            for (int i = Items.Count-1; i >= 0; i--)
+            { 
+                if(Items[i] is Weapon && Items[i].Name != Veapon.Name)
+                {
+                    List<Item> weapons = new List<Item> { Items[i] };
+                    List<Weapon> armedWeapon = weapons.Cast<Weapon>().ToList();
+                    Items.RemoveAt(0);
+                    Items.Add(Veapon);
+                    Veapon = armedWeapon[0];
+                    Items.Remove(Veapon);
+                    Items.Insert(0, Veapon);
+                    return;
+                }
+            }
+
+        }
+
         public bool MinotaurReturning(Room room, Item redThread, Item musicBox, List<Room> threadPath, Player player)
         {
             this.Patrol.Stop();
@@ -1120,7 +1184,7 @@ namespace DungeonCrawler
                 this.Path.RemoveAt(0);
 
             }
-            if ((this.Location.Name == "north-facing corridor" || this.Location.Name == "ocean bottom") && this.Path.Count == 1)
+            if ((this.Location.Name == "north-facing corridor" || this.Location.Name == "ocean bottom" || this.Location.Name == "astral planes") && this.Path.Count == 1)
             {
                 this.Patrol.Stop();
                 this.Patrol = new Stopwatch();

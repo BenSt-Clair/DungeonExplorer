@@ -53,7 +53,7 @@ namespace DungeonCrawler
                     }
                 }
                 bool music = false;
-                Game CurseBreaker = new Game($"CurseBreaker ~ game {attempt}", music);
+                Game CurseBreaker = new Game($"CurseBreaker ~ game {attempt}", music, false);
                 music = CurseBreaker.MusicOnOff();
                 
                 CurseBreaker.Start(music);
