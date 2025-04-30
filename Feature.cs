@@ -26,6 +26,16 @@ namespace DungeonCrawler
         public string SpecificAttribute { get; set; }
         public List<Item> ItemList { get; set; }
         public int Stamina { get; set; }
+        /// <summary>
+        /// static polymorphism used here for a special kind of feature that can have
+        /// a weapon used on it and be destroyed if its stamina is reduced to 0 or less.
+        /// (and then explodes)
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <param name="attribute"></param>
+        /// <param name="specificAttribute"></param>
+        /// <param name="itemList"></param>
         public Feature(string name = "", string description = "Nothing of note meets the eye.", bool attribute = true, string specificAttribute = "locked", List<Item> itemList = null)
         {
 
@@ -43,6 +53,10 @@ namespace DungeonCrawler
             SpecificAttribute = specificAttribute;
             Stamina = stamina;
         }
+        /// <summary>
+        /// A quick means to cast a feature as a door.
+        /// </summary>
+        /// <returns></returns>
         public Door CastDoor()
         {
             List<Door> door = new List<Door>();
@@ -52,6 +66,10 @@ namespace DungeonCrawler
         }
         /// <summary>
         /// investigate feature prints its description to the console.
+        /// Except for special cases where you can enter a dialogue with a 
+        /// sentient mosaic or two.
+        /// 
+        /// Please see Dialogue for technical details.
         /// </summary>
         /// <returns></returns>
         public void investigateFeature(List<Item> specialItems, Monster minotaur, Player player, List<Room> mosaicPortal)
@@ -291,6 +309,11 @@ namespace DungeonCrawler
         /// While the items listed does not change if you stash one of them in your pack, whether or not
         /// you're able to pick it up again does change. You can't if the item is already in your pack.
         /// The next time you visit the feature the stashed items around it will be gone from the list.
+        /// 
+        /// Since this last message the biggest change has been the calculation of probabilities 
+        /// when you use the Merigold's portal, determining where you'll find yourself after all the different
+        /// dialogue options. (It's the Huuuuuge blue line to the right hand side taking up ~7000 lines of
+        /// code. Apologies for this. Feel free to skip past it and search up from the bottom). 
         /// </summary>
         /// <param name="inventory"></param>
         /// <param name="weaponInventory"></param>
@@ -7854,6 +7877,7 @@ namespace DungeonCrawler
                 {
                     Console.WriteLine($"{Description} \nTry as hard as you might, you find no items hidden about the {Name}. It remains {SpecificAttribute}.");
                 }
+                //If the feature is belongs to the Door class.
                 if ((Name.Contains("door") || Name.Contains("stair") || Name.Contains("corner") || Name.Contains("hole") || Name.Contains("portal")) && (SpecificAttribute == "unlocked"|| SpecificAttribute == "unblocked") && !Description.Contains("smouldering"))
                 {
                     List<Room> upOrDown = this.CastDoor().Portal;
@@ -7956,6 +7980,14 @@ namespace DungeonCrawler
             Passing = passing;
             Dark = dark;
         }
+        /// <summary>
+        /// returns a string upon passing through a door, customised to whether
+        /// you're going up or down a flight of stairs, through a portal, clambering
+        /// up a hole, or else turning a corner.
+        /// </summary>
+        /// <param name="room"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public Room Passage(Room room, bool message = true)
         {
             if (Portal[0].Name == room.Name)

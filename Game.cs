@@ -2991,7 +2991,9 @@ namespace DungeonCrawler
             //
             //
             //
-
+            ///Below is a list of all items rooms and features for the purpose of saving
+            ///the player's data and loading it back (though I haven't implemented the load
+            ///functionality yet)
             Dice D80 = new Dice(80);
             List<Dice> clawDamage = new List<Dice> { D80 };
             Weapon deadlyClaws = new Weapon("claws", "They're going to hurt...", clawDamage, defaultCritHits, LadyGoodHits, 0);
@@ -3057,22 +3059,40 @@ namespace DungeonCrawler
                 ResetData(music, fireProgress, justStalked, AllItems, AllFeatures, AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
             }
             
+            ///From this point forward you'll be traversing rooms until you die or reach one of the endings.
+            ///Most rooms are of the same format. 
+            ///You will likely find:-
+            ///1. code that calculates FireProgress in the corridor and antechamber, which tracks how far the fire has
+            ///spread and its consequences. This is only if you escape by arson.
+            ///2. Code calculating the minotaurs patrol and whether or not its in an adjacent room. If its
+            ///returning it shall follow its path. otherwise it may 'hear' you and come looking for 
+            ///you.
+            ///3. Any Dialogue surprises and such like uniue to the room.
+            ///4. The main body of the code that deals with searching the room, searching your items
+            ///checking your status or using one of your items on something. You can also change game settings
+            ///by switching music on / off at dramatic scenes, and you can save the game (but not load it yet).
+            ///
+            ///NotLeftWhichRooms is a bool list specifying which room you're in. Its true for all rooms
+            ///except the one you are in. 
 
             while (!victorious)
                 {
                     
-                    if (visitedRoom)
+                    if (visitedRoom)//solely for determining whether a description should be given or not
                     {
                         Console.WriteLine(newRoom1.Description.Substring(0, newRoom1.Description.IndexOf("\n")));
                         visitedRoom = false;
                     }
+                    ///below items are added in case you fight a patrolling minotaur in a room
+                    ///that has no items in its itemlist. They are removed again before investigating the 
+                    ///rooms
                     if (minotaur.Location == corridor && !corridor.Description.Contains("You see garments hurled about the corridor, braziers wrought, doors hacked. The monster has been very thorough in its search for you...")) { corridorItems.Add(garment); corridorItems.Add(bowlFragments); corridorItems.Add(looseNail);corridorItems.Add(splinter); corridor.Description += "You see garments hurled about the corridor, braziers wrought, doors hacked. The monster has been very thorough in its search for you..."; }
                     if (minotaur.Location == antechamber && !antechamber.Description.Contains("You are struck by the carnage of the monster's obsessive hunt.")) { antechamber.ItemList.Add(breastplate); antechamber.ItemList.Add(helmet); antechamber.ItemList.Add(clunkySabaton); antechamber.Description = "You are struck by the carnage of the monster's obsessive hunt. The once wondrous and spacious antechamber is strewn with smashed breastplates and other detritus from the armoury. The monster also seems to have taken out its rage on the pillars, for you find them hacked with chunks of that fabulous marble scattered everywhere. The unscathed mosaic, high above the double doors, surveys it all.\nGazing northwards you see a heavyset door studded with steel bolts, Above it a bronze plaque has been blackened as though blasted by some spell or fireball. \t\nTo the west you see the brightly illuminated stairway you just ascended.\t\nTurning your gaze to the south wall you find bare patches where once were probably opulent oil-paintings and portraits. Their absence adds to the ominous sense of some recent tragedy befalling this place.\t\nTo the east is another door leading out of the antechamber - this one a far more inviting set of oak-panelled double doors framed by fluted pillars and a grand archway enclosing some strange mosaic.\t\t"; }
-                    b = 0;
+                    b = 0;// these integers determine whether to show general room description upon investigation
                     a = 0;
-                    long minotaurAlertedBy = D6.Roll(D6) * 8000;
+                    long minotaurAlertedBy = D6.Roll(D6) * 8000;//the time before the minotaur hears you.
                     Stopwatch sw = new Stopwatch();
-                    justStalked = false;
+                    justStalked = false;// whether the minotaur just chased you or not.
                     minotaurAlerted = 0;
                     if (!leftWhichRooms[1] && redThread.SpecifyAttribute == "unspooled" && player1.Inventory.Contains(redThread))
                     {
@@ -9438,10 +9458,10 @@ namespace DungeonCrawler
                     {
                         outputEpilogue.Init(audioEpilogue);
                         outputEpilogue.Play();
-                        Console.WriteLine("The curse shatters and parts, like the overcast skies that'd for so long besieged the beleaguered mountain haven. The sun breaks over the horizon, casting its many steeples in golden light. Peace settles as bitter-sweet as snow upon the town, its residents gingerly stepping outside their barricaded homes and into a new dawn. The radiant glow beams into the tavern and catches the last spectre remaining. You turn and lock eyes with the former mayor's wife...");
+                        Console.WriteLine("The curse shatters and parts, like the overcast skies that'd for so long besieged the beleaguered mountain haven. The sun breaks over the horizon, casting its many steeples in golden light. Peace settles as bitter-sweet as snow upon the town, its residents gingerly stepping outside their barricaded homes and into a new dawn. The radiant glow beams into the tavern and catches the last spectre remaining. You turn and lock eyes with the former mayor's youngest daughter...");
                         Console.ReadKey(true);
             
-                        Console.WriteLine("You clasp eyes upon a beautiful woman, momentarily spellbound by her apparition. She turns to you, and haunts you with a rueful smile, before she too fades into some more tranquil plane...");
+                        Console.WriteLine("You clasp eyes upon a nubile young woman, momentarily spellbound by her apparition. She turns to you, and haunts you with a rueful smile, before she too fades into some more tranquil plane...");
                         
                         Console.ReadKey(true);
                         Console.WriteLine("To the same place reflections go when we aren't looking...?");
@@ -9461,7 +9481,7 @@ namespace DungeonCrawler
                     }
                 }
             }
-            Console.WriteLine("You clasp eyes upon a beautiful woman, momentarily spellbound by her apparition. She turns to you, and haunts you with a rueful smile, before she too fades into some more tranquil plane...");
+            Console.WriteLine("You clasp eyes upon a nubile young woman, momentarily spellbound by her apparition. She turns to you, and haunts you with a rueful smile, before she too fades into some more tranquil plane...");
             Console.ReadKey(true);
             Console.WriteLine("To the same place reflections go when we aren't looking...?");
             Console.ReadKey(true);

@@ -37,6 +37,12 @@ namespace DungeonCrawler
         {
             weaponInventory.Add(weapon);
         }
+        /// <summary>
+        /// More complicated since Assessment 1, as now items can trigger dialogue
+        /// events.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="player"></param>
         public void StudyItem(Item item, Player player)
         {
             if (item.Name.Contains("newsletter"))
@@ -645,7 +651,8 @@ namespace DungeonCrawler
         /// wording printed to the console when picking up your weapon or item. But by virtue of this
         /// they double as a means of determining the context within which items are being picked up too.
         /// 
-        ///
+        ///I've added a WeaponInventory limit of two weapons too. Te player is given the option
+        ///to exchange one weapon for another should he otherwise exceed this limit.
         /// </summary>
         /// <param name="inventory"></param>
         /// <param name="weaponInventory"></param>
@@ -1156,7 +1163,7 @@ namespace DungeonCrawler
         /// useItem3 is for using an item on the player character. 
         /// A dictionary is used to determine whether an item can be used on something else. 
         /// After checking this dictionary, if successfully found, the item will cause the other object
-        /// to change the value of it's attribute and specialAttribute (unless player character)
+        /// to change the value of it's attribute and specialAttribute (unless player character or otherwise specified)
         /// Doors that were locked become unlocked, etc. 
         ///   Special commentary is added for important features or items that can be effected
         /// and that further the plot.
@@ -2399,6 +2406,26 @@ namespace DungeonCrawler
                 return false; 
             }
         }
+        /// <summary>
+        /// For when the player wishes to use an item on another item.
+        /// 
+        /// </summary>
+        /// <param name="music"></param>
+        /// <param name="item1"></param>
+        /// <param name="item2"></param>
+        /// <param name="usesDictionary"></param>
+        /// <param name="specialItems"></param>
+        /// <param name="feature"></param>
+        /// <param name="plusItem"></param>
+        /// <param name="room"></param>
+        /// <param name="player"></param>
+        /// <param name="addFeature"></param>
+        /// <param name="usesDictionaryItemFeature"></param>
+        /// <param name="usesDictionaryItemChar"></param>
+        /// <param name="player1"></param>
+        /// <param name="trialBattle"></param>
+        /// <param name="monster"></param>
+        /// <returns></returns>
         public List<bool> UseItem(bool music, Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, List<Item> specialItems, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, Dictionary<Item, List<Player>> usesDictionaryItemChar = null, Player player1 = null, Combat trialBattle = null, Monster monster = null)
         {
             List<bool> tlist = new List<bool> { false, false };
@@ -2592,6 +2619,14 @@ namespace DungeonCrawler
             }
 
         }
+        /// <summary>
+        /// When the player wishes to use an item on themselves such as a potion
+        /// </summary>
+        /// <param name="item1"></param>
+        /// <param name="player"></param>
+        /// <param name="usesDictionary"></param>
+        /// <param name="masked"></param>
+        /// <returns></returns>
         public bool UseItem3(Item item1, Player player, Dictionary<Item, List<Player>> usesDictionary, bool masked)
         {
             try {
@@ -2762,9 +2797,9 @@ namespace DungeonCrawler
         private List<string> CritAttack { get; }
         private List<string> GoodAttack { get; }
         public int Boon { get; set; }
-        public int InitialBoon { get;}
+        public int InitialBoon { get;} // for resetting Boon after taking Felix Felicis
         public bool Equipped { get; set; }
-        public bool Handled { get; set; }
+        public bool Handled { get; set; }// if true, it's included in list of weapons that you can arrange by Damage Dealt etc.
         public Weapon(string name, string description, List<Dice> damage, List<string> critAttack, List<string> goodAttack, int boon = 0, bool equipped = false, int initialBoon = 0) : base(name, description)
         {
             Name = name;

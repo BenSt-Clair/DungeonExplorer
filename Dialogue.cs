@@ -17,6 +17,15 @@ namespace DungeonCrawler
         protected Room _room { get; set; }
         protected Item _item { get; set; }
         protected Feature _feature { get; set; }
+        /// <summary>
+        /// Lots of different constructors are used because dialogue may be called within
+        /// all manner of different files and may require varying assortments of parameters
+        /// for things such as whether an item has been studied, whether the player is disguised, etc.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="monster"></param>
+        /// <param name="combat"></param>
+        /// <param name="room"></param>
         public Dialogue(Player player, Monster monster, Combat combat, Room room)
         {
             _player = player;
@@ -42,6 +51,15 @@ namespace DungeonCrawler
         {
             _feature = feature;
         }
+        /// <summary>
+        /// called mostly in the game file, the function asks for player
+        /// input in the form of a 'yes' or a 'no' (or 'y' or 'n') and gives 
+        /// instructive feedback to any erroneous input. Typing in true or false
+        /// as the parameter changes the return bool value. eg. when parameter is
+        /// false then player input 'yes' returns false. when true 'yes' returns true.
+        /// </summary>
+        /// <param name="y"></param>
+        /// <returns></returns>
         static public bool getYesNoResponse(bool y)
         {
             while (true)
@@ -66,6 +84,11 @@ namespace DungeonCrawler
                 }
             }
         }
+        /// <summary>
+        /// Another example of dynamic polymorphism, this function is used most commonly
+        /// within dialogue instants.
+        /// </summary>
+        /// <returns></returns>
         protected bool getYesNoResponse()
         {
             while (true)
@@ -90,6 +113,19 @@ namespace DungeonCrawler
                 }
             }
         }
+        /// <summary>
+        /// The following below request player input in the form of an integer.
+        /// another example of dynamic polymorphism, this one is again largely
+        /// used in the game file.
+        /// minimum determines the lowest number to be returned while option determines
+        /// the lowest upper bound. 
+        /// bool isStatic does nothing, except distinguish it from the other
+        /// function below.
+        /// </summary>
+        /// <param name="option"></param>
+        /// <param name="isStatic"></param>
+        /// <param name="min"></param>
+        /// <returns></returns>
         static public int getIntResponse(int option, bool isStatic, int min)
         {
             int answer1 = 0;
@@ -153,6 +189,16 @@ namespace DungeonCrawler
             }
             return answer1;
         }
+        /// <summary>
+        /// Returns a list of long integers. The first is the player response. the
+        /// second is the time taken to give that response. This is mostly used for
+        /// timed decisions where delays might incur consequences, such as when
+        /// you're evading a patrolling monster, or else need to choose an enemy to
+        /// attack during combat.
+        /// </summary>
+        /// <param name="option"></param>
+        /// <param name="min"></param>
+        /// <returns></returns>
         public List<long> getTimedIntResponse(int option, int min = 1)
         {
             Stopwatch sw = new Stopwatch();
@@ -189,6 +235,17 @@ namespace DungeonCrawler
             List<long> output = new List<long> { answer1, timeLapsed };
             return output;
         }
+        /// <summary>
+        /// The most basic of building blocks for constructing dialogue in game. 
+        /// It works by taking a descripiton and what the  interlocutor says, then 
+        /// gives you a list of choices that can form your response.
+        /// I then use Switch Case statements to capture each possible returned int
+        /// value representing the player's response.
+        /// </summary>
+        /// <param name="description"></param>
+        /// <param name="parlance"></param>
+        /// <param name="responses"></param>
+        /// <returns></returns>
         public int Parle(string description, string parlance, List<string> responses)
         {
             Console.WriteLine(description + "\n\t" + $"'{parlance}'\nHow will you respond?");
@@ -242,6 +299,23 @@ namespace DungeonCrawler
                 }
             }
         }
+        /// <summary>
+        /// A far more efficient way of constructing dialogue than the atomistic method above;
+        /// This is used when you wish to customise dialogue to the player's choices but when the
+        /// next list of choices are the same regardless of player input. By making special cases
+        /// for certain choices that might occur, however, one can still garner the effect of a branching
+        /// tree that can be terminated early or else lead down another LinearParle branch.
+        /// 
+        /// It works by pairing player responses with customised parlances through a dictionary,
+        /// thereafter concatenating these strings with a common next question or line that leads
+        /// to the next list of player choices. This can be continued indefinitely. 
+        /// </summary>
+        /// <param name="choice_CustomResponse"></param>
+        /// <param name="parlances"></param>
+        /// <param name="playerChoices"></param>
+        /// <param name="description"></param>
+        /// <param name="player"></param>
+        /// <returns></returns>
         public int LinearParle(Dictionary<string, string> choice_CustomResponse, List<string>parlances, List<List<string>> playerChoices, string description, Player player = null)
         {
             int node = 0;
@@ -412,6 +486,20 @@ namespace DungeonCrawler
                 }
             }
         }
+        /// <summary>
+        /// LoopParle essentially is for those dialogues in which the player poses
+        /// questions to an interlocutor one by one and the interlocutor gives
+        /// customised responses until an exit option is chosen. 
+        /// This is another case of dynamic polymorphism, each function
+        /// varied by how many exit options there are (y, x, and z).
+        /// </summary>
+        /// <param name="choice_answer"></param>
+        /// <param name="choices1"></param>
+        /// <param name="description"></param>
+        /// <param name="parlance"></param>
+        /// <param name="y1"></param>
+        /// <param name="player"></param>
+        /// <returns></returns>
         public int LoopParle(Dictionary<string, string> choice_answer, List<string> choices1, string description, string parlance, int y1, Player player = null)
         {
             Console.WriteLine($"{description}\n\t{parlance}\nHow will you respond?");

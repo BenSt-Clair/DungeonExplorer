@@ -15,6 +15,35 @@ namespace DungeonCrawler
             _player = player;
             _room = room;
         }
+        /// <summary>
+        /// One of three subClasses of dialogue. This one is a confluence of LinearParle
+        /// and LoopParle, before branching into three main outcomes. 
+        /// 1. You decide to flee the tower leaving Myrovia to its fate.
+        /// 2. You decide to face the CurseBreaker and decide where to go next within the tower.
+        /// 3. You decide you won't use the portal and will instead race against the clock to 
+        /// find your own way to the towertop, or else to collect more specialItems.
+        /// 
+        /// The first two yield different destination choices, your arrival at which shall be determined
+        /// by the number of specialItems (up to twelve) that you have in your backpack; the more items 
+        /// you have the greater the likelihood of you arriving at the desired location.
+        /// 
+        /// The third will start a midnightClock that is a PLayer attribute. You'll then have thirty minutes
+        /// real time to find the rest of the artefacts or else find an alternative route to the 
+        /// towertop.
+        /// 
+        /// There are, in total 14 different outcomes from this encounter. Hence why that huuuuge blue
+        /// line in Feature.cs is so big!
+        /// </summary>
+        /// <param name="music"></param>
+        /// <param name="specialItems"></param>
+        /// <param name="battle"></param>
+        /// <param name="secretChamber"></param>
+        /// <param name="goblin"></param>
+        /// <param name="gnoll"></param>
+        /// <param name="MGItems"></param>
+        /// <param name="stairwayToLower"></param>
+        /// <param name="usesDictionaryItemChar"></param>
+        /// <returns></returns>
         public List<Dice> MerigoldPlotPoint(bool music, List<Item> specialItems, Combat battle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, Door stairwayToLower, Dictionary<Item, List<Player>> usesDictionaryItemChar)
         {
             Dice D1 = new Dice(1);
