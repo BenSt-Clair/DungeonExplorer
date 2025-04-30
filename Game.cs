@@ -1046,14 +1046,14 @@ namespace DungeonCrawler
             List<Dice> stilettoDamage = new List<Dice> { D3, D3, D3};
             List<Dice> bastardswordDamage = new List<Dice> { D6, D6};
             Weapon estoc = new Weapon("estoc", "It looks like a sword, its built like a sword, but its a spear. Don't ask...", bastardswordDamage, defaultCritHits, defaultGoodHits, 0, false);
-            Weapon bastardSword = new Weapon("bastard sword", "The one and half handed sword glints with singular purpose. Wielded with any proficiency this blade would be formidable indeed.", bastardswordDamage, defaultCritHits, defaultGoodHits, 2, false);
-            Weapon sai = new Weapon("sai-daggers", "They're oriental ninja weapons that, by the looks of the knocks they've received, have been used by anything other than ninjas - good ones anyway...", damage, defaultCritHits, defaultGoodHits, 1, false);
-            Weapon axe = new Weapon("battle-axe", "It's a no-nonsense, true-to-its-purpose axe. If it can't cleave a goblin in two, it might at last give it something to think about...", damage1, defaultCritHits, defaultGoodHits, 1, false);
+            Weapon bastardSword = new Weapon("bastard sword", "The one and half handed sword glints with singular purpose. Wielded with any proficiency this blade would be formidable indeed.", bastardswordDamage, defaultCritHits, defaultGoodHits, 2, false, 2);
+            Weapon sai = new Weapon("sai-daggers", "They're oriental ninja weapons that, by the looks of the knocks they've received, have been used by anything other than ninjas - good ones anyway...", damage, defaultCritHits, defaultGoodHits, 1, false, 1);
+            Weapon axe = new Weapon("battle-axe", "It's a no-nonsense, true-to-its-purpose axe. If it can't cleave a goblin in two, it might at last give it something to think about...", damage1, defaultCritHits, defaultGoodHits, 1, false, 1);
             Item throwingKnife = new Item("lethal throwing knife", "Despite its humble appearance, it's well made, sharp, perfectly balanced and heavy enough to, I don't know, say... knock a weapon out of an enemy's hand...?", false, "unbroken");
             Item throwingKnife2 = new Item("sharp throwing knife", "Despite its humble appearance, it's well made, sharp, perfectly balanced and heavy enough to, I don't know, say... knock a weapon out of an enemy's hand...?", false, "unbroken");
             Item throwingKnife3 = new Item("deadly throwing knife", "Despite its humble appearance, it's well made, sharp, perfectly balanced and heavy enough to, I don't know, say... knock a weapon out of an enemy's hand...?", false, "unbroken");
             Weapon rustySword = new Weapon("rusty shortsword", "A tinge of rust traces the blade around the handle. It's been recently sharpened on a grindstone, but it probably still couldn't pierce a good set of armour worthy of the name.", damage1, defaultCritHits, defaultGoodHits);
-            Weapon stiletto = new Weapon("stiletto blade", "This slender blade has a needle-like point that's sharper than a drill sergeant's tongue and a fox's wits and a bag of lemons and... \nWell, you get the idea.", stilettoDamage, defaultCritHits, defaultGoodHits, 1, false);
+            Weapon stiletto = new Weapon("stiletto blade", "This slender blade has a needle-like point that's sharper than a drill sergeant's tongue and a fox's wits and a bag of lemons and... \nWell, you get the idea.", stilettoDamage, defaultCritHits, defaultGoodHits, 1, false, 1);
             Item bagOfCoins = new Item("bag of coins", "Most of the coins are scattered all over the table, with a few mounds forming the winnings of previous games. There is, however, a lovely large leather bag to stash them all in close by...", false, "unspent");
             List<Item> tableItems = new List<Item> { stiletto, bagOfCoins, circleDoorKey };
             List<Item> unlockedWeapons = new List<Item> { axe, estoc, bastardSword};
@@ -1142,7 +1142,7 @@ namespace DungeonCrawler
             
             /// Secret Chamber Items and features
             List<Dice> whacking = new List<Dice> { D4 };
-            Weapon staffMG = new Weapon("Marvellous Merigold's Magical Staff of Whacking", "It is a very fine, very well polished rosewood quarterstaff with the letters 'M' and 'G' cursively and elegantly embossed in gold upon it. It seems to shimmer with some kind of force for a moment, but when your eye catches it properly you conclude you were maybe imagining it... ", whacking, defaultCritHits, defaultGoodHits, 0, false);
+            Weapon staffMG = new Weapon("Marvellous Merigold's Magical Staff of Whacking", "It is a very fine, very well polished rosewood quarterstaff with the letters 'M' and 'G' cursively and elegantly embossed in gold upon it. It seems to shimmer with some kind of force for a moment, but when your eye catches it properly you conclude you were maybe imagining it... ", whacking, defaultCritHits, defaultGoodHits, 5, false, 5);
             List<Item> prometheusList = new List<Item> {staffMG };
             Feature prometheus = new Feature("disturbing statue", "Even up close and in better light this statue would be unsettling. You wonder what on earth it could mean, and why anyone would wish to procure it, though you don't ponder too long on why the ghastly thing was stowed away out of sight. Amongst the eclectic items here it is the most prominent in its sinister aspect.\nYou're about to turn away when, just behind the statue, you spy something else...", false, "unshattered", prometheusList);
             Feature plaquePrometheus = new Feature("plaque", "At the base of the statue, it reads, \n\n\t'Dedicated to the ancient God who brought fire unto man. Punished eternally for his gift, his foresight and the succour he provided'...\n\nScratched in a spidery scrawl underneath, someone clearly saw fit to add their own addendum: 'What Justice is there from gods? From nature? But that which is created by force'...", false, "unread");
@@ -1186,7 +1186,7 @@ namespace DungeonCrawler
             Door hatch = new Door("trapdoor", "It is constructed out of dwarven steel. Your hands trace the craftsmanship. However, you notice no bolts or locks keeping it shut. It's free to open - should you choose to go down it...", false, "unlocked", null, null, "You heft the heavy trapdoor open, it's clanging on the granite floor reverberating eerily within the silence. Before you lies a gaping hole of unfathomable depths; only darkness seems to lurk beneath your feet, along with an unsettling stillness that almost invites you to sink within its depths. The noise continues to reverberate as you brace against a chill whisked up from somewhere behind the darkness. \nThere's a ladder. With trepidation gnawing at your gut, you follow it down...");
             Feature aBrazier = new Feature("brazier", "If this brazier does indeed burn it is not with any normal fire. Upon closer inspection, its dim flickering glow seemingly cannot be expunged. It barely keeps the looming shadows at bay.", true, "lit", null);
             List<Item>dungeonItems = new List<Item> { femur, jawBone, legBone, rib};
-            List<Feature>dungeonFeatures = new List<Feature> {stairwayToLower, aBrazier, hatch};
+            List<Feature>dungeonFeatures = new List<Feature> {stairwayToLower, aBrazier, hatch, aBrazier};
             Item pocketWatch = new Item("gold pocket watch", "Replete with filigree letters M and G artfully crafted inside the gleaming lid, someone somewhere must've been sorry to lose it...");
             ///
             ///SouthCorridor Items and Features
@@ -1251,8 +1251,8 @@ namespace DungeonCrawler
             Dice D7 = new Dice(7);
             List<Dice> chainLightning = new List<Dice> {D7, D7 };
             Weapon cursedGloves = new Weapon("gloves of tempest", "Cursed gloves that crackle with tame lightning, the curseBreaker uses them to direct chain lightning at those who displease him...", chainLightning, sizzleCrits, sizzleCrits, -1);
-            Weapon sabre = new Weapon("sabre", "Light but deadly-sharp, it slices the air like silk.", sabreDamage, sabreCrits, sabreGoodHits, 2);
-            Weapon stiletto1 = new Weapon("stiletto blade", "This slender blade has a needle-like point that's sharper than a drill sergeant's tongue and a fox's wits and a bag of lemons and... \nWell, you get the idea.", stilettoDamage, stilettoCrits, stilettoCrits, 1, false);
+            Weapon sabre = new Weapon("sabre", "Light but deadly-sharp, it slices the air like silk.", sabreDamage, sabreCrits, sabreGoodHits, 2, false, 2);
+            Weapon stiletto1 = new Weapon("stiletto blade", "This slender blade has a needle-like point that's sharper than a drill sergeant's tongue and a fox's wits and a bag of lemons and... \nWell, you get the idea.", stilettoDamage, stilettoCrits, stilettoCrits, 1, false, 1);
             List<Item> CurseBreakerPockets = new List<Item> {sabre, goldDoubloon, ruby, cursedGloves};
             Monster CurseBreaker = new Monster("CurseBreaker", "You face before you a striking young man, aged beyond his years. He fixes you with unsettling black eyes that he stole from a fell creature. You sense them probe you for weaknesses as he flourishes a vicious sabre and wields an arcane glove crackling with cursed magic. The CurseBreaker, the would-be-architect of your doom, closes in for the kill...", CurseBreakerPockets, 100, 8, sabre);
             //Special Items
@@ -2188,7 +2188,7 @@ namespace DungeonCrawler
             //
             
             // weapons to be used in battles
-            Weapon vanquisher = new Weapon("Sword of Sealed Souls", "This sword almost seems to whisper as it slices the air like silk. You can almost imagine hearing wails off in the distance as though from the victims of some banshee haunting a blighted moor.", vanquisherDamage, defaultCritHits, defaultGoodHits, 3);
+            Weapon vanquisher = new Weapon("Sword of Sealed Souls", "This sword almost seems to whisper as it slices the air like silk. You can almost imagine hearing wails off in the distance as though from the victims of some banshee haunting a blighted moor.", vanquisherDamage, defaultCritHits, defaultGoodHits, 3, false, 3);
             Weapon breadKnife = new Weapon("Bread Knife", "This knife's blade is dulled with age. Any aspirations to slice anything other than very, very \nsoft butter might be met with something less than success", damage, defaultCritHits, defaultGoodHits);
             Weapon scimitar = new Weapon("rusty scimitar", "The scimitar's blade is flecked with rust. Crude and brittle, you doubt it'd last long parrying a better sword.", damage1, defaultCritHits, defaultGoodHits);
             Weapon bite = new Weapon("gnashing maw", "Sharp hook-like fangs lathered with drooling saliva, nestle within this creatures jaw, ready to draw blood.", damage1, defaultCritHits, defaultGoodHits);
@@ -2321,7 +2321,7 @@ namespace DungeonCrawler
                 bool justGrazing = true;
                 while (!escapedRoom1)
                 {
-                    /*
+                    
                     player1.Inventory.Add(crystalBall);
                     player1.Inventory.Add(throwingKnife);
                     player1.Inventory.Add(lantern);
@@ -2338,7 +2338,7 @@ namespace DungeonCrawler
                     escapedRoom1 = true;
                     oubliette.FirstVisit = true;
                     continue;
-                    */
+                    
                     //
                     //
                     //
@@ -2980,12 +2980,14 @@ namespace DungeonCrawler
             //
             //
             //
-            /*
+            fireProgress = 1;
+            fieryEscape = true;
+            player1.FieryEscape = true;
             player1.midnightClock = new Stopwatch();
             player1.midnightClock.Start();
-            newRoom1 = highestParapet;
+            newRoom1 = magicalManufactory;
             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-            */
+            
             //
             //
             //
@@ -7745,6 +7747,8 @@ namespace DungeonCrawler
                                     {
                                         mageBattle.WonFight(magicalManufactory);
                                         worktop.Description = "Aisles of haphazardly arranged worktops, replete with conical flasks, distillation tubes, alchemical devices and round-bottom retorts bubbling with strange essences form a mismanaged maze of meticulous mayhem, lovingly adorned with Merigold's eviscerated corpse. MWA HA HA HA!!!";
+                                        merigoldPortal.SpecificAttribute = "unblocked";
+                                        merigoldPortal.Attribute = true;
                                     }
                                     else
                                     {
@@ -7953,7 +7957,7 @@ namespace DungeonCrawler
                         }
                         else if ((result == 3 || result == 13) && !player1.Traits.ContainsKey("friends with fairies"))
                         {
-                            Console.WriteLine($"You bound forward to attack and the lightning hits you full on in the chest! You lose 30 stamina and are sent careering into the {oubliette.FeatureList[2].Name}, before it rebounds you bodily away! \n\n {oubliette.FeatureList[3].Description}");
+                            Console.WriteLine($"You bound forward to attack and the lightning hits you full on in the chest! You lose 30 stamina and are sent careering into the {highestParapet.FeatureList[2].Name}, before it rebounds you bodily away! \n\n {highestParapet.FeatureList[3].Description}");
                             player1.Stamina -= 30;
                             if (player1.Stamina < 1)
                             {

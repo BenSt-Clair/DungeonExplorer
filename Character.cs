@@ -1001,7 +1001,7 @@ namespace DungeonCrawler
                             {
                                 success[0] = chosenItem.UseItem3(chosenItem, this, usesDictionaryItemChar, masked);
 
-                                if (chosenItem.Name.Trim().ToLower() == "healing potion")
+                                if (chosenItem.Name.Trim().ToLower().Contains("healing potion"))
                                 {
                                     Console.WriteLine("Liquid rejuvenation trickles down your parched throat. A warm feeling swells from your heart as you feel your wounds salved and your flesh knitting itself back together.");
                                 }

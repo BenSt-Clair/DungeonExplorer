@@ -2762,9 +2762,10 @@ namespace DungeonCrawler
         private List<string> CritAttack { get; }
         private List<string> GoodAttack { get; }
         public int Boon { get; set; }
+        public int InitialBoon { get;}
         public bool Equipped { get; set; }
         public bool Handled { get; set; }
-        public Weapon(string name, string description, List<Dice> damage, List<string> critAttack, List<string> goodAttack, int boon = 0, bool equipped = false) : base(name, description)
+        public Weapon(string name, string description, List<Dice> damage, List<string> critAttack, List<string> goodAttack, int boon = 0, bool equipped = false, int initialBoon = 0) : base(name, description)
         {
             Name = name;
             Description = description;
@@ -2774,6 +2775,7 @@ namespace DungeonCrawler
             Boon = boon;
             Equipped = equipped;
             Handled = false;
+            InitialBoon = initialBoon;
         }
         /// <summary>
         /// the following calculates the damagedealt and any other special comments to be 

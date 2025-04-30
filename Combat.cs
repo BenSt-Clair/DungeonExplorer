@@ -1112,6 +1112,10 @@ namespace DungeonCrawler
                             }
                             Console.ReadKey(true);
                         }
+                        if (Monster.Veapon.Name.Contains("magic"))
+                        {
+                            Console.WriteLine("Merigold wields the room's magic against you! Suddenly, you find yourself beset by flying books that snap at you, bottles that lunge at you, and a swarm of flapping missives!");
+                        }
                         int damageDealt = Monster.Veapon.Attack(Monster.Skill, Player.Skill, Player.Stamina, curseBreaker, Monster, player, another, room, holeInCeiling, divisor, start);
                         if (damageDealt >= 0)
                         {
@@ -1660,7 +1664,7 @@ namespace DungeonCrawler
                                                         {
                                                             success = chosenItem.UseItem3(chosenItem, player, usesDictionaryItemChar, masked);
 
-                                                            if (chosenItem.Name.Trim().ToLower() == "healing potion")
+                                                            if (chosenItem.Name.Trim().ToLower().Contains("healing potion"))
                                                             {
                                                                 Console.WriteLine("Liquid rejuvenation trickles down your parched throat. A warm feeling swells from your heart as you feel your wounds salved and your flesh knitting itself back together.");
                                                             }
@@ -1829,10 +1833,12 @@ namespace DungeonCrawler
                 {
                     if (w.Boon > 9)
                     {
-                        w.Boon = 0;
+                        w.Boon = w.InitialBoon;
                         if (w.Name == "sword of sealed souls")
                         {
-                            w.Boon = 2;
+                            Console.WriteLine("Glutted on another soul your cursed sword increases its power!");
+
+                            w.Boon = w.InitialBoon + 1;
                         }
                         if (player.Traits.ContainsKey("jinxed"))
                         {
@@ -2740,7 +2746,7 @@ namespace DungeonCrawler
                                 if (player.Speedy && speedyturn == 0)
                                 {
                                     Console.WriteLine("Before your enemy can react you've already darted into your next action!");
-
+                                    
                                     
                                 }
                                 Console.ReadKey(true);
@@ -2751,7 +2757,7 @@ namespace DungeonCrawler
                                 if(player.Speedy && speedyturn == 0)
                                 {
                                     Console.WriteLine("Before your enemy can react you've already darted into your next action!");
-
+                                    
                                     Console.ReadKey(true);
                                     break;
                                 }
@@ -3112,7 +3118,7 @@ namespace DungeonCrawler
                                                 {
                                                     success = chosenItem.UseItem3(chosenItem, player, usesDictionaryItemChar, masked);
 
-                                                    if (chosenItem.Name.Trim().ToLower() == "healing potion")
+                                                    if (chosenItem.Name.Trim().ToLower().Contains("healing potion"))
                                                     {
                                                         Console.WriteLine("Liquid rejuvenation trickles down your parched throat. A warm feeling swells from your heart as you feel your wounds salved and your flesh knitting itself back together.");
                                                     }
@@ -3298,10 +3304,11 @@ namespace DungeonCrawler
                 {
                     if (w.Boon > 9)
                     {
-                        w.Boon = 0;
+                        w.Boon = w.InitialBoon;
                         if (w.Name.ToLower() == "sword of sealed souls")
                         {
-                            w.Boon = 2;
+                            Console.WriteLine("Glutted on more souls your cursed sword increases its power!");
+                            w.Boon = w.InitialBoon + 2;
                         }
                         if (player.Traits.ContainsKey("jinxed"))
                         {
