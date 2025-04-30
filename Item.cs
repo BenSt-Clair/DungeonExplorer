@@ -37,6 +37,12 @@ namespace DungeonCrawler
         {
             weaponInventory.Add(weapon);
         }
+        /// <summary>
+        /// More complicated since Assessment 1, as now items can trigger dialogue
+        /// events.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="player"></param>
         public void StudyItem(Item item, Player player)
         {
             if (item.Name.Contains("newsletter"))
@@ -65,7 +71,7 @@ namespace DungeonCrawler
             {
                 Console.WriteLine("You have the unnerving sense that something within wishes to draw your focus. Will you permit yourself to see what the orb wishes to show you?");
                 Dialogue crystal = new Dialogue(item);
-                if (crystal.getYesNoResponse())
+                if (Dialogue.getYesNoResponse(true))
                 {
                     string description = "You bring all of your focus upon the swirling tendrils of mist, ever shifting within the crystal ball. Suddenly, its as though your gaze is consumed by the roiling fog inside." +
                         " Your sight plummets deeper within, bearing witness to smoky figures yet unknown, past deeds as yet undiscovered, and secrets that, for now, are so nebulous they seem to luminate your mind like vast and distant constellations of meaning.";
@@ -165,7 +171,7 @@ namespace DungeonCrawler
             {
                 Console.WriteLine("Would you like to delve deeper into what this book has to say?");
                 Dialogue fey = new Dialogue(item);
-                if (fey.getYesNoResponse())
+                if (Dialogue.getYesNoResponse(true))
                 {
 
                     string description = "Your curiosity piqued, you browse through the books pages...";
@@ -266,7 +272,7 @@ namespace DungeonCrawler
             {
                 Console.WriteLine("Would you like to delve deeper into what this book has to say?");
                 Dialogue thievin = new Dialogue(item);
-                if (thievin.getYesNoResponse())
+                if (Dialogue.getYesNoResponse(true))
                 {
 
                     string description = "Your curiosity piqued, you peruse the books rather tatty pages...";
@@ -352,7 +358,7 @@ namespace DungeonCrawler
             {
                 Console.WriteLine("Would you like to delve deeper into what this book has to say?");
                 Dialogue cursed_weapons = new Dialogue(item);
-                if (cursed_weapons.getYesNoResponse())
+                if (Dialogue.getYesNoResponse(true))
                 {
                     
                     string description = "With more than a tincture of curiosity you open the book and set about perusing it's many pages, until one in particular catches your eye...";
@@ -462,7 +468,7 @@ namespace DungeonCrawler
             {
                 Console.WriteLine("Would you like to delve deeper into what this book has to say?");
                 Dialogue history_curses = new Dialogue(item);
-                if (history_curses.getYesNoResponse())
+                if (Dialogue.getYesNoResponse(true))
                 {
                     string description = "With more than a tincture of curiosity you open the book and set about perusing it's many pages, until one in particular catches your eye...";
                     List<string> pages = new List<string>
@@ -569,7 +575,7 @@ namespace DungeonCrawler
             {
                 Console.WriteLine("Would you like to delve deeper into what this book has to say?");
                 Dialogue fey_realms = new Dialogue(item);
-                if (fey_realms.getYesNoResponse())
+                if (Dialogue.getYesNoResponse(true))
                 {
                     string description = "With more than a tincture of curiosity you open the book and set about perusing it's many pages, until one in particular catches your eye...";
                     List<string> pages = new List<string>
@@ -645,7 +651,8 @@ namespace DungeonCrawler
         /// wording printed to the console when picking up your weapon or item. But by virtue of this
         /// they double as a means of determining the context within which items are being picked up too.
         /// 
-        ///
+        ///I've added a WeaponInventory limit of two weapons too. Te player is given the option
+        ///to exchange one weapon for another should he otherwise exceed this limit.
         /// </summary>
         /// <param name="inventory"></param>
         /// <param name="weaponInventory"></param>
@@ -808,13 +815,18 @@ namespace DungeonCrawler
                     {
                         if (range == 3) // monsters must always carry only things the player does not already have.
                         {
+                            
                             if (item == null)
                             {
+                                if (weapon != null)
+                                {
+                                    weapon.Handled = true;
+                                }
                                 if (weaponInventory.Count > 1)
                                 {
                                     Console.WriteLine("You can only carry two weapons at a time!\n  Would you like to exchange this weapon for another?");
                                     Dialogue exchangeWeapon = new Dialogue(weapon);
-                                    if (exchangeWeapon.getYesNoResponse())
+                                    if (Dialogue.getYesNoResponse(true))
                                     {
                                         Console.WriteLine($"Which weapon do you wish to exchange the {weapon.Name} for?");
                                         int weaponNumber = 1;
@@ -839,10 +851,18 @@ namespace DungeonCrawler
                                         }
                                         Console.WriteLine($"{Name} has been stashed in inventory.");
                                     }
-                                    else { continue; }
+                                    else 
+                                    {
+                                        if (weapon != null)
+                                        {
+                                            weapon.Handled = false;
+                                        }
+                                        continue; 
+                                    }
                                 }
                                 else
                                 {
+                                    
                                     StashWeapon(weapon, weaponInventory);
                                     monster.Items.Remove(weapon);
                                     Console.WriteLine($"{Name} has been stashed in inventory.");
@@ -884,9 +904,13 @@ namespace DungeonCrawler
                                 {
                                     if (weaponInventory.Count > 1)
                                     {
+                                        if(weapon != null)
+                                        {
+                                            weapon.Handled = true;
+                                        }
                                         Console.WriteLine("You can only carry two weapons at a time!\n  Would you like to exchange this weapon for another?");
                                         Dialogue exchangeWeapon = new Dialogue(weapon);
-                                        if (exchangeWeapon.getYesNoResponse())
+                                        if (Dialogue.getYesNoResponse(true))
                                         {
                                             Console.WriteLine($"Which weapon do you wish to exchange the {weapon.Name} for?");
                                             int weaponNumber = 1;
@@ -909,12 +933,19 @@ namespace DungeonCrawler
                                             }
                                             
                                         }
-                                        else { continue; }
+                                        else 
+                                        { 
+                                            if(weapon != null)
+                                            {
+                                                weapon.Handled = false;
+                                            }
+                                            continue; 
+                                        }
                                     }
                                     else
                                     {
                                         StashWeapon(weapon, weaponInventory);
-                                        
+                                        weapon.Handled = true;
                                     }
                                 }
                                 if (weapon.Name != "bowl fragments" && weapon.Name != "garment")
@@ -977,9 +1008,13 @@ namespace DungeonCrawler
                             {
                                 if (weaponInventory.Count > 1)
                                 {
+                                    if(weapon != null)
+                                    {
+                                        weapon.Handled = true;
+                                    }
                                     Console.WriteLine("You can only carry two weapons at a time!\n  Would you like to exchange this weapon for another?");
                                     Dialogue exchangeWeapon = new Dialogue(weapon);
-                                    if (exchangeWeapon.getYesNoResponse())
+                                    if (Dialogue.getYesNoResponse(true))
                                     {
                                         Console.WriteLine($"Which weapon do you wish to exchange the {weapon.Name} for?");
                                         int weaponNumber = 1;
@@ -1004,12 +1039,17 @@ namespace DungeonCrawler
                                         }
 
                                     }
-                                    else { continue; }
+                                    else 
+                                    {
+                                        weapon.Handled = false;
+                                        continue; 
+                                    }
                                 }
                                 else
                                 {
                                     StashWeapon(weapon, weaponInventory);
                                     featureItems.Remove(weapon);
+                                    weapon.Handled = true;
                                 }
                                 Console.WriteLine($"{Name} has been stashed in inventory.");
 
@@ -1123,7 +1163,7 @@ namespace DungeonCrawler
         /// useItem3 is for using an item on the player character. 
         /// A dictionary is used to determine whether an item can be used on something else. 
         /// After checking this dictionary, if successfully found, the item will cause the other object
-        /// to change the value of it's attribute and specialAttribute (unless player character)
+        /// to change the value of it's attribute and specialAttribute (unless player character or otherwise specified)
         /// Doors that were locked become unlocked, etc. 
         ///   Special commentary is added for important features or items that can be effected
         /// and that further the plot.
@@ -1455,7 +1495,7 @@ namespace DungeonCrawler
                     {
                         Console.WriteLine("You peer through the magnifying glass. You discover that the shiny thing lodged behind the chained-fast skeleton is in fact a steel key! Now if only you could... What? \nMove the skeleton out of the way? \nBreak it apart? \nSomehow reach past the tight chains and bones and purloin the key? \nYou scratch your head in contemplation...");
                     }
-                    else if (feature.Name == "rosewood chest" && feature.SpecificAttribute == "unlocked" && feature.ItemList.Count == 0 && !player.Inventory.Contains(musicBox) && !room.ItemList.Contains(musicBox))
+                    else if (feature.Name == "rosewood chest" && feature.SpecificAttribute == "unlocked" && feature.ItemList.Count == 0 && !player.Inventory.Contains(musicBox) && !room.ItemList.Contains(musicBox) && note != null)
                     {
                         Console.WriteLine("You study the inside of the rosewood chest through the magnifying glass. Curiosity creases your brow as you discover scratches at the seemingly empty bottom, as though made by scrabbling fingernails...");
                         if (note.Description.Contains("blighter")) { }
@@ -1515,7 +1555,7 @@ namespace DungeonCrawler
                     
                     else { Console.WriteLine($"You inspect the {feature.Name} with your magnifying glass. Were you expecting to find something?"); }
                 }
-                else if ((item.Name == "healing potion" || item.Name == "Elixir of Feline Guile" || item.Name == "Felix Felicis") && binkySkull != null && feature.Name == "skeleton" && !room.ItemList.Contains(binkySkull) && !player.Inventory.Contains(binkySkull) && player.Traits.ContainsKey("friends with fairies"))
+                else if ((item.Name.Contains("potion") || item.Name == "Elixir of Feline Guile" || item.Name == "Felix Felicis") && binkySkull != null && feature.Name == "skeleton" && !room.ItemList.Contains(binkySkull) && !player.Inventory.Contains(binkySkull) && player.Traits.ContainsKey("friends with fairies"))
                 {
                     Console.WriteLine($"The {item.Name} works its magic as you gloop the elixir over the skull. You blink and before you know it the skeleton let's loose a string of delightful curses worthy of the most mischievous of pixies.\n" +
                         $"\t'I say, capital to meet you, good sir,' it remarks gaily, 'I would doff my hat, if I had one. Sadly all I've got on me is a SKULL CAP!'\n" +
@@ -2366,6 +2406,26 @@ namespace DungeonCrawler
                 return false; 
             }
         }
+        /// <summary>
+        /// For when the player wishes to use an item on another item.
+        /// 
+        /// </summary>
+        /// <param name="music"></param>
+        /// <param name="item1"></param>
+        /// <param name="item2"></param>
+        /// <param name="usesDictionary"></param>
+        /// <param name="specialItems"></param>
+        /// <param name="feature"></param>
+        /// <param name="plusItem"></param>
+        /// <param name="room"></param>
+        /// <param name="player"></param>
+        /// <param name="addFeature"></param>
+        /// <param name="usesDictionaryItemFeature"></param>
+        /// <param name="usesDictionaryItemChar"></param>
+        /// <param name="player1"></param>
+        /// <param name="trialBattle"></param>
+        /// <param name="monster"></param>
+        /// <returns></returns>
         public List<bool> UseItem(bool music, Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, List<Item> specialItems, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, Dictionary<Item, List<Player>> usesDictionaryItemChar = null, Player player1 = null, Combat trialBattle = null, Monster monster = null)
         {
             List<bool> tlist = new List<bool> { false, false };
@@ -2559,6 +2619,14 @@ namespace DungeonCrawler
             }
 
         }
+        /// <summary>
+        /// When the player wishes to use an item on themselves such as a potion
+        /// </summary>
+        /// <param name="item1"></param>
+        /// <param name="player"></param>
+        /// <param name="usesDictionary"></param>
+        /// <param name="masked"></param>
+        /// <returns></returns>
         public bool UseItem3(Item item1, Player player, Dictionary<Item, List<Player>> usesDictionary, bool masked)
         {
             try {
@@ -2723,14 +2791,16 @@ namespace DungeonCrawler
             }
     }
     // weapon child of item includes different types and number of dice to roll
-    public class Weapon : Item
+    public class Weapon : Item, INotSoCute
     {
         private List<Dice> Damage { get; set; }
         private List<string> CritAttack { get; }
         private List<string> GoodAttack { get; }
         public int Boon { get; set; }
+        public int InitialBoon { get;} // for resetting Boon after taking Felix Felicis
         public bool Equipped { get; set; }
-        public Weapon(string name, string description, List<Dice> damage, List<string> critAttack, List<string> goodAttack, int boon = 0, bool equipped = false) : base(name, description)
+        public bool Handled { get; set; }// if true, it's included in list of weapons that you can arrange by Damage Dealt etc.
+        public Weapon(string name, string description, List<Dice> damage, List<string> critAttack, List<string> goodAttack, int boon = 0, bool equipped = false, int initialBoon = 0) : base(name, description)
         {
             Name = name;
             Description = description;
@@ -2739,7 +2809,8 @@ namespace DungeonCrawler
             GoodAttack = goodAttack;
             Boon = boon;
             Equipped = equipped;
-
+            Handled = false;
+            InitialBoon = initialBoon;
         }
         /// <summary>
         /// the following calculates the damagedealt and any other special comments to be 

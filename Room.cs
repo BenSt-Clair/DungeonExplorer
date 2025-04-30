@@ -25,6 +25,14 @@ namespace DungeonCrawler
             FeatureList = featureList;
             FirstVisit = firstVisit;
         }
+        /// <summary>
+        /// WhichRoom() takes and returns a bool list called leftWhichRooms.
+        /// This is used to determine which room you're in in Game.cs 
+        /// during the large (!victorious) while loop and facilitates you 
+        /// traversing from one room to the next.
+        /// </summary>
+        /// <param name="roomList"></param>
+        /// <returns></returns>
         public List<bool> WhichRoom(List<bool> roomList)
         {
             if (Name == "dank cell")
@@ -538,8 +546,8 @@ namespace DungeonCrawler
             if (Name == "highest parapet")
             {
                 Console.WriteLine("Would you like to peer closer at the strange totems about the CurseBreaker?");
-                Dialogue totem = new Dialogue(FeatureList[0]);
-                if (totem.getYesNoResponse())
+                
+                if (Dialogue.getYesNoResponse(true))
                 {
                     foreach (Feature feature in FeatureList)
                     {

@@ -28,7 +28,15 @@ namespace DungeonCrawler
             Inventory = inventory;
 
         }
-        public void Equip(Weapon weapon, List<Weapon> inventory, Player player)
+        /// <summary>
+        /// This function is called mostly in battle when the player wishes to
+        /// change weapon. It is overrided by the Monster's equip function,
+        /// which has to achieve the same effect through a slightly different means.
+        /// </summary>
+        /// <param name="weapon"></param>
+        /// <param name="inventory"></param>
+        /// <param name="player"></param>
+        virtual public void Equip(Weapon weapon, List<Weapon> inventory, Player player)
         {
             foreach (Weapon x in inventory)
             {
@@ -51,6 +59,18 @@ namespace DungeonCrawler
         /// In addition to inventory players also have weaponInventory as something
         /// distinct for holding weapons. They also have traits and they have 
         /// initial stamina
+        /// 
+        /// New properties have since been added to the Player class. These include
+        /// whether or not they are disguised (Masked), their CarryCapacity which
+        /// limits the number of items they can carry and increases with InitialStamina,
+        /// whether or not they've recently taken a potion of alacrity, whether they escaped 
+        /// the prison by arson, midnightClock which times the player and begins the countdown
+        /// to the ritual's completion so they have to race to fight the final boss, MGItemsDonated
+        /// details how many special items have already been given to Merigold, Fooled which determines
+        /// how much they know of the mysterious prisoner in the lowest levels of the tower 
+        /// and finally, UncoverSecretsOfMyrovia - this determines whether a special epilogue is
+        /// triggered upon completion of the game.
+        ///
         /// </summary>
         public int InitialStamina { get; set; }
         public List<Weapon> WeaponInventory { get; set; }
@@ -185,6 +205,11 @@ namespace DungeonCrawler
                 return "To describe you as one of the seven wonders of the world would frankly be an understatement. Your raw, physical prowess leaves those lucky enough to clap eyes on you trembling in your wake. Your 'sweet bod' is the sort of exemplary specimen even Conan the Barbarian would grudgingly admire.";
             }
         }
+        /// <summary>
+        /// This returns a summary of the character's status: - health, skill, traits, whether any potion
+        /// special effects are active and whether they are in a race to stop time before a 
+        /// diabolical ritual is completed.
+        /// </summary>
         public void CheckStatus()
         {
             Console.WriteLine($"Your stamina score is: {Stamina}/{InitialStamina}");
@@ -235,9 +260,25 @@ namespace DungeonCrawler
         /// function, only when it uses pickUpItem we specify the range as 5, meaning
         /// the commentary and options are slightly different to normal. in any case
         /// the formula for this code is very similar to searchfeature.
+        /// 
+        /// I've since utilised LINQ to sort Items and Weapons by a number of useful
+        /// attributes.
+        /// 1. Items can be arranged by usefulness ; that is which items can be used on the 
+        /// greatest number of items in the current room. (usually keys[doors, cabinets, trunks,
+        /// chests] and potions[used on the player character])
+        /// 2. Weapons can be ordered by the Damage they're expected to deal. Since its determined
+        /// by dicerolls this is calculated by summing the total number of dice to be rolled
+        /// by the total number of faces and then dividing by two.
+        /// 3. Weapons can be arranged by the maximum damage they can deal. This is done by 
+        /// summing the total number of faces of the dice to be rolled.
+        /// 4. Weapons can be ordered by the chance they have to land a hit and land a critical.
+        /// This is measured by their Boon which shifts the odds of landing a hit in the player's favour.
+        ///   Incidentally, a boost to Boon is also how jinxed characters and those who drink Felix
+        /// Felicis receive their effects during battles.
+        /// 
         /// </summary>
         /// <param name="roomItems"></param>
-        public void SearchPack(List<Item> roomItems, Room room, List<Room> threadPath, Dictionary<Item, List<Item>>usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar)
+        public void SearchPack(List<Item> roomItems, Room room, List<Room> threadPath, Dictionary<Item, List<Item>>usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar, List<Item> AllItems)
         {
             Console.WriteLine("Rummaging through your effects you find the following;");
             int r = 1;
@@ -271,7 +312,7 @@ namespace DungeonCrawler
             
             while (continueLoop)
             {
-                Console.WriteLine($"[A] Show all personal effects...\n[W] Show WEAPONS only...\n[I] Show ITEMS only...\n[U] Order by USEFULNESS within {room.Name}...\n");
+                Console.WriteLine($"[A] Show all personal effects...\n[W] Show WEAPONS only...\n[I] Show ITEMS only...\n[U] Order by USEFULNESS within {room.Name}...\n[D] Review past and current weapons by AVERAGE DAMAGE they deal...\n[X] Review past and current weapons by MAX DAMAGE they can deal...\n[H] Review past and current weapons by hit chance...\n");
                 Console.WriteLine(message);
                 if (a > 0) 
                 { 
@@ -473,6 +514,380 @@ namespace DungeonCrawler
                         message += $"[{r}] Try something else...";
                         continue;
                     }
+                    else if (reply == "d")
+                    {
+                        List<Weapon> handledWeapons = new List<Weapon>();
+                        Dictionary<Weapon, double> averages = new Dictionary<Weapon, double>();
+                        foreach(Item i in AllItems)
+                        {
+                            if(i is Weapon)
+                            {
+                                List<Item> items = new List<Item> {i };
+                                List<Weapon> weapon = items.Cast<Weapon>().ToList();
+                                if (weapon[0].Handled)
+                                {
+                                    handledWeapons.Add(weapon[0]);
+                                }
+                            }
+                        }
+                        foreach(Weapon w in handledWeapons)
+                        {
+                            List<Dice> dice = w.GetDamage();
+                            double average = 0;
+                            foreach(Dice d in dice)
+                            {
+                                average += unchecked((double)(d.faces + 1)) / 2;
+                            }
+                            averages[w] = average;
+                        }
+                        IEnumerable<Weapon> query = from Weapon weapon
+                                                    in handledWeapons
+                                                    orderby averages[weapon] descending
+                                                    select weapon;
+                        message = "";
+                        r = 1;
+                        foreach (Weapon weapon in query)
+                        {
+                            message += $"[{r}] {weapon.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        continue;
+                    }
+                    else if (reply == "x")
+                    {
+                        List<Weapon> handledWeapons = new List<Weapon>();
+                        Dictionary<Weapon, int> maximum = new Dictionary<Weapon, int>();
+                        foreach (Item i in AllItems)
+                        {
+                            if (i is Weapon)
+                            {
+                                List<Item> items = new List<Item> { i };
+                                List<Weapon> weapon = items.Cast<Weapon>().ToList();
+                                if (weapon[0].Handled)
+                                {
+                                    handledWeapons.Add(weapon[0]);
+                                }
+                            }
+                        }
+                        foreach (Weapon w in handledWeapons)
+                        {
+                            List<Dice> dice = w.GetDamage();
+                            int max = 0;
+                            foreach (Dice d in dice)
+                            {
+                                max += d.faces;
+                            }
+                            maximum[w] = max;
+                        }
+                        IEnumerable<Weapon> query = from Weapon weapon
+                                                    in handledWeapons
+                                                    orderby maximum[weapon] descending
+                                                    select weapon;
+                        message = "";
+                        r = 1;
+                        foreach (Weapon weapon in query)
+                        {
+                            message += $"[{r}] {weapon.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        continue;
+                    }
+                    else if(reply == "h")
+                    {
+                        List<Weapon> handledWeapons = new List<Weapon>();
+                        Dictionary<Weapon, int> hitChance = new Dictionary<Weapon, int>();
+                        foreach (Item i in AllItems)
+                        {
+                            if (i is Weapon)
+                            {
+                                List<Item> items = new List<Item> { i };
+                                List<Weapon> weapon = items.Cast<Weapon>().ToList();
+                                if (weapon[0].Handled)
+                                {
+                                    handledWeapons.Add(weapon[0]);
+                                }
+                            }
+                        }
+                        foreach (Weapon w in handledWeapons)
+                        {
+                            
+                            
+                            
+                            hitChance[w] = w.Boon;
+                        }
+                        IEnumerable<Weapon> query = from Weapon weapon
+                                                    in handledWeapons
+                                                    orderby hitChance[weapon] descending
+                                                    select weapon;
+                        message = "";
+                        r = 1;
+                        foreach (Weapon weapon in query)
+                        {
+                            message += $"[{r}] {weapon.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        continue;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please enter a number or letter corresponding to your choice of action.");
+                        continue;
+                    }
+                }
+
+            }
+        }
+        /// <summary>
+        /// Dynamic polymorphism is deployed here. This function is called in the first stage of the
+        /// game when the player has yet to escape the room. Since there are no 'authentic' weapons
+        /// at this stage I've omitted the option to use LINQ to order weapons.
+        /// </summary>
+        /// <param name="roomItems"></param>
+        /// <param name="room"></param>
+        /// <param name="threadPath"></param>
+        /// <param name="usesDictionaryItemItem"></param>
+        /// <param name="usesDictionaryItemFeature"></param>
+        /// <param name="usesDictionaryItemChar"></param>
+        public void SearchPack(List<Item> roomItems, Room room, List<Room> threadPath, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar)
+        {
+            Console.WriteLine("Rummaging through your effects you find the following;");
+            int r = 1;
+            string message = "";
+            foreach (Weapon w in WeaponInventory)
+            {
+                message += $"[{r}] {w.Name}\n";
+                r++;
+            }
+            foreach (Item item in Inventory)
+            {
+                message += $"[{r}] {item.Name}\n";
+                r++;
+            }
+
+            if (r == 1)
+            {
+                message = "You have no items or weapons in your pack. \nIt's as empty as the word of that mysterious innkeeper who betrayed you. Better get moving...";
+                Console.WriteLine(message);
+                Console.ReadKey(true);
+                return;
+            }
+            else
+            {
+                message += $"[{r}] Try something else...";
+            }
+
+
+            bool continueLoop = true;
+            int a = 0;
+
+            while (continueLoop)
+            {
+                Console.WriteLine($"[A] Show all personal effects...\n[W] Show WEAPONS only...\n[I] Show ITEMS only...\n[U] Order by USEFULNESS within {room.Name}...\n");
+                Console.WriteLine(message);
+                if (a > 0)
+                {
+
+                    Console.WriteLine("Select another item from the list above.");
+                }
+                else { Console.WriteLine("\nWhich of these items will you take a closer look at?"); }
+                string reply = Console.ReadLine().Trim().ToLower();
+
+                try
+                {
+                    int reply1 = int.Parse(reply);
+                    if (reply1 < 1 || reply1 > r)
+                    {
+                        Console.WriteLine($"Please enter a number between 1 and {r}.");
+                        continue;
+                    }
+                    else
+                    {
+                        if (reply1 == r)
+                        {
+                            Console.WriteLine("closing your backpack you turn your attention elsewhere...");
+                            Console.ReadKey(true);
+                            return;
+                        }
+                        try
+                        {
+                            bool success = false;
+                            string objName = message.Substring(message.IndexOf(reply1.ToString()) + 3, message.IndexOf((reply1 + 1).ToString()) - 2 - (message.IndexOf(reply1.ToString()) + 3)).Trim();
+                            Console.WriteLine(objName);
+                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            if (!success) { Console.WriteLine($"You threw your {objName} away!"); }
+
+                        }
+                        catch
+                        {
+                            bool success = false;
+                            string objName = message.Substring(message.IndexOf((r - 1).ToString()) + 3, message.Length - 1 - (message.IndexOf((r - 1).ToString()) + 3)).Trim();
+                            Console.WriteLine(objName);
+                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            if (!success) { Console.WriteLine($"You threw your {objName} away!"); }
+                        }
+                    }
+                    Console.WriteLine("Would you like to peruse another item from your pack?");
+
+                    while (true)
+                    {
+                        string answer = Console.ReadLine().Trim().ToLower();
+                        if (answer == "yes" || answer == "y")
+                        {
+                            continueLoop = true;
+                            break;
+                        }
+                        else if (answer == "no" || answer == "n")
+                        {
+                            continueLoop = false;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error! Please answer 'yes' or 'no'.");
+                        }
+                    }
+                    a++;
+                }
+                catch
+                {
+                    if (reply == "a")
+                    {
+                        r = 1;
+                        message = "";
+                        foreach (Weapon w in WeaponInventory)
+                        {
+                            message += $"[{r}] {w.Name}\n";
+                            r++;
+                        }
+                        foreach (Item item in Inventory)
+                        {
+                            message += $"[{r}] {item.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        continue;
+                    }
+                    else if (reply == "w")
+                    {
+                        r = 1;
+                        message = "";
+                        foreach (Weapon w in WeaponInventory)
+                        {
+                            message += $"[{r}] {w.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        if (r == 1)
+                        {
+                            message = "";
+                            Console.WriteLine("You possess no weapons! You feel as vulnerable as a wizard without his staff, a rogue without his tools or... well, an adventurer without a sword");
+                            foreach (Item item in Inventory)
+                            {
+                                message += $"[{r}] {item.Name}\n";
+                                r++;
+                            }
+                            message += $"[{r}] Try something else...";
+                            Console.ReadKey(true);
+
+                        }
+                        continue;
+                    }
+                    else if (reply == "i")
+                    {
+                        r = 1;
+                        message = "";
+                        foreach (Item item in Inventory)
+                        {
+                            message += $"[{r}] {item.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        if (r == 1)
+                        {
+                            message = "";
+                            Console.WriteLine("You possess no items!");
+                            foreach (Weapon w in WeaponInventory)
+                            {
+                                message += $"[{r}] {w.Name}\n";
+                                r++;
+                            }
+                            message += $"[{r}] Try something else...";
+                            Console.ReadKey(true);
+
+                        }
+                        continue;
+                    }
+                    else if (reply == "u")
+                    {
+                        List<Item> usefulList = new List<Item>();
+
+                        foreach (Item w in WeaponInventory)
+                        {
+                            usefulList.Add((Item)w);
+                        }
+                        foreach (Item i in Inventory)
+                        {
+                            usefulList.Add(i);
+                        }
+                        Dictionary<Item, int> usefulness = new Dictionary<Item, int>();
+                        foreach (Item item in usefulList)
+                        {
+                            int count = 0;
+                            try
+                            {
+                                foreach (Item i in usesDictionaryItemItem[item])
+                                {
+                                    if (room.ItemList.Contains(i))
+                                    {
+                                        count++;
+                                    }
+                                    else if (Inventory.Contains(i))
+                                    {
+                                        count++;
+                                    }
+
+                                }
+
+                            }
+                            catch { }
+                            try
+                            {
+                                foreach (Feature f in usesDictionaryItemFeature[item])
+                                {
+                                    if (room.FeatureList.Contains(f))
+                                    {
+                                        count++;
+                                    }
+
+                                }
+                            }
+                            catch { }
+                            try
+                            {
+                                count += usesDictionaryItemChar[item].Count;
+                            }
+                            catch { }
+                            usefulness[item] = count;
+                        }
+                        IEnumerable<Item> query = from item in usefulList
+                                                  orderby usefulness[item] descending
+                                                  select item;
+                        message = "";
+                        r = 1;
+                        foreach (Item item in query)
+                        {
+                            message += $"[{r}] {item.Name}\n";
+                            r++;
+                        }
+                        message += $"[{r}] Try something else...";
+                        continue;
+                    }
+                    
                     else
                     {
                         Console.WriteLine("Please enter a number or letter corresponding to your choice of action.");
@@ -638,7 +1053,7 @@ namespace DungeonCrawler
                             {
                                 success[0] = chosenItem.UseItem3(chosenItem, this, usesDictionaryItemChar, masked);
 
-                                if (chosenItem.Name.Trim().ToLower() == "healing potion")
+                                if (chosenItem.Name.Trim().ToLower().Contains("healing potion"))
                                 {
                                     Console.WriteLine("Liquid rejuvenation trickles down your parched throat. A warm feeling swells from your heart as you feel your wounds salved and your flesh knitting itself back together.");
                                 }
@@ -673,7 +1088,7 @@ namespace DungeonCrawler
                             {
                                 if (chosenItem.Name == "rusty chain-flail")
                                 {
-                                    success[0] = chosenItem.UseItem1(music, usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, steelKey, null, null, jailorKeys);
+                                    success[0] = chosenItem.UseItem1(music, usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, steelKey, musicBox, note, jailorKeys);
                                     List<Weapon> _weapons = new List<Weapon>();
                                     List<Item> _weaponItem = new List<Item> { chosenItem};
                                     _weapons = _weaponItem.Cast<Weapon>().ToList();
@@ -688,11 +1103,11 @@ namespace DungeonCrawler
                                 }
                                 else if (chosenItem.Name == "healing potion"|| chosenItem.Name=="Felix Felicis"|| chosenItem.Name=="elixir of feline guile")
                                 {
-                                    success[0] = chosenItem.UseItem1(music, usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, binkySkull, musicBox, note);
+                                    success[0] = chosenItem.UseItem1(music, usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, binkySkull, musicBox, note, jailorKeys);
                                 }
                                 else
                                 {
-                                    success[0] = chosenItem.UseItem1(music, usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, musicBox, note);
+                                    success[0] = chosenItem.UseItem1(music, usesDictionaryItemChar, chosenItem, room.FeatureList[effectedItemNum - 1 - room.ItemList.Count - Inventory.Count], usesDictionaryItemFeature, Inventory, WeaponInventory, room, this, monster, battle, fieryEscape, null, binkySkull, musicBox, note, jailorKeys);
                                 }
                                 if (!success[0])
                                 {
@@ -936,12 +1351,29 @@ namespace DungeonCrawler
             else { Console.WriteLine("You've no items in your backpack!"); return success; }
         }
     }
-    public class Monster : Character
+    public class Monster : Character, INotSoCute
     {
         /// <summary>
         /// Monsters have unique weapons, descriptions and a list of items in addition to
         /// stamina, skill and so on. They are only really for combat (maybe dialogue)
         /// and can only be searched once defeated.
+        /// 
+        /// Monsters exhibit multiple inheritance; from both abstract Character class
+        /// and from the Interface INotSoCute. Inheriting from this interface permits 
+        /// monsters that may not be armed to nevertheless have an option to attack 
+        /// should the need arise.I was generally thinking of seemingly innocuous encounters with
+        /// creatures that at first seem cuddly but then give the player a surprise!
+        /// However, I've yet to instantiate such a monster in the game...
+        /// 
+        /// Static Polymorphism is used here, with two different constructors.
+        /// One of them hasn't altered from assessment 1. The other is for
+        /// the minotaur and gives it extra properties for the purpose of 
+        /// facilitating its ability to stalk the player, patrol from room
+        /// to room, and react to objects within that room on a timed basis.
+        /// 
+        /// It also has bool attributes (Suspicious and Rage) that determine the
+        /// likelihood of it continuing to search for you and hunt you from one
+        /// room to the next. 
         /// </summary>
         public string Description { get; set; }
         public List<Item> Items { get; set; }
@@ -976,6 +1408,88 @@ namespace DungeonCrawler
             Patrol = patrol;
             Time = (Path.Count - 1) * 20000;
         }
+        int Attack(int Skill, Player player, List<Item> specialItems, Room room, Feature holeInCeiling)
+        {
+            List<Item> items = new List<Item> { specialItems[8] };
+            List<Weapon> fisticuffs = items.Cast<Weapon>().ToList();
+            List<string> emptyCrits = new List<string> 
+            {
+                "",
+                "",
+                "",
+                "",
+
+                "",
+                "",
+                "",
+                "",
+
+                "",
+                "",
+                "",
+                "",
+
+                "",
+                "",
+                "",
+                ""
+            };
+            Dice D2 = new Dice(2);
+            Dice D3 = new Dice(3);
+            Dice D5 = new Dice(5);
+            Weapon fists = fisticuffs[0];
+            if (Skill < 4)
+            {
+                fists = new Weapon(fists.Name, fists.Description, new List<Dice> { D2, D2 }, emptyCrits, emptyCrits, fists.Boon);
+            }
+            else if (Skill < 7)
+            {
+                fists = new Weapon(fists.Name, fists.Description, new List<Dice> { D2, D2, D3 }, emptyCrits, emptyCrits, fists.Boon);
+            }
+            else
+            {
+                fists = new Weapon(fists.Name, fists.Description, new List<Dice> { D2, D2, D3, D5 }, emptyCrits, emptyCrits, fists.Boon + 1);
+            }
+            
+            return fists.Attack(Skill, player.Skill, player.Stamina, false, this, player, "", room, holeInCeiling);
+        }
+        /// <summary>
+        /// I meantioned before the Equip function from character would be overrided. This is 
+        /// that function.
+        /// </summary>
+        /// <param name="weapon"></param>
+        /// <param name="inventory"></param>
+        /// <param name="player"></param>
+        public override void Equip(Weapon weapon, List<Weapon> inventory, Player player)
+        {
+            for (int i = Items.Count-1; i >= 0; i--)
+            { 
+                if(Items[i] is Weapon && Items[i].Name != Veapon.Name)
+                {
+                    List<Item> weapons = new List<Item> { Items[i] };
+                    List<Weapon> armedWeapon = weapons.Cast<Weapon>().ToList();
+                    Items.RemoveAt(0);
+                    Items.Add(Veapon);
+                    Veapon = armedWeapon[0];
+                    Items.Remove(Veapon);
+                    Items.Insert(0, Veapon);
+                    return;
+                }
+            }
+
+        }
+        /// <summary>
+        /// The following function returns the Minotaur, room by room, to
+        /// its starting position, whilst making it reactive to certain objects as well.
+        /// Path is utilised as a list of rooms that led the minotaur back to its
+        /// starting position all the while giving feedback to the player as to its progress
+        /// </summary>
+        /// <param name="room"></param>
+        /// <param name="redThread"></param>
+        /// <param name="musicBox"></param>
+        /// <param name="threadPath"></param>
+        /// <param name="player"></param>
+        /// <returns></returns>
         public bool MinotaurReturning(Room room, Item redThread, Item musicBox, List<Room> threadPath, Player player)
         {
             this.Patrol.Stop();
@@ -1120,7 +1634,7 @@ namespace DungeonCrawler
                 this.Path.RemoveAt(0);
 
             }
-            if ((this.Location.Name == "north-facing corridor" || this.Location.Name == "ocean bottom") && this.Path.Count == 1)
+            if ((this.Location.Name == "north-facing corridor" || this.Location.Name == "ocean bottom" || this.Location.Name == "astral planes") && this.Path.Count == 1)
             {
                 this.Patrol.Stop();
                 this.Patrol = new Stopwatch();
@@ -1144,6 +1658,9 @@ namespace DungeonCrawler
         /// similar to searchPack or searchFeature, once again this evokes a particular strand
         /// of pickUpItem() demarked by its own range value. something that is different here is
         /// you have to type out the name of the object you wish to pick up.
+        /// 
+        /// It is also used for searching your backpack when you meet Merigold and choosing
+        /// to supply him with special items.
         /// </summary>
         /// <param name="inventory"></param>
         /// <param name="weaponInventory"></param>

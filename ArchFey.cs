@@ -10,10 +10,10 @@ namespace DungeonCrawler
 {
     internal class ArchFey : Dialogue
     {
-        Player _player { get; set; }
-        Monster Monster { get; set; }
-        Combat Race { get; set; }
-        Room Room { get; set; }
+        private Player _player { get; set; }
+        private Monster Monster { get; set; }
+        private Combat Race { get; set; }
+        private Room Room { get; set; }
         public ArchFey(Player player, Monster monster, Combat race, Room room) : base(player, room)
         {
             _player = player;
@@ -21,6 +21,28 @@ namespace DungeonCrawler
             Race = race;
             Room = room;
         } 
+        /// <summary>
+        /// The following is one of the final Dialogue sections of the game.
+        /// It is at least twelve layers deep, customising responses 
+        /// at each stage to player choices. It branches down multiple paths
+        /// using three LinearParle functions. This Dialogue can ultimately
+        /// lead to either instakill, a battle, a race for the portal and a combination
+        /// of each of these involving methods for gaining the upper hand.
+        ///   How the Dialogue progresses is also determined by what the player
+        ///   character discovered during their journey through the tower though is
+        ///   admittedly less responsive to player traits as I'd like. 
+        ///   
+        /// At each instance a new dialogue branch is entered (or LinearParle function 
+        /// is called) the PLayers midnight clock is checked to see if his time to 
+        /// reach the portal before the ritual is complete has run out. If it has then this
+        ///  is also an instakill scenario.
+        /// 
+        /// See LinearParle summary for more details on how the dialogue system works...
+        /// 
+        /// </summary>
+        /// <param name="magicalManufactory"></param>
+        /// <param name="mosaic"></param>
+        /// <returns>true(survived) / false(instakill)</returns>
         public bool ElderArchFeyPlotPoint(Room magicalManufactory, Feature mosaic)
         {
             string description = "Suddenly, a voice beckons you from somewhere within the shadows! " +

@@ -26,6 +26,16 @@ namespace DungeonCrawler
         public string SpecificAttribute { get; set; }
         public List<Item> ItemList { get; set; }
         public int Stamina { get; set; }
+        /// <summary>
+        /// static polymorphism used here for a special kind of feature that can have
+        /// a weapon used on it and be destroyed if its stamina is reduced to 0 or less.
+        /// (and then explodes)
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <param name="attribute"></param>
+        /// <param name="specificAttribute"></param>
+        /// <param name="itemList"></param>
         public Feature(string name = "", string description = "Nothing of note meets the eye.", bool attribute = true, string specificAttribute = "locked", List<Item> itemList = null)
         {
 
@@ -43,6 +53,10 @@ namespace DungeonCrawler
             SpecificAttribute = specificAttribute;
             Stamina = stamina;
         }
+        /// <summary>
+        /// A quick means to cast a feature as a door.
+        /// </summary>
+        /// <returns></returns>
         public Door CastDoor()
         {
             List<Door> door = new List<Door>();
@@ -52,6 +66,10 @@ namespace DungeonCrawler
         }
         /// <summary>
         /// investigate feature prints its description to the console.
+        /// Except for special cases where you can enter a dialogue with a 
+        /// sentient mosaic or two.
+        /// 
+        /// Please see Dialogue for technical details.
         /// </summary>
         /// <returns></returns>
         public void investigateFeature(List<Item> specialItems, Monster minotaur, Player player, List<Room> mosaicPortal)
@@ -60,7 +78,7 @@ namespace DungeonCrawler
             {
                 Console.WriteLine("The tiles form and reform the image of a face, gazing down upon you. As you are about to inquire something, it speaks, as though in answer to the question that wasn't on your lips...\n\n\t'To fulfil what you desire most from this place, then your quest is easy;\n\tBestow upon me that which I love, steer away from all that makes me uneasy... '\n\nDo you have something in mind to show the mosaic?");
                 Dialogue mosaicPuzzle = new Dialogue(this);
-                if (mosaicPuzzle.getYesNoResponse())
+                if (Dialogue.getYesNoResponse(true))
                 {
                     if (specialItems[6].SpecifyAttribute == "read")
                     {
@@ -164,7 +182,7 @@ namespace DungeonCrawler
             {
                 Console.WriteLine("The tiles finally settle and form the image of a vast non-descript face gazing placidly down at you. It's open features almost seems to invite questions from you...\n\tDo you wish to see if you can get a response out of the kaleidoscopic mosaic?");
                 Dialogue mosaicTalk = new Dialogue(this);
-                if (mosaicTalk.getYesNoResponse())
+                if (Dialogue.getYesNoResponse(true))
                 {
                     if (specialItems[6].SpecifyAttribute == "read")
                     {
@@ -291,6 +309,11 @@ namespace DungeonCrawler
         /// While the items listed does not change if you stash one of them in your pack, whether or not
         /// you're able to pick it up again does change. You can't if the item is already in your pack.
         /// The next time you visit the feature the stashed items around it will be gone from the list.
+        /// 
+        /// Since this last message the biggest change has been the calculation of probabilities 
+        /// when you use the Merigold's portal, determining where you'll find yourself after all the different
+        /// dialogue options. (It's the Huuuuuge blue line to the right hand side taking up ~7000 lines of
+        /// code. Apologies for this. Feel free to skip past it and search up from the bottom). 
         /// </summary>
         /// <param name="inventory"></param>
         /// <param name="weaponInventory"></param>
@@ -999,7 +1022,7 @@ namespace DungeonCrawler
                     Console.WriteLine("Would you like to, perhaps, clear your throat and alert the bespectacled wizard to your presence?");
                     
 
-                    if (merigold.getYesNoResponse())
+                    if (Dialogue.getYesNoResponse(true))
                     {
                         List<Dice> endOfMidGameChoice = merigold.MerigoldPlotPoint(music, specialItems, battle, secretChamber, goblin, gnoll, MGItems, stairwayToLower, usesDictionaryItemChar);
                         Attribute = true;
@@ -1109,7 +1132,7 @@ namespace DungeonCrawler
                                     "\n\n You return a tight and solemn nod." +
                                     "\n\n  The aged wizard runs a nervous hand through his wispy hair. 'I can't lie, it's less than I expected. I may not be able to steer the portal very easily with this. Are you sure you don't want to hunt for any more artefacts first?'");
                                 
-                                if (m.getYesNoResponse())
+                                if (Dialogue.getYesNoResponse(true))
                                 {
                                     Console.WriteLine("You tell Merigold you're prepared to take the risks...");
                                     Console.ReadKey(true);
@@ -1622,7 +1645,7 @@ namespace DungeonCrawler
                                     "\n\n You return a tight and solemn nod." +
                                     "\n\n  The aged wizard runs a nervous hand through his wispy hair. 'I'm not going to tell you that you've the best chances in the world, but with a bit of luck, even if I don't quite manage to send you to your destination, you should end up somewhere nearby. Are you sure you don't want to hunt for any more artefacts first?'");
 
-                                if (m.getYesNoResponse())
+                                if (Dialogue.getYesNoResponse(true))
                                 {
                                     Console.WriteLine("You tell Merigold you're prepared to take the risks...");
                                     Console.ReadKey(true);
@@ -2137,7 +2160,7 @@ namespace DungeonCrawler
                                     "\n\n You return a confident nod." +
                                     "\n\n  The aged wizard rubs his hands together. 'With a bit of luck, even if I don't quite manage to send you to your destination, you should end up somewhere nearby. Are you sure you don't want to hunt for any more artefacts first?'");
 
-                                if (m.getYesNoResponse())
+                                if (Dialogue.getYesNoResponse(true))
                                 {
                                     Console.WriteLine("You tell Merigold you're prepared to take the risks...");
                                     Console.ReadKey(true);
@@ -2723,7 +2746,7 @@ namespace DungeonCrawler
                                     "\n\n You return a confident nod." +
                                     "\n\n  The aged wizard rubs his hands together. 'With a bit of luck, even if I don't quite manage to send you to your destination, you should end up somewhere nearby. Are you sure you don't want to hunt for any more artefacts first?'");
 
-                                if (m.getYesNoResponse())
+                                if (Dialogue.getYesNoResponse(true))
                                 {
                                     Console.WriteLine("You tell Merigold you're prepared to take the risks...");
                                     Console.ReadKey(true);
@@ -4598,7 +4621,7 @@ namespace DungeonCrawler
                                 "\n\n You return a tight and solemn nod." +
                                 "\n\n  The aged wizard runs a nervous hand through his wispy hair. 'I can't lie, it's less than I expected. I may not be able to steer the portal very easily with this. Are you sure you don't want to hunt for any more artefacts first?'");
 
-                            if (m.getYesNoResponse())
+                            if (Dialogue.getYesNoResponse(true))
                             {
                                 Console.WriteLine("You tell Merigold you're prepared to take the risks...");
                                 Console.ReadKey(true);
@@ -5083,7 +5106,7 @@ namespace DungeonCrawler
                                 "\n\n You return a tight and solemn nod." +
                                 "\n\n  The aged wizard runs a nervous hand through his wispy hair. 'I'm not going to tell you that you've the best chances in the world, but with a bit of luck, even if I don't quite manage to send you to your destination, you should end up somewhere nearby. Are you sure you don't want to hunt for any more artefacts first?'");
 
-                            if (m.getYesNoResponse())
+                            if (Dialogue.getYesNoResponse(true))
                             {
                                 Console.WriteLine("You tell Merigold you're prepared to take the risks...");
                                 Console.ReadKey(true);
@@ -5567,7 +5590,7 @@ namespace DungeonCrawler
                                 "\n\n You return a confident nod." +
                                 "\n\n  The aged wizard rubs his hands together. 'With a bit of luck, even if I don't quite manage to send you to your destination, you should end up somewhere nearby. Are you sure you don't want to hunt for any more artefacts first?'");
 
-                            if (m.getYesNoResponse())
+                            if (Dialogue.getYesNoResponse(true))
                             {
                                 Console.WriteLine("You tell Merigold you're prepared to take the risks...");
                                 Console.ReadKey(true);
@@ -6122,7 +6145,7 @@ namespace DungeonCrawler
                                 "\n\n You return a confident nod." +
                                 "\n\n  The aged wizard rubs his hands together. 'With a bit of luck, even if I don't quite manage to send you to your destination, you should end up somewhere nearby. Are you sure you don't want to hunt for any more artefacts first?'");
 
-                            if (m.getYesNoResponse())
+                            if (Dialogue.getYesNoResponse(true))
                             {
                                 Console.WriteLine("You tell Merigold you're prepared to take the risks...");
                                 Console.ReadKey(true);
@@ -7854,7 +7877,8 @@ namespace DungeonCrawler
                 {
                     Console.WriteLine($"{Description} \nTry as hard as you might, you find no items hidden about the {Name}. It remains {SpecificAttribute}.");
                 }
-                if ((Name.Contains("door") || Name.Contains("stair") || Name.Contains("corner") || Name.Contains("hole")) && (SpecificAttribute == "unlocked"|| SpecificAttribute == "unblocked") && !Description.Contains("smouldering"))
+                //If the feature is belongs to the Door class.
+                if ((Name.Contains("door") || Name.Contains("stair") || Name.Contains("corner") || Name.Contains("hole") || Name.Contains("portal")) && (SpecificAttribute == "unlocked"|| SpecificAttribute == "unblocked") && !Description.Contains("smouldering"))
                 {
                     List<Room> upOrDown = this.CastDoor().Portal;
                     if (Name.Contains("door") || Name.Contains("portal"))
@@ -7956,6 +7980,14 @@ namespace DungeonCrawler
             Passing = passing;
             Dark = dark;
         }
+        /// <summary>
+        /// returns a string upon passing through a door, customised to whether
+        /// you're going up or down a flight of stairs, through a portal, clambering
+        /// up a hole, or else turning a corner.
+        /// </summary>
+        /// <param name="room"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public Room Passage(Room room, bool message = true)
         {
             if (Portal[0].Name == room.Name)

@@ -17,6 +17,19 @@ namespace DungeonCrawler
                 CurseBreaker = curseBreaker;
             }
         }
+        /// <summary>
+        /// The final confrontation with the CurseBreaker upon the highest Parapet.
+        /// It's a dialogue subclass that is only three levels deep (unlike ArchFey which was twelve) but
+        /// is just as long because of how customised it is to player traits and discoveries that
+        /// vary what is or what can be said immensely. Thespians, jinxed and friends with fairies
+        /// will all have different interactions with the CurseBreaker. LinearParle is used here.
+        /// </summary>
+        /// <param name="oubliette"></param>
+        /// <param name="specialItems"></param>
+        /// <param name="staffMG"></param>
+        /// <param name="vanquisher"></param>
+        /// <param name="ghoul"></param>
+        /// <returns></returns>
         public int Denouement(Room oubliette, List<Item> specialItems, Weapon staffMG, Weapon vanquisher, Monster ghoul)
         {
             Dialogue denouement = new Dialogue(_player, CurseBreaker);

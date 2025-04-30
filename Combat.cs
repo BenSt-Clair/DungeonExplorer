@@ -29,9 +29,15 @@ namespace DungeonCrawler
             Player = player;
         }
         /// <summary>
-        /// For after the player wins a fight and wishes
-        /// to search the monster for treasure
+        /// This function is called within the 'Race' function below. It determines how much
+        /// the player darts ahead and how much the monster darts forward using dice rolls
+        /// themselves determined by traits or potions.
+        /// Like in Fight() randomised commentary is given tailored to how fast one or the 
+        /// other has moved and how close they are to the goal.
         /// </summary>
+        /// <param name="progress"></param>
+        /// <param name="hurry"></param>
+        /// <returns></returns>
         private int AdvanceForward(int progress, List<Dice> hurry)
         {
             int result = 0;
@@ -109,6 +115,34 @@ namespace DungeonCrawler
             }
             return result;
         }
+        /// <summary>
+        /// The Race function uses AdvanceForward to sum a variable called player progress and 
+        /// monster progress. Once both of these exceed 200 then the one with the highest total 
+        /// wins the race. Details of these variables are given while playerProgress is below 160
+        /// After that it is scripted to run as if it were a near run thing.
+        /// 
+        ///   Options are given at the beginning for how to start the race. You can cheat and gain a headstart
+        ///   or else you can take a potion of Alacrity to give yourself a boost.
+        ///   
+        /// Alternatively, you can battle the monster [This is winnable by the way. I've managed it but I had to 
+        /// have max stats, potion of speed and felix felicis active in order to do it, and the best weapon in 
+        /// the game equipped]. the Monster is blind so while their attacks are devastating, they don't land
+        /// nearly as often as most monsters.
+        /// </summary>
+        /// <param name="music"></param>
+        /// <param name="speedPotion"></param>
+        /// <param name="throwables"></param>
+        /// <param name="oubliette"></param>
+        /// <param name="usesDictionaryItemItem"></param>
+        /// <param name="usesDictionaryItemFeature"></param>
+        /// <param name="player"></param>
+        /// <param name="usesDictionaryItemChar"></param>
+        /// <param name="holeInCeiling"></param>
+        /// <param name="specialItems"></param>
+        /// <param name="fire"></param>
+        /// <param name="_initiative"></param>
+        /// <param name="masked"></param>
+        /// <returns></returns>
         public bool Race(bool music, Item speedPotion, List<Item> throwables, Room oubliette, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, List<Item> specialItems, bool fire = false, bool _initiative = false, bool masked = false)
         {
             int options = 1;
@@ -181,8 +215,7 @@ namespace DungeonCrawler
                 options++;
             }
             Console.WriteLine(message);
-            Dialogue race = new Dialogue(speedPotion);
-            int answer = race.getIntResponse(options);
+            int answer = Dialogue.getIntResponse(options, true, 1);
             int index = message.IndexOf($"{answer}") + 3;
             if (message[index] == 'S')
             {
@@ -277,7 +310,7 @@ namespace DungeonCrawler
                         Console.WriteLine($"[{options}] {item.Name}");
                         options++;
                     }
-                    answer = race.getIntResponse(options);
+                    answer = Dialogue.getIntResponse(options, true, 1);
                     Item chosenItem = backpack.Items[answer - 1];
                     if (!Player.Inventory.Remove(chosenItem)) 
                     {
@@ -370,7 +403,7 @@ namespace DungeonCrawler
                 else
                 {
                     Console.WriteLine("You have nothing here that you can throw! \n\nWill you scuff the pentagram with your foot instead?");
-                    if (race.getYesNoResponse())
+                    if (Dialogue.getYesNoResponse(true))
                     {
                         if (Player.Speedy)
                         {
@@ -1113,6 +1146,10 @@ namespace DungeonCrawler
                             }
                             Console.ReadKey(true);
                         }
+                        if (Monster.Veapon.Name.Contains("magic"))
+                        {
+                            Console.WriteLine("Merigold wields the room's magic against you! Suddenly, you find yourself beset by flying books that snap at you, bottles that lunge at you, and a swarm of flapping missives!");
+                        }
                         int damageDealt = Monster.Veapon.Attack(Monster.Skill, Player.Skill, Player.Stamina, curseBreaker, Monster, player, another, room, holeInCeiling, divisor, start);
                         if (damageDealt >= 0)
                         {
@@ -1661,7 +1698,7 @@ namespace DungeonCrawler
                                                         {
                                                             success = chosenItem.UseItem3(chosenItem, player, usesDictionaryItemChar, masked);
 
-                                                            if (chosenItem.Name.Trim().ToLower() == "healing potion")
+                                                            if (chosenItem.Name.Trim().ToLower().Contains("healing potion"))
                                                             {
                                                                 Console.WriteLine("Liquid rejuvenation trickles down your parched throat. A warm feeling swells from your heart as you feel your wounds salved and your flesh knitting itself back together.");
                                                             }
@@ -1830,10 +1867,12 @@ namespace DungeonCrawler
                 {
                     if (w.Boon > 9)
                     {
-                        w.Boon = 0;
+                        w.Boon = w.InitialBoon;
                         if (w.Name == "sword of sealed souls")
                         {
-                            w.Boon = 2;
+                            Console.WriteLine("Glutted on another soul your cursed sword increases its power!");
+
+                            w.Boon = w.InitialBoon + 1;
                         }
                         if (player.Traits.ContainsKey("jinxed"))
                         {
@@ -1870,6 +1909,31 @@ namespace DungeonCrawler
                 return false;
             }
         }
+        /// <summary>
+        /// This function is an extension of the original but with some extra features.
+        /// 1. Within this function you'll be battling two creatures simultaneously -
+        /// not just one!
+        /// 2. You will have to be quick deciding which Monster to attack when its your
+        /// turn. You shall be timed and if you delay too much, you will miss your turn!
+        /// 3. Each Monster shall make its own attack against you each turn, meaning you'll
+        ///  be receiving a lot more damage. 
+        ///  4. Potion of Alacrity can give you an extra attack and will increase the window 
+        ///  for deciding which monster to attack, until one of them is dead.
+        ///  5. The battle continues until both monsters are dead.
+        /// </summary>
+        /// <param name="music"></param>
+        /// <param name="usesDictionaryItemItem"></param>
+        /// <param name="usesDictionaryItemFeature"></param>
+        /// <param name="room"></param>
+        /// <param name="player"></param>
+        /// <param name="usesDictionaryItemChar"></param>
+        /// <param name="dualBattle"></param>
+        /// <param name="holeInCeiling"></param>
+        /// <param name="specialItems"></param>
+        /// <param name="fire"></param>
+        /// <param name="_initiative"></param>
+        /// <param name="masked"></param>
+        /// <returns></returns>
         public bool Fight(bool music, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, bool dualBattle, Feature holeInCeiling, List<Item> specialItems, bool fire = false, bool _initiative = false, bool masked = false)
         {
             player = Player;
@@ -2741,7 +2805,7 @@ namespace DungeonCrawler
                                 if (player.Speedy && speedyturn == 0)
                                 {
                                     Console.WriteLine("Before your enemy can react you've already darted into your next action!");
-
+                                    
                                     
                                 }
                                 Console.ReadKey(true);
@@ -2752,7 +2816,7 @@ namespace DungeonCrawler
                                 if(player.Speedy && speedyturn == 0)
                                 {
                                     Console.WriteLine("Before your enemy can react you've already darted into your next action!");
-
+                                    
                                     Console.ReadKey(true);
                                     break;
                                 }
@@ -3113,7 +3177,7 @@ namespace DungeonCrawler
                                                 {
                                                     success = chosenItem.UseItem3(chosenItem, player, usesDictionaryItemChar, masked);
 
-                                                    if (chosenItem.Name.Trim().ToLower() == "healing potion")
+                                                    if (chosenItem.Name.Trim().ToLower().Contains("healing potion"))
                                                     {
                                                         Console.WriteLine("Liquid rejuvenation trickles down your parched throat. A warm feeling swells from your heart as you feel your wounds salved and your flesh knitting itself back together.");
                                                     }
@@ -3299,10 +3363,11 @@ namespace DungeonCrawler
                 {
                     if (w.Boon > 9)
                     {
-                        w.Boon = 0;
+                        w.Boon = w.InitialBoon;
                         if (w.Name.ToLower() == "sword of sealed souls")
                         {
-                            w.Boon = 2;
+                            Console.WriteLine("Glutted on more souls your cursed sword increases its power!");
+                            w.Boon = w.InitialBoon + 2;
                         }
                         if (player.Traits.ContainsKey("jinxed"))
                         {
