@@ -10,10 +10,10 @@ namespace DungeonCrawler
 {
     internal class ArchFey : Dialogue
     {
-        Player _player { get; set; }
-        Monster Monster { get; set; }
-        Combat Race { get; set; }
-        Room Room { get; set; }
+        private Player _player { get; set; }
+        private Monster Monster { get; set; }
+        private Combat Race { get; set; }
+        private Room Room { get; set; }
         public ArchFey(Player player, Monster monster, Combat race, Room room) : base(player, room)
         {
             _player = player;

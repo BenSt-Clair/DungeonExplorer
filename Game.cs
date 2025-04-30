@@ -2321,7 +2321,7 @@ namespace DungeonCrawler
                 bool justGrazing = true;
                 while (!escapedRoom1)
                 {
-                    
+                    /*
                     player1.Inventory.Add(crystalBall);
                     player1.Inventory.Add(throwingKnife);
                     player1.Inventory.Add(lantern);
@@ -2338,7 +2338,7 @@ namespace DungeonCrawler
                     escapedRoom1 = true;
                     oubliette.FirstVisit = true;
                     continue;
-                    
+                    */
                     //
                     //
                     //
@@ -2980,6 +2980,7 @@ namespace DungeonCrawler
             //
             //
             //
+            /*
             fireProgress = 1;
             fieryEscape = true;
             player1.FieryEscape = true;
@@ -2987,7 +2988,7 @@ namespace DungeonCrawler
             player1.midnightClock.Start();
             newRoom1 = magicalManufactory;
             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-            
+            */
             //
             //
             //
