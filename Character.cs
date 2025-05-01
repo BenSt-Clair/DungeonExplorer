@@ -13,7 +13,7 @@ namespace DungeonCrawler
     /// derive Skill Stamina and also equip() and unequip(), which is typically used
     /// in combat
     /// </summary>
-    public class Character
+    public class Character: IHasStats
     {
         public string Name { get; set; }
         public int Skill { get; set; }
@@ -45,13 +45,16 @@ namespace DungeonCrawler
             if (player.Traits.ContainsKey("jinxed")) { weapon.Boon = 6; }
             weapon.Equipped = true;
         }
-        public void Unequip(List<Weapon> inventory)
+        virtual public void Unequip( List<Weapon> inventory, List<Item> specialItems = null)
         {
             foreach (Weapon x in inventory)
             {
                 x.Equipped = false;
             }
         }
+        public string DisplayName() { return Name; }
+        public int DisplaySkill() { return Skill; }
+        public int DisplayStamina() { return Stamina; }
     }
     public class Player : Character
     {
@@ -101,9 +104,7 @@ namespace DungeonCrawler
             Fooled = true;
             UncoverSecretOfMyrovia = 0;
         }
-        public string DisplayName() { return Name; }
-        public int DisplaySkill() { return Skill; }
-        public int DisplayStamina() { return Stamina; }
+        
         public string DescribeSkill()
         {
             if (Skill > 9)
@@ -1351,7 +1352,7 @@ namespace DungeonCrawler
             else { Console.WriteLine("You've no items in your backpack!"); return success; }
         }
     }
-    public class Monster : Character, INotSoCute
+    public class Monster : Character, INotSoCute, IInteract
     {
         /// <summary>
         /// Monsters have unique weapons, descriptions and a list of items in addition to
@@ -1408,6 +1409,13 @@ namespace DungeonCrawler
             Patrol = patrol;
             Time = (Path.Count - 1) * 20000;
         }
+        public void StashItem(Item item, Room room)
+        {
+            Items.Add(item);
+            room.ItemList.Remove(item);
+            return;
+        }
+
         int Attack(int Skill, Player player, List<Item> specialItems, Room room, Feature holeInCeiling)
         {
             List<Item> items = new List<Item> { specialItems[8] };
@@ -1477,6 +1485,51 @@ namespace DungeonCrawler
                 }
             }
 
+        }
+        public override void Unequip(List<Weapon> weaponInventory, List<Item> specialItems)
+        {
+            List<Item> items = new List<Item> { specialItems[8] };
+            List<Weapon> fisticuffs = items.Cast<Weapon>().ToList();
+            List<string> emptyCrits = new List<string>
+            {
+                "",
+                "",
+                "",
+                "",
+
+                "",
+                "",
+                "",
+                "",
+
+                "",
+                "",
+                "",
+                "",
+
+                "",
+                "",
+                "",
+                ""
+            };
+            Dice D2 = new Dice(2);
+            Dice D3 = new Dice(3);
+            Dice D5 = new Dice(5);
+            Weapon fists = fisticuffs[0];
+            if (Skill < 4)
+            {
+                fists = new Weapon(fists.Name, fists.Description, new List<Dice> { D2, D2 }, emptyCrits, emptyCrits, fists.Boon);
+            }
+            else if (Skill < 7)
+            {
+                fists = new Weapon(fists.Name, fists.Description, new List<Dice> { D2, D2, D3 }, emptyCrits, emptyCrits, fists.Boon);
+            }
+            else
+            {
+                fists = new Weapon(fists.Name, fists.Description, new List<Dice> { D2, D2, D3, D5 }, emptyCrits, emptyCrits, fists.Boon + 1);
+            }
+            Veapon = fists;
+            return;
         }
         /// <summary>
         /// The following function returns the Minotaur, room by room, to
