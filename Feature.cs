@@ -18,7 +18,7 @@ namespace DungeonCrawler
     /// feature. And the ItemList is a list of items that may be found around or about the 
     /// instantiated feature.
     /// </summary>
-    public class Feature
+    public class Feature: IHasStats
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -52,6 +52,24 @@ namespace DungeonCrawler
             Attribute = attribute;
             SpecificAttribute = specificAttribute;
             Stamina = stamina;
+        }
+        public int DisplayStamina()
+        {
+            try
+            {
+                if(this.Stamina != null)
+                {
+                    return this.Stamina;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            catch
+            {
+                return -1;
+            }
         }
         /// <summary>
         /// A quick means to cast a feature as a door.

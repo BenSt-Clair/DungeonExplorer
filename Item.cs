@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DungeonCrawler
 {
-    public class Item
+    public class Item: IInteract
     {
         public string Name { get; set; }
         public string Description { get; set; }

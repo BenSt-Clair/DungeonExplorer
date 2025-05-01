@@ -12,4 +12,20 @@ namespace DungeonCrawler
         }
 
     }
+    interface IInteract
+    {
+        public void StashItem()
+        {
+            return;
+        }
+        
+    }
+    interface IHasStats
+    {
+        public int DisplayStamina()
+        {
+            return 0;
+        }
+        
+    }
 }
