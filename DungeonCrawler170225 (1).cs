@@ -54,7 +54,7 @@ namespace DungeonCrawler
                 }
                 bool music = false;
                 Game CurseBreaker = new Game($"CurseBreaker ~ game {attempt}", music, false);
-                music = CurseBreaker.MusicOnOff();
+                
                 Console.WriteLine("Would you like to load a save game?");
                 if (Dialogue.getYesNoResponse(true))
                 {
@@ -70,6 +70,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                     }
                 }
+                music = CurseBreaker.MusicOnOff();
                 CurseBreaker.Start(music);
                 attempt++;
             }

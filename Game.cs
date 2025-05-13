@@ -57,6 +57,7 @@ namespace DungeonCrawler
             
             if(Dialogue.getYesNoResponse(true))
             {
+                this.Music = true;
                 return true;
             }
             return false;
