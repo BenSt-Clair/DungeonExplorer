@@ -8,6 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -31,7 +32,8 @@ namespace DungeonCrawler
         int FireProgress {  get; set; }
         Monster Minotaur { get; set; }
         bool JustStalked { get; set; }
-        private bool Load { get; }
+        public bool Load { get; set; }
+        public long Time { get; set; }
         public Game(string gameName, bool music, bool loadedGame)
         {
             GameName = gameName;
@@ -47,6 +49,7 @@ namespace DungeonCrawler
             FireProgress = 0;
             JustStalked = false;
             Load = loadedGame;
+            Time = 0;
         }
         public bool MusicOnOff()
         {
@@ -74,6 +77,129 @@ namespace DungeonCrawler
             this.Location = newRoom1;
             this.Monsters = AllMonsters;
             this.Minotaur = minotaur;
+        }
+        protected void WriteSaveFile(string filePath)
+        {
+            using (TextWriter tw = new StreamWriter(filePath))
+            {
+                tw.WriteLine($"{GameName}");
+                tw.WriteLine($"{Music}");
+                tw.WriteLine("ITEMS");
+                foreach (Item item in Items)
+                {
+                    tw.WriteLine($"{item.Name}/ {item.Description}/ {item.Attribute}/ {item.SpecifyAttribute}/ {item.SpecialEffect}/ {item.Special}");
+                }
+                tw.WriteLine("FEATURES");
+                foreach (Feature f in Features)
+                {
+
+                    tw.WriteLine($"{f.Name}/ {f.Description}/ {f.Attribute}/ {f.SpecificAttribute}");
+                    if (f.ItemList != null)
+                    {
+                        foreach (Item item in f.ItemList)
+                        {
+
+                            tw.WriteLine($" {item.Name}");
+                        }
+
+                    }
+                }
+                tw.WriteLine("DOORS");
+                foreach (Door d in Doors)
+                {
+
+                    tw.WriteLine($"{d.Name}/ {d.Description}/ {d.Attribute}/ {d.SpecificAttribute}/ {d.Passing}/ {d.Dark}");
+                    if (d.ItemList != null)
+                    {
+                        foreach (Item item in d.ItemList)
+                        {
+                            tw.WriteLine($" {item.Name}/ boo");
+                        }
+                    }
+                    if (d.Portal != null)
+                    {
+                        foreach (Room r in d.Portal)
+                        {
+                            tw.WriteLine($" {r.Name}");
+                        }
+
+                    }
+
+                }
+
+
+
+
+
+                tw.WriteLine("ROOMS");
+                foreach (Room r in Rooms)
+                {
+                    tw.WriteLine($"{r.Name}/ {r.Description}/ {r.FirstVisit}");
+                    foreach (Item item in r.ItemList)
+                    {
+                        tw.WriteLine($"{item.Name}/ boo / yah / hoo / ray / yippee / tally-ho");
+                    }
+                    foreach (Feature f in r.FeatureList)
+                    {
+                        tw.WriteLine($"{f.Name} / {f.SpecificAttribute} / boo / yah / hoo / ray / yippee / tally-ho");
+                    }
+
+                }
+                tw.WriteLine("PLAYER");
+
+                long time = 0;
+                if (_player.midnightClock != null)
+                {
+                    _player.midnightClock.Stop();
+                    time = _player.midnightClock.ElapsedMilliseconds;
+                }
+                tw.WriteLine($"{_player.Name}/ {_player.Skill}/ {_player.InitialStamina}/ {_player.Stamina}/ {_player.Masked}/ {_player.FieryEscape}/ {_player.Speedy}/ {_player.MGItemsDonated}/ {time} / {_player.Fooled} / {_player.UncoverSecretOfMyrovia}");
+                foreach (Weapon w in _player.WeaponInventory)
+                {
+                    tw.WriteLine($" {w.Name} / boo");
+                }
+                foreach (Item i in _player.Inventory)
+                {
+                    tw.WriteLine($" {i.Name}");
+                }
+                foreach (var k in _player.Traits)
+                {
+                    tw.WriteLine($" {k.Key} / {k.Value}");
+                }
+                tw.WriteLine("LOCATION");
+                tw.WriteLine($"{Location.Name}");
+                tw.WriteLine("MONSTERS");
+                foreach (Monster mash in Monsters)
+                {
+
+                    tw.WriteLine($"{mash.Name}/ {mash.Description}/ {mash.Stamina}/ {mash.Skill}/ {mash.Veapon.Name}");
+                    foreach (Item i in mash.Items)
+                    {
+                        tw.WriteLine($" {i.Name} / boo");
+                    }
+
+                }
+                tw.WriteLine("MINOTAUR");
+                time = 0;
+                if (Minotaur.Patrol != null)
+                {
+                    Minotaur.Patrol.Stop();
+                    time = Minotaur.Patrol.ElapsedMilliseconds;
+                }
+                tw.WriteLine($"{Minotaur.Location.Name}/ {Minotaur.Rage}/ {Minotaur.Suspicious}/ {Minotaur.Time}");
+                foreach (Item i in Minotaur.Items)
+                {
+                    tw.WriteLine(i.Name);
+                }
+                foreach (Room r in Minotaur.Path)
+                {
+                    tw.WriteLine($"{r.Name} / boo");
+                }
+
+                tw.WriteLine("FIREPROGRESS");
+                tw.WriteLine($"{FireProgress}/ {JustStalked}");
+
+            }
         }
         protected void SaveGame(bool music, int fire, bool justStalked,
             List<Item> AllItems, List<Feature> AllFeatures, List<Door> AllDoors,
@@ -103,7 +229,7 @@ namespace DungeonCrawler
                     }
                     else
                     {
-                        
+
                         filePath = Path.Combine(path, $"CurseBreaker\\Saves");
                         if (!Directory.Exists(filePath))
                         {
@@ -127,190 +253,626 @@ namespace DungeonCrawler
                     }
                     break;
                 }
-                
 
-                
+
+
                 if (File.Exists(filePath))
                 {
                     File.Delete(filePath);
                 }
                 FileStream str = File.Create(filePath);
                 str.Close();
-                TextWriter tw = new StreamWriter(filePath);
-                tw.WriteLine($"{GameName}");
-                tw.WriteLine($"{Music}");
-                tw.WriteLine("ITEMS");
-                foreach (Item item in Items)
+                while (true)
                 {
-                    tw.WriteLine($"{item.Name}/ {item.Description}/ {item.Attribute}/ {item.SpecifyAttribute}/ {item.SpecialEffect}/ {item.Special}");
-                }
-                tw.WriteLine("FEATURES");
-                foreach (Feature f in Features)
-                {
-
-                    tw.WriteLine($"{f.Name}/ {f.Description}/ {f.Attribute}/ {f.SpecificAttribute}");
-                    if (f.ItemList != null)
+                    WriteSaveFile(filePath);
+                    try
                     {
-                        foreach (Item item in f.ItemList)
+                        _player = new Player("", 1, 1, new List<Weapon>(), new List<Item>(), new Dictionary<string, string>());
+                        LoadGame(AllItems, AllFeatures, AllDoors, AllRooms, newRoom1, AllMonsters, minotaur, true, filePath);
+                        Console.WriteLine("\x1b[3J");
+                        Console.Clear();
+                        Console.WriteLine("Save complete! Would you like to exit?");
+                        if (Dialogue.getYesNoResponse(true))
                         {
-                            tw.Write($"/ {item.Name}");
+                            System.Environment.Exit(0);
                         }
-                        tw.Write("\n");
+                        return;
                     }
-                }
-                tw.WriteLine("DOORS");
-                foreach (Door d in Doors)
-                {
-
-                    tw.WriteLine($"{d.Name}/ {d.Description}/ {d.Attribute}/ {d.SpecificAttribute}/ {d.Passing}/ {d.Dark}");
-                    if (d.ItemList != null)
+                    catch (IOException)
                     {
-                        foreach (Item item in d.ItemList)
-                        {
-                            tw.Write($"/ {item.Name}");
-                        }
+                        continue;
                     }
-                    if (d.Portal != null)
-                    {
-                        foreach (Room r in d.Portal)
-                        {
-                            tw.Write($"/ {r.Name}");
-                        }
-                        tw.Write("\n");
-                    }
-                    
                 }
-                tw.WriteLine("ROOMS");
-                foreach (Room r in Rooms)
-                {
-                    tw.WriteLine($"{r.Name}/ {r.Description}/ {r.FirstVisit}");
-                    foreach (Item item in r.ItemList)
-                    {
-                        tw.Write($"/ {item.Name}");
-                    }
-                    foreach (Feature f in r.FeatureList)
-                    {
-                        tw.Write($"/ {f.Description}");
-                    }
-                    tw.Write("\n");
-                }
-                tw.WriteLine("PLAYER");
-
-                long time = 0;
-                if (_player.midnightClock != null)
-                {
-                    _player.midnightClock.Stop();
-                    time = _player.midnightClock.ElapsedMilliseconds;
-                }
-                tw.WriteLine($"{_player.Name}/ {_player.Skill}/ {_player.Stamina}/ {_player.Masked}/ {_player.FieryEscape}/ {_player.Speedy}/ {_player.MGItemsDonated}/ {time}");
-                foreach (Weapon w in _player.WeaponInventory)
-                {
-                    tw.Write($"/ {w.Name}");
-                }
-                foreach (Item i in _player.Inventory)
-                {
-                    tw.Write($"/ {i.Name}");
-                }
-                foreach (var k in _player.Traits)
-                {
-                    tw.Write($"/ {k.Key}");
-                }
-                tw.WriteLine("LOCATION");
-                tw.WriteLine($"{Location.Name}");
-                tw.WriteLine("MONSTERS");
-                foreach (Monster mash in Monsters)
-                {
-
-                    tw.WriteLine($"{mash.Name}/ {mash.Description}/ {mash.Stamina}/ {mash.Skill}/ {mash.Veapon.Name}");
-                    foreach (Item i in mash.Items)
-                    {
-                        tw.Write($"/ {i.Name}");
-                    }
-                    tw.Write("\n");
-                }
-                tw.WriteLine("MINOTAUR");
-                time = 0;
-                if (Minotaur.Patrol != null)
-                {
-                    Minotaur.Patrol.Stop();
-                    time = Minotaur.Patrol.ElapsedMilliseconds;
-                }
-                tw.WriteLine($"{Minotaur.Name}/ {Minotaur.Description}/ {Minotaur.Stamina}/ {Minotaur.Skill}/ {Minotaur.Veapon.Name}/ {Minotaur.Location.Name}/ {Minotaur.Rage}/ {Minotaur.Suspicious}/ {time}");
-                foreach (Item i in Minotaur.Items)
-                {
-                    tw.Write(i.Name);
-                }
-                foreach (Room r in Minotaur.Path)
-                {
-                    tw.Write(r.Name);
-                }
-                tw.Write("\n");
-                tw.WriteLine("FIREPROGRESS");
-                tw.WriteLine($"{FireProgress}/ {JustStalked}");
-                return;
             }
             else
             {
                 return;
             }
         }
-        public bool LoadGame() // bool fieryEscape = true if fireProgress > 0,
+        public bool LoadGame(List<Item> AllItems, List<Feature> AllFeatures, List<Door> AllDoors,
+            List<Room> AllRooms, Room newRoom1, List<Monster> AllMonsters, Monster minotaur, bool test,
+            string filePath1) // bool fieryEscape = true if fireProgress > 0, remember 'out' newRoom1
             //
         {
             string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string filePath = "";
-            Console.WriteLine("Would you like to load a previous save?");
-            if (Dialogue.getYesNoResponse(true))
+            string filePath = Path.Combine(path, $"CurseBreaker\\Saves");
+            int options = 0;
+            bool myBool = false;
+            if (!Directory.Exists(filePath))
             {
-                Console.WriteLine("Please enter the save name of the game you wish to load:");
-                string saveName = "";
-                while (true)
-                {
-                    saveName = Console.ReadLine().Trim();
-                    if (string.IsNullOrWhiteSpace(saveName))
-                    {
-                        Console.WriteLine("Please enter the save name of the game you wish to load (or enter 'exit' if you changed your mind):");
-                        continue;
-                    }
-                    if (saveName.ToLower() == "exit")
-                    {
-                        return false;
-                    }
-                    filePath = Path.Combine(path, $"CurseBreaker\\Saves");
-                    if (!Directory.Exists(filePath))
-                    {
-                        Console.WriteLine("You have no save files yet!");
-                        return false;
-                    }
-                    filePath = Path.Combine(filePath, $"{saveName}.txt");
-                    if (!Directory.Exists(filePath))
-                    {
-                        Console.WriteLine($"{saveName} has not been found! Would you like to try again?");
-                        if (Dialogue.getYesNoResponse(true))
-                        {
-                            Console.WriteLine("Please re-enter the save name of the game you wish to load (or enter 'exit' if you changed your mind):");
-                            continue;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        StreamReader sr = new StreamReader(filePath);
-                        GameName = sr.ReadLine().Trim();
-                        Music = bool.Parse(sr.ReadLine().Trim());
-                        Console.WriteLine(Music + GameName);
-                        return true;
-                    }
-
-                }
+                Console.WriteLine("Error! You have no save files yet.");
+                Load = false;
+                return false;
             }
             else
             {
-                return false;
+                int choice = 0;
+                string[] saveFiles = Directory.GetFiles(filePath);
+                filePath = filePath1;
+                if (!test)
+                {
+                    Console.WriteLine("Would you like to load one of these previous saves?");
+                    
+
+                    foreach (string file in saveFiles)
+                    {
+                        options++;
+                        Console.WriteLine($"[{options}] {file}");
+                    }
+                    choice = Dialogue.getIntResponse(options + 1, true, 1);
+                    choice--;
+                    filePath = Path.Combine(filePath, saveFiles[choice].ToString());
+                }
+
+                
+                StreamReader sr = new StreamReader(filePath);
+                GameName = sr.ReadLine();
+                bool music = false;
+                Music = bool.TryParse(sr.ReadLine().Trim(), out music);
+                music = Music;
+                sr.ReadLine();
+                int i = 0;
+                while (i < AllItems.Count)
+                {
+                    string itemString = sr.ReadLine();
+                    string[] itemAspects = itemString.Split('/', 6);
+                    AllItems[i].Name = itemAspects[0].Trim();
+                    AllItems[i].Description = itemAspects[1].Trim();
+                    AllItems[i].Attribute = bool.TryParse(itemAspects[2].Trim(), out myBool);
+                    AllItems[i].SpecifyAttribute = itemAspects[3].Trim();
+                    int sE = 0;
+                    int.TryParse(itemAspects[4].Trim(), out sE);
+                    AllItems[i].SpecialEffect = sE;
+                    string propString = "";
+                    if (itemAspects[5] != null)
+                    {
+                        AllItems[i].Special = itemAspects[5].Trim();
+                    }
+                    i++;                    
+                }
+                sr.ReadLine();
+                string featureString = sr.ReadLine();
+                string[] featureAspects = featureString.Split('/');
+                AllFeatures[0].Name = featureAspects[0].Trim();
+                AllFeatures[0].Description = featureAspects[1].Trim();
+                bool.TryParse(featureAspects[2].Trim(), out myBool);
+                AllFeatures[0].Attribute = myBool;
+                AllFeatures[0].SpecificAttribute = featureAspects[3].Trim();
+                i = 1;
+                while(i < AllFeatures.Count)
+                {
+                    featureString = sr.ReadLine();
+                    featureAspects = featureString.Split('/');
+                    int j = featureAspects.Count();
+                    if (j == 1)
+                    {
+                        AllFeatures[i - 1].ItemList.Clear();
+                    }
+                    while(j == 1)
+                    {
+                        foreach (Item item in AllItems)
+                        {
+                            if (featureAspects[0].Trim() == item.Name.Trim())
+                            {
+                                AllFeatures[i - 1].ItemList.Add(item);
+                                break;
+                            }
+                        }
+                        featureString = sr.ReadLine();
+                        featureAspects = featureString.Split('/');
+                        j = featureAspects.Count();
+                    }
+                    AllFeatures[i].Name = featureAspects[0].Trim();
+                    AllFeatures[i].Description = featureAspects[1].Trim();
+                    bool.TryParse(featureAspects[2].Trim(), out myBool);
+                    AllFeatures[i].Attribute = myBool;
+                    AllFeatures[i].SpecificAttribute = featureAspects[3].Trim();
+                    i++;
+
+                }
+                string nextLine = sr.ReadLine();
+                if (nextLine != "DOORS")
+                {
+                    AllFeatures[i - 1].ItemList.Clear();
+                }
+                while(nextLine.Trim() != "DOORS")
+                {
+                    foreach(Item item in AllItems)
+                    {
+                        if(nextLine.Trim() == item.Name)
+                        {
+                            AllFeatures[i - 1].ItemList.Add(item);
+                            break;
+                        }
+                    }
+                    nextLine = sr.ReadLine();
+                }
+                // itemlist of last feature in list?
+                
+                string doorString = sr.ReadLine();
+                string[] doorAspects = doorString.Split('/');
+                AllDoors[0].Name = doorAspects[0].Trim();
+                AllDoors[0].Description = doorAspects[1].Trim();
+                bool.TryParse(doorAspects[2].Trim(), out myBool);
+                AllDoors[0].Attribute = myBool;
+                AllDoors[0].SpecificAttribute = doorAspects[3].Trim();
+                AllDoors[0].Passing = doorAspects[4].Trim();
+                bool.TryParse(doorAspects[5].Trim(), out myBool);
+                AllDoors[0].Dark = myBool;
+                i = 1;
+                while (i < AllDoors.Count)
+                {
+                    doorString = sr.ReadLine();
+                    doorAspects = doorString.Split('/');
+                    int j = doorAspects.Count();
+                    if(j == 2)
+                    {
+                        AllDoors[i - 1].ItemList.Clear();
+                    }
+                    while(j == 2)
+                    {
+                        foreach (Item item in AllItems)
+                        {
+                            if (doorAspects[0].Trim() == item.Name.Trim())
+                            {
+                                AllDoors[i - 1].ItemList.Add(item);
+                                break;
+                            }
+                        }
+                        doorString = sr.ReadLine();
+                        doorAspects = doorString.Split('/');
+                        j = doorAspects.Count();
+                    }
+                    if (j == 1)
+                    {
+                        AllDoors[i - 1].Portal.Clear();
+                    }
+                    while(j == 1)
+                    {
+                        foreach(Room room in AllRooms)
+                        {
+                            if (room.Name.Trim() == doorAspects[0].Trim())
+                            {
+                                AllDoors[i - 1].Portal.Add(room);
+                                break;
+                            }
+                        }
+                        doorString = sr.ReadLine();
+                        doorAspects = doorString.Split('/');
+                        j = doorAspects.Count();
+                    }
+                    AllDoors[i].Name = doorAspects[0].Trim();
+                    AllDoors[i].Description = doorAspects[1].Trim();
+                    bool.TryParse(doorAspects[2].Trim(), out myBool);
+                    AllDoors[i].Attribute = myBool;
+                    AllDoors[i].SpecificAttribute = doorAspects[3].Trim();
+                    AllDoors[i].Passing = doorAspects[4].Trim();
+                    bool.TryParse(doorAspects[5].Trim(), out myBool);
+                    AllDoors[i].Dark = myBool;
+                    i++;
+                }
+                doorString = sr.ReadLine();
+                doorAspects = doorString.Split('/');
+                AllDoors[i - 1].Portal.Clear();
+                foreach (Room room in AllRooms)
+                {
+                    if (room.Name.Trim() == doorAspects[0].Trim())
+                    {
+                        AllDoors[i - 1].Portal.Add(room);
+                        break;
+                    }
+                }
+                sr.ReadLine();
+                string roomString = sr.ReadLine();
+                string[] roomAspects = roomString.Split('/');
+                AllRooms[0].Name = roomAspects[0].Trim();
+                AllRooms[0].Description = roomAspects[1].Trim();
+                i = 0;
+                while (i < 3)
+                {
+                    AllRooms[0].Description += "\n" + sr.ReadLine().Trim() + "\t";
+                    i++;
+                }
+                roomString = sr.ReadLine();
+                roomAspects = roomString.Split('/');
+                AllRooms[0].Description += "\n" + roomAspects[0] + "\t\t";
+                bool.TryParse(roomAspects[1].Trim(), out myBool);
+                AllRooms[0].FirstVisit = myBool;
+                i = 1;
+                while(i < AllRooms.Count)
+                {
+                    roomString = sr.ReadLine();
+                    roomAspects = roomString.Split('/');
+                    int j = roomAspects.Count();
+                    if(j == 7)
+                    {
+                        AllRooms[i - 1].ItemList.Clear();
+                    }
+                    while (j == 7)
+                    {
+                        foreach(Item item in AllItems)
+                        {
+                            if (item.Name.Trim() == roomAspects[0].Trim())
+                            {
+                                AllRooms[i - 1].ItemList.Add(item);
+                                break;
+                            }
+                        }
+                        roomString = sr.ReadLine();
+                        roomAspects = roomString.Split('/');
+                        j = roomAspects.Count();
+                    }
+                    if (j == 8)
+                    {
+                        AllRooms[i - 1].FeatureList.Clear();
+                    }
+                    
+                    while (j == 8)
+                    {
+                        bool f_added = false;
+                        foreach(Feature f in AllFeatures)
+                        {
+                            
+                            if(f.Name.Trim() == roomAspects[0].Trim() && f.SpecificAttribute.Trim() == roomAspects[1].Trim())
+                            {
+                                AllRooms[i - 1].FeatureList.Add(f);
+                                f_added = true;
+                                break;
+                            }
+                        }
+                        if (!f_added)
+                        {
+                            
+                            foreach(Door d in AllDoors)
+                            {
+                                if (d.Name.Trim() == roomAspects[0].Trim() && d.SpecificAttribute.Trim() == roomAspects[1].Trim() && d.Portal.Contains(AllRooms[i - 1]))
+                                {
+                                    
+                                    AllRooms[i - 1].FeatureList.Add(d);
+                                    break;
+                                }
+                            }
+                        }
+                        roomString = sr.ReadLine();
+                        roomAspects = roomString.Split('/');
+                        j = roomAspects.Count();
+
+                    }
+                    AllRooms[i].Name = roomAspects[0].Trim();
+                    AllRooms[i].Description = roomAspects[1].Trim();
+                    int y = 0;
+                    while (y < 3)
+                    {
+                        AllRooms[i].Description += "\n" + sr.ReadLine().Trim() + "\t";
+                        y++;
+                    }
+                    roomString = sr.ReadLine();
+                    roomAspects = roomString.Split('/');
+                    AllRooms[i].Description += "\n" + roomAspects[0] + "\t\t";
+                    bool.TryParse(roomAspects[1].Trim(), out myBool);
+                    AllRooms[i].FirstVisit = myBool;
+                    
+                    i++;
+
+                }
+                roomString = sr.ReadLine();
+                roomAspects = roomString.Split('/');
+                int k = roomAspects.Count();
+                if (k == 7)
+                {
+                    AllRooms[i - 1].ItemList.Clear();
+                }
+                while (k == 7)
+                {
+                    foreach (Item item in AllItems)
+                    {
+                        if (item.Name.Trim() == roomAspects[0].Trim())
+                        {
+                            AllRooms[i - 1].ItemList.Add(item);
+                            break;
+                        }
+                    }
+                    roomString = sr.ReadLine();
+                    roomAspects = roomString.Split('/');
+                    k = roomAspects.Count();
+                }
+                if (k == 8)
+                {
+                    AllRooms[i - 1].FeatureList.Clear();
+                }
+
+                while (k == 8)
+                {
+                    bool f_added = false;
+                    foreach (Feature f in AllFeatures)
+                    {
+
+                        if (f.Name.Trim() == roomAspects[0].Trim() && f.SpecificAttribute.Trim() == roomAspects[1].Trim())
+                        {
+                            AllRooms[i - 1].FeatureList.Add(f);
+                            f_added = true;
+                            break;
+                        }
+                    }
+                    if (!f_added)
+                    {
+
+                        foreach (Door d in AllDoors)
+                        {
+                            if (d.Name.Trim() == roomAspects[0].Trim() && d.SpecificAttribute.Trim() == roomAspects[1].Trim() && d.Portal.Contains(AllRooms[i - 1]))
+                            {
+
+                                AllRooms[i - 1].FeatureList.Add(d);
+                                break;
+                            }
+                        }
+                    }
+                    roomString = sr.ReadLine();
+                    roomAspects = roomString.Split('/');
+                    k = roomAspects.Count();
+
+                }
+                string playerString = sr.ReadLine();
+                string[] playerAspects = playerString.Split('/');
+                _player.Name = playerAspects[0].Trim();
+                int number = 0;
+                int.TryParse(playerAspects[1].Trim(), out number);
+                _player.Skill = number;
+                int.TryParse(playerAspects[2].Trim(), out number);
+                _player.InitialStamina = number;
+                int.TryParse(playerAspects[3].Trim(), out number);
+                _player.Stamina = number;
+                bool.TryParse(playerAspects[4].Trim(), out myBool);
+                _player.Masked = myBool;
+                bool.TryParse(playerAspects[5].Trim(), out myBool);
+                _player.FieryEscape = myBool;
+                bool.TryParse(playerAspects[6].Trim(), out myBool);
+                _player.Speedy = myBool;
+                int.TryParse(playerAspects[7].Trim(), out number);
+                _player.MGItemsDonated = number;
+                long time = 0;
+                long.TryParse(playerAspects[8].Trim(), out time);
+                int secrets = 0;
+                int.TryParse(playerAspects[10].Trim(), out number);
+                _player.UncoverSecretOfMyrovia = number;
+                if (time != 0)
+                {
+                    Time = time;
+                    // midnight is upon you! import Time and add to time taken
+                }
+                bool.TryParse(playerAspects[9].Trim(), out myBool);
+                _player.Fooled = myBool;
+                _player.CarryCapacity = 12 + _player.InitialStamina / 10;
+                playerString = sr.ReadLine();
+                playerAspects = playerString.Split('/');
+                k = playerAspects.Count();
+                _player.WeaponInventory.Clear();
+                while (k == 2)
+                {
+                    foreach (Item weapon in AllItems)
+                    {
+                        if (weapon is Weapon)
+                        {
+                            if (weapon.Name.Trim() == playerAspects[0].Trim())
+                            {
+                                List<Item> weapons = new List<Item> { weapon};
+                                List<Weapon> isWeapon = weapons.Cast<Weapon>().ToList();
+                                _player.WeaponInventory.Add(isWeapon[0]);
+                                break;
+                            }
+                        }
+                    }
+                    playerString = sr.ReadLine();
+                    playerAspects = playerString.Split('/');
+                    k = playerAspects.Count();
+                }
+                while (k == 1)
+                {
+                    foreach(Item item in AllItems)
+                    {
+                        if(item.Name.Trim() == playerAspects[0].Trim())
+                        {
+                            _player.Inventory.Add(item);
+                            break;
+                        }
+                    }
+                    playerString = sr.ReadLine();
+                    playerAspects = playerString.Split('/');
+                    k = playerAspects.Count();
+                }
+                _player.Traits.Clear();
+                while(k == 2)
+                {
+                    _player.Traits[playerAspects[0].Trim()] = playerAspects[1].Trim();
+                    playerString = sr.ReadLine();
+                    playerAspects = playerString.Split('/');
+                    k = playerAspects.Count();
+                }
+                
+                string location = sr.ReadLine().Trim();
+                foreach(Room room in AllRooms)
+                {
+                    if (location == room.Name.Trim())
+                    {
+                        newRoom1 = room;
+                        break;
+                    }
+
+                }
+                sr.ReadLine();                
+                string mashString = sr.ReadLine();
+                string[] mashAspects = mashString.Split('/');
+                k = mashAspects.Count();
+                AllMonsters[0].Name = mashAspects[0].Trim();
+                AllMonsters[0].Description = mashAspects[1].Trim();
+                int.TryParse(mashAspects[2].Trim(), out number);
+                AllMonsters[0].Stamina = number;
+                int.TryParse(mashAspects[3].Trim(), out number);
+                AllMonsters[0].Skill = number;
+                foreach(Item item in AllItems)
+                {
+                    if (item is Weapon)
+                    {
+                        if (item.Name.Trim() == mashAspects[4].Trim())
+                        {
+                            List<Item> isItem = new List<Item> { item};
+                            List<Weapon> isWeapon = isItem.Cast<Weapon>().ToList();
+                            AllMonsters[0].Veapon = isWeapon[0];
+                            break;
+                        }
+                    }
+                }
+                i = 1;
+                while(i < AllMonsters.Count)
+                {
+                    mashString = sr.ReadLine();
+                    mashAspects = mashString.Split('/');
+                    int j = mashAspects.Count();
+                    if(j == 2)
+                    {
+                        AllMonsters[i - 1].Items.Clear();
+                    }
+                    while(j == 2)
+                    {
+                        foreach(Item item in AllItems)
+                        {
+                            if(item.Name.Trim() == mashAspects[0].Trim())
+                            {
+                                AllMonsters[i - 1].Items.Add(item);
+                                break;
+                            }
+                        }
+                        mashString = sr.ReadLine();
+                        mashAspects = mashString.Split('/');
+                        j = mashAspects.Count();
+                    }
+                    AllMonsters[i].Name = mashAspects[0].Trim();
+                    AllMonsters[i].Description = mashAspects[1].Trim();
+                    int.TryParse(mashAspects[2].Trim(), out number);
+                    AllMonsters[i].Stamina = number;
+                    int.TryParse(mashAspects[3].Trim(), out number);
+                    AllMonsters[i].Skill = number;
+                    foreach (Item item in AllItems)
+                    {
+                        if (item is Weapon)
+                        {
+                            if (item.Name.Trim() == mashAspects[4].Trim())
+                            {
+                                List<Item> isItem = new List<Item> { item };
+                                List<Weapon> isWeapon = isItem.Cast<Weapon>().ToList();
+                                AllMonsters[i].Veapon = isWeapon[0];
+                                break;
+                            }
+                        }
+                    }
+                    i++;
+                }
+                mashString = sr.ReadLine();
+                mashAspects = mashString.Split('/');
+                k = mashAspects.Count();
+                if (k == 2)
+                {
+                    AllMonsters[i - 1].Items.Clear();
+                }
+                while (k == 2)
+                {
+                    foreach (Item item in AllItems)
+                    {
+                        if (item.Name.Trim() == mashAspects[0].Trim())
+                        {
+                            AllMonsters[i - 1].Items.Add(item);
+                            break;
+                        }
+                    }
+                    mashString = sr.ReadLine();
+                    mashAspects = mashString.Split('/');
+                    k = mashAspects.Count();
+                }
+                string minString = sr.ReadLine();
+                string[] minAspects = minString.Split('/');
+                foreach(Room r in AllRooms)
+                {
+                    if(r.Name.Trim() == minAspects[0].Trim())
+                    {
+                        Minotaur.Location = r;
+                        break;
+                    }
+                }
+                bool.TryParse(minAspects[1].Trim(), out myBool);
+                Minotaur.Rage = myBool;
+                bool.TryParse(minAspects[2].Trim(), out myBool);
+                Minotaur.Suspicious = myBool;
+                long.TryParse(minAspects[3].Trim(), out time);
+                Minotaur.Time = time;
+                minString = sr.ReadLine();
+                minAspects = minString.Split('/');
+                k = minAspects.Count();
+                Minotaur.Items.Clear();
+                while(k == 1)
+                {
+                    foreach(Item item in AllItems)
+                    {
+                        if(item.Name.Trim() == minAspects[0].Trim())
+                        {
+                            Minotaur.Items.Add(item);
+                            break;
+                        }
+                    }
+                    minString = sr.ReadLine();
+                    minAspects = minString.Split('/');
+                    k = minAspects.Count();
+                }
+                while(k == 2)
+                {
+                    foreach(Room r in AllRooms)
+                    {
+                        if(r.Name.Trim() == minAspects[0].Trim())
+                        {
+                            Minotaur.Path.Add(r);
+                            break;
+                        }
+                    }
+                    minString = sr.ReadLine();
+                    minAspects = minString.Split('/');
+                    k = minAspects.Count();
+                }
+                string lastString = sr.ReadLine();
+                string[] lastAspects = lastString.Split('/');
+                int.TryParse(lastAspects[0].Trim(), out number);
+                FireProgress = number;
+                bool.TryParse(lastAspects[1].Trim(), out myBool);
+                JustStalked = myBool;
+                ResetData(music, number, myBool, AllItems, AllFeatures, AllDoors, AllRooms,
+                    _player, newRoom1, AllMonsters, Minotaur);
+                return true;
+
+
             }
+
+
+
+
+
         }
         private void Prologue(Room room)
         {
@@ -509,16 +1071,16 @@ namespace DungeonCrawler
 
 
                 Dictionary<string, string> traitList = new Dictionary<string, string>();
-                traitList.Add("opportunist", "Carpe diem is your motto! You are the sort of person that strikes while the iron is hot and strikes hard. \nYour eagerness to exploit any advantage gives you a bonus in battle.");
-                traitList.Add("human armadillo", "You've invested in quality steel armour and only ever take it off to polish it to a dazzling sheen. \nYour chances of being hit in combat are reduced as blows regularly bounce off you.");
-                traitList.Add("thick-skinned", "Sticks and stones may break my bones, but... Well actually, no, they don't! You've a high pain tolerance and can weather trials with, if not a cool stoicism, then a devil-may-care attitude. \nThe damage you receive from enemy blows is sizeably reduced.");
-                traitList.Add("diligent", "Either possessed by a hidden doubt, a desire for vengeance or perhaps simply a drive to excel, you've trained in the art of combat every day. You may not have started as a natural warrior, but you've pushed your own limits further than anyone else you know. \nYour skill is increased.");
-                traitList.Add("jinxed", "When gentle folk of peaceful villages see you they cross to the other side of the street. They may even make gestures to ward away misfortune. To put it bluntly, you are a walking maelstrom of oafishness, a paragon of bad luck and a walking catastrophe the likes of which leaves everyone around you stunned. Calamities fall like rain around you as you naively blunder your merry way through every encounter.\nYour skill is reduced but you greatly increase your chance to score Critical Hits. Bring forth the maelstrom!");
-                traitList.Add("hale, hot and hearty", "Regardless of whether or not you exercise regularly, or the state of your diet, you've always seemed to effortlessly stay in good shape. You find the captivated gaze of others often following you, admiring your most pleasing physique. \nYour stamina is increased.");
-                traitList.Add("medicine man", "You've plenty of experience patching up many a wound, administering care and treating the sick. Even if your knowledge is limited, at least your doctorly disposition puts your patients more at ease.\nHealing potions have a greater effect on you.");
-                traitList.Add("sadist", "Somewhere down the line you've secretly discovered the delectable, depraved pleasures of anguish - specifically other people's. You often find yourself relishing the thought of your next fight, and you feed your nasty fantasies by studying exactly where to strike to elicit the most exquisite pain... \nThe damage you deal from critical hits is greatly increased.");
-                traitList.Add("thespian", "An actor without compare! A performer extraordinaire! And on occasion, mayhaps, the odd con, or two... or three. The future belongs to they that dares! \nAs for yourself, you *dare* to pretend to be that for which you are ill-equipped and trained, either for stolen glory, bountiful free booze or to gain company and favour with, shall we say, notable members of the opposite sex?\nYou may be lousy with a sword, but you look the part, and with a pen or a stage who needs such crude implements. Now! Where's your audience? \nYou have advantage in dialogue interactions and deception.");
-                traitList.Add("friends with fairies", "For many moons you have been blessed with the extraordinary gift of being able to see and tap into the magical world of the Fey! You often converse with fairies, congregate with pixies and engage in entirely 110% meaningful philosophical discourse with your ethereal friends. Your other, more mundane friends, on the other hand, just think you're stark raving bonkers. But you know better...you think?\nWhere is the line between reality and fantasy? You decide! Prepare for strange encounters, bizarre events and your own, unique blend of logic to solve puzzles. Effects of magical potions become wild and unpredictable.");
+                traitList.Add("opportunist", "Carpe diem is your motto! You are the sort of person that strikes while the iron is hot and strikes hard. Your eagerness to exploit any advantage gives you a bonus in battle.");
+                traitList.Add("human armadillo", "You've invested in quality steel armour and only ever take it off to polish it to a dazzling sheen. Your chances of being hit in combat are reduced as blows regularly bounce off you.");
+                traitList.Add("thick-skinned", "Sticks and stones may break my bones, but... Well actually, no, they don't! You've a high pain tolerance and can weather trials with, if not a cool stoicism, then a devil-may-care attitude. The damage you receive from enemy blows is sizeably reduced.");
+                traitList.Add("diligent", "Either possessed by a hidden doubt, a desire for vengeance or perhaps simply a drive to excel, you've trained in the art of combat every day. You may not have started as a natural warrior, but you've pushed your own limits further than anyone else you know. Your skill is increased.");
+                traitList.Add("jinxed", "When gentle folk of peaceful villages see you they cross to the other side of the street. They may even make gestures to ward away misfortune. To put it bluntly, you are a walking maelstrom of oafishness, a paragon of bad luck and a walking catastrophe the likes of which leaves everyone around you stunned. Calamities fall like rain around you as you naively blunder your merry way through every encounter. Your skill is reduced but you greatly increase your chance to score Critical Hits. Bring forth the maelstrom!");
+                traitList.Add("hale, hot and hearty", "Regardless of whether or not you exercise regularly, or the state of your diet, you've always seemed to effortlessly stay in good shape. You find the captivated gaze of others often following you, admiring your most pleasing physique. Your stamina is increased.");
+                traitList.Add("medicine man", "You've plenty of experience patching up many a wound, administering care and treating the sick. Even if your knowledge is limited, at least your doctorly disposition puts your patients more at ease. Healing potions have a greater effect on you.");
+                traitList.Add("sadist", "Somewhere down the line you've secretly discovered the delectable, depraved pleasures of anguish - specifically other people's. You often find yourself relishing the thought of your next fight, and you feed your nasty fantasies by studying exactly where to strike to elicit the most exquisite pain... The damage you deal from critical hits is greatly increased.");
+                traitList.Add("thespian", "An actor without compare! A performer extraordinaire! And on occasion, mayhaps, the odd con, or two... or three. The future belongs to they that dares! As for yourself, you *dare* to pretend to be that for which you are ill-equipped and trained, either for stolen glory, bountiful free booze or to gain company and favour with, shall we say, notable members of the opposite sex? You may be lousy with a sword, but you look the part, and with a pen or a stage who needs such crude implements. Now! Where's your audience? You have advantage in dialogue interactions and deception.");
+                traitList.Add("friends with fairies", "For many moons you have been blessed with the extraordinary gift of being able to see and tap into the magical world of the Fey! You often converse with fairies, congregate with pixies and engage in entirely 110% meaningful philosophical discourse with your ethereal friends. Your other, more mundane friends, on the other hand, just think you're stark raving bonkers. But you know better...you think? Where is the line between reality and fantasy? You decide! Prepare for strange encounters, bizarre events and your own, unique blend of logic to solve puzzles. Effects of magical potions become wild and unpredictable.");
                 Console.WriteLine("You may also choose up to two of the following traits:\n");
 
                 string traitsString = "\n[1] Opportunist\n[2] Human Armadillo\n[3] Thick-skinned\n[4] Friends With Fairies\n";
@@ -958,12 +1520,12 @@ namespace DungeonCrawler
             Item binkySkull = new Item("Binky", "~~ He's a bonafide friend in need, a bonny true soul indeed, he's brimming with revelry when you bring bonhomie, Hey! don't be a bonana, 'cause you've got a BONANZA, of a friend in me! ~~");
             Item steelKey = new Item("steel key", "You find it under the skeleton's bones. You guess whoever it was had swallowed it before death. The key itself is rather nondescript - just a humble key. You suppose it must unlock something...");
             Item healPotion = new Item("half-empty healing potion", "It has flecks of gold floating amidst a gel like suspension. The label reads; 'When you're feeling blue, down with the flu, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!'", true, "used", 0, "Stamina: When you're blue, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!");
-            Item note = new Item("note", "The note is dogeared and yellowed with age.\nSomeone has scrawled upon it but the writing is too small to make out. Snatches of words, poorly spelt, unveil themselves to you when you strain your eyes. However, no coherent message can be deciphered. Something about a false bottom? If only there was some spell to enlarge letters, you muse... If only you knew any spells!", true, "unread");
+            Item note = new Item("note", "The note is dogeared and yellowed with age.Someone has scrawled upon it but the writing is too small to make out. Snatches of words, poorly spelt, unveil themselves to you when you strain your eyes. However, no coherent message can be deciphered. Something about a false bottom? If only there was some spell to enlarge letters, you muse... If only you knew any spells!", true, "unread");
             Item halfOfCrackedBowl = new Item("half a cracked bowl", "Its a cheap bowl made of clay - half of one anyway - chipped in places around the rim and bearing a hairline crack down its left side.");
             Item otherHalfOfCrackedBowl = new Item("other half of a cracked bowl", "It's not much less damaged than its counterpart");
             Item musicBox = new Item("music box", "A curious artefact with a hand-crafted rosewood exterior, inlaid with gold. It has glass panels displaying well oiled brass cogs gently whirring inside.", false, "unopened", 1, "strange lullaby");
             Weapon rustyChains = new Weapon("rusty chains", "They're so caked with rust that they're links have stiffened with age. You doubt these could hold any prisoner. Perhaps that's why they weren't used on you. Handling one of them, you figure it'd make a halfway decent, impromptu weapon - if you've really no other choice.", chainDamage, defaultCritHits, defaultGoodHits);
-            Item garment = new Item("garment", "Haphazardly strewn about the rickety floor of your cell, they're worn, faded and moth-eaten. Hardly a fashion accessory.\nThey're also dry. And very, very flammable. Hmmm...", true, "unburned");
+            Item garment = new Item("garment", "Haphazardly strewn about the rickety floor of your cell, they're worn, faded and moth-eaten. Hardly a fashion accessory. They're also dry. And very, very flammable. Hmmm...", true, "unburned");
             Item elixirFeline = new Item("Elixir of Feline Guile", "It's pungent aroma makes you recoil. Upon the label it reads, 'Is 'butter-fingers' your middle name? Do you like jumping from great heights, but don't like the dying that usually follows? Merigold's Wondrous Elixir of Feline Guile is the thing for you! Please note Merigold is not responsible for fatal falls during or after this potion takes effect. Please use responsibly. Pleasant fragrance not included.'", true, "unshattered", 1, "Skill: Boosts your skill by 1 point. Caution: excessive use may cause an over-fondness for catnip.");
             Item FelixFelicis = new Item("Felix Felicis", "It bubbles, roils and froths within its bottle. You almost sense a quiver through the glass, like the crystalline liquid inside is trying to escape. The label on the side is illegible; someone has written over it with a shaky cursive, 'Don't drink it! Whatever you do, don't drink it! For the love of all that is holy, if you care for anyone around you keep the stopper on!!! ~ Yours sincerely, Merigold.'", true, "unshattered", 10, "Luck: Drink and accomplish your wildest dreams..."); // access to 'jinxed' critmisses for 1 battle only
             Item magnifyingGlass = new Item("magnifying glass", "Peering through its slightly misted lens objects appear at least three times their size. You wonder why the skeleton had hold of it...");
@@ -971,15 +1533,15 @@ namespace DungeonCrawler
             Item jailorKeys = new Item("jailor keys", "Such cast iron, heavy-duty keys and the ring they're found on seem typical of any prison worthy of the name - not that you'd know, of course.");
             List<Item> cellInventory = new List<Item> { rustyChains, halfOfCrackedBowl, otherHalfOfCrackedBowl, bowlFragments, garment };
             Item bobbyPins = new Item("bobby pin", "This is one of the few bobby pins that haven't been bent out of shape through frantic heavy-handedness.", true, "unbent");
-            Item speedPotion = new Item("potion of alacrity", "It gloops up and down in its vial like a lava lamp. Upon the label it reads, 'Are you stuck in your very own wonderland? Are you tired of always running late for those very important dates? Do you wish there was a way you could make time every time and beat the clock? Well now you can! Merigold's marvellous antidote for tardiness rests in YOUR hand. With one quick sip, you'll be whizzing ahead of the crowds in no time! ~ Merigold would like to note that there are absolutely no downsides to this potion whatsoever. Nope. None. No matter what those lowlifes in the Independent Wizarding Authority have to say. They're great dirty liars and their claims that Merigold doesn't meet the code of standards for hygiene is pure liberal scaremongering, and I'll see you in wizard court!, \nYours sincerely,\n\tMerigold.'", true, "unshattered", 0, "speed: hullabaloo!");
-            Item journal = new Item("worn journal", "Opening it up you find detailed accounts of various escape attempts, but only one entry in particular catches your eye;\n\n" +
-                "'\tDay 6:\nI managed to purloin some artefact from one of the mercenaries when they dished out my gruel. I know it must be Merigold's because its embossed with his seal (an 'M' enveloped within a cursive capital 'G') - that means it'll be enchanted somehow. Still only an apprentice cleric, so i had to work hard to get the " +
-                "damn thing to do something. Eventually I used it to cast fireballs at the two braziers. Didn't work on the door though. \nI know what this Curse-Breaker is using them for. They won't subdue me with eldritch Fey enchantments. If they" +
-                "want me, they'll have to fight me! \n For now I'll keep the Merigold's ring hidden somewhere. Perhaps if I escape I'll be able to find him. \n\tFree him.\nThen we can put a stop to the evil that has befallen this place. The tragedy that is the cursebreaker " +
-                "must be brought to an end. How he might be defeated though... Merigold will know the answer. If he's still alive...' \n[ink splotches the parchment here, as though a pen had been hovering above the page, waiting]\n\t'Patrol just passed my cell, they seized the poor bugger next to mine. Dear god. \n If I don't make it out of here, and you're reading this, maybe you're this cell's next occupant, or maybe - God, I hope - you've" +
-                " already accomplished what has so eluded me; you've escaped. Either way, don't give up! There is more at stake than you can imagine. Even with my meagre training in the arcane, I've sensed for days now something not right within these walls - something terrible. Something with powers beyond the pale. This curse-Breaker, as he chooses to be known, MUST NOT be permitted dominion over it.\n" +
-                "You have before you a crusade of inestimable import. To truly escape not just this tower but the future this evil man weaves, he must be vanquished. I can impart upon you here my own experiences, that you might learn what you're up against. But I also choose to bestow upon you these words:\n" +
-                "The enemy may be mighty. But they are not invincible. The enemy may be many. But they are far fewer than all those whose hopes march with you. The eyes of the world fall upon you. You may be the best hope of securing our freedom. More importantly, of delivering us from the Curse-Breaker's designs. Know that even should these words be all that's left of me, I have full confidence, even now, in your final victory. \n" +
+            Item speedPotion = new Item("potion of alacrity", "It gloops up and down in its vial like a lava lamp. Upon the label it reads, 'Are you stuck in your very own wonderland? Are you tired of always running late for those very important dates? Do you wish there was a way you could make time every time and beat the clock? Well now you can! Merigold's marvellous antidote for tardiness rests in YOUR hand. With one quick sip, you'll be whizzing ahead of the crowds in no time! ~ Merigold would like to note that there are absolutely no downsides to this potion whatsoever. Nope. None. No matter what those lowlifes in the Independent Wizarding Authority have to say. They're great dirty liars and their claims that Merigold doesn't meet the code of standards for hygiene is pure liberal scaremongering, and I'll see you in wizard court!, Yours sincerely, Merigold.'", true, "unshattered", 0, "speed: hullabaloo!");
+            Item journal = new Item("worn journal", "Opening it up you find detailed accounts of various escape attempts, but only one entry in particular catches your eye; '" +
+                "'\tDay 6: I managed to purloin some artefact from one of the mercenaries when they dished out my gruel. I know it must be Merigold's because its embossed with his seal (an 'M' enveloped within a cursive capital 'G') - that means it'll be enchanted somehow. Still only an apprentice cleric, so i had to work hard to get the " +
+                "damn thing to do something. Eventually I used it to cast fireballs at the two braziers. Didn't work on the door though. I know what this Curse-Breaker is using them for. They won't subdue me with eldritch Fey enchantments. If they" +
+                "want me, they'll have to fight me!  For now I'll keep the Merigold's ring hidden somewhere. Perhaps if I escape I'll be able to find him. Free him. Then we can put a stop to the evil that has befallen this place. The tragedy that is the cursebreaker " +
+                "must be brought to an end. How he might be defeated though... Merigold will know the answer. If he's still alive...' [ink splotches the parchment here, as though a pen had been hovering above the page, waiting]   'Patrol just passed my cell, they seized the poor bugger next to mine. Dear god. If I don't make it out of here, and you're reading this, maybe you're this cell's next occupant, or maybe - God, I hope - you've " +
+                " already accomplished what has so eluded me; you've escaped. Either way, don't give up! There is more at stake than you can imagine. Even with my meagre training in the arcane, I've sensed for days now something not right within these walls - something terrible. Something with powers beyond the pale. This curse-Breaker, as he chooses to be known, MUST NOT be permitted dominion over it." +
+                "You have before you a crusade of inestimable import. To truly escape not just this tower but the future this evil man weaves, he must be vanquished. I can impart upon you here my own experiences, that you might learn what you're up against. But I also choose to bestow upon you these words:" +
+                "The enemy may be mighty. But they are not invincible. The enemy may be many. But they are far fewer than all those whose hopes march with you. The eyes of the world fall upon you. You may be the best hope of securing our freedom. More importantly, of delivering us from the Curse-Breaker's designs. Know that even should these words be all that's left of me, I have full confidence, even now, in your final victory. " +
                 "So good luck, god speed, And god bless you on this almighty undertaking. May the wardens of fate guide your hand true. Find Merigold. Find the source of the Curse-Breaker's power. Save us all...'", false, "unread");
             Item merigoldRing = new Item("ring embossed 'MG'", "It is such an innocuous thing, so unassuming that it probably wouldn't sell at a village flea market. However, there's a certain - not sheen, but... a shimmer to it, that enchants the eye. You sense the ring has powers beyond the reach of hands untrained in the arcane such as yours.");
             List<Item> trunkItems = new List<Item> { journal};
@@ -1008,16 +1570,16 @@ namespace DungeonCrawler
             Door armouryDoor = new Door("RmorRee door", "Its a heavyset door studded with iron bolts and a thoroughly unwelcoming aspect.", false, "unlocked", null, null, "The door swings open with a heave and opens into the next room...");
             Door circleDoor = new Door("double doors", "An ornate and set of vast double doors with brass locks and filigreed handles. You reckon something as large as a troll could fit through that door...", true, "locked", null, null, "You open one of the doors open just a fraction and slip your way through...");
             Door emptyCellDoor = new Door("far door", "Like your former cell's door, this one is composed of elegant rosewood panels that appear to indicate a misplaced opulence that should belong to settings far more salubrious than the one you find yourself in. You notice the lock has scratches made from the inside. You surmise someone has attempted picking the lock, but unless they had something more than just a bobby pin, it's doubtful they succeeded.", true, "locked", null, null);
-            Door magManDoor = new Door("rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", true, "locked", null, null);
+            Door magManDoor = new Door("similar rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", true, "locked", null, null);
             List<Item> messHallDoorItems = new List<Item> { };
-            Door messHallDoor = new Door("rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", messHallDoorItems, null, "You slip through the door and into the next room...");
-            Door broomClosetDoor = new Door("rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", null);
+            Door messHallDoor = new Door("identical rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", messHallDoorItems, null, "You slip through the door and into the next room...");
+            Door broomClosetDoor = new Door("familiar rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", null);
             
 
             Item soot = new Item("soot", "It's black. It's burned... Yep, that's soot.", false, "unsmeared", 0, ": ");
             List<Item> rightbrazierItems = new List<Item> { merigoldRing, soot};
             List<Item> leftBrazierItems = new List<Item> { soot};
-            Feature brokenRightBrazier = new Feature("right broken brazier", "It's been tampered with by magic. It seems the last occupant here knew their arcana. Looking to the scratches on the door you sense with a tot of foreboding that it didn't do them any good.\nProbing further you find a ring has been stashed inside the well where used to flicker a blue flame.", false, "unlit", rightbrazierItems);
+            Feature brokenRightBrazier = new Feature("right broken brazier", "It's been tampered with by magic. It seems the last occupant here knew their arcana. Looking to the scratches on the door you sense with a tot of foreboding that it didn't do them any good. Probing further you find a ring has been stashed inside the well where used to flicker a blue flame.", false, "unlit", rightbrazierItems);
             Feature brokenLeftBrazier = new Feature("left broken brazier", "It's been tampered with by magic. It seems the last occupant here knew their arcana. Looking to the scratches on the door you sense with a tot of foreboding that it didn't do them any good...", false, "unlit", leftBrazierItems);
             Feature trunk = new Feature("weathered old trunk", "The leather of its sides is faded and worn. Unlike the rosewood chest in your room it hasn't been looked after and there's no hidden compartment.", false, "unlocked", trunkItems);
             List<Feature> cell2features = new List<Feature> { trunk, otherRosewoodDoor, brokenLeftBrazier, brokenRightBrazier};
@@ -1028,16 +1590,16 @@ namespace DungeonCrawler
             Feature plaque = new Feature("scorched bronze plaque", "Its engraved letters have been made illegible by the fire damage of some spell. Scribbled clumsily in the soot you can make out the scrawl, 'RMorRee'", false, "unstudied");
             ///
             /// otherBookcaseItems
-            Item bookEC3 = new Item("love letter", "tear-stained, it was made out of the torn page from a book. It reads as follows in shaky script...\n\t'Dearest Willow,\n\nI find myself confronting the increasingly unshakeable certainty that my death, or something far worse," +
+            Item bookEC3 = new Item("love letter", "tear-stained, it was made out of the torn page from a book. It reads as follows in shaky script...'Dearest Willow,I find myself confronting the increasingly unshakeable certainty that my death, or something far worse," +
                 "draws near. While my end looms large in these few precious minutes I have left to remember you, know that my happiness for what time we have spent together dwarfs it by a magnitude so great, that even now" +
-                ", in these last moments, I feel a bitter-sweet joy basking in your memory.\nYou always told me I should hang up the adventuring life. I'm sorry that you won't get the chance to tell me once more. For I write " +
+                ", in these last moments, I feel a bitter-sweet joy basking in your memory. You always told me I should hang up the adventuring life. I'm sorry that you won't get the chance to tell me once more. For I write " +
                 "this in the forlorn knowledge my words might never find you, and I can only pray that if they do not that the sentiment and undying affection I bear for you and our child will prove too strong, and " +
                 "altogether too large, to be bound by such a physical form as ink and paper. If I should not make it, I know it will be hard for you, but though you may wish to give up, you cannot falter. Left to you is the greatest charge of all," +
-                 "that of the raising of our child. \nThat she may know love and joy without my being there fills me with a dread eclipsing that of all other terrors I've faced or have yet to face, but I steel myself in the certainty, as implacable as the sunrise and the moonfall," +
-                 "that you will rise to the task in my absence and teach her the same gentleness of spirit that has always soothed and drawn forth the best in me. \nKnow that I, with all my heart and soul, will always love you, \n\n\tSandy'", false, "unread");
+                 "that of the raising of our child. That she may know love and joy without my being there fills me with a dread eclipsing that of all other terrors I've faced or have yet to face, but I steel myself in the certainty, as implacable as the sunrise and the moonfall," +
+                 "that you will rise to the task in my absence and teach her the same gentleness of spirit that has always soothed and drawn forth the best in me. Know that I, with all my heart and soul, will always love you, Sandy'", false, "unread");
             Item bookEC2 = new Item("dusty tome", "Judging by the weight of the manuscript, this literary brick is crammed with useless information. Flicking through its pages though you notice someone has torn out a page...", false, "unburned");
             Item bookEC1 = new Item("leatherbound journal", "Its contents aren't very interesting except for the scrawl that inhabits the margins of several pages, penned with a feverish hand. Squinting, these passages written over the main text seem to compose a diary of the previous occupants internment.", false, "unburned");
-            Item bookEC4 = new Item("vespasian newsletter", "It's a strange propaganda leaflet that seems to have been circulated around the dastardly creatures that imprisoned you and held you captive. It's written english is somewhat to be desired, with the page littered with grammatical and spelling errors. From what you can discern, it was printed by the Vespasian Mercenary Company and distributed by *ahem* Da-Freebootaz-Squigalanche squad. \nA symbol of a winged serpent proudly crests the page. It's also seen to be worn by all the mercenaries in the etchings too...", false, "unread");
+            Item bookEC4 = new Item("vespasian newsletter", "It's a strange propaganda leaflet that seems to have been circulated around the dastardly creatures that imprisoned you and held you captive. It's written english is somewhat to be desired, with the page littered with grammatical and spelling errors. From what you can discern, it was printed by the Vespasian Mercenary Company and distributed by *ahem* Da-Freebootaz-Squigalanche squad. A symbol of a winged serpent proudly crests the page. It's also seen to be worn by all the mercenaries in the etchings too...", false, "unread");
             List<Item> otherBookcaseItems = new List<Item> { bookEC1, bookEC2, bookEC3, bookEC4};
             /// 
             /// armoury features
@@ -1053,14 +1615,14 @@ namespace DungeonCrawler
             Item throwingKnife2 = new Item("sharp throwing knife", "Despite its humble appearance, it's well made, sharp, perfectly balanced and heavy enough to, I don't know, say... knock a weapon out of an enemy's hand...?", false, "unbroken");
             Item throwingKnife3 = new Item("deadly throwing knife", "Despite its humble appearance, it's well made, sharp, perfectly balanced and heavy enough to, I don't know, say... knock a weapon out of an enemy's hand...?", false, "unbroken");
             Weapon rustySword = new Weapon("rusty shortsword", "A tinge of rust traces the blade around the handle. It's been recently sharpened on a grindstone, but it probably still couldn't pierce a good set of armour worthy of the name.", damage1, defaultCritHits, defaultGoodHits);
-            Weapon stiletto = new Weapon("stiletto blade", "This slender blade has a needle-like point that's sharper than a drill sergeant's tongue and a fox's wits and a bag of lemons and... \nWell, you get the idea.", stilettoDamage, defaultCritHits, defaultGoodHits, 1, false, 1);
+            Weapon stiletto = new Weapon("stiletto blade", "This slender blade has a needle-like point that's sharper than a drill sergeant's tongue and a fox's wits and a bag of lemons and... Well, you get the idea.", stilettoDamage, defaultCritHits, defaultGoodHits, 1, false, 1);
             Item bagOfCoins = new Item("bag of coins", "Most of the coins are scattered all over the table, with a few mounds forming the winnings of previous games. There is, however, a lovely large leather bag to stash them all in close by...", false, "unspent");
             List<Item> tableItems = new List<Item> { stiletto, bagOfCoins, circleDoorKey };
             List<Item> unlockedWeapons = new List<Item> { axe, estoc, bastardSword};
             List<Item> goodRackWeapons = new List<Item> { };
             List<Item> badRackWeapons = new List<Item> { rustySword, sai, throwingKnife};
             Feature gamblingTable = new Feature("sturdy table", "This table looks like it served a former life as a smithy's worktop with its iron plated corners, battered surface and hefty legs. It's since been used as a place to play gambling games with coins.", false, "unshattered", tableItems);
-            Feature goodWeaponRack = new Feature("weapon rack", "Replete with weapons of all descriptions, their oiled and well-polished blades gleam at you.\nIt's a shame someone was foresighted enough to lock them all behind an enchanted glass panel...", true, "locked", goodRackWeapons);
+            Feature goodWeaponRack = new Feature("weapon rack", "Replete with weapons of all descriptions, their oiled and well-polished blades gleam at you. It's a shame someone was foresighted enough to lock them all behind an enchanted glass panel...", true, "locked", goodRackWeapons);
             Feature worseWeaponRack = new Feature("weapon rack", "Haphazardly heaped upon it are a motley assortment of rusty implements that might on a good day be described as weapons. These appear to be the ones the mercenaries had access to.", false, "unshattered", badRackWeapons);
             Item bookA1 = new Item("book on cursed weapons", "It's a surprisingly well-kept book with the cover and pages still perfectly intact. (You expect its because few of the creatures hired as mercenaries here are avid readers). It's entitled, 'Upon ye subject of cur'sed weapons and their bless'ed destruction", false, "unread");//like with door, in pickupItem() if Name contains ' book ' then start linear dialogue, player can choose to turn to next page or leave.
             Item bookA2 = new Item("book on the history of curses", "It's an encyclopedic and thorough rendition of all the most notable curses that've arisen and passed through the known world over many centuries. It seems to have been a work in progress because the last hundred or so pages are left blank. You notice an embossed M within a G inside the front cover.", false, "unread");
@@ -1084,7 +1646,7 @@ namespace DungeonCrawler
             List<Item> corridorItems = new List<Item> ();
             Item healPotionq = new Item("healing potion", "It has flecks of gold floating amidst a gel like suspension. The label reads; 'When you're feeling blue, down with the flu, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!'", true, "used", 20, "Stamina: When you're blue, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!");
             List<Item> trunkItems1 = new List<Item> { speedPotion, healPotionq };
-            Feature trunkofconfiscatedstuff = new Feature("weathered old trunk", "The leather of its sides is faded and worn. Unlike the rosewood chest in your room it hasn't been looked after and there's no hidden compartment.\nScrawled atop the lid in scratchy letters are the words 'confizkatedd Stoof'", false, "unlocked", trunkItems1);
+            Feature trunkofconfiscatedstuff = new Feature("weathered old trunk", "The leather of its sides is faded and worn. Unlike the rosewood chest in your room it hasn't been looked after and there's no hidden compartment. Scrawled atop the lid in scratchy letters are the words 'confizkatedd Stoof'", false, "unlocked", trunkItems1);
             List<Feature> corridorFeatures = new List<Feature> { stairwayToLower, leftbrazier, rosewoodDoor, otherRosewoodDoor, rightbrazier, emptyCellDoor, trunkofconfiscatedstuff, stairwayToUpper };
             List<Feature> antechamberFeatures = new List<Feature> { stairwayToUpper, pillar, plaque, armouryDoor, pillar, mosaic, circleDoor};
             List<Item> antechamberItems = new List<Item>();
@@ -1093,7 +1655,7 @@ namespace DungeonCrawler
             ///
             ///mess hall features and items
             Item messhallBook1 = new Item("The Rogue's Pocketbook", "A rather handy guide to the illicit - *ahem*, excuse me - to the skilled art of pickpocketing, conning, disguises and lockpicking.", false, "unread");
-            Item noteForJanitor = new Item("note for janitor", "Found nailed to the pantry door, the note is evidently not recently penned, but has rather, judging from the food stains and soggy texture, been up upon this door for sometime.\n There are notches hewn out of the door, as though the goblins and mercenaries had used it for target practice. \nIt reads, \n\n\tDearest Mungo, I must say that your inability to keep track of the items pertaining to your duties as custodian of my home, is becoming vexing. Keys are quite expensive to duplicate, especially the enchanted copper ones that open every cabinet and door in my home, and i simply can't be doing it every time you lose one of them! I've half a mind to just build another golem and have that do the cleaning, save for the fact that my golems have yet to master the subtle difference between opening doors and crashing through the walls next to them. While I work on instructing them of one or two of the finer points of... shall we say, manoeuvring through  polite society, perhaps you might be so kind as to not lose any more of my keys. \nP.S. And FYI I've enchanted this note so even *you* can't accidentally-on-purpose lose it... [the letter trails off into a smudged scrawl blotted out by food stains]", false, "unread");
+            Item noteForJanitor = new Item("note for janitor", "Found nailed to the pantry door, the note is evidently not recently penned, but has rather, judging from the food stains and soggy texture, been up upon this door for some time. There are notches hewn out of the door, as though the goblins and mercenaries had used it for target practice. It reads, 'Dearest Mungo, I must say that your inability to keep track of the items pertaining to your duties as custodian of my home, is becoming vexing. Keys are quite expensive to duplicate, especially the enchanted copper ones that open every cabinet and door in my home, and i simply can't be doing it every time you lose one of them! I've half a mind to just build another golem and have that do the cleaning, save for the fact that my golems have yet to master the subtle difference between opening doors and crashing through the walls next to them. While I work on instructing them of one or two of the finer points of... shall we say, manoeuvring through  polite society, perhaps you might be so kind as to not lose any more of my keys. P.S. And FYI I've enchanted this note so even *you* can't accidentally-on-purpose lose it...' [the letter trails off into a smudged scrawl blotted out by food stains]", false, "unread");
             Item chickenBone = new Item("chicken bone", "They scatter the cobbled floor between benches. This one in particular has been well gnawed...");
             Item plate = new Item("plate", "Some shattered into pieces, others merely chipped a lot, they litter the floor. It looks like they were used as missiles during a riotous brawl.");
             Item fork = new Item("fork", "A utensil that hasn't seen much use amongst the motley recruits of the CurseBreaker's private army.");
@@ -1102,7 +1664,7 @@ namespace DungeonCrawler
             Feature diningTable = new Feature("table", "Looking around you can see some tables with the telltale markings of hand roulette, others with muddy bootprints. One has been smashed to smithereens.", false, "unshattered... mostly.");
             List<Item> dinnerTableItems = new List<Item> {knife, plate, messhallBook1 };
             Feature diningTable1 = new Feature("table", "Over in the far corner, this table seems to have been used by one of the more studious mercenaries of the CurseBreaker's army. A book of some description is sprawled open upon its surface. By the look of its dogeared pages, it's been well read...", false, "unshattered", dinnerTableItems);
-            Item knifeMG = new Item("knife", "A utensil that has seen... wait, are they the letters 'M' and 'G' embossed in gold upon its rosewood handle?\n Huh...", false, "unbroken");
+            Item knifeMG = new Item("knife", "A utensil that has seen... wait, are they the letters 'M' and 'G' embossed in gold upon its rosewood handle? Huh...", false, "unbroken");
             List<Item> messHallItems = new List<Item> {chickenBone,knife, plate, fork, plate, knife, chickenBone, plate, knifeMG, fork };
             
             List<Feature> messHallFeatures = new List<Feature> { messHallDoor, bench, diningTable, bench, diningTable, diningTable1, bench, bench, diningTable};
@@ -1114,7 +1676,7 @@ namespace DungeonCrawler
             Item ruby = new Item("fist-sized ruby", "Which kingdom should you buy first?", false, "unblemished");
             Item sapphire = new Item("dazzling sapphire", "Would you like to buy a private island? Two?", false, "unblemished");
             Item emerald = new Item("lustrous emerald", "More valuable than any other Northern Rock, even ones that don't crash economies...", false, "unblemished");
-            Item goldDoubloon = new Item("gold doubloon", "~I'm in the money! \nI'm in the money! \nSpend it, \n\tLend it, \n\t\tSend it,\nRolling along!~");
+            Item goldDoubloon = new Item("gold doubloon", "~I'm in the money! I'm in the money! Spend it, Lend it, Send it, Rolling along!~");
             Item silverBars = new Item("silver bars", "Freshly minted and stamped, there's enough here to buy a mercenary horde, let alone an army...");
             List<Item> goldDragonItems = new List<Item> {goldDoubloon, silverBars, emerald, sapphire, ruby };
             List<Dice> dragonpocalypse = new List<Dice> {D6, D6, D6, D6, D6, D6, D6, D6, D6, D6, D6, D6, D6, D6, D6, D6, D6,D6, D6, D6 };
@@ -1144,9 +1706,9 @@ namespace DungeonCrawler
             List<Dice> whacking = new List<Dice> { D4 };
             Weapon staffMG = new Weapon("Marvellous Merigold's Magical Staff of Whacking", "It is a very fine, very well polished rosewood quarterstaff with the letters 'M' and 'G' cursively and elegantly embossed in gold upon it. It seems to shimmer with some kind of force for a moment, but when your eye catches it properly you conclude you were maybe imagining it... ", whacking, defaultCritHits, defaultGoodHits, 5, false, 5);
             List<Item> prometheusList = new List<Item> {staffMG };
-            Feature prometheus = new Feature("disturbing statue", "Even up close and in better light this statue would be unsettling. You wonder what on earth it could mean, and why anyone would wish to procure it, though you don't ponder too long on why the ghastly thing was stowed away out of sight. Amongst the eclectic items here it is the most prominent in its sinister aspect.\nYou're about to turn away when, just behind the statue, you spy something else...", false, "unshattered", prometheusList);
-            Feature plaquePrometheus = new Feature("plaque", "At the base of the statue, it reads, \n\n\t'Dedicated to the ancient God who brought fire unto man. Punished eternally for his gift, his foresight and the succour he provided'...\n\nScratched in a spidery scrawl underneath, someone clearly saw fit to add their own addendum: 'What Justice is there from gods? From nature? But that which is created by force'...", false, "unread");
-            Feature portrait = new Feature("diabolic portrait", "The description upon the frame tells of the subject's name and deed; 'Azazel; who gifted war to humanity'\n\n\tYou're about to pull away when you notice someone has etched a message upon the frame. As your fingers trace it, helping you decipher the letters in the dark, you sense its acerbic tone; 'A generous gift for those that grasp it - The source for infinite revenues for sellswords, mercenaries and adventurers alike'...", false, "unexamined");
+            Feature prometheus = new Feature("disturbing statue", "Even up close and in better light this statue would be unsettling. You wonder what on earth it could mean, and why anyone would wish to procure it, though you don't ponder too long on why the ghastly thing was stowed away out of sight. Amongst the eclectic items here it is the most prominent in its sinister aspect. You're about to turn away when, just behind the statue, you spy something else...", false, "unshattered", prometheusList);
+            Feature plaquePrometheus = new Feature("plaque", "At the base of the statue, it reads, 'Dedicated to the ancient God who brought fire unto man. Punished eternally for his gift, his foresight and the succour he provided'...Scratched in a spidery scrawl underneath, someone clearly saw fit to add their own addendum: 'What Justice is there from gods? From nature? But that which is created by force'...", false, "unread");
+            Feature portrait = new Feature("diabolic portrait", "The description upon the frame tells of the subject's name and deed; 'Azazel; who gifted war to humanity'   You're about to pull away when you notice someone has etched a message upon the frame. As your fingers trace it, helping you decipher the letters in the dark, you sense its acerbic tone; 'A generous gift for those that grasp it - The source for infinite revenues for sellswords, mercenaries and adventurers alike'...", false, "unexamined");
             Door mosaic2 = new Door("strange mosaic", "You glance the mosaic's way, its lustrous tiles are constantly flipping and shuffling like cards in the dextrous hands of some invisible dealer. The magical image they form is ever shifting. They seem to react to your presence.", true, "unexamined", null, new List<Room>());
             Feature northWall = new Feature("wall", "It's just a bare wall. You can search all you want but there are no secret passages to be found...", false, "unremarkable");
             Feature southWall = new Feature("wall", "It's just a bare wall. There will never be a door or window here no matter how hard you search...", false, "unremarkable");
@@ -1183,7 +1745,7 @@ namespace DungeonCrawler
             Item jawBone = new Item("jaw bone", "This bone is of disquietingly human origin - and is warm...", false);
             Item legBone = new Item("leg bone", "It's been gnawed until, in some places, whittled to the very marrow...", false);
             Item rib = new Item("rib", "It's not much of a find...", false);
-            Door hatch = new Door("trapdoor", "It is constructed out of dwarven steel. Your hands trace the craftsmanship. However, you notice no bolts or locks keeping it shut. It's free to open - should you choose to go down it...", false, "unlocked", null, null, "You heft the heavy trapdoor open, it's clanging on the granite floor reverberating eerily within the silence. Before you lies a gaping hole of unfathomable depths; only darkness seems to lurk beneath your feet, along with an unsettling stillness that almost invites you to sink within its depths. The noise continues to reverberate as you brace against a chill whisked up from somewhere behind the darkness. \nThere's a ladder. With trepidation gnawing at your gut, you follow it down...");
+            Door hatch = new Door("trapdoor", "It is constructed out of dwarven steel. Your hands trace the craftsmanship. However, you notice no bolts or locks keeping it shut. It's free to open - should you choose to go down it...", false, "unlocked", null, null, "You heft the heavy trapdoor open, it's clanging on the granite floor reverberating eerily within the silence. Before you lies a gaping hole of unfathomable depths; only darkness seems to lurk beneath your feet, along with an unsettling stillness that almost invites you to sink within its depths. The noise continues to reverberate as you brace against a chill whisked up from somewhere behind the darkness. There's a ladder. With trepidation gnawing at your gut, you follow it down...");
             Feature aBrazier = new Feature("brazier", "If this brazier does indeed burn it is not with any normal fire. Upon closer inspection, its dim flickering glow seemingly cannot be expunged. It barely keeps the looming shadows at bay.", true, "lit", null);
             List<Item>dungeonItems = new List<Item> { femur, jawBone, legBone, rib};
             List<Feature>dungeonFeatures = new List<Feature> {stairwayToLower, aBrazier, hatch, aBrazier};
@@ -1252,12 +1814,12 @@ namespace DungeonCrawler
             List<Dice> chainLightning = new List<Dice> {D7, D7 };
             Weapon cursedGloves = new Weapon("gloves of tempest", "Cursed gloves that crackle with tame lightning, the curseBreaker uses them to direct chain lightning at those who displease him...", chainLightning, sizzleCrits, sizzleCrits, -1);
             Weapon sabre = new Weapon("sabre", "Light but deadly-sharp, it slices the air like silk.", sabreDamage, sabreCrits, sabreGoodHits, 2, false, 2);
-            Weapon stiletto1 = new Weapon("stiletto blade", "This slender blade has a needle-like point that's sharper than a drill sergeant's tongue and a fox's wits and a bag of lemons and... \nWell, you get the idea.", stilettoDamage, stilettoCrits, stilettoCrits, 1, false, 1);
+            Weapon stiletto1 = new Weapon("stiletto blade", "This slender blade has a needle-like point that's sharper than a drill sergeant's tongue and a fox's wits and a bag of lemons and... Well, you get the idea.", stilettoDamage, stilettoCrits, stilettoCrits, 1, false, 1);
             List<Item> CurseBreakerPockets = new List<Item> {sabre, goldDoubloon, ruby, cursedGloves};
             Monster CurseBreaker = new Monster("CurseBreaker", "You face before you a striking young man, aged beyond his years. He fixes you with unsettling black eyes that he stole from a fell creature. You sense them probe you for weaknesses as he flourishes a vicious sabre and wields an arcane glove crackling with cursed magic. The CurseBreaker, the would-be-architect of your doom, closes in for the kill...", CurseBreakerPockets, 100, 8, sabre);
             //Special Items
             List<Item> throwables = new List<Item> {armBand, clunkySabaton, bracers, helmet, breastplate, knifeMG, musicBox, mops, brooms, emptyBottles, bookA1, bookA2, bookA3, bookEC1, bookEC2, bookSC1, bookSC2, bookSC3, messhallBook1, journal, binkySkull, box, belt, lantern, femur, legBone, rib, crystalBall, brassTrinket, copperTrinket, jar, plate, bowl, throwingKnife, throwingKnife2, throwingKnife3  };
-            List<Item> stickyItems = new List<Item> { bowlFragments, garment, bobbyPins, clunkySabaton, breastplate, helmet, bracers, splinter, rug, looseNail, penny, crumbs, dustBunny, mops, dusters, brooms, dustpans, crumpledMissive, emptyBottles, cork, ruby, emerald, sapphire, goldDoubloon, silverBars };
+            List<Item> stickyItems = new List<Item> { bowlFragments, garment, bobbyPins, clunkySabaton, breastplate, helmet, bracers, splinter, rug, looseNail, penny, crumbs, dustBunny, mops, dusters, brooms, dustpans, crumpledMissive, emptyBottles, cork, ruby, emerald, sapphire, goldDoubloon, silverBars, copperTrinket, brassTrinket, jar };
             List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys, lockpickingSet, bookA1, journal, fists, stiletto1 };
             List<Item> MGItems = new List<Item> { knifeMG, staffMG, merigoldRing, pocketWatch, bracelet, merigoldMedallion, merigoldBroach, belt, diadem, armBand, box, bookA2 };
 
@@ -1288,18 +1850,23 @@ namespace DungeonCrawler
             Room northernmostCorridor = new Room("north-facing corridor", "You enter upon the north-facing corridor of the circular landing. Before you, within the glow of the dim lanterns, are two rosewood doors opposite one another. The one in the north wall and another in the south wall leading within the room you must have been circling. The corridor leads east whereupon it turns sharply right after another door, or you can follow it west where, after a similar door, it veers left at another corner...\nTo the north, in the centre of the hallway, you espy a rosewood door identical to the one in the south wall that it stands across from.\t\nTo the west the corridor ends at a corner that turns sharply left.\t\nTurning your gaze southward you espy a rosewood door, identical to the one in the north wall, and standing across from it.\t\nLooking to the east you see the corridor end at a corner that veers right.\t\t", northCorridorItems, northCorridorFeatures);
             Room easternmostCorridor = new Room("easternmost corridor", "You enter upon the easternmost corridor of the circular landing. A bare rosewood panelled wall spans the western side while some doors greet your sight some way down the eastern side of the passage. The corridor leads north where it turns sharply left, or you can follow it south where it veers right at another corner. Guiding both paths are more lanterns, throwing shadows along the walls with their dim, flickering light...\nsurveying the northern end of the hallway you see a corner that turns left.\t\nTo the west there is only bare wall and the marks left by marauders who looted the paintings.\t\nTurning your gaze south you see a corner. It turns right.\t\nTo the east is a rosewood door. There is no plaque or label to indicate where it leads...\t\t", eastCorridorItems, eastCorridorFeatures);
             Room southernmostCorridor = new Room("south-facing corridor", "You enter upon the south-facing corridor of the circular landing. There is a window in the south-facing wall some way down the passage. The corridor leads east where it turns sharply left or you can follow it west where it veers right at another corner. The lanterns within their alcoves are pockets of warm light, trailing the way down either passage. There are only two doors here, both in the north wall and one close by each corner...\nTo the north you see only bare wall illuminated by the lanterns trailing its length.\t\nTurning your gaze to the west you see the corridor end at a corner turning right and a door.\t\nLooking a the south wall, you see its much the same as the north wall, except for a floor-to-ceiling length Palladian window through which moonbeams filter through the partially drawn diaphanous curtains.\t\nGazing eastward you see the corridor end at a shadowy corner. It turns left just after a door in the north wall.\t\t", southCorridorItems, southCorridorFeatures);
-            Door fakeDoorwest = new Door("rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", null, new List<Room> { westernmostCorridor }, "");
-            Door fakeDooreast = new Door("rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", null, new List<Room> { easternmostCorridor }, "");
-            Door fakeDoornorth = new Door("rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", null, new List<Room> { northernmostCorridor }, "");
-            Door fakeDoorsouth = new Door("rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", null, new List<Room> { southernmostCorridor }, "");
-            westCorridorFeatures.Insert(4, fakeDoorwest);
-            westCorridorFeatures.Insert(1, fakeDoorwest);
-            eastCorridorFeatures.Insert(4, fakeDooreast);
-            eastCorridorFeatures.Insert(1, fakeDooreast);
-            northCorridorFeatures.Insert(5, fakeDoornorth);
-            northCorridorFeatures.Insert(1, fakeDoornorth);
-            southCorridorFeatures.Insert(4, fakeDoorsouth);
-            southCorridorFeatures.Insert(1, fakeDoorsouth);
+            Door fakeDoorwest1 = new Door("homogenous rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", null, new List<Room> { westernmostCorridor }, "");
+            Door fakeDoorwest2 = new Door("duplicate rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", null, new List<Room> { westernmostCorridor }, "");
+            Door fakeDooreast1 = new Door("comparable rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", null, new List<Room> { easternmostCorridor }, "");
+            Door fakeDooreast2 = new Door("duplicate rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", null, new List<Room> { easternmostCorridor }, "");
+            Door fakeDoornorth1 = new Door("homogenous rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", null, new List<Room> { northernmostCorridor }, "");
+
+            Door fakeDoornorth2 = new Door("indistinguishable rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", null, new List<Room> { northernmostCorridor }, "");
+            Door fakeDoorsouth1 = new Door("indistinguishable rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", null, new List<Room> { southernmostCorridor }, "");
+            Door fakeDoorsouth2 = new Door("comparable rosewood door", "Identical to all the other doors in these corridors, it's ornate and has a beautiful gleam to it's burnished surface. There exists no plaque or indication as to where it leads...", false, "unlocked", null, new List<Room> { southernmostCorridor }, "");
+            westCorridorFeatures.Insert(4, fakeDoorwest1);
+            westCorridorFeatures.Insert(1, fakeDoorwest2);
+            eastCorridorFeatures.Insert(4, fakeDooreast1);
+            eastCorridorFeatures.Insert(1, fakeDooreast2);
+            northCorridorFeatures.Insert(5, fakeDoornorth1);
+            northCorridorFeatures.Insert(1, fakeDoornorth2);
+            southCorridorFeatures.Insert(4, fakeDoorsouth1);
+            southCorridorFeatures.Insert(1, fakeDoorsouth2);
             westernmostCorridor.FeatureList = westCorridorFeatures;
             easternmostCorridor.FeatureList = eastCorridorFeatures;
             southernmostCorridor.FeatureList = southCorridorFeatures;
@@ -1352,15 +1919,20 @@ namespace DungeonCrawler
             /// program. This one below is simpler than some of the others I deployed. But they
             /// are all of the same basic formula
             ///
-            Prologue(room);
+            if (!Load)
+            {
+                Prologue(room);
+            }
             bool justStalked = false;
             string pk; // not important, it's just for the console.readline at the end of the program.
 
-            
-
-            Player player1 = CharacterCreation();
-            Test test2 = new Test(player1, room);
-            test2.RunForPlayer();
+            Player player1 = new Player("", 1, 1, new List<Weapon>(), new List<Item>(), new Dictionary<string, string>());
+            if (!Load)
+            {
+                player1 = CharacterCreation();
+                Test test2 = new Test(player1, room);
+                test2.RunForPlayer();
+            }
             player1.CarryCapacity += player1.InitialStamina / 10;
 
             bool getYesNoResponse()
@@ -2104,13 +2676,13 @@ namespace DungeonCrawler
                             {
                                 Dice D8 = new Dice(8);
                                 int searching = D8.Roll(D8);
-                                if (minotaur.Rage && searching > 3)
+                                if (minotaur.Rage && searching > 3)//3
                                 {
                                     
                                     return minotaurStalks(newRoom1, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
                                     ///make into recursive function
                                 }
-                                else if (minotaur.Suspicious && searching > 5)
+                                else if (minotaur.Suspicious && searching > 5)// 5
                                 {
                                     return minotaurStalks(newRoom1, minotaur, minotaurAlertedBy, minotaurAlerted, minotaurKafuffle, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, leftWhichRooms);
                                 }
@@ -2189,7 +2761,7 @@ namespace DungeonCrawler
             
             // weapons to be used in battles
             Weapon vanquisher = new Weapon("Sword of Sealed Souls", "This sword almost seems to whisper as it slices the air like silk. You can almost imagine hearing wails off in the distance as though from the victims of some banshee haunting a blighted moor.", vanquisherDamage, defaultCritHits, defaultGoodHits, 3, false, 3);
-            Weapon breadKnife = new Weapon("Bread Knife", "This knife's blade is dulled with age. Any aspirations to slice anything other than very, very \nsoft butter might be met with something less than success", damage, defaultCritHits, defaultGoodHits);
+            Weapon breadKnife = new Weapon("Bread Knife", "This knife's blade is dulled with age. Any aspirations to slice anything other than very, very soft butter might be met with something less than success", damage, defaultCritHits, defaultGoodHits);
             Weapon scimitar = new Weapon("rusty scimitar", "The scimitar's blade is flecked with rust. Crude and brittle, you doubt it'd last long parrying a better sword.", damage1, defaultCritHits, defaultGoodHits);
             Weapon bite = new Weapon("gnashing maw", "Sharp hook-like fangs lathered with drooling saliva, nestle within this creatures jaw, ready to draw blood.", damage1, defaultCritHits, defaultGoodHits);
             Weapon dagger = new Weapon("dagger", "The dagger's blade gleams like a crooked smile in some dubious tavern.", damage1, defaultCritHits, defaultGoodHits);
@@ -2242,11 +2814,11 @@ namespace DungeonCrawler
             if (player1.Traits.ContainsKey("diligent")|| player1.Traits.ContainsKey("sadist")||player1.Traits.ContainsKey("medicine man")|| player1.Skill > 7)
             {
                 
-                if (player1.Traits.ContainsKey("sadist")) { mercInsignia.Description += "\nYou instantly recognise the emblem as that of a cut-throat gang you've long admired from afar. "; }
-                else if (player1.Traits.ContainsKey("medicine man")) { mercInsignia.Description += "\nYou recall the emblem from the descriptions and stories their victims exchanged under the bloodied canvases of triage tents, many of whom you'd done your best to heal after many a sordid battle."; }
-                else if (player1.Traits.ContainsKey("diligent")) { mercInsignia.Description += "\nYour diligent studies pay off as you recognise the emblem. "; }
-                else { mercInsignia.Description += "\nYou recognise the emblem from your martial studies."; }
-                mercInsignia.Description += "\nIt's the mark of the Vespasian Mercenaries, a group of infamous swords-for-hire for whom no work, no matter how bloody or deplorable, is off limits if the price is right. You reason that wearing this could prove useful if you wanted to pass yourself as a fellow merc...\nSo long, of course, that the other guards don't recognise your face, of course.";
+                if (player1.Traits.ContainsKey("sadist")) { mercInsignia.Description += "  You instantly recognise the emblem as that of a cut-throat gang you've long admired from afar. "; }
+                else if (player1.Traits.ContainsKey("medicine man")) { mercInsignia.Description += "  You recall the emblem from the descriptions and stories their victims exchanged under the bloodied canvases of triage tents, many of whom you'd done your best to heal after many a sordid battle."; }
+                else if (player1.Traits.ContainsKey("diligent")) { mercInsignia.Description += "  Your diligent studies pay off as you recognise the emblem. "; }
+                else { mercInsignia.Description += "  You recognise the emblem from your martial studies."; }
+                mercInsignia.Description += "  It's the mark of the Vespasian Mercenaries, a group of infamous swords-for-hire for whom no work, no matter how bloody or deplorable, is off limits if the price is right. You reason that wearing this could prove useful if you wanted to pass yourself as a fellow merc...  So long, of course, that the other guards don't recognise your face, of course.";
             }
             /*
             List<string> parlances = new List<string> { "This is the first parlance", "second parlance string"};
@@ -2319,155 +2891,272 @@ namespace DungeonCrawler
                 Stopwatch aq = new Stopwatch();
                 long minotaurdoesnothing = 9999;
                 bool justGrazing = true;
-                while (!escapedRoom1)
-                {
-                    /*
-                    player1.Inventory.Add(crystalBall);
-                    player1.Inventory.Add(throwingKnife);
-                    player1.Inventory.Add(lantern);
-                    player1.Inventory.Add(copperTrinket);
-                    player1.WeaponInventory.Add(vanquisher);
-                    player1.WeaponInventory.Add(stiletto);
-                    oubliette.FirstVisit = false;
-                    MGItems.Remove(staffMG);
-                    mosaic.SpecificAttribute = "studied";
-                    foreach(Item item in MGItems)
-                    {
-                        player1.Inventory.Add(item);
-                    }
-                    escapedRoom1 = true;
-                    oubliette.FirstVisit = true;
-                    continue;
-                    */
-                    //
-                    //
-                    //
-                    for (int i = room.ItemList.Count - 1; i >= 0; i--)
-                    {
-                        FungShui(room.ItemList[i].Name);
-                    }
-                    string reply = Console.ReadLine().Trim().ToLower();
-                    ///If player answers by typing number in list...
-                    try
-                    {
+                
 
-                        int reply1 = int.Parse(reply);
-                        if (((a < 1 || b < 1) && (reply1 < 1 || reply1 > 3)) || (reply1 > 4) && (!player1.Inventory.Contains(musicBox) || !note.Description.Contains("blighter")) || reply1 > 5)
+                        
+
+                        while (!escapedRoom1)
                         {
-                            Console.WriteLine("Please enter a number or letter corresponding to a choice of action.");
+
+                            /*
+                            player1.Inventory.Add(crystalBall);
+                            player1.Inventory.Add(throwingKnife);
+                            player1.Inventory.Add(lantern);
+                            player1.Inventory.Add(copperTrinket);
+                            player1.WeaponInventory.Add(vanquisher);
+                            player1.WeaponInventory.Add(stiletto);
+                            oubliette.FirstVisit = false;
+                            MGItems.Remove(staffMG);
+                            mosaic.SpecificAttribute = "studied";
+                            foreach(Item item in MGItems)
+                            {
+                                player1.Inventory.Add(item);
+                            }
+                            escapedRoom1 = true;
+                            oubliette.FirstVisit = true;
                             continue;
-                        }
-                        else if (reply1 == 1)
-                        {
-                            player1.SearchPack(room.ItemList, room, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
-                            a++;
-                        }
-                        else if (reply1 == 2)
-                        {
-                            ///when player discards rusty chains they may appear more than once. 
-                            ///fungshui() is present to preempt that and prevent duplicates.
-
-                            room.Investigate(music, usesDictionaryItemChar, aq, minotaurdoesnothing, justGrazing, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower);
-                            b++;
-                        }
-                        else if (reply1 == 3)
-                        {
-                            c++;
-
-
-
-                            if (c == 1)
+                            */
+                            //
+                            //
+                            //
+                            for (int i = room.ItemList.Count - 1; i >= 0; i--)
                             {
-                                Console.WriteLine($"Somewhere not too far from beyond the confines of the {room.Name} a bestial guffaw can be heard. It seems whoever, or whatever, guards your cell cares little for your predicament. If you want their attention, you may need something louder that they can't ignore...");
+                                FungShui(room.ItemList[i].Name);
                             }
-                            else
-                            {
-                                Console.WriteLine($"Whatever creature lurks beyond the rosewood door does not respond or stir to your clamouring. They remain unconcerned.");
-                            }
-
-                            Console.ReadKey(true);
-
-                        }
-
-
-
-                        else if (reply1 == 4) // for when player has searched their pack and the room at least once.
-                        {
-                            e++;
-                            List<bool> success = new List<bool>();
-
-                            success = player1.UseItemOutsideCombat(music, room, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
-                            if (player1.Inventory.Contains(jailorKeys))
-                            {
-                                escapedThroughDoor = true;
-                                escapedRoom1 = true;
-                                continue;
-                            }
-
-                            if (!success[0] && success[1])
-                            {
-                                return;
-                            }
-
-                            else if (success[1])
-                            {
-                                Console.WriteLine("With the whole cell blazing around you, you snatch up the jailor's keys before you flee through the door. A fiery haze billows in your wake as you throw yourself into a corridor and slam the rosewood door shut behind you.");
-                                if (player1.Inventory.Contains(bowlFragments)) { Console.WriteLine($"It's a moment before you realise your backpack is still smoking!\nOpening it up you scramble to save the contents, fishing out the {bowlFragments.Name} before they can burn everything, but it's too late. \nEverything inside your pack is burned and unusable!"); player1.Inventory.Clear(); Console.ReadKey(true); }
-                                player1.Inventory.Add(jailorKeys);
-                                escapedRoom1 = true;
-                                escapedThroughDoor = true;
-                                fieryEscape = true;
-                                foreach (Item x in player1.Inventory) { while (x.Name.Contains("blazing") || x.Name.Contains("fiery") || x.Name.Contains("burning") || x.Name.Contains("smouldering") || x.Name.Contains("smoking")) { x.Name = x.Name.Substring(x.Name.IndexOf(" ")).Trim(); } }
-                                foreach (Weapon x in player1.WeaponInventory) { while (x.Name.Contains("blazing") || x.Name.Contains("fiery") || x.Name.Contains("burning") || x.Name.Contains("smouldering") || x.Name.Contains("smoking")) { x.Name = x.Name.Substring(x.Name.IndexOf(" ")).Trim(); } }
-                                continue;
-                            }
-
+                            string reply = Console.ReadLine().Trim().ToLower();
+                            ///If player answers by typing number in list...
                             try
                             {
-                                if (player1.WeaponInventory[0].Equipped)
+
+                                int reply1 = int.Parse(reply);
+                                if (((a < 1 || b < 1) && (reply1 < 1 || reply1 > 3)) || (reply1 > 4) && (!player1.Inventory.Contains(musicBox) || !note.Description.Contains("blighter")) || reply1 > 5)
                                 {
-                                    if (trialBattle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false))
+                                    Console.WriteLine("Please enter a number or letter corresponding to a choice of action.");
+                                    continue;
+                                }
+                                else if (reply1 == 1)
+                                {
+                                    
+                                    player1.SearchPack(music, room.ItemList, room, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
+                                    
+                                    a++;
+                                }
+                                else if (reply1 == 2)
+                                {
+                                    ///when player discards rusty chains they may appear more than once. 
+                                    ///fungshui() is present to preempt that and prevent duplicates.
+
+                                    room.Investigate(music, usesDictionaryItemChar, aq, minotaurdoesnothing, justGrazing, threadPath, player1.Inventory, player1.WeaponInventory, b, player1, yourRustyChains, stickyItems, specialItems, minotaur, mageBattle, secretChamber, goblin, gnoll, MGItems, destinations, stairwayToLower, null, null, null);
+                                    b++;
+                                }
+                                else if (reply1 == 3)
+                                {
+                                    c++;
+
+
+
+                                    if (c == 1)
                                     {
-                                        trialBattle.WonFight(room);
-                                        escapedThroughDoor = true;
-                                        escapedRoom1 = true;
-                                        player1.Unequip(player1.WeaponInventory);
-                                        continue;
+                                        Console.WriteLine($"Somewhere not too far from beyond the confines of the {room.Name} a bestial guffaw can be heard. It seems whoever, or whatever, guards your cell cares little for your predicament. If you want their attention, you may need something louder that they can't ignore...");
                                     }
                                     else
                                     {
-                                        Console.ReadKey(true);
+                                        Console.WriteLine($"Whatever creature lurks beyond the rosewood door does not respond or stir to your clamouring. They remain unconcerned.");
+                                    }
+
+                                    Console.ReadKey(true);
+
+                                }
+
+
+
+                                else if (reply1 == 4) // for when player has searched their pack and the room at least once.
+                                {
+                                    e++;
+                                    List<bool> success = new List<bool>();
+
+                                    success = player1.UseItemOutsideCombat(music, room, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
+                                    if (player1.Inventory.Contains(jailorKeys))
+                                    {
+                                        escapedThroughDoor = true;
+                                        escapedRoom1 = true;
+                                        continue;
+                                    }
+
+                                    if (!success[0] && success[1])
+                                    {
                                         return;
                                     }
-                                }
-                            }
-                            catch { }
 
-                            if (room.FeatureList.Contains(holeInCeiling))
-                            {
-                                Console.WriteLine("Without further delay, you scramble up the mound of debris left by the hole and up into the next room.");
-                                Console.ReadKey(true);
-                                escapedRoom1 = true;
-                                escapedThroughDoor = false;
-                                continue;
-                            }
-                        }
-                        else if (reply1 == 5) // The player solved the puzzle and must fight the goblin.
-                        {
-                            Console.WriteLine("You gaze at the innocuous music box nestled snugly in the palm of your hand. Biting your lip, you look to the rosewood door. The note said that whatever kept guard would be enraged by the tune this thing plays. Once opened there will be no going back...");
-                            Console.WriteLine("Are you sure you wish to proceed?");
-                            while (true)
-                            {
-                                string r3ply = Console.ReadLine();
-                                if (r3ply == "no" || r3ply == "n")
-                                {
-                                    Console.WriteLine("You gingerly place the music box back in your pack for now...");
-                                    break;
-                                }
-                                else if (r3ply == "yes" || r3ply == "y")
-                                {
+                                    else if (success[1])
+                                    {
+                                        Console.WriteLine("With the whole cell blazing around you, you snatch up the jailor's keys before you flee through the door. A fiery haze billows in your wake as you throw yourself into a corridor and slam the rosewood door shut behind you.");
+                                        if (player1.Inventory.Contains(bowlFragments)) { Console.WriteLine($"It's a moment before you realise your backpack is still smoking!\nOpening it up you scramble to save the contents, fishing out the {bowlFragments.Name} before they can burn everything, but it's too late. \nEverything inside your pack is burned and unusable!"); player1.Inventory.Clear(); Console.ReadKey(true); }
+                                        player1.Inventory.Add(jailorKeys);
+                                        escapedRoom1 = true;
+                                        escapedThroughDoor = true;
+                                        fieryEscape = true;
+                                        foreach (Item x in player1.Inventory) { while (x.Name.Contains("blazing") || x.Name.Contains("fiery") || x.Name.Contains("burning") || x.Name.Contains("smouldering") || x.Name.Contains("smoking")) { x.Name = x.Name.Substring(x.Name.IndexOf(" ")).Trim(); } }
+                                        foreach (Weapon x in player1.WeaponInventory) { while (x.Name.Contains("blazing") || x.Name.Contains("fiery") || x.Name.Contains("burning") || x.Name.Contains("smouldering") || x.Name.Contains("smoking")) { x.Name = x.Name.Substring(x.Name.IndexOf(" ")).Trim(); } }
+                                        continue;
+                                    }
 
-                                    Console.WriteLine("You prise open the music box. Immediately its brass cogs begin to whir as a jaunty melody fills the room. You find the tune to be lively and cheery, but it's not long before a furious, rage-filled roar erupts from beyond the door. In a flurry of instants, boots have pounded closer, someone fumbles at the lock of your door, and finally a frenzied goblin bursts inside, scimitar drawn. For a moment you think he'll smash the music box, but instead he lunges towards you...");
+                                    try
+                                    {
+                                        if (player1.WeaponInventory[0].Equipped)
+                                        {
+                                            if (trialBattle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false))
+                                            {
+                                                trialBattle.WonFight(room);
+                                                escapedThroughDoor = true;
+                                                escapedRoom1 = true;
+                                                player1.Unequip(player1.WeaponInventory);
+                                                continue;
+                                            }
+                                            else
+                                            {
+                                                Console.ReadKey(true);
+                                                return;
+                                            }
+                                        }
+                                    }
+                                    catch { }
+
+                                    if (room.FeatureList.Contains(holeInCeiling))
+                                    {
+                                        Console.WriteLine("Without further delay, you scramble up the mound of debris left by the hole and up into the next room.");
+                                        Console.ReadKey(true);
+                                        escapedRoom1 = true;
+                                        escapedThroughDoor = false;
+                                        continue;
+                                    }
+                                }
+                                else if (reply1 == 5) // The player solved the puzzle and must fight the goblin.
+                                {
+                                    Console.WriteLine("You gaze at the innocuous music box nestled snugly in the palm of your hand. Biting your lip, you look to the rosewood door. The note said that whatever kept guard would be enraged by the tune this thing plays. Once opened there will be no going back...");
+                                    Console.WriteLine("Are you sure you wish to proceed?");
+                                    while (true)
+                                    {
+                                        string r3ply = Console.ReadLine();
+                                        if (r3ply == "no" || r3ply == "n")
+                                        {
+                                            Console.WriteLine("You gingerly place the music box back in your pack for now...");
+                                            break;
+                                        }
+                                        else if (r3ply == "yes" || r3ply == "y")
+                                        {
+
+                                            Console.WriteLine("You prise open the music box. Immediately its brass cogs begin to whir as a jaunty melody fills the room. You find the tune to be lively and cheery, but it's not long before a furious, rage-filled roar erupts from beyond the door. In a flurry of instants, boots have pounded closer, someone fumbles at the lock of your door, and finally a frenzied goblin bursts inside, scimitar drawn. For a moment you think he'll smash the music box, but instead he lunges towards you...");
+                                            if (trialBattle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems))
+                                            {
+                                                if (player1.Inventory.Contains(binkySkull))
+                                                {
+                                                    Console.ReadKey(true);
+                                                    Console.WriteLine("\n\t'Just look at that,' Binky tuts, peering out of your backpack as you see if you've room for any more items. 'Honestly, where have all the good monsters gone these days, eh? I mean he isn't any Medusa or Circe or anything, but slouching on the job?' \n Your gaze matches his as you contemplate the sprawling bloody mess that was your foe. You answer that you're pretty sure the goblin's dead... right? As you speak a fly lands over its exposed eyeball before buzzing away. \n\t'Dead? Of course not! You're this story's hero! Hero's are never murderers, he's just bone idle!' \nYeah, you answer, you guess that makes sense... No, of course it does!\nWith your gleeful heart as light as an ever-so-teensy-bit-eccentric feather you skip over the corpse and ever onward in your quest!");
+                                                }
+                                                trialBattle.WonFight(room);
+                                                if (room.FeatureList.Contains(holeInCeiling))
+                                                {
+                                                    while (true)
+                                                    {
+                                                        Console.WriteLine("You now have a choice! Will you... \n[1] Escape the room through the door your goblin jailor left unlocked?\n[2] Or will you instead escape through the hole left in the ceiling? ");
+                                                        string answ3r = Console.ReadLine().Trim().ToLower();
+                                                        if (string.IsNullOrWhiteSpace
+                                                            (answ3r))
+                                                        {
+                                                            continue;
+                                                        }
+                                                        try
+                                                        {
+                                                            int answ3r1 = int.Parse(answ3r);
+                                                            if (answ3r1 < 1 || answ3r1 > 2)
+                                                            {
+                                                                Console.WriteLine("Please enter either 1 or 2");
+                                                                continue;
+                                                            }
+                                                            else if (answ3r1 == 1)
+                                                            {
+                                                                Console.WriteLine("You rush through the door to escape!");
+                                                                Console.ReadKey(true);
+                                                                escapedRoom1 = true;
+                                                                break;
+                                                            }
+                                                            else if (answ3r1 == 2)
+                                                            {
+                                                                Console.WriteLine("You clamber up through the hole to escape!");
+                                                                Console.ReadKey(true);
+                                                                escapedRoom1 = true;
+                                                                escapedThroughDoor = false;
+                                                                break;
+                                                            }
+                                                        }
+                                                        catch
+                                                        {
+                                                            Console.WriteLine("Please enter 1 or 2");
+                                                            continue;
+                                                        }
+
+                                                    }
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("You rush through the door to escape!");
+                                                    Console.ReadKey(true);
+                                                    escapedRoom1 = true;
+                                                    break;
+                                                }
+                                            }
+                                            else { return; }
+
+                                        }
+                                        else { Console.WriteLine("Please enter either 'yes' or 'no'."); }
+                                    }
+                                }
+                                if (e == 4)
+                                {
+                                    e++;
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("Suddenly, you hear heavy boots pound up close " +
+                                        "to the door of your cell. With trepidation you back away from the " +
+                                        "door, worrying what fate has in store for you should it open. You " +
+                                        "brace yourself to fight..." +
+                                        "\nHowever, the footsteps this time pass you by. They march into another room" +
+                                        ", from which issues muffled voices. Then as you strain to hear what's " +
+                                        " being said, a bloodcurdling scream shatters the near-silence." +
+                                        " \nYou shudder. You don't have long left. Best make the most of what time you have and " +
+                                        "escape. Fast!");
+                                    Console.ReadKey(true);
+                                }
+                                if (e > 7) // if the player fails to find an escape within a certain number of moves, then it's game over.
+                                {
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("You've tried as hard as you " +
+                                    "might to find some way out of the dank cell, but your " +
+                                    "time has finally run out. Heavy boots clomp outside your " +
+                                    "cell, a sardonic cackle sounds from the other side and" +
+                                    " you catch eerie, softly-spoken words; a new voice. It'" +
+                                    "s ominous tones state how you'll make for an excellent" +
+                                    " specimen. \n For a moment you hope the door to your " +
+                                    "cell might be opened - that you might have a chance to" +
+                                    " overpower the enemy. Instead an incantation is made" +
+                                    " and you reel from the braziers as their ethereal glow" +
+                                    " smoulders, plumes of dense smog erupting either side " +
+                                    "of the door.  The smoke fills the room, leaving you ha" +
+                                    "cking and choking, until you succumb to the enchanted " +
+                                    "gas' spell and plunge into a sleep from which you'll " +
+                                    "never awake. \n If there is one small mercy, it is that" +
+                                    " you'll be spared a species of terror utterly alien to" +
+                                    " you, as you'll never know how they " +
+                                    "defile your body.\n");
+                                    Console.ReadKey(true);
+                                    Console.WriteLine("Your adventure ends here...");
+                                    Console.ReadKey(true);
+                                    return;
+                                }
+                                if (room.ItemList.Contains(musicBox) && musicBox.SpecifyAttribute == "opened")
+                                {
+                                    Console.WriteLine("Immediately the music box's brass cogs begin to whir as a jaunty melody fills the room. You find the tune to be lively and cheery, but it's not long before a furious, rage-filled roar erupts from beyond the door. In a flurry of instants, boots have pounded closer, someone fumbles at the lock of your door, and finally a frenzied goblin bursts inside, scimitar drawn. For a moment you think he'll smash the music box, but instead he lunges towards you...");
                                     if (trialBattle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems))
                                     {
                                         if (player1.Inventory.Contains(binkySkull))
@@ -2529,148 +3218,40 @@ namespace DungeonCrawler
                                         }
                                     }
                                     else { return; }
+                                }
+                                if (!escapedRoom1)
+                                {
+                                    Console.WriteLine("Now what will you do?");
+                                    Console.WriteLine("[1] Check what items are still on your person?");
+                                    Console.WriteLine("[2] Investigate the room?");
+                                    Console.WriteLine("[3] Try calling for help?");
 
-                                }
-                                else { Console.WriteLine("Please enter either 'yes' or 'no'."); }
-                            }
-                        }
-                        if (e == 4)
-                        {
-                            e++;
-                            Console.ReadKey(true);
-                            Console.WriteLine("Suddenly, you hear heavy boots pound up close " +
-                                "to the door of your cell. With trepidation you back away from the " +
-                                "door, worrying what fate has in store for you should it open. You " +
-                                "brace yourself to fight..." +
-                                "\nHowever, the footsteps this time pass you by. They march into another room" +
-                                ", from which issues muffled voices. Then as you strain to hear what's " +
-                                " being said, a bloodcurdling scream shatters the near-silence." +
-                                " \nYou shudder. You don't have long left. Best make the most of what time you have and " +
-                                "escape. Fast!");
-                            Console.ReadKey(true);
-                        }
-                        if (e > 7) // if the player fails to find an escape within a certain number of moves, then it's game over.
-                        {
-                            Console.ReadKey(true);
-                            Console.WriteLine("You've tried as hard as you " +
-                            "might to find some way out of the dank cell, but your " +
-                            "time has finally run out. Heavy boots clomp outside your " +
-                            "cell, a sardonic cackle sounds from the other side and" +
-                            " you catch eerie, softly-spoken words; a new voice. It'" +
-                            "s ominous tones state how you'll make for an excellent" +
-                            " specimen. \n For a moment you hope the door to your " +
-                            "cell might be opened - that you might have a chance to" +
-                            " overpower the enemy. Instead an incantation is made" +
-                            " and you reel from the braziers as their ethereal glow" +
-                            " smoulders, plumes of dense smog erupting either side " +
-                            "of the door.  The smoke fills the room, leaving you ha" +
-                            "cking and choking, until you succumb to the enchanted " +
-                            "gas' spell and plunge into a sleep from which you'll " +
-                            "never awake. \n If there is one small mercy, it is that" +
-                            " you'll be spared a species of terror utterly alien to" +
-                            " you, as you'll never know how they " +
-                            "defile your body.\n");
-                            Console.ReadKey(true);
-                            Console.WriteLine("Your adventure ends here...");
-                            Console.ReadKey(true);
-                            return;
-                        }
-                        if (room.ItemList.Contains(musicBox) && musicBox.SpecifyAttribute == "opened")
-                        {
-                            Console.WriteLine("Immediately the music box's brass cogs begin to whir as a jaunty melody fills the room. You find the tune to be lively and cheery, but it's not long before a furious, rage-filled roar erupts from beyond the door. In a flurry of instants, boots have pounded closer, someone fumbles at the lock of your door, and finally a frenzied goblin bursts inside, scimitar drawn. For a moment you think he'll smash the music box, but instead he lunges towards you...");
-                            if (trialBattle.Fight(music, usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems))
-                            {
-                                if (player1.Inventory.Contains(binkySkull))
-                                {
-                                    Console.ReadKey(true);
-                                    Console.WriteLine("\n\t'Just look at that,' Binky tuts, peering out of your backpack as you see if you've room for any more items. 'Honestly, where have all the good monsters gone these days, eh? I mean he isn't any Medusa or Circe or anything, but slouching on the job?' \n Your gaze matches his as you contemplate the sprawling bloody mess that was your foe. You answer that you're pretty sure the goblin's dead... right? As you speak a fly lands over its exposed eyeball before buzzing away. \n\t'Dead? Of course not! You're this story's hero! Hero's are never murderers, he's just bone idle!' \nYeah, you answer, you guess that makes sense... No, of course it does!\nWith your gleeful heart as light as an ever-so-teensy-bit-eccentric feather you skip over the corpse and ever onward in your quest!");
-                                }
-                                trialBattle.WonFight(room);
-                                if (room.FeatureList.Contains(holeInCeiling))
-                                {
-                                    while (true)
+                                    if (a > 0 && b > 0)
                                     {
-                                        Console.WriteLine("You now have a choice! Will you... \n[1] Escape the room through the door your goblin jailor left unlocked?\n[2] Or will you instead escape through the hole left in the ceiling? ");
-                                        string answ3r = Console.ReadLine().Trim().ToLower();
-                                        if (string.IsNullOrWhiteSpace
-                                            (answ3r))
-                                        {
-                                            continue;
-                                        }
-                                        try
-                                        {
-                                            int answ3r1 = int.Parse(answ3r);
-                                            if (answ3r1 < 1 || answ3r1 > 2)
-                                            {
-                                                Console.WriteLine("Please enter either 1 or 2");
-                                                continue;
-                                            }
-                                            else if (answ3r1 == 1)
-                                            {
-                                                Console.WriteLine("You rush through the door to escape!");
-                                                Console.ReadKey(true);
-                                                escapedRoom1 = true;
-                                                break;
-                                            }
-                                            else if (answ3r1 == 2)
-                                            {
-                                                Console.WriteLine("You clamber up through the hole to escape!");
-                                                Console.ReadKey(true);
-                                                escapedRoom1 = true;
-                                                escapedThroughDoor = false;
-                                                break;
-                                            }
-                                        }
-                                        catch
-                                        {
-                                            Console.WriteLine("Please enter 1 or 2");
-                                            continue;
-                                        }
-
+                                        Console.WriteLine("[4] Try using one of your items on something...");
                                     }
-                                    break;
+                                    if (player1.Inventory.Contains(musicBox) && note.Description.Contains("blighter"))
+                                    {
+                                        Console.WriteLine("[5] Open the music box?");
+                                    }
                                 }
-                                else
+
+                            }
+                            catch //and a check to make sure they know the correct input.
+                            {
+                                if (reply.ToLower().Trim() == "s")
                                 {
-                                    Console.WriteLine("You rush through the door to escape!");
-                                    Console.ReadKey(true);
-                                    escapedRoom1 = true;
-                                    break;
+                                    music = this.MusicOnOff();
+                                    continue;
                                 }
+                                Console.WriteLine("Please enter a number or letter corresponding to your choice of action.");
+                                continue;
                             }
-                            else { return; }
-                        }
-                        if (!escapedRoom1)
-                        {
-                            Console.WriteLine("Now what will you do?");
-                            Console.WriteLine("[1] Check what items are still on your person?");
-                            Console.WriteLine("[2] Investigate the room?");
-                            Console.WriteLine("[3] Try calling for help?");
-
-                            if (a > 0 && b > 0)
-                            {
-                                Console.WriteLine("[4] Try using one of your items on something...");
-                            }
-                            if (player1.Inventory.Contains(musicBox) && note.Description.Contains("blighter"))
-                            {
-                                Console.WriteLine("[5] Open the music box?");
-                            }
-                        }
-
-                    }
-                    catch //and a check to make sure they know the correct input.
-                    {
-                        if (reply.ToLower().Trim() == "s")
-                        {
-                            music = this.MusicOnOff();
-                            continue;
-                        }
-                        Console.WriteLine("Please enter a number or letter corresponding to your choice of action.");
-                        continue;
-                    }
 
 
 
+                        
+                    
                 }
                 ///Past this point is the next room 
 
@@ -2987,6 +3568,7 @@ namespace DungeonCrawler
             player1.midnightClock = new Stopwatch();
             player1.midnightClock.Start();
             newRoom1 = magicalManufactory;
+            player1.UncoverSecretOfMyrovia = 7;
             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
             */
             //
@@ -3032,23 +3614,19 @@ namespace DungeonCrawler
              lethalspell, yourRustyChains};
             List<Feature> AllFeatures = new List<Feature> { skeleton, leftbrazier,
                 rightbrazier, anotherBrazier, rosewoodChest, bookCase, brokenLeftBrazier,
-                brokenRightBrazier, trunk, mosaic, pillar, plaque, gamblingTable,
+                brokenRightBrazier, trunk, mosaic, mosaic2, pillar, plaque, gamblingTable,
                 goodWeaponRack, worseWeaponRack, armouryBookcase, normalBrazier,
                 otherBookcase, bench, diningTable, diningTable1, stalagmite, stalactite,
                 goldMountains, lake, copperPipes, brassTanks, conveyorBelts, teslaCoil,
                 magicalBookcase, worktop, prometheus, plaquePrometheus, portrait, northWall, 
                 southWall, eastWall, westWall, bookcaseSC, bucket, shelves, aBrazier, window,
                 alcove, crystalTotem1, crystalTotem2, crystalTotem3, crenellations, deadGhoul1,
-                deadGhoul2, debris, deadFoe1, deadFoe2, trunkofconfiscatedstuff, rosewoodDoor,
-            holeInCeiling, stairwayToLower, stairwayToUpper, otherRosewoodDoor, armouryDoor,
-             circleDoor, emptyCellDoor, magManDoor, messHallDoor, broomClosetDoor, merigoldPortal, 
-            mosaic2, hatch, southeastCorner, southwestCorner, northeastCorner, northwestCorner, 
-            fakeDooreast, fakeDoorwest, fakeDoorsouth, fakeDoornorth};
+                deadGhoul2, debris, deadFoe1, deadFoe2, trunkofconfiscatedstuff};
             List<Door> AllDoors = new List<Door> { rosewoodDoor,
             holeInCeiling, stairwayToLower, stairwayToUpper, otherRosewoodDoor, armouryDoor,
-             circleDoor, emptyCellDoor, magManDoor, messHallDoor, broomClosetDoor, merigoldPortal,
+             circleDoor, emptyCellDoor, fakeDoornorth1, broomClosetDoor, magManDoor, fakeDoornorth2, messHallDoor, merigoldPortal,
             mosaic2, hatch, southeastCorner, southwestCorner, northeastCorner, northwestCorner,
-            fakeDooreast, fakeDoorwest, fakeDoorsouth, fakeDoornorth};
+            fakeDooreast1,fakeDooreast2, fakeDoorwest1,fakeDoorwest2, fakeDoorsouth1, fakeDoorsouth2};
             List<Room> AllRooms = new List<Room> { room, corridor, emptyCell, cellOpposite, dungeonChamber,
             secretChamber, oubliette, antechamber, armoury, northernmostCorridor, westernmostCorridor, easternmostCorridor,
             southernmostCorridor, magicalManufactory, broomCloset, highestParapet, dragonLair};
@@ -3059,7 +3637,37 @@ namespace DungeonCrawler
             {
                 ResetData(music, fireProgress, justStalked, AllItems, AllFeatures, AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
             }
-            
+            else
+            {
+                LoadGame(AllItems, AllFeatures, AllDoors, AllRooms, newRoom1, AllMonsters, minotaur, false, "");
+                music = Music;
+                fireProgress = this.FireProgress;
+                justStalked = JustStalked;
+                AllItems = Items;
+                AllFeatures = Features;
+                AllDoors = Doors;
+                AllRooms = Rooms;
+                player1 = _player;
+                newRoom1 = Location;
+                AllMonsters = Monsters;
+                minotaur = Minotaur;
+                if (player1.Traits.ContainsKey("friends with fairies"))
+                {
+                    usesDictionaryItemItem.Add(halfOfCrackedBowl, new List<Item> { otherHalfOfCrackedBowl });
+                    usesDictionaryItemItem.Add(otherHalfOfCrackedBowl, new List<Item> { halfOfCrackedBowl });
+
+                }
+                if (player1.Traits.ContainsKey("diligent") || player1.Traits.ContainsKey("sadist") || player1.Traits.ContainsKey("medicine man") || player1.Skill > 7)
+                {
+
+                    if (player1.Traits.ContainsKey("sadist")) { mercInsignia.Description += " You instantly recognise the emblem as that of a cut-throat gang you've long admired from afar. "; }
+                    else if (player1.Traits.ContainsKey("medicine man")) { mercInsignia.Description += " You recall the emblem from the descriptions and stories their victims exchanged under the bloodied canvases of triage tents, many of whom you'd done your best to heal after many a sordid battle."; }
+                    else if (player1.Traits.ContainsKey("diligent")) { mercInsignia.Description += " Your diligent studies pay off as you recognise the emblem. "; }
+                    else { mercInsignia.Description += " You recognise the emblem from your martial studies."; }
+                    mercInsignia.Description += " It's the mark of the Vespasian Mercenaries, a group of infamous swords-for-hire for whom no work, no matter how bloody or deplorable, is off limits if the price is right. You reason that wearing this could prove useful if you wanted to pass yourself as a fellow merc...\nSo long, of course, that the other guards don't recognise your face, of course.";
+                }
+                leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+            }
             ///From this point forward you'll be traversing rooms until you die or reach one of the endings.
             ///Most rooms are of the same format. 
             ///You will likely find:-
@@ -6461,8 +7069,8 @@ namespace DungeonCrawler
                                 if (noteForJanitor.SpecifyAttribute == "read" && bucket.ItemList.Count == 0)
                                 {
                                     bucket.ItemList.Add(magManKey);
-                                    bucket.Description += "\nChecking under the bucket, you find nothing. You're about to give up on finding the janitor's lost key when, as you fish through the filthy brown water, your hands clasp hold of something long and metallic.";
-                                    shelves.Description += "\n No matter how much you rummage through the shelves you find nothing a janitor might've misplaced...";
+                                    bucket.Description += " Checking under the bucket, you find nothing. You're about to give up on finding the janitor's lost key when, as you fish through the filthy brown water, your hands clasp hold of something long and metallic.";
+                                    shelves.Description += " No matter how much you rummage through the shelves you find nothing a janitor might've misplaced...";
 
                                 }
                                 if (newRoom.Name != messHall.Name)
@@ -6711,7 +7319,7 @@ namespace DungeonCrawler
                                 ///fungshui() is present to preempt that and prevent duplicates.
                                 if (minotaur.Location == northernmostCorridor)
                                 {
-                                    northwestCorner.Description = "The corner turns sharply right.\nFrom somewhere around the other side you hear heavy footfalls as some huge beast prowls the other side...";
+                                    northwestCorner.Description = "The corner turns sharply right. From somewhere around the other side you hear heavy footfalls as some huge beast prowls the other side...";
                                 }
                                 else
                                 {
@@ -6799,7 +7407,7 @@ namespace DungeonCrawler
                         northeastCorner.Description = "The corner turns sharply right...";
                         northeastCorner.Passing = "You follow the corner around and into the easternmost corridor.";
                         usesDictionaryItemItem.Clear();
-                   
+                        westernmostCorridor.FirstVisit = false;
                         usesDictionaryItemItem.Add(stiletto, new List<Item> { bobbyPins });
                         usesDictionaryItemItem.Add(bobbyPins, new List<Item> { stiletto });
                     usesDictionaryItemItem.Add(throwingKnife, new List<Item>());
@@ -7052,6 +7660,7 @@ namespace DungeonCrawler
                             minotaur.Description = "Its fur scorched and smoking, wielding a great sword that streams some spectral fire, and piercing you with its bloodshot red eyes, the looming minotaur thunders a roar as it charges towards you...";
                         }
                         visitedRoom = true;
+                    westernmostCorridor.FirstVisit = false;
                         northeastCorner.Description = "The corner turns sharply left...";
                         northeastCorner.Passing = "You follow the corner around and into the north-facing corridor.";
                         southeastCorner.Description = "The corner turns sharply right...";
@@ -7228,8 +7837,7 @@ namespace DungeonCrawler
                             }
                             else
                             {
-                                List<bool> success = new List<bool>();
-                                test3.RunForCombat();
+                                List<bool> success = new List<bool>();                                
                                 success = player1.UseItemOutsideCombat(music, easternmostCorridor, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                                 minotaurAlertedBy = D6.Roll(D6) * 1000;
                                 sw = new Stopwatch();

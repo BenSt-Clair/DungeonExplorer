@@ -1065,7 +1065,7 @@ namespace DungeonCrawler
                             }
                             else if (endOfMidGameChoice[0].faces == 847713)
                             {
-                                Description += "\nIt's been thoroughly trashed after your fight with Merigold...";
+                                Description += " It's been thoroughly trashed after your fight with Merigold...";
                                 return room;
                             }
                             else
@@ -4557,7 +4557,7 @@ namespace DungeonCrawler
                         }
                         else if (endOfMidGameChoice[0].faces == 847713)
                         {
-                            Description += "\nIt's been thoroughly trashed after your fight with Merigold...";
+                            Description += " It's been thoroughly trashed after your fight with Merigold...";
                             return room;
                         }
                         else
@@ -8032,7 +8032,7 @@ namespace DungeonCrawler
             }
             else
             {
-                Console.WriteLine("Door.Passage() has failed. Check Portal list.");
+                Console.WriteLine("This passage leads nowhere...\nBest keep moving.");
                 return room;
             }
             

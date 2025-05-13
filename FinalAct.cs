@@ -1279,7 +1279,7 @@ namespace DungeonCrawler
                         parlances.RemoveAt(3);
 
                     }
-                    if (_player.UncoverSecretOfMyrovia == 2 || _player.UncoverSecretOfMyrovia == 3 || _player.UncoverSecretOfMyrovia == 6 || _player.UncoverSecretOfMyrovia == 7)
+                    if ((_player.UncoverSecretOfMyrovia == 2 || _player.UncoverSecretOfMyrovia == 3 || _player.UncoverSecretOfMyrovia == 6 || _player.UncoverSecretOfMyrovia == 7) && !_player.Traits.ContainsKey("friends with fairies"))
                     {
                         choices[3].Add("You rebuke him; how can he think he's the hero when he spares the 'wicked' mayor for his subservience and favours?");
                     }

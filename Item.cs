@@ -1449,7 +1449,7 @@ namespace DungeonCrawler
                         return false;
                     }
                 }
-                if (feature.Description == "Replete with weapons of all descriptions, their oiled and well-polished blades gleam at you.\nIt's a shame someone was foresighted enough to lock them all behind an enchanted glass panel...")
+                if (feature.Description == "Replete with weapons of all descriptions, their oiled and well-polished blades gleam at you. It's a shame someone was foresighted enough to lock them all behind an enchanted glass panel...")
                 {
                     if (Name == "lockpicking set" || Name.Contains(" key"))
                     {

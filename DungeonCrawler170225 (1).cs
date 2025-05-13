@@ -55,7 +55,21 @@ namespace DungeonCrawler
                 bool music = false;
                 Game CurseBreaker = new Game($"CurseBreaker ~ game {attempt}", music, false);
                 music = CurseBreaker.MusicOnOff();
-                
+                Console.WriteLine("Would you like to load a save game?");
+                if (Dialogue.getYesNoResponse(true))
+                {
+                    string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    string filePath = Path.Combine(path, $"CurseBreaker\\Saves");
+                    if (Directory.Exists(filePath) && Directory.EnumerateFiles(filePath).Any())
+                    {
+                        CurseBreaker.Load = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error! You have no saves that you can load yet.");
+                        Console.ReadKey(true);
+                    }
+                }
                 CurseBreaker.Start(music);
                 attempt++;
             }
