@@ -365,10 +365,11 @@ namespace DungeonCrawler
                     featureString = sr.ReadLine();
                     featureAspects = featureString.Split('/');
                     int j = featureAspects.Count();
-                    if (j == 1)
+                    if (j == 1 || AllFeatures[i - 1].ItemList != null)
                     {
                         AllFeatures[i - 1].ItemList.Clear();
                     }
+                    
                     while(j == 1)
                     {
                         foreach (Item item in AllItems)
@@ -1563,7 +1564,7 @@ namespace DungeonCrawler
             Door rosewoodDoor = new Door("rosewood door", "It's a curiously ornate door with smooth well-polished panels. The wood's warmth is somewhat diminished by the heavy iron hinges holding it in place.");
             Feature rosewoodChest = new Feature("rosewood chest", "Its smooth, burnished surface matches the grain and style of the door and like the door its elegance is jarred by the heavy steel lock sealing it. It makes you wonder if this room hadn't always been a dank cell.", true, "locked", inRosewoodChest);
             List<Item> inBookcase = new List<Item> { note };
-            Feature bookCase = new Feature("bookcase", "The ostensibly empty bookcase is a little worse for wear. One of it's shelves is lopsided. Another at the bottom has collapsed. Cobwebs span its dusty corners.", true, "searched", inBookcase);
+            Feature bookCase = new Feature("dilapidated bookcase", "The ostensibly empty bookcase is a little worse for wear. One of it's shelves is lopsided. Another at the bottom has collapsed. Cobwebs span its dusty corners.", true, "searched", inBookcase);
             Door holeInCeiling = new Door("hole in the ceiling", "You gaze from the heap of debris that has buried the creature alive to the hole through the ceiling above. You bet you could climb the heap and enter the room above yours.", false, "unblocked", null, null, "You clamber up the mound of debris and heft yourself through floorboards into a new room...");
             Door stairwayToLower = new Door("dark stairwell", "The steep stone steps descend beyond the light of the braziers and into the unknown murk lurking below. Without some sort of light that can dispel the impenetrable darkness beneath your feet, you might want to think carefully before navigating this slippery and hazardous passage.", false, "unblocked", null, null, "Feeling a knot of dread tighten about your stomach, you make the descent into a shifting web of shadows and silhouettes...", true);
             Door stairwayToUpper = new Door("lit stairway", "The wide flight of stone steps slowly curves around, leading to somewhere unseen but well-lit.", false, "unblocked", null, null, "You embark along the stairs two at a time.");
@@ -1629,7 +1630,7 @@ namespace DungeonCrawler
             Item bookA2 = new Item("book on the history of curses", "It's an encyclopedic and thorough rendition of all the most notable curses that've arisen and passed through the known world over many centuries. It seems to have been a work in progress because the last hundred or so pages are left blank. You notice an embossed M within a G inside the front cover.", false, "unread");
             Item bookA3 = new Item("book on Fey realms and magicks", "Its a book smaller than most with elooquent script, flowing prose and fanciful descriptions that entice and excite the imagination. Its words are so gripping in fact that you wonder if their lure and speciousness isn't a form of magic itself. It's almost as if the book wants you to fall through its pages into another world...", false, "unread");
             List<Item> armouryBookcaseItems = new List<Item> { bookA1, bookA2, bookA3};
-            Feature armouryBookcase = new Feature("bookcase", "A rosewood bookcase that seems to have been left behind from when this place was something other than an armoury (a library perhaps). It is still stocked with books.", false, "unshattered", armouryBookcaseItems);
+            Feature armouryBookcase = new Feature("intact bookcase", "A rosewood bookcase that seems to have been left behind from when this place was something other than an armoury (a library perhaps). It is still stocked with books.", false, "unshattered", armouryBookcaseItems);
             Feature normalBrazier = new Feature("fiery brazier", "Unlike the braziers in your former cell and downstairs, this one's fire radiates warmth and its soft flickering flame casts an altogether more natural light about the room", true, "lit");
             List<Feature> armouryFeatures = new List<Feature> {gamblingTable, goodWeaponRack, normalBrazier, worseWeaponRack, armouryBookcase, armouryDoor };
             Item throwingKnife1 = new Item("broken knife", "It's blade has been detached from the handle. Either its been tossed aside or else someone couldn't be bothered fixing it.", false, "unfixed");
@@ -1640,7 +1641,7 @@ namespace DungeonCrawler
             List<Item> armouryItems = new List<Item> { throwingKnife1, clunkySabaton, breastplate, bracers, helmet };
             /// 
             ///emptyCell features
-            Feature otherBookcase = new Feature("bookcase", "Unlike the bookcase in your former cell, this one is replete with a few leather-bound books and journals and its shelves are mostly intact.", false, "unshattered", otherBookcaseItems);
+            Feature otherBookcase = new Feature("rosewood bookcase", "Unlike the bookcase in your former cell, this one is replete with a few leather-bound books and journals and its shelves are mostly intact.", false, "unshattered", otherBookcaseItems);
             
             // I instantiate a room with a list of items and features inside it and a description and room name
             List<Feature> cellfeatures = new List<Feature> { rosewoodDoor, rosewoodChest, bookCase, skeleton, leftbrazier, rightbrazier };
@@ -1724,7 +1725,7 @@ namespace DungeonCrawler
             Item copperTrinket = new Item("sorcerous gadget", "It's a copper sphere with dials and intricate tiny levers. You put it down before your fumbling hands cause it to... uh, do whatever it is it's designed to do.");
             Item elixirFeline1 = new Item("Elixir of Feline Guile", "It's pungent aroma makes you recoil. Upon the label it reads, 'Is 'butter-fingers' your middle name? Do you like jumping from great heights, but don't like the dying that usually follows? Merigold's Wondrous Elixir of Feline Guile is the thing for you! Please note Merigold is not responsible for fatal falls during or after this potion takes effect. Please use responsibly. Pleasant fragrance not included.'", true, "unshattered", 1, "Skill: Boosts your skill by 1 point. Caution: excessive use may cause an over-fondness for catnip.");
             List<Item> bookcaseSCItems = new List<Item> {bookSC2, bookSC1, bookSC3,  elixirFeline1};
-            Feature bookcaseSC = new Feature("bookcase", "Judging from the grain and fine burnished finish, this bookcase is elegantly crafted rosewood and feels warm to the touch even within this chilly room. It is replete with books.", false, "unshattered", bookcaseSCItems);
+            Feature bookcaseSC = new Feature("shadowy bookcase", "Judging from the grain and fine burnished finish, this bookcase is elegantly crafted rosewood and feels warm to the touch even within this chilly room. It is replete with books.", false, "unshattered", bookcaseSCItems);
             
             List<Item> secretChamberItems = new List<Item> { crystalBall, jar, brassTrinket, copperTrinket};
             List<Feature> secretChamberFeatures = new List<Feature> { holeInCeiling, northWall, prometheus, plaquePrometheus, westWall, bookcaseSC, southWall, portrait, mosaic2, eastWall };
@@ -2844,7 +2845,7 @@ namespace DungeonCrawler
 
             usesDictionaryItemItem[magnifyingGlass].Add(garment);
 
-            Dictionary<Item, List<Player>> usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 },[FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [soot] = new List<Player> { player1}, [speedPotion] = new List<Player> { player1} };
+            Dictionary<Item, List<Player>> usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 },[FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1}, [speedPotion] = new List<Player> { player1} };
             List<Feature> features = new List<Feature>();
             /*
             Combat tester = new Combat(goblin, gnoll, player1, null);
@@ -3275,7 +3276,7 @@ namespace DungeonCrawler
                 if (fieryEscape)
                 {
                     Console.WriteLine("Looking back, the door will only hold for so long against the flames and time is not your friend. What will you do?");
-                    corridor.FeatureList[2].Description = "The smouldering rosewood door radiates intense heat as a fiery glow ominously flickers through the gap underneath. Tendrils of smoke cascade upwards and the cast iron hinges are scolding to the touch.\nYou best get away from here post haste!";
+                    corridor.FeatureList[2].Description = "The smouldering rosewood door radiates intense heat as a fiery glow ominously flickers through the gap underneath. Tendrils of smoke cascade upwards and the cast iron hinges are scolding to the touch. You best get away from here post haste!";
                     corridor.FeatureList[2].CastDoor().Portal = new List<Room> { corridor, corridor };
                     fireProgress = 1;
                     Console.ReadKey(true);
@@ -3648,6 +3649,7 @@ namespace DungeonCrawler
                 AllFeatures = Features;
                 AllDoors = Doors;
                 AllRooms = Rooms;
+                player1.Stamina = _player.Stamina;
                 player1 = _player;
                 newRoom1 = Location;
                 AllMonsters = Monsters;

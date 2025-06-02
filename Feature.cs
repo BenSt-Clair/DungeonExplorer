@@ -340,7 +340,7 @@ namespace DungeonCrawler
             Console.WriteLine($"Rummaging about the {Name}, you find the following;");
             int r = 1;
             string message = $"{Description}\n";
-            if (Name == "bookcase" && ItemList.Count != 0 && room.Name == "dank cell")
+            if (Name.Contains("bookcase") && ItemList.Count != 0 && room.Name == "dank cell")
             {
                 message += "Your keen eye notices a lone page just underneath the collapsed shelf, snagged at the back.\n";
             }
@@ -553,7 +553,7 @@ namespace DungeonCrawler
                     }
                     else // these are specific cases for those features that may be searched more than once.
                     {
-                        if (Name == "bookcase" || (Name == "rosewood chest" && Attribute))
+                        if (Name.Contains("bookcase") || (Name == "rosewood chest" && Attribute))
                         {
                             Console.WriteLine($"{Description} \nTry as hard as you might, you find no more items hidden about the {Name}. It has been thoroughly {SpecificAttribute}.");
 
@@ -927,7 +927,7 @@ namespace DungeonCrawler
                 }
                 else
                 {
-                    if (Name == "bookcase" || Name == "rosewood chest")
+                    if (Name.Contains("bookcase") || Name == "rosewood chest")
                     {
                         Console.WriteLine($"{Description} \nTry as hard as you might, you find no more items hidden about the {Name}. It has been thoroughly {SpecificAttribute}.");
 
@@ -7886,7 +7886,7 @@ namespace DungeonCrawler
                     }
                 }
             
-                if (Name == "bookcase" || Name == "rosewood chest")
+                if (Name.Contains("bookcase") || Name == "rosewood chest")
                 {
                     Console.WriteLine($"{Description} \nTry as hard as you might, you find no more items hidden about the {Name}. It has been thoroughly {SpecificAttribute}.");
 

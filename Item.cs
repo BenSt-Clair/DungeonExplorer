@@ -1343,7 +1343,7 @@ namespace DungeonCrawler
                         }
                     }
                     
-                    else if (item.Name == "rusty chain-flail" && feature.Name == "bookcase")
+                    else if (item.Name == "rusty chain-flail" && feature.Name.Contains("bookcase"))
                     {
                         room.FeatureList.Remove(feature);
                         Feature debris = new Feature("debris", "The bookcase has been smashed into nothing more than a crumpled heap of wooden planks.", false, "unburned");
