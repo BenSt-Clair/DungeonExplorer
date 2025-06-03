@@ -339,7 +339,8 @@ namespace DungeonCrawler
                     string[] itemAspects = itemString.Split('/', 6);
                     AllItems[i].Name = itemAspects[0].Trim();
                     AllItems[i].Description = itemAspects[1].Trim();
-                    AllItems[i].Attribute = bool.TryParse(itemAspects[2].Trim(), out myBool);
+                    bool.TryParse(itemAspects[2].Trim(), out myBool);
+                    AllItems[i].Attribute = myBool;
                     AllItems[i].SpecifyAttribute = itemAspects[3].Trim();
                     int sE = 0;
                     int.TryParse(itemAspects[4].Trim(), out sE);
@@ -1648,7 +1649,7 @@ namespace DungeonCrawler
             List<Item> corridorItems = new List<Item> ();
             Item healPotionq = new Item("healing potion", "It has flecks of gold floating amidst a gel like suspension. The label reads; 'When you're feeling blue, down with the flu, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!'", true, "used", 20, "Stamina: When you're blue, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!");
             List<Item> trunkItems1 = new List<Item> { speedPotion, healPotionq };
-            Feature trunkofconfiscatedstuff = new Feature("weathered old trunk", "The leather of its sides is faded and worn. Unlike the rosewood chest in your room it hasn't been looked after and there's no hidden compartment. Scrawled atop the lid in scratchy letters are the words 'confizkatedd Stoof'", false, "unlocked", trunkItems1);
+            Feature trunkofconfiscatedstuff = new Feature("worn old trunk", "The leather of its sides is faded and worn. Unlike the rosewood chest in your room it hasn't been looked after and there's no hidden compartment. Scrawled atop the lid in scratchy letters are the words 'confizkatedd Stoof'", false, "unlocked", trunkItems1);
             List<Feature> corridorFeatures = new List<Feature> { stairwayToLower, leftbrazier, rosewoodDoor, otherRosewoodDoor, rightbrazier, emptyCellDoor, trunkofconfiscatedstuff, stairwayToUpper };
             List<Feature> antechamberFeatures = new List<Feature> { stairwayToUpper, pillar, plaque, armouryDoor, pillar, mosaic, circleDoor};
             List<Item> antechamberItems = new List<Item>();
@@ -4394,7 +4395,7 @@ namespace DungeonCrawler
                         {
                             stairwayToUpper.Attribute = true;
                             stairwayToUpper.SpecificAttribute = "blocked";
-                            stairwayToUpper.Description = "Peering down the stairway you see a fiery glow flicker upon the opposite wall where it curves around to the corridor. A fiery haze lurks like a ravenous beast below, as intense furnace-like heat buffets against you...\nThere's no way you're getting down there.";
+                            stairwayToUpper.Description = "Peering down the stairway you see a fiery glow flicker upon the opposite wall where it curves around to the corridor. A fiery haze lurks like a ravenous beast below, as intense furnace-like heat buffets against you... There's no way you're getting down there.";
                         }
                         else { stairwayToUpper.Description = "The wide flight of stone steps slowly curves around, leading to the frosty light of the corridor below..."; }
                         visitedRoom = true;
