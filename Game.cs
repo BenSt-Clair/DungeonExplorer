@@ -2994,7 +2994,7 @@ namespace DungeonCrawler
                                     else if (success[1])
                                     {
                                         Console.WriteLine("With the whole cell blazing around you, you snatch up the jailor's keys before you flee through the door. A fiery haze billows in your wake as you throw yourself into a corridor and slam the rosewood door shut behind you.");
-                                        if (player1.Inventory.Contains(bowlFragments)) { Console.WriteLine($"It's a moment before you realise your backpack is still smoking!\nOpening it up you scramble to save the contents, fishing out the {bowlFragments.Name} before they can burn everything, but it's too late. \nEverything inside your pack is burned and unusable!"); player1.Inventory.Clear(); Console.ReadKey(true); }
+                                        if (player1.Inventory.Contains(garment)) { Console.WriteLine($"It's a moment before you realise your backpack is still smoking!\nOpening it up you scramble to save the contents, fishing out the {garment.Name} before it can burn everything, but it's too late. \nEverything inside your pack is burned and unusable!"); player1.Inventory.Clear(); Console.ReadKey(true); }
                                         player1.Inventory.Add(jailorKeys);
                                         escapedRoom1 = true;
                                         escapedThroughDoor = true;
@@ -3652,9 +3652,22 @@ namespace DungeonCrawler
                 AllRooms = Rooms;
                 player1.Stamina = _player.Stamina;
                 player1 = _player;
+                
                 newRoom1 = Location;
                 AllMonsters = Monsters;
-                minotaur = Minotaur;
+                minotaur = AllMonsters[7];
+                minotaur.Path = Minotaur.Path;
+                minotaur.Location = Minotaur.Location;
+                if(_player.FieryEscape && minotaur.Path.Count == 1 &&
+                    ((southernmostCorridor.FirstVisit && northernmostCorridor.FirstVisit
+                    && circleDoor.SpecificAttribute == "unlocked") || (easternmostCorridor.FirstVisit &&
+                    circleDoor.SpecificAttribute == "locked")))
+                {
+                    minotaur.Location = oceanBottom;
+                }
+                minotaur.Rage = Minotaur.Rage;
+                minotaur.Suspicious = Minotaur.Suspicious;
+
                 if (player1.Traits.ContainsKey("friends with fairies"))
                 {
                     usesDictionaryItemItem.Add(halfOfCrackedBowl, new List<Item> { otherHalfOfCrackedBowl });
@@ -3671,7 +3684,19 @@ namespace DungeonCrawler
                     mercInsignia.Description += " It's the mark of the Vespasian Mercenaries, a group of infamous swords-for-hire for whom no work, no matter how bloody or deplorable, is off limits if the price is right. You reason that wearing this could prove useful if you wanted to pass yourself as a fellow merc...\nSo long, of course, that the other guards don't recognise your face, of course.";
                 }
                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                trialBattle = new Combat(goblin, player1);
+                toughestBattle = new Combat(minotaur, player1);
+                tougherBattle = new Combat(gnoll, player1);
+                mageBattle = new Combat(mage, player1);
+                dualDuel = new Combat(goblinCaptain, gnoll, player1);
+                minotaurKafuffle = new Combat(minotaur, player1);
+                fieryEscape = _player.FieryEscape;
+                visitedArmouryBefore = !armoury.FirstVisit;
             }
+            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+            messHallDoor.ItemList = messHallDoorItems;
+            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
             ///From this point forward you'll be traversing rooms until you die or reach one of the endings.
             ///Most rooms are of the same format. 
             ///You will likely find:-
@@ -4855,8 +4880,8 @@ namespace DungeonCrawler
                                         return;
                                     }
                                     leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
-                                if (newRoom1 != armoury) { continue; }
-                            }
+                                    if (newRoom1 != armoury) { continue; }
+                                }
                             }
                             else if (minotaur.Location == armoury)
                             {
@@ -6816,6 +6841,7 @@ namespace DungeonCrawler
                             
                             Console.WriteLine("You dust your hands. Now what will you do?");
                             visitedArmouryBefore = true;
+                            armoury.FirstVisit = false;
                             armoury.Description = "Stepping back into the armoury you see the familiar clutter of sabatons and breastplates, bracers and helmets, all scattered about you. \nThe high walls of the 'RmorRee' extend to a vaulted ceiling and appear to have been stripped of many ladders and shelves judging by the bare patches and splintered wood panels left behind. The north wall in particular is one of the few that betrays what this room might've been before its spartan refurbishment; a rosewood bookcase, replete with tomes, greets your gaze directly ahead.\t\nThe west wall to your left is where the table is situated where the gnoll and goblin played their game of coins.\t\nFacing south you find the door you just passed through.\t\nTo your right, gazing east, you see racks fully stocked with weapons and armour.\t\t";
                         }
                         if (!(a == 0 && b == 0))
