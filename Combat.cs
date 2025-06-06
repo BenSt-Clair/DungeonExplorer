@@ -890,7 +890,8 @@ namespace DungeonCrawler
         /// <returns>boolean: true or false</returns>
         public bool Fight(bool music, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, List<Item> specialItems, int totemCount = 1, bool fire = false, bool _initiative = false, bool masked = false, int finalCountdown = 0)
         {
-            player = Player;
+            Player = player; // I swapped these two around not fully knowing the consequences but hoping it
+                             // resolves a loading issue.
             Dice D2 = new Dice(2);
             Dice D3 = new Dice(3);
             Dice D4 = new Dice(4);
@@ -1936,7 +1937,7 @@ namespace DungeonCrawler
         /// <returns></returns>
         public bool Fight(bool music, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, bool dualBattle, Feature holeInCeiling, List<Item> specialItems, bool fire = false, bool _initiative = false, bool masked = false)
         {
-            player = Player;
+            Player = player;
             Dice D2 = new Dice(2);
             Dice D3 = new Dice(3);
             Dice D4 = new Dice(4);

@@ -23,6 +23,7 @@ namespace DungeonCrawler
         string GameName { get; set; }
         bool Music { get; set; }
         List<Item> Items { get; set; }
+        List<Weapon> Weapons { get; set; }
         List<Feature> Features { get; set; }
         List<Door> Doors { get; set; }
         List<Room> Rooms { get; set; }
@@ -79,7 +80,7 @@ namespace DungeonCrawler
             this.Monsters = AllMonsters;
             this.Minotaur = minotaur;
         }
-        protected void WriteSaveFile(string filePath)
+        protected void WriteSaveFile(string filePath, List<Weapon> weapons_handled)
         {
             using (TextWriter tw = new StreamWriter(filePath))
             {
@@ -199,13 +200,21 @@ namespace DungeonCrawler
 
                 tw.WriteLine("FIREPROGRESS");
                 tw.WriteLine($"{FireProgress}/ {JustStalked}");
-
+                tw.WriteLine("HANDLED WEAPONS?");
+                foreach(Weapon w in weapons_handled)
+                {
+                    if (w.Handled)
+                    {
+                        tw.WriteLine(w.Name);
+                    }
+                }
+                tw.WriteLine("END / END");
             }
         }
         protected void SaveGame(bool music, int fire, bool justStalked,
             List<Item> AllItems, List<Feature> AllFeatures, List<Door> AllDoors,
             List<Room> AllRooms, Player player1, Room newRoom1, List<Monster> AllMonsters
-            , Monster minotaur) // remember midnightClock == timePassed long, so when load ElapsedMilliseconds = time; start()
+            , Monster minotaur, List<Weapon> weapons_handled) // remember midnightClock == timePassed long, so when load ElapsedMilliseconds = time; start()
         {
             Console.WriteLine("Would you like to save your game?");
             
@@ -265,11 +274,11 @@ namespace DungeonCrawler
                 str.Close();
                 while (true)
                 {
-                    WriteSaveFile(filePath);
+                    WriteSaveFile(filePath, weapons_handled);
                     try
                     {
                         _player = new Player("", 1, 1, new List<Weapon>(), new List<Item>(), new Dictionary<string, string>());
-                        LoadGame(AllItems, AllFeatures, AllDoors, AllRooms, newRoom1, AllMonsters, minotaur, true, filePath);
+                        LoadGame(AllItems, AllFeatures, AllDoors, AllRooms, newRoom1, AllMonsters, minotaur, true, filePath, weapons_handled);
                         Console.WriteLine("\x1b[3J");
                         Console.Clear();
                         Console.WriteLine("Save complete! Would you like to exit?");
@@ -292,7 +301,7 @@ namespace DungeonCrawler
         }
         public bool LoadGame(List<Item> AllItems, List<Feature> AllFeatures, List<Door> AllDoors,
             List<Room> AllRooms, Room newRoom1, List<Monster> AllMonsters, Monster minotaur, bool test,
-            string filePath1) // bool fieryEscape = true if fireProgress > 0, remember 'out' newRoom1
+            string filePath1, List<Weapon> weapons_handled) // bool fieryEscape = true if fireProgress > 0, remember 'out' newRoom1
             //
         {
             string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -845,12 +854,14 @@ namespace DungeonCrawler
                     minAspects = minString.Split('/');
                     k = minAspects.Count();
                 }
+                Minotaur.Path.Clear();
                 while(k == 2)
                 {
                     foreach(Room r in AllRooms)
                     {
                         if(r.Name.Trim() == minAspects[0].Trim())
                         {
+                            
                             Minotaur.Path.Add(r);
                             break;
                         }
@@ -865,6 +876,25 @@ namespace DungeonCrawler
                 FireProgress = number;
                 bool.TryParse(lastAspects[1].Trim(), out myBool);
                 JustStalked = myBool;
+                sr.ReadLine();
+                lastString = sr.ReadLine();
+                lastAspects = lastString.Split('/');
+                k = lastAspects.Count();
+                
+                while(k == 1)
+                {
+                    foreach (Weapon w in weapons_handled)
+                    {
+                        if (w.Name.Trim().ToLower() == lastString.Trim().ToLower())
+                        {
+                            w.Handled = true;
+                        }
+                    }
+                    lastString = sr.ReadLine();
+                    lastAspects = lastString.Split('/');
+                    k = lastAspects.Count();
+                }
+                Weapons = weapons_handled;
                 ResetData(music, number, myBool, AllItems, AllFeatures, AllDoors, AllRooms,
                     _player, newRoom1, AllMonsters, Minotaur);
                 return true;
@@ -3615,6 +3645,10 @@ namespace DungeonCrawler
             estoc, bastardSword, sai, axe, rustySword, stiletto, flameThrower, staffMG, 
             sabre, cursedGloves, stiletto1, vanquisher, breadKnife, scimitar, bite, dagger,
              lethalspell, yourRustyChains};
+            List<Weapon> weapons_handled = new List<Weapon> 
+            { estoc, bastardSword, sai, axe, rustySword, stiletto, flameThrower, staffMG,
+            sabre, cursedGloves, stiletto1, vanquisher, breadKnife, scimitar, bite, dagger,
+             lethalspell};
             List<Feature> AllFeatures = new List<Feature> { skeleton, leftbrazier,
                 rightbrazier, anotherBrazier, rosewoodChest, bookCase, brokenLeftBrazier,
                 brokenRightBrazier, trunk, mosaic, mosaic2, pillar, plaque, gamblingTable,
@@ -3635,6 +3669,7 @@ namespace DungeonCrawler
             southernmostCorridor, magicalManufactory, broomCloset, highestParapet, dragonLair};
             List<Monster> AllMonsters = new List<Monster>{ghoul1, ghoul2, goblin, goblinCaptain,
                gnoll, mage, goldDragon, minotaur, ArchFeyQueen, CurseBreaker };
+            Weapons = weapons_handled;
             // weapons, healPotion1 & healPotion2 & engagementRing
             if (!Load)
             {
@@ -3642,7 +3677,7 @@ namespace DungeonCrawler
             }
             else
             {
-                LoadGame(AllItems, AllFeatures, AllDoors, AllRooms, newRoom1, AllMonsters, minotaur, false, "");
+                LoadGame(AllItems, AllFeatures, AllDoors, AllRooms, newRoom1, AllMonsters, minotaur, false, "", weapons_handled);
                 music = Music;
                 fireProgress = this.FireProgress;
                 justStalked = JustStalked;
@@ -3697,6 +3732,13 @@ namespace DungeonCrawler
             messHallDoor.ItemList = messHallDoorItems;
             destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
             merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+            int fig = 0;
+            while (fig < weapons_handled.Count)
+            {
+                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                fig++;
+            }
             ///From this point forward you'll be traversing rooms until you die or reach one of the endings.
             ///Most rooms are of the same format. 
             ///You will likely find:-
@@ -4006,7 +4048,18 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures, 
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;                            
                         }
                         else
@@ -4180,7 +4233,18 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;
                         }
                         else
@@ -4333,7 +4397,18 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;
                         }
                         else
@@ -4640,8 +4715,18 @@ namespace DungeonCrawler
                             antechamber.ItemList.Remove(bracers);
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
-                            
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;
                         }
                         else
@@ -4809,7 +4894,18 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;
                         }
                         else
@@ -6917,7 +7013,18 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;
                         }
                         else
@@ -7141,7 +7248,18 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;
                         }
                         Console.WriteLine("Please enter a number corresponding to your choice of action...");
@@ -7394,7 +7512,18 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;
                         }
                         Console.WriteLine("Please enter a number corresponding to your choice of action...");
@@ -7636,7 +7765,18 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;
                         }
                         Console.WriteLine("Please enter a number corresponding to your choice of action...");
@@ -7841,7 +7981,7 @@ namespace DungeonCrawler
                             ///fungshui() is present to preempt that and prevent duplicates.
                                 if (minotaur.Location == northernmostCorridor)
                                 {
-                                    northeastCorner.Description = "The corner turns sharply left.\nFrom somewhere around the other side you hear heavy footfalls as the huge beast prowls the other side...";
+                                    northeastCorner.Description = "The corner turns sharply left. From somewhere around the other side you hear heavy footfalls as the huge beast prowls the other side...";
                                 }
                                 else
                                 {
@@ -7885,7 +8025,18 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;
                         }
                         Console.WriteLine("Please enter a number corresponding to your choice of action...");
@@ -8130,7 +8281,18 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;
                         }
                         Console.WriteLine("Please enter a number corresponding to your choice of action...");
@@ -8292,7 +8454,18 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;
                         }
                         else
@@ -8435,7 +8608,18 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;
                         }
                         else
@@ -8538,7 +8722,18 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;
                         }
                         else
@@ -8819,7 +9014,7 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
                             continue;
                         }
                         else
@@ -9221,7 +9416,18 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;
                         }
                         else
@@ -9389,7 +9595,18 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;
                         }
                         else
@@ -10007,7 +10224,18 @@ namespace DungeonCrawler
                         {
                             music = this.MusicOnOff();
                             SaveGame(music, fireProgress, justStalked, AllItems, AllFeatures,
-                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur);
+                                AllDoors, AllRooms, player1, newRoom1, AllMonsters, minotaur, weapons_handled);
+                            messHallDoor.CastDoor().Portal = new List<Room> { easternmostCorridor, messHall };
+                            messHallDoor.ItemList = messHallDoorItems;
+                            destinations = new List<Room> { highestParapet, oubliette, broomCloset, secretChamber, hugeBarracks, dragonLair, bankVault, desertIsland, oceanBottom, prehistoricJungle, astralPlanes, mirrorWorld };
+                            merigoldPortal.CastDoor().Portal = new List<Room> { magicalManufactory, destinations[D12.Roll(D12) - 1] };
+                            usesDictionaryItemChar = new Dictionary<Item, List<Player>> { [healPotion] = new List<Player> { player1 }, [healPotionq] = new List<Player> { player1 }, [FelixFelicis] = new List<Player> { player1 }, [elixirFeline] = new List<Player> { player1 }, [elixirFeline1] = new List<Player> { player1 }, [soot] = new List<Player> { player1 }, [speedPotion] = new List<Player> { player1 } };
+                            fig = 0;
+                            while (fig < weapons_handled.Count)
+                            {
+                                weapons_handled[fig].Handled = Weapons[fig].Handled;
+                                fig++;
+                            }
                             continue;
                         }
                         else
