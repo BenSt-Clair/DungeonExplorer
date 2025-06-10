@@ -634,11 +634,20 @@ namespace DungeonCrawler
                 try
                 {
                     int answer1 = int.Parse(answer) - 1;
+                    try
+                    {
+                        if (choices[answer1] == "You remind him of what he said about only having until midnight to stop some profane ritual - you ask him to tell you everything he knows about it...")
+                        {
+                            _player.Fooled = false;
+                        }
+                    }
+                    catch { }
                     if (answer1 < 0 || answer1 > choices.Count - 1)
                     {
                         Console.WriteLine($"Please enter a number between 1 and {option}");
                         continue;
                     }
+                    
                     else if (answer1 == y)
                     {
                         Console.WriteLine(choice_answer[choices[y]]);

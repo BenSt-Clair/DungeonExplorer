@@ -340,9 +340,12 @@ namespace DungeonCrawler
             Console.WriteLine($"Rummaging about the {Name}, you find the following;");
             int r = 1;
             string message = $"{Description}\n";
-            if (Name.Contains("bookcase") && ItemList.Count != 0 && room.Name == "dank cell")
+            if (ItemList != null)
             {
-                message += "Your keen eye notices a lone page just underneath the collapsed shelf, snagged at the back.\n";
+                if (Name.Contains("bookcase") && ItemList.Count != 0 && room.Name == "dank cell")
+                {
+                    message += "Your keen eye notices a lone page just underneath the collapsed shelf, snagged at the back.\n";
+                }
             }
             if (Name == "rosewood chest" && Attribute == false)
             {
