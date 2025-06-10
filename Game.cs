@@ -2844,14 +2844,17 @@ namespace DungeonCrawler
                 usesDictionaryItemItem.Add(otherHalfOfCrackedBowl, new List<Item> { halfOfCrackedBowl });
                 
             }
-            if (player1.Traits.ContainsKey("diligent")|| player1.Traits.ContainsKey("sadist")||player1.Traits.ContainsKey("medicine man")|| player1.Skill > 7)
+            if (!Load)
             {
-                
-                if (player1.Traits.ContainsKey("sadist")) { mercInsignia.Description += "  You instantly recognise the emblem as that of a cut-throat gang you've long admired from afar. "; }
-                else if (player1.Traits.ContainsKey("medicine man")) { mercInsignia.Description += "  You recall the emblem from the descriptions and stories their victims exchanged under the bloodied canvases of triage tents, many of whom you'd done your best to heal after many a sordid battle."; }
-                else if (player1.Traits.ContainsKey("diligent")) { mercInsignia.Description += "  Your diligent studies pay off as you recognise the emblem. "; }
-                else { mercInsignia.Description += "  You recognise the emblem from your martial studies."; }
-                mercInsignia.Description += "  It's the mark of the Vespasian Mercenaries, a group of infamous swords-for-hire for whom no work, no matter how bloody or deplorable, is off limits if the price is right. You reason that wearing this could prove useful if you wanted to pass yourself as a fellow merc...  So long, of course, that the other guards don't recognise your face, of course.";
+                if (player1.Traits.ContainsKey("diligent") || player1.Traits.ContainsKey("sadist") || player1.Traits.ContainsKey("medicine man") || player1.Skill > 7)
+                {
+
+                    if (player1.Traits.ContainsKey("sadist")) { mercInsignia.Description += "  You instantly recognise the emblem as that of a cut-throat gang you've long admired from afar. "; }
+                    else if (player1.Traits.ContainsKey("medicine man")) { mercInsignia.Description += "  You recall the emblem from the descriptions and stories their victims exchanged under the bloodied canvases of triage tents, many of whom you'd done your best to heal after many a sordid battle."; }
+                    else if (player1.Traits.ContainsKey("diligent")) { mercInsignia.Description += "  Your diligent studies pay off as you recognise the emblem. "; }
+                    else { mercInsignia.Description += "  You recognise the emblem from your martial studies."; }
+                    mercInsignia.Description += "  It's the mark of the Vespasian Mercenaries, a group of infamous swords-for-hire for whom no work, no matter how bloody or deplorable, is off limits if the price is right. You reason that wearing this could prove useful if you wanted to pass yourself as a fellow merc...  So long, of course, that the other guards don't recognise your face, of course.";
+                }
             }
             /*
             List<string> parlances = new List<string> { "This is the first parlance", "second parlance string"};
@@ -3709,15 +3712,7 @@ namespace DungeonCrawler
                     usesDictionaryItemItem.Add(otherHalfOfCrackedBowl, new List<Item> { halfOfCrackedBowl });
 
                 }
-                if (player1.Traits.ContainsKey("diligent") || player1.Traits.ContainsKey("sadist") || player1.Traits.ContainsKey("medicine man") || player1.Skill > 7)
-                {
-
-                    if (player1.Traits.ContainsKey("sadist")) { mercInsignia.Description += " You instantly recognise the emblem as that of a cut-throat gang you've long admired from afar. "; }
-                    else if (player1.Traits.ContainsKey("medicine man")) { mercInsignia.Description += " You recall the emblem from the descriptions and stories their victims exchanged under the bloodied canvases of triage tents, many of whom you'd done your best to heal after many a sordid battle."; }
-                    else if (player1.Traits.ContainsKey("diligent")) { mercInsignia.Description += " Your diligent studies pay off as you recognise the emblem. "; }
-                    else { mercInsignia.Description += " You recognise the emblem from your martial studies."; }
-                    mercInsignia.Description += " It's the mark of the Vespasian Mercenaries, a group of infamous swords-for-hire for whom no work, no matter how bloody or deplorable, is off limits if the price is right. You reason that wearing this could prove useful if you wanted to pass yourself as a fellow merc...\nSo long, of course, that the other guards don't recognise your face, of course.";
-                }
+                
                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                 trialBattle = new Combat(goblin, player1);
                 toughestBattle = new Combat(minotaur, player1);
