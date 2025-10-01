@@ -971,7 +971,7 @@ namespace DungeonCrawler
                             }
                             else if (reply == "y" || reply == "yes")
                             {
-                                if (room.Name == "armoury" && room.FirstVisit)
+                                if (room.Name == "armoury" && !player.Encounter && secretChamber.FeatureList[8].Name != "ajar mosaic door")
                                 {
                                     if (!fieryEscape)
                                     {
@@ -987,7 +987,7 @@ namespace DungeonCrawler
 
                                         + " you sense with an icy dread that battling it would be the very last thing you do.");
                                         Console.ReadKey(true);
-                                        room.FirstVisit = false;
+                                        player.Encounter = true;
                                     }
                                     /*else
                                     {
@@ -7931,7 +7931,7 @@ namespace DungeonCrawler
                         }
                         else if (reply == "y" || reply == "yes")
                         {
-                            if(room.Name == "armoury" && room.FirstVisit && secretChamber.FeatureList[8].Name != "ajar mosaic door")
+                            if(room.Name == "armoury" && !player.Encounter && secretChamber.FeatureList[8].Name != "ajar mosaic door")
                             {
                                 if (!fieryEscape)
                                 {
@@ -7947,7 +7947,7 @@ namespace DungeonCrawler
 
                                     + " you sense with an icy dread that battling it would be the very last thing you do.");
                                     Console.ReadKey(true);
-                                    room.FirstVisit = false;
+                                    player.Encounter = true;
                                 }
                                 /*else
                                 {

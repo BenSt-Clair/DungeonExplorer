@@ -87,7 +87,8 @@ namespace DungeonCrawler
         public int MGItemsDonated { get; set; }
         public bool Fooled { get; set; }
         public int UncoverSecretOfMyrovia { get; set; }
-        public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits, bool masked = false, bool fieryEscape = false, bool speedy = false, Stopwatch midnightClock = null, int MGItemsDonated = 0)
+        public bool Encounter {  get; set; }
+        public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits, bool masked = false, bool fieryEscape = false, bool speedy = false, Stopwatch midnightClock = null, int MGItemsDonated = 0, bool encounter = false)
         {
             Name = name;
             Skill = skill;
@@ -104,6 +105,7 @@ namespace DungeonCrawler
             this.MGItemsDonated = MGItemsDonated;
             Fooled = true;
             UncoverSecretOfMyrovia = 0;
+            Encounter = encounter;
         }
         
         public string DescribeSkill()
