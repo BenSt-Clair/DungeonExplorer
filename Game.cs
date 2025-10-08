@@ -10322,22 +10322,24 @@ namespace DungeonCrawler
                     {
                         outputEpilogue.Init(audioEpilogue);
                         outputEpilogue.Play();
-                        Console.WriteLine("The curse shatters and parts, like the overcast skies that'd for so long besieged the beleaguered mountain haven. The sun breaks over the horizon, casting its many steeples in golden light. Peace settles as bitter-sweet as snow upon the town, its residents gingerly stepping outside their barricaded homes and into a new dawn. The radiant glow beams into the tavern and catches the last spectre remaining. You turn and lock eyes with the former mayor's youngest daughter...");
+                        Console.WriteLine("The curse shatters and parts, like the overcast skies that'd for so long besieged the beleaguered mountain haven. The sun breaks over the horizon, casting its many steeples in golden light. Peace settles as bitter-sweet as snow upon the town, its residents gingerly stepping outside their barricaded homes to marvel at a new dawn. The radiant glow beams into the tavern and catches the last spectre remaining. You turn and lock eyes with the former mayor's youngest daughter...");
                         Console.ReadKey(true);
-            
-                        Console.WriteLine("You clasp eyes upon a nubile young woman, momentarily spellbound by her apparition. She turns to you, and haunts you with a rueful smile, before she too fades into some more tranquil plane...");
-                        
+                        Console.WriteLine("You clasp eyes upon a nubile young woman, momentarily spellbound by her apparition. ");
+                        Console.ReadKey(true);
+                        Console.WriteLine("She turns to you, captivating you as your eyes lock. She haunts you with a rueful smile. Then she too fades into some more tranquil plane...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("To some world beyond our own..?");
                         Console.ReadKey(true);
                         Console.WriteLine("To the same place reflections go when we aren't looking...?");
                         Console.ReadKey(true);
-                        Console.WriteLine("\tTo where exists the sound of a cat's paws...?");
+                        Console.WriteLine("\tTo where the light of our rueful memories still linger...?");
                         Console.ReadKey(true);
-                        Console.WriteLine("\t\tOr perhaps to where the roots of mountains reside?");
+                        Console.WriteLine("\t\tOr perhaps to where such feelings as words can't capture reside?");
                         Console.ReadKey(true);
-                        Console.WriteLine("You may not know where exactly that is, but you do know with certainty that you have " +
-                            "delivered Myrovia from its fate and finally brought it hope for a better tomorrow...");
+                        Console.WriteLine("You may not know where that place is, but you do know with certainty that you have " +
+                            "delivered Myrovia from its fate and finally brought it peace...");
                         Console.ReadKey(true);
-                        Console.WriteLine("...For YOU are their curse breaker.");
+                        Console.WriteLine("...For YOU are their CurseBreaker.");
                         Console.ReadKey(true);
                         Console.WriteLine("\t\t\tEND");
                         Console.ReadKey(true);
@@ -10345,15 +10347,19 @@ namespace DungeonCrawler
                     }
                 }
             }
+            Console.WriteLine("The curse shatters and parts, like the overcast skies that'd for so long besieged the beleaguered mountain haven. The sun breaks over the horizon, casting its many steeples in golden light. Peace settles as bitter-sweet as snow upon the town, its residents gingerly stepping outside their barricaded homes and into a new dawn. The radiant glow beams into the tavern and catches the last spectre remaining. You turn and lock eyes with the former mayor's youngest daughter...");
+            Console.ReadKey(true);
             Console.WriteLine("You clasp eyes upon a nubile young woman, momentarily spellbound by her apparition. She turns to you, and haunts you with a rueful smile, before she too fades into some more tranquil plane...");
+            Console.ReadKey(true);
+            Console.WriteLine("To some world beyond our own..?");
             Console.ReadKey(true);
             Console.WriteLine("To the same place reflections go when we aren't looking...?");
             Console.ReadKey(true);
-            Console.WriteLine("\tTo where exists the sound of a cat's paws...?");
+            Console.WriteLine("\tTo where the light of our rueful memories still linger...?");
             Console.ReadKey(true);
-            Console.WriteLine("\t\tOr perhaps to where the roots of mountains reside?");
+            Console.WriteLine("\t\tOr perhaps to where such feelings as words can't capture reside?");
             Console.ReadKey(true);
-            Console.WriteLine("You may not know where that is, but you do know with certainty that you have " +
+            Console.WriteLine("You may not know where that place is, but you do know with certainty that you have " +
                 "delivered Myrovia from its fate and finally brought it peace...");
             Console.ReadKey(true);
             Console.WriteLine("...For YOU are their CurseBreaker.");

@@ -409,7 +409,7 @@ namespace DungeonCrawler
                         "\n[The passage then trails into esoteric formulas and a pseudo-mathematical lexicon that eludes your limited knowledge of the arcane]",
                         
                         "The final page you turn to deliberates upon the forces that bring about such curses and from where they are ultimately sourced;" +
-                        "\n\n\t'From the hearts of the cruel?\n\t\tFrom planes beyond our own?\n\t\t\tFrom some shadow of our own world?" +
+                        "\n\n\t'From where fears without form reside?\n\t\tFrom planes beyond our own?\n\t\t\tFrom some shadow of our own world?" +
                         "\nFrom the same place our reflections go when we aren't looking? Or mayhaps the place where there resides the sound of a cat's paws, a fish's breath, or the roots of a mountain?" +
                         "\nAlas, ultimately I know not, nor can I guess. There seems an otherworldly aspect to curses, but they escape the ken of magical artificers and mages alike. They elude control. They arise from some chaos and from somewhere no sane mind could venture." +
                         "\nI am sorry to say, that after all my years of study, I must finally include myself in the storied list of magicians who have failed to understand our chosen topic's most elusive and fundamental question..." +
