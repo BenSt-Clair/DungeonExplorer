@@ -1783,7 +1783,7 @@ namespace DungeonCrawler
             Door hatch = new Door("trapdoor", "It is constructed out of dwarven steel. Your hands trace the craftsmanship. However, you notice no bolts or locks keeping it shut. It's free to open - should you choose to go down it...", false, "unlocked", null, null, "You heft the heavy trapdoor open, it's clanging on the granite floor reverberating eerily within the silence. Before you lies a gaping hole of unfathomable depths; only darkness seems to lurk beneath your feet, along with an unsettling stillness that almost invites you to sink within its depths. The noise continues to reverberate as you brace against a chill whisked up from somewhere behind the darkness. There's a ladder. With trepidation gnawing at your gut, you follow it down...");
             Feature aBrazier = new Feature("brazier", "If this brazier does indeed burn it is not with any normal fire. Upon closer inspection, its dim flickering glow seemingly cannot be expunged. It barely keeps the looming shadows at bay.", true, "lit", null);
             List<Item>dungeonItems = new List<Item> { femur, jawBone, legBone, rib};
-            List<Feature>dungeonFeatures = new List<Feature> {stairwayToLower, aBrazier, hatch, aBrazier};
+            List<Feature>dungeonFeatures = new List<Feature> {stairwayToLower, aBrazier, hatch, aBrazier, aBrazier};
             Item pocketWatch = new Item("gold pocket watch", "Replete with filigree letters M and G artfully crafted inside the gleaming lid, someone somewhere must've been sorry to lose it...");
             ///
             ///SouthCorridor Items and Features
@@ -10207,7 +10207,7 @@ namespace DungeonCrawler
                         else
                         {
                             List<bool> success = new List<bool>();
-                            test3.RunForCombat();
+                            //test3.RunForCombat();
                             success = player1.UseItemOutsideCombat(music, dungeonChamber, musicBox, binkySkull, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, masked, goblin, fieryEscape, trialBattle);
                         }
                     }
