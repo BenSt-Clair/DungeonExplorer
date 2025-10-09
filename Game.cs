@@ -8871,6 +8871,8 @@ namespace DungeonCrawler
                                     "some creatures corpse, offal and intestines lathered over you, you finally unleash a roar of triumph.");
                                 Console.ReadKey(true);
                                 Console.WriteLine("\n  You shall be the terror that the CurseBreaker could only dream of...");
+                                Console.ReadKey(true);
+                                return;
                             }
                         }
                         if (player1.UncoverSecretOfMyrovia < 3)
