@@ -949,6 +949,13 @@ namespace DungeonCrawler
                 room.Name = "cell";
                 room.Name = $"{fireString[firenum - 1]}{room.Name}";
             }
+            if (room.ItemList.Count < 3)
+            {
+                room.ItemList.Add(specialItems[0]);
+                room.ItemList.Add(specialItems[1]);
+                room.ItemList.Add(specialItems[2]);
+            }
+            
             List<string> jinxedMisses = new List<string>
             {
                 $"The {Monster.Name} has you now! Finally, relishing it's soon-to-be freedom from your cursed, jinxy hide, it raises its {Monster.Items[0].Name} to strike... and gets it stuck in the {room.FeatureList[D4.Roll(D4) - 1].Name}. You scurry away as the {Monster.Name} curses, trying to free it. \nThe {Monster.Name} loses 1 stamina.",
