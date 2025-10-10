@@ -268,7 +268,15 @@ namespace DungeonCrawler
 
                 if (File.Exists(filePath))
                 {
-                    File.Delete(filePath);
+                    try
+                    {
+                        File.Delete(filePath);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Cannot overwrite File while playing that same save file! \n \n Please try saving again under a new file name... \n");
+                        return;
+                    }
                 }
                 FileStream str = File.Create(filePath);
                 str.Close();
