@@ -613,7 +613,7 @@ namespace DungeonCrawler
                         long timeout = sw.ElapsedMilliseconds;
                         try
                         {
-                            if (!justStalked && timeout > minotaurAlertedBy && adjacentRoom.Contains(minotaur.Location) && minotaur.Path.Count == 1 && minotaur.Location.Name != "astral planes" && this.Name != "magical manufactory")
+                            if (!justStalked && timeout > minotaurAlertedBy && adjacentRoom.Contains(minotaur.Location) && minotaur.Stamina > 0 && minotaur.Path.Count == 1 && minotaur.Location.Name != "astral planes" && this.Name != "magical manufactory")
                             {
                                 Console.WriteLine("You suddenly halt what you are doing...");
                                 Console.ReadKey(true);

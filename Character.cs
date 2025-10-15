@@ -6,6 +6,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using NAudio.Wave;
+using System.Drawing;
 
 namespace DungeonCrawler
 {
@@ -289,6 +290,7 @@ namespace DungeonCrawler
                 Console.WriteLine("Rummaging through your effects you find the following;");
                 int r = 1;
                 string message = "";
+                string message2 = "";
                 foreach (Weapon w in WeaponInventory)
                 {
                     message += $"[{r}] {w.Name}\n";
@@ -311,7 +313,7 @@ namespace DungeonCrawler
                 {
                     message += $"[{r}] Try something else...";
                 }
-
+                message2 = message;
 
                 bool continueLoop = true;
                 int a = 0;
@@ -347,7 +349,7 @@ namespace DungeonCrawler
                             try
                             {
                                 bool success = false;
-                                string objName = message.Substring(message.IndexOf(reply1.ToString()) + 3, message.IndexOf((reply1 + 1).ToString()) - 2 - (message.IndexOf(reply1.ToString()) + 3)).Trim();
+                                string objName = message2.Substring(message2.IndexOf(reply1.ToString()) + 3, message2.IndexOf((reply1 + 1).ToString()) - 2 - (message2.IndexOf(reply1.ToString()) + 3)).Trim();
                                 Console.WriteLine(objName);
                                 foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
                                 foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
@@ -357,7 +359,7 @@ namespace DungeonCrawler
                             catch
                             {
                                 bool success = false;
-                                string objName = message.Substring(message.IndexOf((r - 1).ToString()) + 3, message.Length - 1 - (message.IndexOf((r - 1).ToString()) + 3)).Trim();
+                                string objName = message2.Substring(message2.IndexOf((r - 1).ToString()) + 3, message2.Length - 1 - (message2.IndexOf((r - 1).ToString()) + 3)).Trim();
                                 Console.WriteLine(objName);
                                 foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
                                 foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
@@ -392,39 +394,49 @@ namespace DungeonCrawler
                         {
                             r = 1;
                             message = "";
+                            message2 = "";
                             foreach (Weapon w in WeaponInventory)
                             {
                                 message += $"[{r}] {w.Name}\n";
+                                message2 += $"[{r}] {w.Name}\n";
                                 r++;
                             }
                             foreach (Item item in Inventory)
                             {
                                 message += $"[{r}] {item.Name}\n";
+                                message2 += $"[{r}] {item.Name}\n";
                                 r++;
                             }
                             message += $"[{r}] Try something else...";
+                            message2 += $"[{r}] Try something else...";
                             continue;
                         }
                         else if (reply == "w")
                         {
                             r = 1;
                             message = "";
+                            message2 = "";
                             foreach (Weapon w in WeaponInventory)
                             {
                                 message += $"[{r}] {w.Name}\n";
+                                message2 += $"[{r}] {w.Name}\n";
                                 r++;
                             }
                             message += $"[{r}] Try something else...";
-                            if (r == 1)
+                            message2 += $"[{r}] Try something else...";
+                        if (r == 1)
                             {
                                 message = "";
+                                message2 = "";
                                 Console.WriteLine("You possess no weapons! You feel as vulnerable as a wizard without his staff, a rogue without his tools or... well, an adventurer without a sword");
                                 foreach (Item item in Inventory)
                                 {
                                     message += $"[{r}] {item.Name}\n";
+                                    message2 += $"[{r}] {item.Name}\n";
                                     r++;
                                 }
                                 message += $"[{r}] Try something else...";
+                                message2 += $"[{r}] Try something else...";
                                 Console.ReadKey(true);
 
                             }
@@ -434,22 +446,28 @@ namespace DungeonCrawler
                         {
                             r = 1;
                             message = "";
+                            message2 = "";
                             foreach (Item item in Inventory)
                             {
                                 message += $"[{r}] {item.Name}\n";
+                                message2 += $"[{r}] {item.Name}\n";
                                 r++;
                             }
                             message += $"[{r}] Try something else...";
-                            if (r == 1)
+                            message2 += $"[{r}] Try something else...";
+                        if (r == 1)
                             {
                                 message = "";
+                                message2 = "";
                                 Console.WriteLine("You possess no items!");
                                 foreach (Weapon w in WeaponInventory)
                                 {
                                     message += $"[{r}] {w.Name}\n";
+                                    message2 += $"[{r}] {w.Name}\n";
                                     r++;
                                 }
                                 message += $"[{r}] Try something else...";
+                                message2 += $"[{r}] Try something else...";
                                 Console.ReadKey(true);
 
                             }
@@ -475,13 +493,16 @@ namespace DungeonCrawler
                                 {
                                     foreach (Item i in usesDictionaryItemItem[item])
                                     {
+
                                         if (room.ItemList.Contains(i))
                                         {
                                             count++;
+                                        count++;
                                         }
                                         else if (Inventory.Contains(i))
                                         {
                                             count++;
+                                        count++;
                                         }
 
                                     }
@@ -495,6 +516,7 @@ namespace DungeonCrawler
                                         if (room.FeatureList.Contains(f))
                                         {
                                             count++;
+                                        count++;
                                         }
 
                                     }
@@ -502,22 +524,72 @@ namespace DungeonCrawler
                                 catch { }
                                 try
                                 {
-                                    count += usesDictionaryItemChar[item].Count;
+                                    count += 2*usesDictionaryItemChar[item].Count;
                                 }
                                 catch { }
+                                //counting items that can have other items used upon them...
+                                foreach (Item i in usefulList)
+                                {
+                                    try
+                                    {
+                                        if (usesDictionaryItemItem[i].Contains(item))
+                                        {
+                                            count++;
+                                        }
+                                    }
+                                    catch { }
+                                }
                                 usefulness[item] = count;
                             }
+                        
                             IEnumerable<Item> query = from item in usefulList
                                                       orderby usefulness[item] descending
                                                       select item;
-                            message = "";
+                            
                             r = 1;
+                            int high = usefulness[query.First()];
+                            Dictionary<string, string> colorAnsiCodes = new Dictionary<string, string>
+                            {
+                                { "cGreat", "\u001b[38;2;34;139;34m" },  // SeaGreen
+                                { "cGood", "\u001b[38;2;154;205;50m" },   // YellowGreen
+                                { "cOkay", "\u001b[38;2;240;230;140m" },  // Khaki
+                                { "cBad", "\u001b[38;2;233;150;122m" },   // DarkSalmon
+                                { "cTerrible", "\u001b[38;2;178;34;34m" } // FireBrick
+                            };
+                            const string ansiReset = "\u001b[0m";
+                            var stringBuilder = new StringBuilder();
+                            var reference = new StringBuilder();
                             foreach (Item item in query)
                             {
-                                message += $"[{r}] {item.Name}\n";
+
+                                string ansiColorCode;
+                                if (usefulness[item] == high)
+                                {
+                                    ansiColorCode = colorAnsiCodes["cGreat"];
+                                }
+                                else if (usefulness[item] > 2 * high / 3)
+                                {
+                                    ansiColorCode = colorAnsiCodes["cGood"];
+                                }
+                                else if (usefulness[item] > high / 3)
+                                {
+                                    ansiColorCode = colorAnsiCodes["cOkay"];
+                                }
+                                else if (usefulness[item] != 0)
+                                {
+                                    ansiColorCode = colorAnsiCodes["cBad"];
+                                }
+                                else
+                                {
+                                    ansiColorCode = colorAnsiCodes["cTerrible"];
+                                }
+                                stringBuilder.Append($"[{r}]{ansiColorCode} {item.Name}\n{ansiReset}");
+                                reference.Append($"[{r}] {item.Name}\n");
                                 r++;
                             }
-                            message += $"[{r}] Try something else...";
+                            stringBuilder.Append($"[{r}] Try something else...");
+                            message = stringBuilder.ToString();
+                            message2 = reference.ToString();
                             continue;
                         }
                         else if (reply == "d")
@@ -551,6 +623,7 @@ namespace DungeonCrawler
                                                         orderby averages[weapon] descending
                                                         select weapon;
                             message = "";
+                        
                             r = 1;
                             foreach (Weapon weapon in query)
                             {
@@ -558,6 +631,7 @@ namespace DungeonCrawler
                                 r++;
                             }
                             message += $"[{r}] Try something else...";
+                            message2 = message;
                             continue;
                         }
                         else if (reply == "x")
@@ -598,6 +672,7 @@ namespace DungeonCrawler
                                 r++;
                             }
                             message += $"[{r}] Try something else...";
+                            message2 = message;
                             continue;
                         }
                         else if (reply == "h")
@@ -635,6 +710,7 @@ namespace DungeonCrawler
                                 r++;
                             }
                             message += $"[{r}] Try something else...";
+                            message2 = message;
                             continue;
                         }
                         else
@@ -666,6 +742,7 @@ namespace DungeonCrawler
                     Console.WriteLine("Rummaging through your effects you find the following;");
                     int r = 1;
                     string message = "";
+                    string message2 = "";
                     foreach (Weapon w in WeaponInventory)
                     {
                         message += $"[{r}] {w.Name}\n";
@@ -690,7 +767,7 @@ namespace DungeonCrawler
                         message += $"[{r}] Try something else...";
                     }
 
-
+                    message2 = message;
                     bool continueLoop = true;
                     int a = 0;
 
@@ -726,7 +803,7 @@ namespace DungeonCrawler
                                 try
                                 {
                                     bool success = false;
-                                    string objName = message.Substring(message.IndexOf(reply1.ToString()) + 3, message.IndexOf((reply1 + 1).ToString()) - 2 - (message.IndexOf(reply1.ToString()) + 3)).Trim();
+                                    string objName = message2.Substring(message2.IndexOf(reply1.ToString()) + 3, message2.IndexOf((reply1 + 1).ToString()) - 2 - (message2.IndexOf(reply1.ToString()) + 3)).Trim();
                                     Console.WriteLine(objName);
                                     foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
                                     foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
@@ -736,7 +813,7 @@ namespace DungeonCrawler
                                 catch
                                 {
                                     bool success = false;
-                                    string objName = message.Substring(message.IndexOf((r - 1).ToString()) + 3, message.Length - 1 - (message.IndexOf((r - 1).ToString()) + 3)).Trim();
+                                    string objName = message2.Substring(message2.IndexOf((r - 1).ToString()) + 3, message2.Length - 1 - (message2.IndexOf((r - 1).ToString()) + 3)).Trim();
                                     Console.WriteLine(objName);
                                     foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
                                     foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
@@ -782,6 +859,7 @@ namespace DungeonCrawler
                                     r++;
                                 }
                                 message += $"[{r}] Try something else...";
+                                message2 = message;
                                 continue;
                             }
                             else if (reply == "w")
@@ -804,6 +882,7 @@ namespace DungeonCrawler
                                         r++;
                                     }
                                     message += $"[{r}] Try something else...";
+                                    message2 = message;
                                     Console.ReadKey(true);
 
                                 }
@@ -829,6 +908,7 @@ namespace DungeonCrawler
                                         r++;
                                     }
                                     message += $"[{r}] Try something else...";
+                                    message2 = message;
                                     Console.ReadKey(true);
 
                                 }
@@ -857,10 +937,12 @@ namespace DungeonCrawler
                                             if (room.ItemList.Contains(i))
                                             {
                                                 count++;
+                                        count++;
                                             }
                                             else if (Inventory.Contains(i))
                                             {
                                                 count++;
+                                        count++;
                                             }
 
                                         }
@@ -874,6 +956,7 @@ namespace DungeonCrawler
                                             if (room.FeatureList.Contains(f))
                                             {
                                                 count++;
+                                        count++;
                                             }
 
                                         }
@@ -881,23 +964,76 @@ namespace DungeonCrawler
                                     catch { }
                                     try
                                     {
-                                        count += usesDictionaryItemChar[item].Count;
+                                        count += 2*usesDictionaryItemChar[item].Count;
                                     }
                                     catch { }
-                                    usefulness[item] = count;
+                                    
+                                    foreach (Item i in usefulList)
+                                    {
+                                        try
+                                        {
+                                            if (usesDictionaryItemItem[i].Contains(item))
+                                            {
+                                                count++;
+                                            }
+                                        }
+                                        catch { }
+                                    }
+                                    
+                                    
+                            usefulness[item] = count;
                                 }
                                 IEnumerable<Item> query = from item in usefulList
                                                           orderby usefulness[item] descending
                                                           select item;
-                                message = "";
-                                r = 1;
-                                foreach (Item item in query)
-                                {
-                                    message += $"[{r}] {item.Name}\n";
-                                    r++;
-                                }
-                                message += $"[{r}] Try something else...";
-                                continue;
+                        r = 1;
+                        int high = usefulness[query.First()];
+                        Dictionary<string, string> colorAnsiCodes = new Dictionary<string, string>
+                            {
+                                { "cGreat", "\u001b[38;2;34;139;34m" },  // SeaGreen
+                                { "cGood", "\u001b[38;2;154;205;50m" },   // YellowGreen
+                                { "cOkay", "\u001b[38;2;240;230;140m" },  // Khaki
+                                { "cBad", "\u001b[38;2;233;150;122m" },   // DarkSalmon
+                                { "cTerrible", "\u001b[38;2;178;34;34m" } // FireBrick
+                            };
+                        const string ansiReset = "\u001b[0m";
+                        var stringBuilder = new StringBuilder();
+                        var reference = new StringBuilder();
+                        foreach (Item item in query)
+                        {
+
+                            string ansiColorCode;
+                            if (usefulness[item] == high)
+                            {
+                                ansiColorCode = colorAnsiCodes["cGreat"];
+                            }
+                            else if (usefulness[item] > 2 * high / 3)
+                            {
+                                ansiColorCode = colorAnsiCodes["cGood"];
+                            }
+                            else if (usefulness[item] > high / 3)
+                            {
+                                ansiColorCode = colorAnsiCodes["cOkay"];
+                            }
+                            else if (usefulness[item] != 0)
+                            {
+                                ansiColorCode = colorAnsiCodes["cBad"];
+                            }
+                            else
+                            {
+                                ansiColorCode = colorAnsiCodes["cTerrible"];
+                            }
+                            stringBuilder.Append($"[{r}]{ansiColorCode} {item.Name}\n{ansiReset}");
+                            reference.Append($"[{r}] {item.Name}\n");
+                            r++;
+                        }
+                        stringBuilder.Append($"[{r}] Try something else...");
+                        reference.Append($"[{r}] Try something else...");
+                        message = stringBuilder.ToString();
+                        message2 = reference.ToString();
+                        continue;
+                        
+                        
                             }
 
                             else
