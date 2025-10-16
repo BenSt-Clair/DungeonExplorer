@@ -1316,6 +1316,7 @@ namespace DungeonCrawler
                     else if (item.Name == "steel key" && feature.Name == "rosewood chest")
                     {
                         Console.WriteLine("The key slides easily into the lock. With one sharp twist the clasp comes undone");
+                        feature.Explored = false;
                         Console.WriteLine("Now that the rosewood chest is unlocked, would you like to search it?");
                         while (true)
                         {
@@ -1402,6 +1403,7 @@ namespace DungeonCrawler
                         List<Weapon> weaponSplice = weaponList.Cast<Weapon>().ToList();
 
                         weaponInventory.Remove(weaponSplice[0]);
+                        feature.Explored = false;
                         Console.WriteLine("Would you now like to search the skeleton?");
                         while (true)
                         {
@@ -1458,7 +1460,7 @@ namespace DungeonCrawler
                         { 
                             $"The enchanted lock flings your {item.Name} back in your face!",
                             $"You get zapped by a fierce blue bolt of magic!",
-                            $"While you're distracted the enchanted display case wallops you with one it's door before quickly snapping shut again!",
+                            $"While you're distracted the enchanted display case wallops you with one of its doors before quickly snapping shut again!",
                             $"The display case burns your fingers with a cantrip of frost!",
                             $"The lock suddenly comes to life and nips at your fingers!"
                         };

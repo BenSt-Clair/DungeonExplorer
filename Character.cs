@@ -563,7 +563,11 @@ namespace DungeonCrawler
                             {
 
                                 string ansiColorCode;
-                                if (usefulness[item] == high)
+                                if (usefulness[item] == 0)
+                                {
+                                    ansiColorCode = colorAnsiCodes["cTerrible"];
+                                }
+                                else if (usefulness[item] == high)
                                 {
                                     ansiColorCode = colorAnsiCodes["cGreat"];
                                 }
@@ -575,13 +579,10 @@ namespace DungeonCrawler
                                 {
                                     ansiColorCode = colorAnsiCodes["cOkay"];
                                 }
-                                else if (usefulness[item] != 0)
-                                {
-                                    ansiColorCode = colorAnsiCodes["cBad"];
-                                }
+                                
                                 else
                                 {
-                                    ansiColorCode = colorAnsiCodes["cTerrible"];
+                                    ansiColorCode = colorAnsiCodes["cBad"];
                                 }
                                 stringBuilder.Append($"[{r}]{ansiColorCode} {item.Name}\n{ansiReset}");
                                 reference.Append($"[{r}] {item.Name}\n");

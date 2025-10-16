@@ -570,10 +570,20 @@ namespace DungeonCrawler
                     int k = 1;
                     Dice D9 = new Dice(9);
                     List<string> searchWords = new List<string> { "Search", "Scour", "Investigate", "Inspect", "Scrutinise", "Examine", "Probe", "Check", "Ransack" };
-                    string options = "";
-                    ///Creating a duplicate list for room items so that there is no
-                    ///out of bounds exception when items are removed
+                    StringBuilder options = new StringBuilder();
+                    
+                    const string BlanchedAlmond = "\u001b[38;2;255;235;205m";
+                    const string BurlyWood = "\u001b[38;2;222;184;135m";
+                    const string Reset = "\u001b[0m";
+            //string options = ""; 
+            // BlanchedAlmond, BurlyWood = FFFFEBCD, FFDEB887
+            // Convert ^ into a string builder and duplicate options. insert coloured text 
+            //and also be sure to add a new attribute to the feature class; 'Explored'
+
+            ///Creating a duplicate list for room items so that there is no
+            ///out of bounds exception when items are removed
                     List<Item> itemList = new List<Item>();
+                    
                     if (ItemList != null)
                     {
                         foreach (Item x in ItemList)
@@ -581,11 +591,27 @@ namespace DungeonCrawler
                             itemList.Add(x);
                         }
                     }
-                    foreach (Feature f in FeatureList) { int i = D9.Roll(D9) - 1; options += $"[{k}] {searchWords[i]} the {f.Name}.\n"; k++; }
+                    foreach (Feature f in FeatureList) 
+                    { 
+                        int i = D9.Roll(D9) - 1;
+                        string colour;
+                        if (f.Explored)
+                        {
+                            colour = BurlyWood;
+                        }
+                        else
+                        {
+                            colour = BlanchedAlmond;
+                        }
+                        options.Append($"[{k}] {searchWords[i]} the {colour}{f.Name}{Reset}.\n");
+                        
+                        k++; 
+                    }
 
 
-                    foreach (Item g in itemList) { options += $"[{k}] Pick up the {g.Name}\n"; k++; }
-                    options += $"[{k}] Try something else";
+                    foreach (Item g in itemList) { options.Append($"[{k}] Pick up the {g.Name}\n");  k++; }
+                    options.Append( $"[{k}] Try something else");
+                    
                     Console.WriteLine(options);
                     while (true)
                     {
@@ -671,6 +697,28 @@ namespace DungeonCrawler
                                         }
                                     }
                                     Console.ReadKey(true);
+                                    options = new StringBuilder();
+                                    k = 1;
+                                    foreach (Feature f in FeatureList)
+                                    {
+                                        int i = D9.Roll(D9) - 1;
+                                        string colour;
+                                        if (f.Explored)
+                                        {
+                                            colour = BurlyWood;
+                                        }
+                                        else
+                                        {
+                                            colour = BlanchedAlmond;
+                                        }
+                                        options.Append($"[{k}] {searchWords[i]} the {colour}{f.Name}{Reset}.\n");
+
+                                        k++;
+                                    }
+
+
+                                    foreach (Item g in itemList) { options.Append($"[{k}] Pick up the {g.Name}\n"); k++; }
+                                    options.Append($"[{k}] Try something else");
                                     Console.WriteLine(options);
                                     continue;
                                 }
