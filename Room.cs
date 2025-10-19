@@ -571,7 +571,7 @@ namespace DungeonCrawler
                     Dice D9 = new Dice(9);
                     List<string> searchWords = new List<string> { "Search", "Scour", "Investigate", "Inspect", "Scrutinise", "Examine", "Probe", "Check", "Ransack" };
                     StringBuilder options = new StringBuilder();
-                    
+                    const string Moccasin = "\u001b[38;2;255;228;181m";
                     const string BlanchedAlmond = "\u001b[38;2;255;235;205m";
                     const string BurlyWood = "\u001b[38;2;222;184;135m";
                     const string Reset = "\u001b[0m";
@@ -606,10 +606,8 @@ namespace DungeonCrawler
                         options.Append($"[{k}] {searchWords[i]} the {colour}{f.Name}{Reset}.\n");
                         
                         k++; 
-                    }
-
-
-                    foreach (Item g in itemList) { options.Append($"[{k}] Pick up the {g.Name}\n");  k++; }
+                    }                                   
+                    foreach (Item g in itemList) { options.Append($"[{k}] Pick up the {Moccasin}{g.Name}{Reset}\n");  k++; }
                     options.Append( $"[{k}] Try something else");
                     
                     Console.WriteLine(options);
@@ -660,10 +658,11 @@ namespace DungeonCrawler
                         {
                             try
                             {
+                                string FireBrick = "\u001b[38;2;178;34;34m";
                                 int answer1 = int.Parse(answer) - 1;
                                 if (answer1 < 0 || answer1 > k - 1)
                                 {
-                                    Console.WriteLine($"Please enter a number between 1 and {k}.");
+                                    Console.WriteLine($"{FireBrick}Please enter a number between 1 and {k}.{Reset}");
                                     continue;
                                 }
                                 else if (answer1 < FeatureList.Count)//if you wish to investigate a feature
@@ -717,7 +716,7 @@ namespace DungeonCrawler
                                     }
 
 
-                                    foreach (Item g in itemList) { options.Append($"[{k}] Pick up the {g.Name}\n"); k++; }
+                                    foreach (Item g in itemList) { options.Append($"[{k}] Pick up the{Moccasin} {g.Name}{Reset}\n"); k++; }
                                     options.Append($"[{k}] Try something else");
                                     Console.WriteLine(options);
                                     continue;
@@ -731,7 +730,7 @@ namespace DungeonCrawler
                                         {
                                             if (x.Name == itemList[answer1 - FeatureList.Count].Name)
                                             {
-                                                Console.WriteLine($"You've already stashed the {x.Name} in your pack.");
+                                                Console.WriteLine($"{FireBrick}You've already stashed the {x.Name} in your pack.{Reset}");
                                                 freshLoop = true;
                                                 break;
                                             }
@@ -741,7 +740,7 @@ namespace DungeonCrawler
                                         {
                                             if (x.Name == itemList[answer1 - FeatureList.Count].Name || (x.Name == "rusty chain-flail" && itemList[answer1 - FeatureList.Count].Name == "rusty chains"))
                                             {
-                                                Console.WriteLine($"You've already taken the {x.Name}.");
+                                                Console.WriteLine($"{FireBrick}You've already taken the {x.Name}.{Reset}");
                                                 freshLoop = true;
                                                 break;
                                             }
@@ -758,7 +757,7 @@ namespace DungeonCrawler
                                         {
                                             if (x.Name == itemList[answer1 - FeatureList.Count].Name)
                                             {
-                                                Console.WriteLine($"You've already stashed the {x.Name} in your pack.");
+                                                Console.WriteLine($"{FireBrick}You've already stashed the {x.Name} in your pack.{Reset}");
                                                 freshLoop = true;
                                                 break;
                                             }
@@ -768,7 +767,7 @@ namespace DungeonCrawler
                                         {
                                             if (x.Name == itemList[answer1 - FeatureList.Count].Name)
                                             {
-                                                Console.WriteLine($"You've already taken the {x.Name}.");
+                                                Console.WriteLine($"{FireBrick}You've already taken the {x.Name}.{Reset}");
                                                 freshLoop = true;
                                                 break;
                                             }
