@@ -3700,7 +3700,35 @@ namespace DungeonCrawler
                 AllRooms = Rooms;
                 player1.Stamina = _player.Stamina;
                 player1 = _player;
-                
+                if (!usesDictionaryItemFeature.ContainsKey(magnifyingGlass))
+                {
+                    usesDictionaryItemFeature.Add(magnifyingGlass, new List<Feature> { trunkofconfiscatedstuff, leftbrazier, rightbrazier, stairwayToUpper, emptyCellDoor, otherRosewoodDoor, trunk, brokenLeftBrazier, brokenRightBrazier, mosaic, pillar, plaque, circleDoor, gamblingTable, goodWeaponRack, worseWeaponRack, normalBrazier, armouryBookcase });
+                }
+                else
+                {
+                    try
+                    {
+                        usesDictionaryItemFeature[magnifyingGlass].Add(trunkofconfiscatedstuff);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(leftbrazier);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(rightbrazier);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(stairwayToUpper);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(emptyCellDoor);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(otherRosewoodDoor);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(trunk);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(brokenLeftBrazier);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(brokenRightBrazier);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(mosaic);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(pillar);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(plaque);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(circleDoor);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(gamblingTable);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(goodWeaponRack);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(worseWeaponRack);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(normalBrazier);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(armouryBookcase);
+                    }
+                    catch { }
+                }
                 newRoom1 = Location;
                 AllMonsters = Monsters;
                 minotaur = AllMonsters[7];
@@ -3883,7 +3911,7 @@ namespace DungeonCrawler
                             usesDictionaryItemFeature[magnifyingGlass].Add(normalBrazier);
                             usesDictionaryItemFeature[magnifyingGlass].Add(armouryBookcase);
                         }
-                        catch { Console.WriteLine("\n\nERROR! DICTIONARY NOT UPDATED!!!\n\n"); }
+                        catch { }
                     }
                     if (minotaur.Stamina > 0)
                     {
