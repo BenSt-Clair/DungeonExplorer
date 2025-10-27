@@ -1285,6 +1285,164 @@ namespace DungeonCrawler
                         
 
                     }
+                    // new section for long corridor
+                    else if(item.Name == "magnifying glass")
+                    {
+                        if(feature.Name == "worn old trunk")
+                        {
+                            Console.WriteLine("You study the worn old trunk through your magnifying glass. Upon the back its been stamped with the seal of a winged serpent under which is the embossed name, faded but still legible, 'The Vespasian Mercenary Company'. " +
+                                "\nYou note that the trunk doesn't seem to match the more permanent decor of the corridor, or your former cell, but appears to be a more recent addition...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+
+                        }
+                        else if(feature.Name == "left brazier")
+                        {
+                            Console.WriteLine("You flinch as the fey light of the brazier's flickering magics intensifies under the lens of your magnifying glass. There doesn't seem to be any useful information to be gleaned, save for evidence that these braziers appear to have been tampered with not long before your arrival...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "right brazier")
+                        {
+                            Console.WriteLine("You flinch as the fey light of the brazier's flickering magics intensifies under the lens of your magnifying glass. There doesn't seem to be any useful information to be gleaned, save for evidence that these braziers appear to have been tampered with not long before your arrival...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "lit stairway")
+                        {
+                            Console.WriteLine("Yep. Those sure look like stairs...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "far door")
+                        {
+                            Console.WriteLine("The door was once of exquisite craftsmanship. You can trace the fine intricate grooves of its warm rosewood panels, before they're crudely interrupted by the bolted iron hinges - a fixture that is a recent and more disquieting addition...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "near door")
+                        {
+                            Console.WriteLine("There are signs of a struggle upon the once opulent door; evidence of fingernails clawing across the wood, cutting their own grooves into its otherwise smooth surface, sends your thoughts racing as to just what fate the last occupant faced - and what you might yet discover if you tarry too long...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "weathered old trunk")
+                        {
+                            Console.WriteLine("There is little more to discover through your magnifying glass as you use it to study the sprawl of faint scratches and marks upon the trunk's coarse leather sides. It's just a simple trunk. Perhaps its contents will prove more interesting..?");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "left broken brazier")
+                        {
+                            Console.WriteLine("Through the magnifying glass you espy further evidence of the magical brazier's deconstruction - the curlicue receptacle that had once held that chilly blue fire is now wrought and tortured - as though cooled after becoming half molten by some more natural ball of flame.\nThere seems little of further interest to your novice's gaze, however. You cannot discern what anomaly from the wreckage alone was responsible for the twisted hulk of iron before you...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "right broken brazier")
+                        {
+                            Console.WriteLine("Through the magnifying glass you espy further evidence of the magical brazier's deconstruction - the curlicue receptacle that had once held that chilly blue fire is now wrought and tortured - as though cooled after becoming half molten by some more natural ball of flame.\nYou're about to turn away, when you notice something glimmer from amidst the soot...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "peculiar mosaic")
+                        {
+                            Console.WriteLine("The usually placid expression of the mosaic's face aches an eyebrow as you peruse its many lustrous tiles with your magnifying glass.\nTry as hard as you might, however, the answers to unlocking any further secrets from the mosaic do not seem to find their home in or around its mysterious and arcane construct. It seems to be waiting to answer, if only you knew something more of the right questions to ask...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "grand pillar")
+                        {
+                            Console.WriteLine("Through the magnifying glass the opulence of the grand pillar only becomes more breath-taking. You never imagined you'd find such an intricate facet of architectural marvels just outside the dingy cell you'd been confined in.\n You move you're magnifying glass to focus in on the statuettes at the pillar's peak, only to jump in surprise! They move...\n Figures voicelessly clamouring to beseech you, each motioning to keep silent, to watch out, to run and hide, vy for your attention with feverish gestures. They're terrified expressions haunt you as your gaze turns from one to the next. There is only one figure that does not stir amidst the pantheon of silent statuettes - a minoan bull rearing upon its two legs, forever looming over them as if to trample them all under its tyrannical hooves.\n It's with a disquieting unease that you finally tear your gaze away from the breathless warnings of your ominous onlookers...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "scorched bronze plaque")
+                        {
+                            Console.WriteLine("You are finally able to decipher that, beneath the black soot, the plaque used to say; 'LI_R_R_'... You think.\nSome of the letters appear to be missing...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "double doors")
+                        {
+                            Console.WriteLine("The magnifying glass reveals that the decorative BRASS handles crown a pair of BRASS locks that themselves complement the gilded BRASS framework of the doors themselves.\n If you hadn't yet 'keyed in' this description's meaning, unlike the rest of the antechamber, these doors seem a distinctly BRASSY affair...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "sturdy table")
+                        {
+                            Console.WriteLine("Under the lens of the magnifying glass the recent history of this unfortunate, once-splendiferous table is laid bare - it's many deep cuts regale you of the frequent times it played host to unscrupulous ne'er-do-wells practicing five-finger-fillet; Its once-burnished surface is a sprawling vista of grotty beer stains and other assorted, grungy discolorations; and its edge seems to have once been mistaken as a chew-toy by the hungry gnoll, for it has fang marks denting one of its sides. \n  Most recently, however, the sorry table moans under the stupendous weight of towers of glittering coins...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "weapon rack" && feature.Description.Contains("eplete") && feature.SpecificAttribute == "unlocked")
+                        {
+                            Console.WriteLine("You almost salivate to see such glittering and exemplary weapons as you inspect them through the magnifying glass. They are the sort of implements the instinctive adventurer inside you yearns for. You'd fix your yearning and lustful gaze upon them for longer, if only they didn't blind you with their dazzling magnificence.\n As for the encasing cabinet...\n  Is it just you, or does it seem to almost itch for you to just *try* and grasp the treasure you oh-so-covet? It's copper lock gleams an invitation...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "weapon rack" && feature.Description.Contains("aphazardly"))
+                        {
+                            Console.WriteLine("You grimly inspect the weapon rack through the lens. \n The contents might charitably be described as weapons, you suppose... barely. \nYour eye rests the longest upon one of the throwing knives. Perhaps, of everything else here, this is the item most deserving of your appraise...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "fiery brazier")
+                        {
+                            Console.WriteLine("You use the magnifying glass to project a beam of light upon the opposite wall, entertaining yourself for a short while by making a shadow-puppet show with your hands. You wile away a few minutes creating a bit of theatre - about an adventurer caught in a strange prison, who decides to use a magnifying glass and a flame to start a huge fire that they might escape.\n Heh-heh! Can you imagine? What a silly character that would be...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "intact bookcase")
+                        {
+                            Console.WriteLine("Aside from some absolutely random (almost 100% guaranteed to not foreshadow anything) book about dragons, their affinity for riddles and jealously guarded treasure hordes, there are many volumes that would catch the eye of any mage worth their salt, but only three that catch yours. Perhaps you should give them a read? Afterall, as a wise wizard once said, 'Knowledge is power'\n...Or was it, 'Spells that turn your enemies into spaghettified squishy-stuff is power'? You forget...");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Incidentally, did you know a dragon's stamina is precisely 999,999 hp points and they absolutely hate charades? \n\nThe things you learn in RmoRee's, eh?\n");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"You use your magnifying glass on the {feature.Name}. Were you expecting to find something?");
+                            Console.ReadKey(true);
+                            return true;
+                        }
+                    }
                     else if (item.Name == "jailor keys" && (feature.Name == "far door" || feature.Name == "near door"))
                     {
                         int index = feature.SpecificAttribute.IndexOf("ed");
@@ -1343,7 +1501,7 @@ namespace DungeonCrawler
                             }
                         }
                     }
-                    
+
                     else if (item.Name == "rusty chain-flail" && feature.Name.Contains("bookcase"))
                     {
                         room.FeatureList.Remove(feature);
@@ -1358,7 +1516,7 @@ namespace DungeonCrawler
                     else
                     {
                         feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
-                        
+
                     }
                     return true;
                 }
@@ -1375,6 +1533,154 @@ namespace DungeonCrawler
                         Console.WriteLine("The key slides easily into the lock. With one sharp twist you hear the tumblers turn and the door lock.");
                         Console.ReadKey(true);
                         return true;
+                    }
+                    // New section for long corridor
+                    else if (item.Name == "magnifying glass")
+                    {
+                        if (feature.Name == "worn old trunk")
+                        {
+                            Console.WriteLine("You study the worn old trunk through your magnifying glass. Upon the back its been stamped with the seal of a winged serpent under which is the embossed name, faded but still legible, 'The Vespasian Mercenary Company'. " +
+                                "\nYou note that the trunk doesn't seem to match the more permanent decor of the corridor, or your former cell, but appears to be a more recent addition...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+
+                        }
+                        else if (feature.Name == "left brazier")
+                        {
+                            Console.WriteLine("You flinch as the fey light of the brazier's flickering magics intensifies under the lens of your magnifying glass. There doesn't seem to be any useful information to be gleaned, save for evidence that these braziers appear to have been tampered with not long before your arrival...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "right brazier")
+                        {
+                            Console.WriteLine("You flinch as the fey light of the brazier's flickering magics intensifies under the lens of your magnifying glass. There doesn't seem to be any useful information to be gleaned, save for evidence that these braziers appear to have been tampered with not long before your arrival...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "lit stairway")
+                        {
+                            Console.WriteLine("Yep. Those sure look like stairs...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "far door")
+                        {
+                            Console.WriteLine("The door was once of exquisite craftsmanship. You can trace the fine intricate grooves of its warm rosewood panels, before they're crudely interrupted by the bolted iron hinges - a fixture that is a recent and more disquieting addition...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "near door")
+                        {
+                            Console.WriteLine("There are signs of a struggle upon the once opulent door; evidence of fingernails clawing across the wood, cutting their own grooves into its otherwise smooth surface, sends your thoughts racing as to just what fate the last occupant faced - and what you might yet discover if you tarry too long...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "weathered old trunk")
+                        {
+                            Console.WriteLine("There is little more to discover through your magnifying glass as you use it to study the sprawl of faint scratches and marks upon the trunk's coarse leather sides. It's just a simple trunk. Perhaps its contents will prove more interesting..?");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "left broken brazier")
+                        {
+                            Console.WriteLine("Through the magnifying glass you espy further evidence of the magical brazier's deconstruction - the curlicue receptacle that had once held that chilly blue fire is now wrought and tortured - as though cooled after becoming half molten by some more natural ball of flame.\nThere seems little of further interest to your novice's gaze, however. You cannot discern what anomaly from the wreckage alone was responsible for the twisted hulk of iron before you...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "right broken brazier")
+                        {
+                            Console.WriteLine("Through the magnifying glass you espy further evidence of the magical brazier's deconstruction - the curlicue receptacle that had once held that chilly blue fire is now wrought and tortured - as though cooled after becoming half molten by some more natural ball of flame.\nYou're about to turn away, when you notice something glimmer from amidst the soot...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "peculiar mosaic")
+                        {
+                            Console.WriteLine("The usually placid expression of the mosaic's face aches an eyebrow as you peruse its many lustrous tiles with your magnifying glass.\nTry as hard as you might, however, the answers to unlocking any further secrets from the mosaic do not seem to find their home in or around its mysterious and arcane construct. It seems to be waiting to answer, if only you knew something more of the right questions to ask...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "grand pillar")
+                        {
+                            Console.WriteLine("Through the magnifying glass the opulence of the grand pillar only becomes more breath-taking. You never imagined you'd find such an intricate facet of architectural marvels just outside the dingy cell you'd been confined in.\n You move you're magnifying glass to focus in on the statuettes at the pillar's peak, only to jump in surprise! They move...\n Figures voicelessly clamouring to beseech you, each motioning to keep silent, to watch out, to run and hide, vy for your attention with feverish gestures. They're terrified expressions haunt you as your gaze turns from one to the next. There is only one figure that does not stir amidst the pantheon of silent statuettes - a minoan bull rearing upon its two legs, forever looming over them as if to trample them all under its tyrannical hooves.\n It's with a disquieting unease that you finally tear your gaze away from the breathless warnings of your ominous onlookers...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "scorched bronze plaque")
+                        {
+                            Console.WriteLine("You are finally able to decipher that, beneath the black soot, the plaque used to say; 'LI_R_R_'... You think.\nSome of the letters appear to be missing...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "double doors")
+                        {
+                            Console.WriteLine("The magnifying glass reveals that the decorative BRASS handles crown a pair of BRASS locks that themselves complement the gilded BRASS framework of the doors themselves.\n If you hadn't yet 'keyed in' this description's meaning, unlike the rest of the antechamber, these doors seem a distinctly BRASSY affair...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "sturdy table")
+                        {
+                            Console.WriteLine("Under the lens of the magnifying glass the recent history of this unfortunate, once-splendiferous table is laid bare - it's many deep cuts regale you of the frequent times it played host to unscrupulous ne'er-do-wells practicing five-finger-fillet; Its once-burnished surface is a sprawling vista of grotty beer stains and other assorted, grungy discolorations; and its edge seems to have once been mistaken as a chew-toy by the hungry gnoll, for it has fang marks denting one of its sides. \n  Most recently, however, the sorry table moans under the stupendous weight of towers of glittering coins...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }         
+                        else if (feature.Name == "weapon rack" && feature.Description.Contains("aphazardly"))
+                        {
+                            Console.WriteLine("You grimly inspect the weapon rack through the lens. \n The contents might charitably be described as weapons, you suppose... barely. \nYour eye rests the longest upon one of the throwing knives. Perhaps, of everything else here, this is the item most deserving of your appraise...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "fiery brazier")
+                        {
+                            Console.WriteLine("You use the magnifying glass to project a beam of light upon the opposite wall, entertaining yourself for a short while by making a shadow-puppet show with your hands. You wile away a few minutes creating a bit of theatre - about an adventurer caught in a strange prison, who decides to use a magnifying glass and a flame to start a huge fire that they might escape.\n Heh-heh! Can you imagine? What a silly character that would be...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "intact bookcase")
+                        {
+                            Console.WriteLine("Aside from some absolutely random (almost 100% guaranteed to not foreshadow anything) book about dragons, their affinity for riddles and jealously guarded treasure hordes (and weirdly specific passage detailing their stamina being 999,999 hp points), there are many volumes that would catch the eye of any mage worth their salt, but only three that catch yours. Perhaps you should give them a read? Afterall, as a wise wizard once said, 'Knowledge is power'\n...Or was it, 'Spells that turn your enemies into spaghettified squishy-stuff is power'? You forget...");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"You use your magnifying glass on the {feature.Name}. Were you expecting to find something?");
+                            Console.ReadKey(true);
+                            return true;
+                        }
                     }
                     else if (item.Name == "brass key" && feature.Name == "double doors")
                     {
