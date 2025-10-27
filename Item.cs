@@ -1669,7 +1669,9 @@ namespace DungeonCrawler
                         }
                         else if (feature.Name == "intact bookcase")
                         {
-                            Console.WriteLine("Aside from some absolutely random (almost 100% guaranteed to not foreshadow anything) book about dragons, their affinity for riddles and jealously guarded treasure hordes (and weirdly specific passage detailing their stamina being 999,999 hp points), there are many volumes that would catch the eye of any mage worth their salt, but only three that catch yours. Perhaps you should give them a read? Afterall, as a wise wizard once said, 'Knowledge is power'\n...Or was it, 'Spells that turn your enemies into spaghettified squishy-stuff is power'? You forget...");
+                            Console.WriteLine("Aside from some absolutely random (almost 100% guaranteed to not foreshadow anything) book about dragons, their affinity for riddles and jealously guarded treasure hordes, there are many volumes that would catch the eye of any mage worth their salt, but only three that catch yours. Perhaps you should give them a read? Afterall, as a wise wizard once said, 'Knowledge is power'\n...Or was it, 'Spells that turn your enemies into spaghettified squishy-stuff is power'? You forget...");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Incidentally, did you know a dragon's stamina is precisely 999,999 hp points and they absolutely hate charades? \n\nThe things you learn in RmoRee's, eh?\n");
                             Console.ReadKey(true);
                             feature.SpecificAttribute = "un" + feature.SpecificAttribute;
                             feature.Attribute = !feature.Attribute;
