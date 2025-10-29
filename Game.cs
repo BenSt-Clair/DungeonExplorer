@@ -2147,6 +2147,11 @@ namespace DungeonCrawler
                 }
                 return output;
             }
+            //could transform this function by adding attribute, Fight, to minotaur and all this is true if 
+            // !Fight but otherwise the function is called during a battle to simulate the 
+            // minotaur charging at the player. This would need to recursively call combat too
+            // because of the change in room. So perhaps place function before minotaur attacks
+            // Random chance that it charges instead?
             Room minotaurApproaches(Room room, Monster monster, bool firstTime, long timeLimit, bool oops = false, bool rage = false)
             {
                 southwestCorner.Passing = "Fleet of foot, you nip around the southwest corner.";
@@ -3377,7 +3382,7 @@ namespace DungeonCrawler
                 {
                     Console.WriteLine("With the way ahead clear, what will you do?");
                     Console.ReadKey(true);
-
+                    
                 }
 
             }
