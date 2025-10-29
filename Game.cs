@@ -3300,7 +3300,50 @@ namespace DungeonCrawler
                     
                 }
                 ///Past this point is the next room 
-
+                if (!usesDictionaryItemFeature.ContainsKey(magnifyingGlass))
+                {
+                    usesDictionaryItemFeature.Add(magnifyingGlass, new List<Feature> { trunkofconfiscatedstuff, leftbrazier, rightbrazier, stairwayToUpper, emptyCellDoor, otherRosewoodDoor, trunk, brokenLeftBrazier, brokenRightBrazier, mosaic, pillar, plaque, circleDoor, gamblingTable, goodWeaponRack, worseWeaponRack, normalBrazier, armouryBookcase, otherBookcase, copperPipes, brassTanks, conveyorBelts, merigoldPortal, teslaCoil, worktop, alcove, broomClosetDoor, magManDoor, window, portrait, plaquePrometheus, prometheus, mosaic2 });
+                }
+                else
+                {
+                    try
+                    {
+                        usesDictionaryItemFeature[magnifyingGlass].Add(trunkofconfiscatedstuff);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(leftbrazier);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(rightbrazier);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(stairwayToUpper);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(emptyCellDoor);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(otherRosewoodDoor);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(trunk);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(brokenLeftBrazier);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(brokenRightBrazier);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(mosaic);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(pillar);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(plaque);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(circleDoor);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(gamblingTable);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(goodWeaponRack);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(worseWeaponRack);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(normalBrazier);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(armouryBookcase);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(otherBookcase);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(copperPipes);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(brassTanks);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(conveyorBelts);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(merigoldPortal);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(teslaCoil);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(worktop);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(alcove);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(broomClosetDoor);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(magManDoor);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(mosaic2);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(window);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(portrait);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(plaquePrometheus);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(prometheus);
+                    }
+                    catch { }
+                }
                 if (!escapedThroughDoor)
                 {
                     Console.WriteLine("Finding yourself in a new room and on a new level of this perplexing (tower?), what will you decide to do next?");
@@ -3899,50 +3942,7 @@ namespace DungeonCrawler
                     }
                     usesDictionaryItemFeature.Remove(yourRustyChains);
                     //New Section for long corridor
-                    if (!usesDictionaryItemFeature.ContainsKey(magnifyingGlass))
-                    {
-                        usesDictionaryItemFeature.Add(magnifyingGlass, new List<Feature> { trunkofconfiscatedstuff, leftbrazier, rightbrazier, stairwayToUpper, emptyCellDoor, otherRosewoodDoor, trunk, brokenLeftBrazier, brokenRightBrazier, mosaic, pillar, plaque, circleDoor, gamblingTable, goodWeaponRack, worseWeaponRack, normalBrazier, armouryBookcase, otherBookcase, copperPipes, brassTanks, conveyorBelts, merigoldPortal, teslaCoil, worktop, alcove, broomClosetDoor, magManDoor, window, portrait, plaquePrometheus, prometheus, mosaic2 });
-                    }
-                    else
-                    {
-                        try
-                        {
-                            usesDictionaryItemFeature[magnifyingGlass].Add(trunkofconfiscatedstuff);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(leftbrazier);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(rightbrazier);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(stairwayToUpper);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(emptyCellDoor);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(otherRosewoodDoor);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(trunk);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(brokenLeftBrazier);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(brokenRightBrazier);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(mosaic);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(pillar);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(plaque);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(circleDoor);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(gamblingTable);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(goodWeaponRack);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(worseWeaponRack);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(normalBrazier);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(armouryBookcase);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(otherBookcase);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(copperPipes);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(brassTanks);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(conveyorBelts);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(merigoldPortal);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(teslaCoil);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(worktop);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(alcove);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(broomClosetDoor);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(magManDoor);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(mosaic2);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(window);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(portrait);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(plaquePrometheus);
-                            usesDictionaryItemFeature[magnifyingGlass].Add(prometheus);
-                        }
-                        catch { }
-                    }
+                    
                     if (minotaur.Stamina > 0)
                     {
                         if (!minotaur.MinotaurReturning(corridor, redThread, musicBox, threadPath, player1))
