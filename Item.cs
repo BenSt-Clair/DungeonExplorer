@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -1436,6 +1437,132 @@ namespace DungeonCrawler
                             feature.Attribute = !feature.Attribute;
                             return true;
                         }
+                        else if (feature.Name == "rosewood bookcase")
+                        {
+                            Console.WriteLine("Under the intense scrutiny of the magnifying glass you can see a family of spiders weaving their webs. Suffice to say that its been in need of a good dusting for a long time...");
+                            
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "whistling pipes")
+                        {
+                            Console.WriteLine("You discern the dribbling residue that sputters from the pipes to be a congealing technicolored concoction that you are thankful to keep on the other end of your magnifying glass. \n Who knows what this stuff might do to you if you imbibed it...");
+                            
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "brass tanks")
+                        {
+                            Console.WriteLine("They are heavy duty industrial size tanks, built to withstand intense pressures. Upon the side you discover the embossed logo of the tank's manufacturer, 'Auntie Greenleaf's Cottage Inc.' Underneath it reads, 'A necessity for every domestic goddess in the kitchen, the MegaTRON industrial mixerupper will satisfy all your culinary needs - At MAX efficiency!'\n You give the looming, gurgling tank a dubious look before you pull away.");
+                            
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "conveyor belts")
+                        {
+                            Console.WriteLine("They merrily shuttle along, ferrying potent potables to the distant portal. Under the magnifying glass you see the well-oiled rollers beneath the belt spinning frantically...");
+                            
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "tesla coil")
+                        {
+                            Console.WriteLine("You approach the Tesla Coil, magnifying glass at the ready to bring it under your detective-like gaze, when suddenly you receive a jolt!\n OUCH! Maybe its better not to get too close to that thing...");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "worktop")
+                        {
+                            Console.WriteLine("The dotty old man doesn't seem to pay any notice of you as you peruse its many contents; a scattered albatross nest of crumpled notes. Even under the discerning gaze of your magnified shrewd eye you cannot make any sense of the esoteric lexicon and its spidery scrawl.");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "alcove")
+                        {
+                            Console.WriteLine("Aside from the cast iron lantern there is little else of interest. If there's a secret passageway concealed somewhere behind it, it doesn't reveal itself to you under the scrutinising lens of your magnifying glass. Most likely this is because one doesn't exist.");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "familiar rosewood door")
+                        {
+                            Console.WriteLine("Upon closer inspection, as you hunker down before the door and raise your magnifying glass, you detect a dampness under the door caused by some kind of spillage, as though made by mucky bucket water. If you had to hazard a guess you'd say this was a janitorial closet...");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "similar rosewood door")
+                        {
+                            Console.WriteLine("You detect scrapes and scuff marks made by the heavy footfalls of some massive, patrolling beast just outside of this door. If you were to venture a shrewd guess, you'd say the beast had been tasked with making sure no one entered this door...\nUnless, of course, its making sure someone, or something, doesn't get out.");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "palladian window")
+                        {
+                            Console.WriteLine("Your detecting glass brings into sharp relief the details that, from a distance, escaped your naked eye; the window panes are but one very fragile. Sporadically buffeted by a chill wind, they rattle ominously in their elegant but very delicate frames. \nAs you pull away from your magnifying glass, you reckon that the window might not shatter were you to *carefully* lean against them, but you wouldn't be the one to volunteer to test that theory. \nPerhaps you could try to find someone who might test it... and with a great deal more OOMPH.");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "disturbing statue")
+                        {
+                            Console.WriteLine("You try to glean more from the statue through your detecting glass, but the statue is no less life-like under its magnifying lens; a chilling vision of agony frozen in stone.");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "plaque")
+                        {
+                            Console.WriteLine("As you bring the plaque under the scrutiny of your detecting glass, you discover something more.\n  Scratched in a spidery scrawl underneath, someone clearly saw fit to add their own addendum: 'What Justice is there from gods? From nature? But that which is created by force'...");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "diabolic portrait")
+                        {
+                            Console.WriteLine("As you bring the picture frame under the scrutiny of your detecting glass, you discover the words of a scratchy addendum.\n  As you decipher the letters in the dim light, you sense its acerbic tone; 'A generous gift for those that grasp it - The source for infinite revenues for sellswords, mercenaries and adventurers alike'...");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "strange mosaic")
+                        {
+                            Console.WriteLine("You approach, magnifying glass in hand, but find that having pulled too far from the source of the room's dim light, there is little you can detect further of the shadowy mosaic. It regards you placidly. In fact its expression seems implacable but (and this is a strange thought) not 'unmoveable'?");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = feature.SpecificAttribute.Substring(2, feature.SpecificAttribute.Length - 2);
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
                         else
                         {
                             Console.WriteLine($"You use your magnifying glass on the {feature.Name}. Were you expecting to find something?");
@@ -1672,6 +1799,132 @@ namespace DungeonCrawler
                             Console.WriteLine("Aside from some absolutely random (almost 100% guaranteed to not foreshadow anything) book about dragons, their affinity for riddles and jealously guarded treasure hordes, there are many volumes that would catch the eye of any mage worth their salt, but only three that catch yours. Perhaps you should give them a read? Afterall, as a wise wizard once said, 'Knowledge is power'\n...Or was it, 'Spells that turn your enemies into spaghettified squishy-stuff is power'? You forget...");
                             Console.ReadKey(true);
                             Console.WriteLine("\nIncidentally, did you know a dragon's stamina is precisely 999,999 hp points and they absolutely hate charades? \n\nThe things you learn in RmoRee's, eh?\n");
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "rosewood bookcase")
+                        {
+                            Console.WriteLine("Under the intense scrutiny of the magnifying glass you can see a family of spiders weaving their webs. Suffice to say that its been in need of a good dusting for a long time...");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "whistling pipes")
+                        {
+                            Console.WriteLine("You discern the dribbling residue that sputters from the pipes to be a congealing technicolored concoction that you are thankful to keep on the other end of your magnifying glass. \n Who knows what this stuff might do to you if you imbibed it...");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "brass tanks")
+                        {
+                            Console.WriteLine("They are heavy duty industrial size tanks, built to withstand intense pressures. Upon the side you discover the embossed logo of the tank's manufacturer, 'Auntie Greenleaf's Cottage Inc.' Underneath it reads, 'A necessity for every domestic goddess in the kitchen, the MegaTRON industrial mixerupper will satisfy all your culinary needs - At MAX efficiency!'\n You give the looming, gurgling tank a dubious look before you pull away.");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "conveyor belts")
+                        {
+                            Console.WriteLine("They merrily shuttle along, ferrying potent potables to the distant portal. Under the magnifying glass you see the well-oiled rollers beneath the belt spinning frantically...");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "tesla coil")
+                        {
+                            Console.WriteLine("You approach the Tesla Coil, magnifying glass at the ready to bring it under your detective-like gaze, when suddenly you receive a jolt!\n OUCH! Maybe its better not to get too close to that thing...");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "worktop")
+                        {
+                            Console.WriteLine("The dotty old man doesn't seem to pay any notice of you as you peruse its many contents; a scattered albatross nest of crumpled notes. Even under the discerning gaze of your magnified shrewd eye you cannot make any sense of the esoteric lexicon and its spidery scrawl.");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "alcove")
+                        {
+                            Console.WriteLine("Aside from the cast iron lantern there is little else of interest. If there's a secret passageway concealed somewhere behind it, it doesn't reveal itself to you under the scrutinising lens of your magnifying glass. Most likely this is because one doesn't exist.");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "familiar rosewood door")
+                        {
+                            Console.WriteLine("Upon closer inspection, as you hunker down before the door and raise your magnifying glass, you detect a dampness under the door caused by some kind of spillage, as though made by mucky bucket water. If you had to hazard a guess you'd say this was a janitorial closet...");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "similar rosewood door")
+                        {
+                            Console.WriteLine("You detect scrapes and scuff marks made by the heavy footfalls of some massive, patrolling beast just outside of this door. If you were to venture a shrewd guess, you'd say the beast had been tasked with making sure no one entered this door...\nUnless, of course, its making sure someone, or something, doesn't get out.");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "palladian window")
+                        {
+                            Console.WriteLine("Your detecting glass brings into sharp relief the details that, from a distance, escaped your naked eye; the window panes are but one very fragile. Sporadically buffeted by a chill wind, they rattle ominously in their elegant but very delicate frames. \nAs you pull away from your magnifying glass, you reckon that the window might not shatter were you to *carefully* lean against them, but you wouldn't be the one to volunteer to test that theory. \nPerhaps you could try to find someone who might test it... and with a great deal more OOMPH.");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "disturbing statue")
+                        {
+                            Console.WriteLine("You try to glean more from the statue through your detecting glass, but the statue is no less life-like under its magnifying lens; a chilling vision of agony frozen in stone.");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "plaque")
+                        {
+                            Console.WriteLine("As you bring the plaque under the scrutiny of your detecting glass, you discover something more.\n  Scratched in a spidery scrawl underneath, someone clearly saw fit to add their own addendum: 'What Justice is there from gods? From nature? But that which is created by force'...");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "diabolic portrait")
+                        {
+                            Console.WriteLine("As you bring the picture frame under the scrutiny of your detecting glass, you discover the words of a scratchy addendum.\n  As you decipher the letters in the dim light, you sense its acerbic tone; 'A generous gift for those that grasp it - The source for infinite revenues for sellswords, mercenaries and adventurers alike'...");
+
+                            Console.ReadKey(true);
+                            feature.SpecificAttribute = "un" + feature.SpecificAttribute;
+                            feature.Attribute = !feature.Attribute;
+                            return true;
+                        }
+                        else if (feature.Name == "strange mosaic")
+                        {
+                            Console.WriteLine("You approach, magnifying glass in hand, but find that having pulled too far from the source of the room's dim light, there is little you can detect further of the shadowy mosaic. It regards you placidly. In fact its expression seems implacable but (and this is a strange thought) not 'unmoveable'?");
+
                             Console.ReadKey(true);
                             feature.SpecificAttribute = "un" + feature.SpecificAttribute;
                             feature.Attribute = !feature.Attribute;

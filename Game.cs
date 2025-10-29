@@ -1750,8 +1750,8 @@ namespace DungeonCrawler
             Weapon staffMG = new Weapon("Marvellous Merigold's Magical Staff of Whacking", "It is a very fine, very well polished rosewood quarterstaff with the letters 'M' and 'G' cursively and elegantly embossed in gold upon it. It seems to shimmer with some kind of force for a moment, but when your eye catches it properly you conclude you were maybe imagining it... ", whacking, defaultCritHits, defaultGoodHits, 5, false, 5);
             List<Item> prometheusList = new List<Item> {staffMG };
             Feature prometheus = new Feature("disturbing statue", "Even up close and in better light this statue would be unsettling. You wonder what on earth it could mean, and why anyone would wish to procure it, though you don't ponder too long on why the ghastly thing was stowed away out of sight. Amongst the eclectic items here it is the most prominent in its sinister aspect. You're about to turn away when, just behind the statue, you spy something else...", false, "unshattered", prometheusList);
-            Feature plaquePrometheus = new Feature("plaque", "At the base of the statue, it reads, 'Dedicated to the ancient God who brought fire unto man. Punished eternally for his gift, his foresight and the succour he provided'...Scratched in a spidery scrawl underneath, someone clearly saw fit to add their own addendum: 'What Justice is there from gods? From nature? But that which is created by force'...", false, "unread");
-            Feature portrait = new Feature("diabolic portrait", "The description upon the frame tells of the subject's name and deed; 'Azazel; who gifted war to humanity'   You're about to pull away when you notice someone has etched a message upon the frame. As your fingers trace it, helping you decipher the letters in the dark, you sense its acerbic tone; 'A generous gift for those that grasp it - The source for infinite revenues for sellswords, mercenaries and adventurers alike'...", false, "unexamined");
+            Feature plaquePrometheus = new Feature("plaque", "At the base of the statue, it reads, 'Dedicated to the ancient God who brought fire unto man. Punished eternally for his gift, his foresight and the succour he provided'", false, "unread");
+            Feature portrait = new Feature("diabolic portrait", "The description upon the frame tells of the subject's name and deed; 'Azazel; who gifted war to humanity'   You're about to pull away when you notice someone has etched a message upon the frame. You try to read it but find the script too small to decipher...", false, "unexamined");
             Door mosaic2 = new Door("strange mosaic", "You glance the mosaic's way, its lustrous tiles are constantly flipping and shuffling like cards in the dextrous hands of some invisible dealer. The magical image they form is ever shifting. They seem to react to your presence.", true, "unexamined", null, new List<Room>());
             Feature northWall = new Feature("wall", "It's just a bare wall. You can search all you want but there are no secret passages to be found...", false, "unremarkable");
             Feature southWall = new Feature("wall", "It's just a bare wall. There will never be a door or window here no matter how hard you search...", false, "unremarkable");
@@ -3702,7 +3702,7 @@ namespace DungeonCrawler
                 player1 = _player;
                 if (!usesDictionaryItemFeature.ContainsKey(magnifyingGlass))
                 {
-                    usesDictionaryItemFeature.Add(magnifyingGlass, new List<Feature> { trunkofconfiscatedstuff, leftbrazier, rightbrazier, stairwayToUpper, emptyCellDoor, otherRosewoodDoor, trunk, brokenLeftBrazier, brokenRightBrazier, mosaic, pillar, plaque, circleDoor, gamblingTable, goodWeaponRack, worseWeaponRack, normalBrazier, armouryBookcase });
+                    usesDictionaryItemFeature.Add(magnifyingGlass, new List<Feature> { trunkofconfiscatedstuff, leftbrazier, rightbrazier, stairwayToUpper, emptyCellDoor, otherRosewoodDoor, trunk, brokenLeftBrazier, brokenRightBrazier, mosaic, pillar, plaque, circleDoor, gamblingTable, goodWeaponRack, worseWeaponRack, normalBrazier, armouryBookcase, otherBookcase, copperPipes, brassTanks, conveyorBelts, merigoldPortal, teslaCoil, worktop, alcove, broomClosetDoor, magManDoor, window, prometheus, plaquePrometheus, mosaic2, portrait });
                 }
                 else
                 {
@@ -3726,6 +3726,21 @@ namespace DungeonCrawler
                         usesDictionaryItemFeature[magnifyingGlass].Add(worseWeaponRack);
                         usesDictionaryItemFeature[magnifyingGlass].Add(normalBrazier);
                         usesDictionaryItemFeature[magnifyingGlass].Add(armouryBookcase);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(otherBookcase); 
+                        usesDictionaryItemFeature[magnifyingGlass].Add(copperPipes); 
+                        usesDictionaryItemFeature[magnifyingGlass].Add(brassTanks);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(conveyorBelts);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(merigoldPortal);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(teslaCoil);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(worktop);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(alcove);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(broomClosetDoor);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(magManDoor);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(mosaic2);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(window);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(portrait);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(plaquePrometheus);
+                        usesDictionaryItemFeature[magnifyingGlass].Add(prometheus);
                     }
                     catch { }
                 }
@@ -3886,7 +3901,7 @@ namespace DungeonCrawler
                     //New Section for long corridor
                     if (!usesDictionaryItemFeature.ContainsKey(magnifyingGlass))
                     {
-                        usesDictionaryItemFeature.Add(magnifyingGlass, new List<Feature> { trunkofconfiscatedstuff, leftbrazier, rightbrazier, stairwayToUpper, emptyCellDoor, otherRosewoodDoor, trunk, brokenLeftBrazier, brokenRightBrazier, mosaic, pillar, plaque, circleDoor, gamblingTable, goodWeaponRack, worseWeaponRack, normalBrazier, armouryBookcase});
+                        usesDictionaryItemFeature.Add(magnifyingGlass, new List<Feature> { trunkofconfiscatedstuff, leftbrazier, rightbrazier, stairwayToUpper, emptyCellDoor, otherRosewoodDoor, trunk, brokenLeftBrazier, brokenRightBrazier, mosaic, pillar, plaque, circleDoor, gamblingTable, goodWeaponRack, worseWeaponRack, normalBrazier, armouryBookcase, otherBookcase, copperPipes, brassTanks, conveyorBelts, merigoldPortal, teslaCoil, worktop, alcove, broomClosetDoor, magManDoor, window, portrait, plaquePrometheus, prometheus, mosaic2 });
                     }
                     else
                     {
@@ -3910,6 +3925,21 @@ namespace DungeonCrawler
                             usesDictionaryItemFeature[magnifyingGlass].Add(worseWeaponRack);
                             usesDictionaryItemFeature[magnifyingGlass].Add(normalBrazier);
                             usesDictionaryItemFeature[magnifyingGlass].Add(armouryBookcase);
+                            usesDictionaryItemFeature[magnifyingGlass].Add(otherBookcase);
+                            usesDictionaryItemFeature[magnifyingGlass].Add(copperPipes);
+                            usesDictionaryItemFeature[magnifyingGlass].Add(brassTanks);
+                            usesDictionaryItemFeature[magnifyingGlass].Add(conveyorBelts);
+                            usesDictionaryItemFeature[magnifyingGlass].Add(merigoldPortal);
+                            usesDictionaryItemFeature[magnifyingGlass].Add(teslaCoil);
+                            usesDictionaryItemFeature[magnifyingGlass].Add(worktop);
+                            usesDictionaryItemFeature[magnifyingGlass].Add(alcove);
+                            usesDictionaryItemFeature[magnifyingGlass].Add(broomClosetDoor);
+                            usesDictionaryItemFeature[magnifyingGlass].Add(magManDoor);
+                            usesDictionaryItemFeature[magnifyingGlass].Add(mosaic2);
+                            usesDictionaryItemFeature[magnifyingGlass].Add(window);
+                            usesDictionaryItemFeature[magnifyingGlass].Add(portrait);
+                            usesDictionaryItemFeature[magnifyingGlass].Add(plaquePrometheus);
+                            usesDictionaryItemFeature[magnifyingGlass].Add(prometheus);
                         }
                         catch { }
                     }
