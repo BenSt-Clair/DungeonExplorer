@@ -248,7 +248,14 @@ namespace DungeonCrawler
         /// <returns></returns>
         public int Parle(string description, string parlance, List<string> responses)
         {
-            Console.WriteLine(description + "\n\t" + $"'{parlance}'\nHow will you respond?");
+            const string Moccasin = "\u001b[38;2;255;228;181m";
+            const string BlanchedAlmond = "\x1b[38;2;255;255;240m";            
+            const string Reset = "\u001b[0m";
+            var StringBuilder = new StringBuilder();
+            StringBuilder.Append($"{Moccasin}{description}{Reset}\n\n\t");
+            StringBuilder.Append($"{BlanchedAlmond}'{parlance}'{Reset}\n\n");
+            StringBuilder.Append($"{Moccasin}How will you respond?{Reset}");
+            Console.WriteLine(StringBuilder);
             int option = 0;
             string message = "";
             
@@ -634,11 +641,20 @@ namespace DungeonCrawler
                 try
                 {
                     int answer1 = int.Parse(answer) - 1;
+                    try
+                    {
+                        if (choices[answer1] == "You remind him of what he said about only having until midnight to stop some profane ritual - you ask him to tell you everything he knows about it...")
+                        {
+                            _player.Fooled = false;
+                        }
+                    }
+                    catch { }
                     if (answer1 < 0 || answer1 > choices.Count - 1)
                     {
                         Console.WriteLine($"Please enter a number between 1 and {option}");
                         continue;
                     }
+                    
                     else if (answer1 == y)
                     {
                         Console.WriteLine(choice_answer[choices[y]]);

@@ -890,7 +890,8 @@ namespace DungeonCrawler
         /// <returns>boolean: true or false</returns>
         public bool Fight(bool music, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, Feature holeInCeiling, List<Item> specialItems, int totemCount = 1, bool fire = false, bool _initiative = false, bool masked = false, int finalCountdown = 0)
         {
-            player = Player;
+            Player = player; // I swapped these two around not fully knowing the consequences but hoping it
+                             // resolves a loading issue.
             Dice D2 = new Dice(2);
             Dice D3 = new Dice(3);
             Dice D4 = new Dice(4);
@@ -948,6 +949,13 @@ namespace DungeonCrawler
                 room.Name = "cell";
                 room.Name = $"{fireString[firenum - 1]}{room.Name}";
             }
+            if (room.ItemList.Count < 3)
+            {
+                room.ItemList.Add(specialItems[0]);
+                room.ItemList.Add(specialItems[1]);
+                room.ItemList.Add(specialItems[2]);
+            }
+            
             List<string> jinxedMisses = new List<string>
             {
                 $"The {Monster.Name} has you now! Finally, relishing it's soon-to-be freedom from your cursed, jinxy hide, it raises its {Monster.Items[0].Name} to strike... and gets it stuck in the {room.FeatureList[D4.Roll(D4) - 1].Name}. You scurry away as the {Monster.Name} curses, trying to free it. \nThe {Monster.Name} loses 1 stamina.",
@@ -1936,7 +1944,7 @@ namespace DungeonCrawler
         /// <returns></returns>
         public bool Fight(bool music, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Room room, Player player, Dictionary<Item, List<Player>> usesDictionaryItemChar, bool dualBattle, Feature holeInCeiling, List<Item> specialItems, bool fire = false, bool _initiative = false, bool masked = false)
         {
-            player = Player;
+            Player = player;
             Dice D2 = new Dice(2);
             Dice D3 = new Dice(3);
             Dice D4 = new Dice(4);

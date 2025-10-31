@@ -26,6 +26,7 @@ namespace DungeonCrawler
         public string SpecificAttribute { get; set; }
         public List<Item> ItemList { get; set; }
         public int Stamina { get; set; }
+        public bool Explored { get; set; }
         /// <summary>
         /// static polymorphism used here for a special kind of feature that can have
         /// a weapon used on it and be destroyed if its stamina is reduced to 0 or less.
@@ -36,7 +37,7 @@ namespace DungeonCrawler
         /// <param name="attribute"></param>
         /// <param name="specificAttribute"></param>
         /// <param name="itemList"></param>
-        public Feature(string name = "", string description = "Nothing of note meets the eye.", bool attribute = true, string specificAttribute = "locked", List<Item> itemList = null)
+        public Feature(string name = "", string description = "Nothing of note meets the eye.", bool attribute = true, string specificAttribute = "locked", List<Item> itemList = null, bool explored = false)
         {
 
             Name = name;
@@ -44,14 +45,16 @@ namespace DungeonCrawler
             Attribute = attribute;
             SpecificAttribute = specificAttribute;
             ItemList = itemList;
+            Explored = explored;
         }
-        public Feature(string name, string description, bool attribute, string specificAttribute, int stamina)
+        public Feature(string name, string description, bool attribute, string specificAttribute, int stamina, bool explored = false)
         {
             Name=name;
             Description = description;
             Attribute = attribute;
             SpecificAttribute = specificAttribute;
             Stamina = stamina;
+            Explored = explored;
         }
         public int DisplayStamina()
         {
@@ -165,6 +168,7 @@ namespace DungeonCrawler
                                 this.CastDoor().Portal = mosaicPortal;
                                 this.CastDoor().Attribute = false;
                                 this.CastDoor().SpecificAttribute = "unlocked";
+                                this.CastDoor().Explored = true;
                                 return;
                             
                             default:
@@ -182,6 +186,7 @@ namespace DungeonCrawler
                                 this.CastDoor().Portal = mosaicPortal;
                                 this.CastDoor().Attribute = false;
                                 this.CastDoor().SpecificAttribute = "unlocked";
+                                this.CastDoor().Explored = true;
                                 return;
                             default:
                                 Console.WriteLine("You step away. Is it just you or does your backpack feel significantly lighter?");
@@ -270,6 +275,7 @@ namespace DungeonCrawler
                         };
                         this.Attribute = true;
                         this.SpecificAttribute = "studied";
+                        this.Explored = true;
                         mosaicTalk.LoopParle(choice_answer, choices, description, parlance, 0);
                         return;
                     }
@@ -340,9 +346,12 @@ namespace DungeonCrawler
             Console.WriteLine($"Rummaging about the {Name}, you find the following;");
             int r = 1;
             string message = $"{Description}\n";
-            if (Name == "bookcase" && ItemList.Count != 0 && room.Name == "dank cell")
+            if (ItemList != null)
             {
-                message += "Your keen eye notices a lone page just underneath the collapsed shelf, snagged at the back.\n";
+                if (Name.Contains("bookcase") && ItemList.Count != 0 && room.Name == "dank cell")
+                {
+                    message += "Your keen eye notices a lone page just underneath the collapsed shelf, snagged at the back.\n"; this.Explored = true;
+                }
             }
             if (Name == "rosewood chest" && Attribute == false)
             {
@@ -350,7 +359,7 @@ namespace DungeonCrawler
             }
             if (Name == "rosewood chest" && Attribute == false && ItemList.Count != 0)
             {
-                message += "Your furtive fingers scrabble at the panel at the bottom of the chest. After some effort, you manage to at last unveil a hidden compartment...\n";
+                message += "Your furtive fingers scrabble at the panel at the bottom of the chest. After some effort, you manage to at last unveil a hidden compartment...\n"; this.Explored = true;
             }
             /// I create a copy of ItemList for reference so that removed items do not trigger an 
             /// out of bounds exception.
@@ -370,6 +379,7 @@ namespace DungeonCrawler
                 if (Name == "disturbing statue" && ItemList.Count == 0 && Description.Contains("You're about to turn away when, just behind the statue, you spy something else..."))
                 {
                     Description = Description.Substring(0, Description.IndexOf("\n"));
+                    this.Explored = true;
                 }
                 if (Name == "rosewood chest")
                 {
@@ -553,9 +563,10 @@ namespace DungeonCrawler
                     }
                     else // these are specific cases for those features that may be searched more than once.
                     {
-                        if (Name == "bookcase" || (Name == "rosewood chest" && Attribute))
+                        if (Name.Contains("bookcase") || (Name == "rosewood chest" && Attribute))
                         {
-                            Console.WriteLine($"{Description} \nTry as hard as you might, you find no more items hidden about the {Name}. It has been thoroughly {SpecificAttribute}.");
+                            Console.WriteLine($"{Description} \nTry as hard as you might, you find no more items hidden about the {Name}. It has been thoroughly {SpecificAttribute}."); this.Explored = true;
+
 
                         }
                         else if (Name == "rosewood chest" && !Attribute)
@@ -564,7 +575,7 @@ namespace DungeonCrawler
                         }
                         else
                         {
-                            Console.WriteLine($"{Description} \nTry as hard as you might, you find no items hidden about the {Name}. It remains {SpecificAttribute}.");
+                            Console.WriteLine($"{Description} \nTry as hard as you might, you find no items hidden about the {Name}. It remains {SpecificAttribute}."); this.Explored = true;
                         }
                         return room;
                     }
@@ -595,6 +606,7 @@ namespace DungeonCrawler
                         {
 
 
+                            this.Explored = true;
 
                             return room;
 
@@ -927,7 +939,7 @@ namespace DungeonCrawler
                 }
                 else
                 {
-                    if (Name == "bookcase" || Name == "rosewood chest")
+                    if (Name.Contains("bookcase") || Name == "rosewood chest")
                     {
                         Console.WriteLine($"{Description} \nTry as hard as you might, you find no more items hidden about the {Name}. It has been thoroughly {SpecificAttribute}.");
 
@@ -935,6 +947,11 @@ namespace DungeonCrawler
                     else
                     {
                         Console.WriteLine($"{Description} \nTry as hard as you might, you find no items hidden about the {Name}. It remains {SpecificAttribute}.");
+                        if (!Name.Contains("door") && !Name.Contains("stair") && !Name.Contains("corner") && !Name.Contains("hole"))
+                        {
+                            this.Explored = true;
+                        }
+
                     }
                     if ((Name.Contains("door") || Name.Contains("stair") || Name.Contains("corner") || Name.Contains("hole")) && (SpecificAttribute == "unlocked" || SpecificAttribute == "unblocked" || SpecificAttribute == "scaled") && !Description.Contains("smouldering"))
                     {
@@ -968,7 +985,8 @@ namespace DungeonCrawler
                             }
                             else if (reply == "y" || reply == "yes")
                             {
-                                if (room.Name == "armoury" && room.FirstVisit)
+                                this.Explored = true;
+                                if (room.Name == "armoury" && !player.Encounter && secretChamber.FeatureList[8].Name != "ajar mosaic door")
                                 {
                                     if (!fieryEscape)
                                     {
@@ -984,7 +1002,7 @@ namespace DungeonCrawler
 
                                         + " you sense with an icy dread that battling it would be the very last thing you do.");
                                         Console.ReadKey(true);
-                                        room.FirstVisit = false;
+                                        player.Encounter = true;
                                     }
                                     /*else
                                     {
@@ -1042,6 +1060,7 @@ namespace DungeonCrawler
 
                     if (Dialogue.getYesNoResponse(true))
                     {
+                        this.Explored = true;
                         List<Dice> endOfMidGameChoice = merigold.MerigoldPlotPoint(music, specialItems, battle, secretChamber, goblin, gnoll, MGItems, stairwayToLower, usesDictionaryItemChar);
                         Attribute = true;
                         SpecificAttribute = "dishevelled";
@@ -1065,7 +1084,7 @@ namespace DungeonCrawler
                             }
                             else if (endOfMidGameChoice[0].faces == 847713)
                             {
-                                Description += "\nIt's been thoroughly trashed after your fight with Merigold...";
+                                Description += " It's been thoroughly trashed after your fight with Merigold...";
                                 return room;
                             }
                             else
@@ -4557,7 +4576,7 @@ namespace DungeonCrawler
                         }
                         else if (endOfMidGameChoice[0].faces == 847713)
                         {
-                            Description += "\nIt's been thoroughly trashed after your fight with Merigold...";
+                            Description += " It's been thoroughly trashed after your fight with Merigold...";
                             return room;
                         }
                         else
@@ -7886,7 +7905,7 @@ namespace DungeonCrawler
                     }
                 }
             
-                if (Name == "bookcase" || Name == "rosewood chest")
+                if (Name.Contains("bookcase") || Name == "rosewood chest")
                 {
                     Console.WriteLine($"{Description} \nTry as hard as you might, you find no more items hidden about the {Name}. It has been thoroughly {SpecificAttribute}.");
 
@@ -7894,6 +7913,10 @@ namespace DungeonCrawler
                 else
                 {
                     Console.WriteLine($"{Description} \nTry as hard as you might, you find no items hidden about the {Name}. It remains {SpecificAttribute}.");
+                    if (!Name.Contains("door") && !Name.Contains("stair") && !Name.Contains("corner") && !Name.Contains("hole") && !Name.Contains("portal") && !Name.Contains("mosaic"))
+                    { 
+                        this.Explored = true; 
+                    }
                 }
                 //If the feature is belongs to the Door class.
                 if ((Name.Contains("door") || Name.Contains("stair") || Name.Contains("corner") || Name.Contains("hole") || Name.Contains("portal")) && (SpecificAttribute == "unlocked"|| SpecificAttribute == "unblocked") && !Description.Contains("smouldering"))
@@ -7928,7 +7951,8 @@ namespace DungeonCrawler
                         }
                         else if (reply == "y" || reply == "yes")
                         {
-                            if(room.Name == "armoury" && room.FirstVisit && secretChamber.FeatureList[8].Name != "ajar mosaic door")
+                            this.Explored = true;
+                            if(room.Name == "armoury" && !player.Encounter && secretChamber.FeatureList[8].Name != "ajar mosaic door")
                             {
                                 if (!fieryEscape)
                                 {
@@ -7944,7 +7968,7 @@ namespace DungeonCrawler
 
                                     + " you sense with an icy dread that battling it would be the very last thing you do.");
                                     Console.ReadKey(true);
-                                    room.FirstVisit = false;
+                                    player.Encounter = true;
                                 }
                                 /*else
                                 {
@@ -7987,7 +8011,8 @@ namespace DungeonCrawler
         public List<Room> Portal { get; set; }
         public string Passing { get; set; }
         public bool Dark {  get; set; }
-        public Door(string name = "door", string description = "It's a pretty ordinary door", bool attribute = true, string specificAttribute = "locked", List<Item> itemList = null, List<Room> portal = null, string passing = "You pass through the door and into the next room...", bool dark = false)
+        public bool Explored { get; set; }
+        public Door(string name = "door", string description = "It's a pretty ordinary door", bool attribute = true, string specificAttribute = "locked", List<Item> itemList = null, List<Room> portal = null, string passing = "You pass through the door and into the next room...", bool dark = false, bool explored = false)
         {
             Name = name;
             Description = description;
@@ -7997,6 +8022,7 @@ namespace DungeonCrawler
             Portal = portal;
             Passing = passing;
             Dark = dark;
+            Explored = explored;
         }
         /// <summary>
         /// returns a string upon passing through a door, customised to whether
@@ -8012,6 +8038,7 @@ namespace DungeonCrawler
             {
                 try
                 {
+                    this.Explored = true;
                     if (message) { Console.WriteLine($"{Passing}"); }
                     return Portal[1];
                 }
@@ -8019,6 +8046,7 @@ namespace DungeonCrawler
                 {
                     if (message)
                     {
+                        this.Explored = true;
                         Console.WriteLine("You open the door but to your surprise, you find nothing the other side but a bare brick wall...");
                     }
                     return room;
@@ -8027,12 +8055,14 @@ namespace DungeonCrawler
             }
             else if (Portal[1].Name == room.Name)
             {
+                this.Explored = true;
                 if (message) { Console.WriteLine($"{Passing}"); }
                 return Portal[0];
             }
             else
             {
-                Console.WriteLine("Door.Passage() has failed. Check Portal list.");
+                this.Explored = true;
+                Console.WriteLine("This passage leads nowhere...\nBest keep moving.");
                 return room;
             }
             
