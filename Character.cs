@@ -2193,6 +2193,8 @@ namespace DungeonCrawler
                             Console.WriteLine("Yeesh! You thank your stars you're not the one who has to clean up that mess...");
                             Console.ReadKey(true);
                             room.FeatureList.Remove(window);
+                            this.Location = astralPlanes;
+                            this.Stamina = -1;
                             return astralPlanes;
                         }
                         else
@@ -2221,15 +2223,17 @@ namespace DungeonCrawler
                             Console.WriteLine("You manage to dive out of the way just before the minotaur barrels into you!\n It releases one last bloodcurdling yell as it plummets, before its body is swallowed by the encircling mists far below...");
                             Console.ReadKey(true);
                             room.FeatureList.Remove(window);
+                            this.Location = astralPlanes; 
+                            this.Stamina = -1;
                             return astralPlanes;
                         }
                         else if (diceRoll < playerSkill)
                         {
                             Console.WriteLine($"{DarkSalmon}You roll a {diceRoll}...{Reset}");
                             Console.ReadKey(true);
-                            Console.WriteLine("You escape the Minotaur's charge, lunging out of the way just as it closes in! \nThe beast for a moment almost looks as if it might crash through the window, but unfortunately it just manages to slow down, teetering momentarily before the precipitous drop beyond the thin glass.");
+                            Console.WriteLine("You escape the Minotaur's charge, lunging out of the way just as it closes in! \nThe beast for a moment almost looks as if it might crash through the window, but unfortunately it just manages to slow down, teetering momentarily before the fragile glass and the precipitous drop looming beyond...");
                             Console.ReadKey(true);
-                            Console.WriteLine("The beast faces you once more and resumes the fight...");
+                            Console.WriteLine("The beast growls, turns to face you once more and resumes the fight...");
                             if (minotaurKafuffle.Fight(specialFeatures, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                             {
                                 return room;
@@ -2255,6 +2259,8 @@ namespace DungeonCrawler
                     Console.ReadKey(true);
                     Console.WriteLine("As you land back upon your feet with the grace of a lean gymnast, you hear the minotaur's final, bloodcurdling cry as it crashes through the window and plummets to its death. \nYou permit a faint smile to slip upon your lips as the beast's yawp fades into silence.");
                     Console.ReadKey(true);
+                    this.Location = astralPlanes;
+                    this.Stamina = -1;
                     return astralPlanes;
                 }
             }

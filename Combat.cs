@@ -797,62 +797,66 @@ namespace DungeonCrawler
         }
         public void WonFight(Room room)
         {
-            Console.WriteLine($"Would you like to search the {Monster.Name} for items?");
-
-            while (true)
+            if (room.Name != "south-facing corridor" || room.FeatureList.Any(f => f.Name == "palladian window"))
             {
-                string answer = Console.ReadLine().Trim().ToLower();
-                if (answer == "yes" || answer == "y")
-                {
-                    Monster.search(Player.CarryCapacity, Player.Inventory, Player.WeaponInventory, Player);
-                    Feature deadFoe1 = new Feature("fallen foe", "They've pockets free for the plundering...", true, "searched", Monster.Items);
-                    Feature fallenFoe = null;
-                    foreach(Feature f in room.FeatureList)
-                    {
-                        if (f.Name == "fallen foe")
-                        {
-                            fallenFoe = f;
-                        }
-                    }
-                    if (fallenFoe!=null)
-                    {
-                        
-                        Feature deadFoe2 = new Feature("dead enemy", "They've pockets available for pilfering...", true, "searched", Monster.Items);
-                        room.FeatureList.Add(deadFoe2);
-                        
-                    }
-                    else
-                    {
-                        room.FeatureList.Add(deadFoe1);
-                    }
+                Console.WriteLine($"Would you like to search the {Monster.Name} for items?");
 
-                    return;
-                }
-                else if (answer == "no" || answer == "n") 
+                while (true)
                 {
-                    Feature deadFoe1 = new Feature("fallen foe", "They've pockets free for the plundering...", true, "searched", Monster.Items);
-                    Feature fallenFoe = null;
-                    foreach (Feature f in room.FeatureList)
+                    string answer = Console.ReadLine().Trim().ToLower();
+                    if (answer == "yes" || answer == "y")
                     {
-                        if (f.Name == "fallen foe")
+                        Monster.search(Player.CarryCapacity, Player.Inventory, Player.WeaponInventory, Player);
+                        Feature deadFoe1 = new Feature("fallen foe", "They've pockets free for the plundering...", true, "searched", Monster.Items);
+                        Feature fallenFoe = null;
+                        foreach (Feature f in room.FeatureList)
                         {
-                            fallenFoe = f;
+                            if (f.Name == "fallen foe")
+                            {
+                                fallenFoe = f;
+                            }
                         }
+                        if (fallenFoe != null)
+                        {
+
+                            Feature deadFoe2 = new Feature("dead enemy", "They've pockets available for pilfering...", true, "searched", Monster.Items);
+                            room.FeatureList.Add(deadFoe2);
+
+                        }
+                        else
+                        {
+                            room.FeatureList.Add(deadFoe1);
+                        }
+
+                        return;
                     }
-                    if (fallenFoe != null)
+                    else if (answer == "no" || answer == "n")
                     {
-                        Feature deadFoe2 = new Feature("dead enemy", "They've pockets available for pilfering...", true, "searched", Monster.Items);
-                        room.FeatureList.Add(deadFoe2);
-                                               
+                        Feature deadFoe1 = new Feature("fallen foe", "They've pockets free for the plundering...", true, "searched", Monster.Items);
+                        Feature fallenFoe = null;
+                        foreach (Feature f in room.FeatureList)
+                        {
+                            if (f.Name == "fallen foe")
+                            {
+                                fallenFoe = f;
+                            }
+                        }
+                        if (fallenFoe != null)
+                        {
+                            Feature deadFoe2 = new Feature("dead enemy", "They've pockets available for pilfering...", true, "searched", Monster.Items);
+                            room.FeatureList.Add(deadFoe2);
+
+                        }
+                        else
+                        {
+                            room.FeatureList.Add(deadFoe1);
+                        }
+                        return;
                     }
-                    else
-                    {
-                        room.FeatureList.Add(deadFoe1);
-                    }
-                    return; 
+                    else { Console.WriteLine("ERROR! Please answer 'yes' or 'no'."); }
                 }
-                else { Console.WriteLine("ERROR! Please answer 'yes' or 'no'."); }
             }
+
         }
         /// <summary>
         /// The general idea is that combat and the fight method is turn based; the player 
@@ -1441,7 +1445,7 @@ namespace DungeonCrawler
                                     if (Monster.Fight && damageDealt > 0)
                                     {
                                         int diceyCharge = D12.Roll(D12);
-                                        if (Monster.Stamina / 10 > diceyCharge && roomList.Contains(room) && room != roomList[0] && room != roomList[1])
+                                        if ((120 - Monster.Stamina) / 10 > diceyCharge && roomList.Contains(room) && room != roomList[0] && room != roomList[1])
                                         {
                                             Room newRoom = Monster.minotaurApproaches(music, specialItems, specialFeatures, player, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, Monster, false, 10000, false, true, player.Skill, this);
                                             if (newRoom == roomList[0])

@@ -56,6 +56,10 @@ namespace DungeonCrawler
             Stamina = stamina;
             Explored = explored;
         }
+        public string GetName()
+        {
+            return this.Name;
+        }
         public int DisplayStamina()
         {
             try
