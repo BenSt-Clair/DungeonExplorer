@@ -1152,7 +1152,7 @@ namespace DungeonCrawler
         /// <param name="trialBattle"></param>
         /// <returns></returns>
 
-        public List<bool> UseItemOutsideCombat(bool music, Room room, Item musicBox, Item binkySkull, Item steelKey, Item note, Item jailorKeys, List<Item> specialItems, Feature rosewoodChest, Feature holeInCeiling, Dictionary<Item, List<Player>> usesDictionaryItemChar, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, bool masked, Monster monster, bool fieryEscape, Combat battle = null)
+        public List<bool> UseItemOutsideCombat(List<Feature> specialFeature, List<Room> roomList, List<Door> doorList, bool music, Room room, Item musicBox, Item binkySkull, Item steelKey, Item note, Item jailorKeys, List<Item> specialItems, Feature rosewoodChest, Feature holeInCeiling, Dictionary<Item, List<Player>> usesDictionaryItemChar, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, bool masked, Monster monster, bool fieryEscape, Combat battle = null)
         {
 
             List<bool> success = new List<bool> { false, false }; //{successful use of item, fire}
@@ -1409,7 +1409,7 @@ namespace DungeonCrawler
                             }
                             try
                             {
-                                success = chosenItem.UseItem(music, chosenItem, Inventory[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, specialItems, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, battle);
+                                success = chosenItem.UseItem(specialFeature, roomList, doorList, music, chosenItem, Inventory[effectedItemNum - 1 - room.ItemList.Count], usesDictionaryItemItem, specialItems, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, battle);
                                 if (!success[0] && success[1])
                                 {
                                     return success;
@@ -1489,7 +1489,7 @@ namespace DungeonCrawler
                         {
                             try
                             {
-                                success = chosenItem.UseItem(music, chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, specialItems, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, battle);
+                                success = chosenItem.UseItem(specialFeature, roomList, doorList, music, chosenItem, room.ItemList[effectedItemNum - 1], usesDictionaryItemItem, specialItems, rosewoodChest, musicBox, room, this, holeInCeiling, usesDictionaryItemFeature, usesDictionaryItemChar, this, battle);
                                 if (!success[0] && success[1])
                                 {
                                     return success;
@@ -1606,7 +1606,8 @@ namespace DungeonCrawler
         public bool Suspicious { get; set; }
         public Stopwatch Patrol { get; set; }
         public long Time { get; set; }
-        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, bool rage = false)
+        public bool Fight { get; set; }
+        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, bool rage = false, bool fight = false)
         {
             Name = name;
             Description = description;
@@ -1614,8 +1615,9 @@ namespace DungeonCrawler
             Stamina = stamina;
             Skill = skill;
             Veapon = weapon;
+            Fight = fight;
         }
-        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, Room location, List<Room> path, bool rage = false, bool suspicious = false, Stopwatch patrol = null)
+        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, Room location, List<Room> path, bool rage = false, bool suspicious = false, Stopwatch patrol = null, bool fight = false)
         {
             Name = name;
             Description = description;
@@ -1629,6 +1631,7 @@ namespace DungeonCrawler
             Suspicious = suspicious;
             Patrol = patrol;
             Time = (Path.Count - 1) * 20000;
+            Fight = fight;
         }
         public void StashItem(Item item, Room room)
         {
@@ -1751,6 +1754,627 @@ namespace DungeonCrawler
             }
             Veapon = fists;
             return;
+        }
+        private List<long> minotaurStomp(int options, long timeLimit)
+        {
+            Dialogue m = new Dialogue(Items[0]);
+            List<long> output = new List<long>();
+            output = m.getTimedIntResponse(options, 1);
+            output.Add(timeLimit - output[1]);
+            if (output[2] < timeLimit * 3 / 4 && timeLimit > 7500)
+            {
+
+                Console.WriteLine("\nstomp...\n");
+                Thread.Sleep(700);
+                if (timeLimit > 9000)
+                {
+                    Thread.Sleep(500);
+                }
+            }
+            if (output[2] < timeLimit / 2)
+            {
+
+                Console.WriteLine("\n\t\tStomp...\n");
+                Thread.Sleep(700);
+                if (timeLimit > 9000)
+                {
+                    Thread.Sleep(500);
+                }
+            }
+            if (output[2] < timeLimit / 4)
+            {
+
+                Console.WriteLine("\n\t\t\t\tSTOMP...\n");
+                Thread.Sleep(700);
+                if (timeLimit > 9000)
+                {
+                    Thread.Sleep(500);
+                }
+            }
+            if (output[2] < 0)
+            {
+
+                Console.WriteLine("\n\t\t\t\t\t\t...STOMP!\n");
+                Thread.Sleep(700);
+                if (timeLimit > 9000)
+                {
+                    Thread.Sleep(500);
+                }
+
+            }
+            return output;
+        }
+        public Room minotaurApproaches(bool music, List<Item> specialItems, List<Feature> specialFeatures, Player player1, List<Room> roomList, List<Door> doorList, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar, Room room, Monster monster, bool firstTime, long timeLimit, bool oops = false, bool rage = false, int playerSkill = -1, Combat minotaurKafuffle = null)
+        {
+
+            const string DarkSalmon = "\u001b[38;2;233;150;122m";
+            const string SeaGreen = "\u001b[38;2;34;139;34m";
+            const string FireBrick = "\u001b[38;2;178;34;34m";
+            const string Reset = "\u001b[0m";
+            Feature window = specialFeatures[0];
+            Feature holeInCeiling = specialFeatures[1];
+            Room oceanBottom = roomList[0];
+            Room astralPlanes = roomList[1];
+            if (this.Fight && this.Path[0] == oceanBottom)
+            {
+                this.Path.Add(room);
+            }
+            else if (this.Fight)
+            {
+                this.Path.Clear();
+                this.Path.Add(oceanBottom);
+                this.Path.Add(room);
+            }
+            if (monster.Fight)
+            {
+                doorList[0].Passing = "The ground quaking beneath your feet as the minotaur closes in, you sprint and dive for the southwest corner!";
+                doorList[1].Passing = $"Feeling your heart clap in your chest as the minotaur storms the {room.Name} towards you, you hurl yourself around the northwest corner!";
+                doorList[2].Passing = "With you pulse knocking madly against your wrist, you turn and flee for the northeast corner! You leap around it just in time...";
+                doorList[3].Passing = "You make a frenzied dash for the southeast corner before the minotaur's onslaught catches you! You lunge out of the way...";
+            }
+            else
+            {
+                doorList[0].Passing = "Fleet of foot, you nip around the southwest corner.";
+                doorList[1].Passing = "Feeling your heart clap in your chest, you throw yourself around the northwest corner.";
+                doorList[2].Passing = "You duck out of sight around the northeast corner.";
+                doorList[3].Passing = "You stealthily slip around the southeast corner.";
+            }
+            Dice D12 = new Dice(12);
+            Dice D8 = new Dice(8);
+            Dice D7 = new Dice(7);
+            Dice D6 = new Dice(6);
+            Dice D5 = new Dice(5);
+            Dice D4 = new Dice(4);
+            Dice D3 = new Dice(3);
+            Dice D2 = new Dice(2);
+            List<string> monsterMarch = new List<string>
+                {
+                    $"Your actions haven't gone unheard by the monster in the {monster.Location.Name}. Once again, you here it close in...",
+                    $"Your footsteps haven't been as soft as you'd hoped. You feel the tremors through the floor, reverberating from the {monster.Location.Name}, as the beast draws near...",
+                    $"You pull back abruptly from what you were doing. From the {monster.Location.Name} the beast approaches...",
+                    $"The monster senses something amiss - a mouse pitter-pattering where it shouldn't. It moves from the {monster.Location.Name} to investigate...",
+                    $"The beast hears something. It draws forth from the {monster.Location.Name} to hunt for trespassers...",
+                    $"The walls shiver once more. The beast closes in from the {monster.Location.Name}"
+                };
+            List<string> monsterCharge1 = new List<string>
+                {
+                    $"{DarkSalmon}Enraged by your last strike, the minotaur roars so fiercely that the lanterns jitter in their alcoves.{Reset}",
+                    $"{DarkSalmon}Furious at your lucky blow, the minotaur bellows a terrific warcry that sends all before it quaking!{Reset}",
+                    $"{DarkSalmon}The minotaur bellows in wild fury as your strike lands true. Your cause for elation dwindles quickly, however...{Reset}",
+                    $"{DarkSalmon}The minotaur fumes that you bypassed its defences.{Reset}",
+                    $"{DarkSalmon}Thundering a terrifying scream of either anguish or bloodlust, the almighty beast heaves as it fixes you with its crimson rage-filled eyes. {Reset}",
+                    $"{DarkSalmon}The beast howls in bloodcurdling rage!{Reset}"
+                };
+            List<string> monsterCharge2 = new List<string>
+                {
+                    $"{FireBrick} The minotaur lowers its horns and CHARGES!{Reset}",
+                    $"{FireBrick}Dreading what is to follow you brace yourself as it lowers its horns, paws the floor, and CHARGES!{Reset}",
+                    $"{FireBrick} You have only an instant to brace yourself, before the minotaur CHARGES!{Reset}",
+                    $"{FireBrick} It paws at the ground, flexing its almighty muscles, before barrelling towards you in a frenzied stampede!{Reset}",
+                    $"{FireBrick} You feel a knot of dread tighten about your stomach, then the beast CHARGES!{Reset}",
+                    $"{FireBrick}It lowers its horns and CHARGES!{Reset}"
+                };
+            if (firstTime)
+            {
+                Console.WriteLine($"The ground suddenly trembles beneath your feet. The corridor's lanterns shiver in their alcoves, shadows jostling along the walls before their quivering flames. From the {monster.Location.Name} something approaches...");
+                Console.ReadKey(true);
+
+            }
+            else if (oops) { }
+            else if (monster.Fight)
+            {
+                StringBuilder charge = new StringBuilder();
+                charge.Append(monsterCharge1[D6.Roll(D6) - 1]);
+                charge.Append("\n\n");
+                charge.Append(monsterCharge2[D6.Roll(D6) - 1]);
+                charge.Append("\n");
+                string chargeString = charge.ToString();
+                Console.WriteLine(chargeString);
+            }
+            else
+            {
+
+                Console.WriteLine(monsterMarch[D6.Roll(D6) - 1]);
+                Console.ReadKey(true);
+            }
+
+            if (rage)
+            {
+                timeLimit = 3 * timeLimit / 5;
+            }
+            if (monster.Fight)
+            {
+                timeLimit = timeLimit / 2;
+            }
+            if (player1.Speedy && !oops)
+            {
+                timeLimit *= 2;
+            }
+            string strand = "";
+            if (!oops)
+            {
+                strand = "to decide";
+            }
+            else
+            {
+                strand = "left";
+            }
+            if (player1.Speedy)
+            {
+                strand += " (thanks to your potion of alacrity)";
+            }
+            Console.WriteLine($"What will you do?\n[You have only {timeLimit / 1000} seconds {strand} after you press any key...]");
+            Console.ReadKey(true);
+            List<Door> doors = new List<Door>();
+            foreach (Feature f in room.FeatureList)
+            {
+                if (f is Door)
+                {
+                    doors.Add(f.CastDoor());
+                }
+
+            }
+            long i = 1;
+            string action = "";
+            List<string> slipsnipsdarts = new List<string>
+                {
+                    "Nip", "Dart", "Scramble", "Scurry", "Rush", "Hurry", "Slink", "Slip"
+                };
+            List<string> choices = new List<string>();
+            Dictionary<long, Door> choice_door = new Dictionary<long, Door>();
+            Dictionary<string, Door> tie_door = new Dictionary<string, Door>();
+            foreach (Door d in doors)
+            {
+                if (d.Portal.Contains(monster.Location) && !monster.Fight)
+                {
+                    action = $"Stride up to the {d.Name} and confront the beast...";
+                }
+                else if (d.Name.Contains("corner"))
+                {
+                    if (!monster.Fight)
+                    {
+                        action = $"{slipsnipsdarts[D8.Roll(D8) - 1]} around the {d.Name}";
+                    }
+                    else
+                    {
+                        action = $"{slipsnipsdarts[D4.Roll(D4) + 1]} around the {d.Name}!";
+                    }
+                }
+                else
+                {
+                    if (!monster.Fight)
+                    {
+                        action = $"{slipsnipsdarts[D8.Roll(D8) - 1]} through the {d.Name}";
+                    }
+                    else
+                    {
+                        action = $"{slipsnipsdarts[D4.Roll(D4) + 1]} through the {d.Name}!";
+                    }
+                }
+                choices.Add(action);
+                tie_door[action] = d;
+            }
+            if (monster.Fight && room.FeatureList.Contains(window))
+            {
+                choices.Add($"Cower behind the palladian window's gossamer curtains and hope for the best..?");
+            }
+            /// choices.add(action) => action = hide behind curtain if in southern corridor
+            /// minotaur sees you and charges chance it falls though window when dodged
+            /// tie_door[action] = d
+            ///
+            long cower = -1;
+            if (choices.Count == 8)
+            {
+                int index = D8.Roll(D8) - 1;
+                Console.WriteLine($"[{i}] {choices[index]}");
+                if (choices[index].Contains("Cower"))
+                {
+                    cower = i;
+                }
+                else
+                {
+                    choice_door[i] = tie_door[choices[index]];
+                }
+                choices.Remove(choices[index]);
+
+                i++;
+            }
+            if (choices.Count == 7)
+            {
+                int index = D7.Roll(D7) - 1;
+                Console.WriteLine($"[{i}] {choices[index]}");
+                if (choices[index].Contains("Cower"))
+                {
+                    cower = i;
+                }
+                else
+                {
+                    choice_door[i] = tie_door[choices[index]];
+                }
+                choices.Remove(choices[index]);
+
+                i++;
+            }
+            if (choices.Count == 6)
+            {
+                int index = D6.Roll(D6) - 1;
+                Console.WriteLine($"[{i}] {choices[index]}");
+                if (choices[index].Contains("Cower"))
+                {
+                    cower = i;
+                }
+                else
+                {
+                    choice_door[i] = tie_door[choices[index]];
+                }
+                choices.Remove(choices[index]);
+
+                i++;
+            }
+            if (choices.Count == 5)
+            {
+                int index = D5.Roll(D5) - 1;
+                Console.WriteLine($"[{i}] {choices[index]}");
+                if (choices[index].Contains("Cower"))
+                {
+                    cower = i;
+                }
+                else
+                {
+                    choice_door[i] = tie_door[choices[index]];
+                }
+                choices.Remove(choices[index]);
+
+                i++;
+            }
+            if (choices.Count == 4)
+            {
+                int index = D4.Roll(D4) - 1;
+                Console.WriteLine($"[{i}] {choices[index]}");
+                if (choices[index].Contains("Cower"))
+                {
+                    cower = i;
+                }
+                else
+                {
+                    choice_door[i] = tie_door[choices[index]];
+                }
+                choices.Remove(choices[index]);
+
+                i++;
+            }
+            if (choices.Count == 3)
+            {
+                int index = D3.Roll(D3) - 1;
+                Console.WriteLine($"[{i}] {choices[index]}");
+                if (choices[index].Contains("Cower"))
+                {
+                    cower = i;
+                }
+                else
+                {
+                    choice_door[i] = tie_door[choices[index]];
+                }
+                choices.Remove(choices[index]);
+
+                i++;
+            }
+            if (choices.Count == 2)
+            {
+                int index = D2.Roll(D2) - 1;
+                Console.WriteLine($"[{i}] {choices[index]}");
+                if (choices[index].Contains("Cower"))
+                {
+                    cower = i;
+                }
+                else
+                {
+                    choice_door[i] = tie_door[choices[index]];
+                }
+                choices.Remove(choices[index]);
+                i++;
+            }
+            if (choices.Count == 1)
+            {
+                Console.WriteLine($"[{i}] {choices[0]}");
+                if (choices[0].Contains("Cower"))
+                {
+                    cower = i;
+                }
+                else
+                {
+                    choice_door[i] = tie_door[choices[0]];
+                }
+                choices.Remove(choices[0]);
+
+                i++;
+            }
+
+            int x = unchecked((int)i);
+
+            List<long> output = minotaurStomp(x, timeLimit);
+            int index2 = unchecked((int)output[0]);
+            if (output[2] < 0)
+            {
+                if (!monster.Fight)
+                {
+                    Console.WriteLine("TOO LATE! Fixed within the monster's sights, you brace yourself for the fight of your life...");
+                    Console.ReadKey(true);
+                    return room;
+                }
+                else if (playerSkill > 8)
+                {
+                    Console.WriteLine($"{SeaGreen}Test your skill! [Roll a D12 under your skill score...]{Reset}");
+                    Console.ReadKey(true);
+                    int diceRoll = D12.Roll(D12);
+                    if (diceRoll < playerSkill)
+                    {
+                        Console.WriteLine($"{DarkSalmon}You roll a {diceRoll}...{Reset}");
+                        Console.ReadKey(true);
+                        List<string> floatLikeButterfly = new List<string>
+                            {
+                                $"Your formidable reflexes take over! You dive and roll out of the minotaur's path with unnerving grace...",
+                                "You react just in time! Leaping through the air, you elegantly somersault over the minotaur's horns like a Minoan bullfighter!",
+                                "With lightning reflexes you dart into an alcove at the last second! The minotaur tears past you. Incensed, you dodged its attack, it once more closes in for the kill...",
+                                "Warrior instincts taking over you rush towards the charging beast! At the last second you slide elegantly between its legs and out of harm's way..."
+                            };
+                        Console.WriteLine($"{SeaGreen}{floatLikeButterfly[D4.Roll(D4) - 1]}{Reset}");
+                        Console.ReadKey(true);
+
+                        if (minotaurKafuffle.Fight(specialFeatures, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                        {
+                            return room;
+                        }
+                        return oceanBottom;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{FireBrick}You roll a {diceRoll}...{Reset}");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Before you have chance to act the minotaur has gored you with its horns and slammed you bodily into the far wall. \n The last thing you hear as you lay dying is its bestial roar of triumph...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your adventure ends here...");
+                        Console.ReadKey(true);
+                        return oceanBottom;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Before you have chance to act the minotaur gores you with its horns and slams you bodily into the far wall. \n The last thing you hear as you lay dying is its bestial roar of triumph...");
+                    Console.ReadKey(true);
+                    Console.WriteLine("Your adventure ends here...");
+                    Console.ReadKey(true);
+                    return oceanBottom;
+                }
+            }
+            else if (!monster.Fight)
+            {
+                // Issue here where these two if statements used to be one
+                // i separated them because of an issue arising when cower occurs
+                // now it bypasses the if statement below if false but isn't caught
+                // by later else if statements.
+                try
+                {
+                    if (choice_door[output[0]].Passage(room, false) == monster.Location)
+                    {
+                        Console.WriteLine($"Feeling perhaps a smidge crazy, you've the sudden overwhelming urge to face your destiny (that or a death wish...) \nYou gallantly stride up to the {choice_door[output[0]].Name} and take the fight to the monster!");
+                        Console.ReadKey(true);
+                        return choice_door[output[0]].Passage(room, false);
+                    }
+                }
+                catch { Console.WriteLine("ERROR! See line 2182, Character.cs"); }
+                return room;
+            }
+            else if (output[1] < 2 * timeLimit / 5 && !monster.Fight)
+            {
+                Console.WriteLine($"You manage to reach the {choice_door[output[0]].Name} with time to spare...");
+                Console.ReadKey(true);
+                if (choice_door[output[0]].Attribute)
+                {
+
+
+                    Console.WriteLine("With dawning horror your clammy hands fumble as they try to open a locked door!");
+                    Console.ReadKey(true);
+                    return this.minotaurApproaches(music, specialItems, specialFeatures, player1, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, monster, false, output[2], true, rage);
+
+                }
+                else if (choice_door[output[0]].CastDoor().Portal.Count == 1)
+                {
+                    Console.WriteLine("Feeling the monster closing in, you swing the door open - only to find no room on the other side. It's been bricked up!");
+                    Console.ReadKey(true);
+                    return this.minotaurApproaches(music, specialItems, specialFeatures, player1, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, monster, false, output[2], true, rage);
+                }
+                return choice_door[output[0]].Passage(room);
+            }
+            else if (output[1] < 7 * timeLimit / 10 || (monster.Fight && output[0] != cower))
+            {
+                Console.WriteLine($"You scramble to the {choice_door[output[0]].Name}...");
+                Console.ReadKey(true);
+                if (choice_door[output[0]].Attribute)
+                {
+
+
+                    Console.WriteLine("With dawning horror your clammy hands fumble as they try to open a locked door!");
+                    Console.ReadKey(true);
+                    if (!monster.Fight)
+                    {
+                        return this.minotaurApproaches(music, specialItems, specialFeatures, player1, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, monster, false, output[2], true, rage);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Before you have chance to act the minotaur gores you with its horns and slams you bodily into the far wall. \n The last thing you hear as you lay dying is its bestial roar of triumph...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your adventure ends here...");
+                        Console.ReadKey(true);
+                        return oceanBottom;
+                    }
+                }
+                else if (choice_door[output[0]].CastDoor().Portal.Count == 1)
+                {
+                    Console.WriteLine("Feeling the monster closing in, you swing the door open - only to find no room on the other side. It's been bricked up!");
+                    Console.ReadKey(true);
+                    if (!monster.Fight)
+                    {
+                        return this.minotaurApproaches(music, specialItems, specialFeatures, player1, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, monster, false, output[2], true, rage);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Before you have chance to act the minotaur gores you with its horns and slams you bodily into the far wall. \n The last thing you hear as you lay dying is its bestial roar of triumph...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your adventure ends here...");
+                        Console.ReadKey(true);
+                        return oceanBottom;
+                    }
+                }
+                if (monster.Fight)
+                {
+                    Room newRoom = choice_door[output[0]].Passage(room, false);
+                    Console.WriteLine($"The beast crashes into the wall, shrugs it off as debris cascades around it, then once more closes in for the kill within the {choice_door[output[0]].Passage(room, false).Name}...");
+                    Console.ReadKey(true);
+                    if (minotaurKafuffle.Fight(specialFeatures, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                    {
+                        return room;
+                    }
+                    return oceanBottom;
+                }
+                return choice_door[output[0]].Passage(room);
+            }
+            else if (output[0] == cower)
+            {
+                if (playerSkill < 9)
+                {
+                    if (player1.Traits.ContainsKey("jinxed"))
+                    {
+                        Console.WriteLine("Quivering as the gargantuan beast storms towards you, flailing its great sword like carnage incarnate, you can't think of anything to do but cower behind the translucent curtains of the palladian window and hope the minotaur doesn't spot your hiding place." +
+                            "\n The attempt seems somewhat ill-fated, with your shivering boots easily exposing your position and the curtains being all too thin to offer any concealment for your pitiably tremulous form. " +
+                            "The minotaur bears down on you...");
+                        Console.ReadKey(true);
+                        Console.WriteLine($"{DarkSalmon} Test Your Skill! [Roll a D12 under your jinxy skill score...]{Reset}");
+                        Console.ReadKey(true);
+                        int diceRoll = D12.Roll(D12);
+                        if (diceRoll >= playerSkill)
+                        {
+                            Console.WriteLine($"{SeaGreen}You rolled a {diceRoll}! Whoops...{Reset}");
+                            Console.ReadKey(true);
+                            Console.WriteLine("You trip on the diaphanous curtain!");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Just before the minotaur gores you with its horns, you oafishly fall out of the way. The minotaur trips up over your oafish leg, but before you can cry out 'Ooh... Sorry!' the beast crashes headfirst through the window!");
+                            Console.ReadKey(true);
+                            Console.WriteLine("You can hear it wailing 'MOOOOO!!!' all the way down, terminating in a rather messy splat.");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Yeesh! You thank your stars you're not the one who has to clean up that mess...");
+                            Console.ReadKey(true);
+                            room.FeatureList.Remove(window);
+                            return astralPlanes;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"{FireBrick}Congratulations!{Reset}");
+                            Console.ReadKey(true);
+                            Console.WriteLine($"{DarkSalmon}For once you manage to not lose your balance, trip up, or cause any jinxy mayhem of any kind! You remain perfectly still stood where you are.{Reset}");
+                            Console.ReadKey(true);
+                            Console.WriteLine($"{DarkSalmon} The minotaur appreciates you making it easy to lop off your head...{Reset}");
+                            Console.ReadKey(true);
+                            Console.WriteLine("\nYour adventure ends here...");
+                            return oceanBottom;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("You try to dart out of the minotaur's way, cradled by the convex space offered by the Palladian window. But the minotaur only stampedes towards you with fiery, rage-filled zealotry...");
+                        Console.ReadKey(true);
+                        Console.WriteLine($"{DarkSalmon}Test Your Skill [Roll a D12 under your skill score...]{Reset}");
+                        Console.ReadKey(true);
+                        int diceRoll = D12.Roll(D12);
+                        if (diceRoll < 2 * playerSkill / 3)
+                        {
+                            Console.WriteLine($"{SeaGreen}You roll a {diceRoll}!{Reset}");
+                            Console.ReadKey(true);
+                            Console.WriteLine("You manage to dive out of the way just before the minotaur barrels into you!\n It releases one last bloodcurdling yell as it plummets, before its body is swallowed by the encircling mists far below...");
+                            Console.ReadKey(true);
+                            room.FeatureList.Remove(window);
+                            return astralPlanes;
+                        }
+                        else if (diceRoll < playerSkill)
+                        {
+                            Console.WriteLine($"{DarkSalmon}You roll a {diceRoll}...{Reset}");
+                            Console.ReadKey(true);
+                            Console.WriteLine("You escape the Minotaur's charge, lunging out of the way just as it closes in! \nThe beast for a moment almost looks as if it might crash through the window, but unfortunately it just manages to slow down, teetering momentarily before the precipitous drop beyond the thin glass.");
+                            Console.ReadKey(true);
+                            Console.WriteLine("The beast faces you once more and resumes the fight...");
+                            if (minotaurKafuffle.Fight(specialFeatures, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                            {
+                                return room;
+                            }
+                            return oceanBottom;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Before you have chance to act the minotaur gores you with its horns and slams you bodily into the far wall. \n The last thing you hear as you lay dying is its bestial roar of triumph...");
+                            Console.ReadKey(true);
+                            Console.WriteLine("Your adventure ends here...");
+                            Console.ReadKey(true);
+                            return oceanBottom;
+                        }
+                    }
+                }
+
+                else
+                {
+                    Console.WriteLine("Deploying your warrior's cunning, you goad the beast into charging towards the window. \nBunching up your muscles ready to leap aside, you let the minotaur barrel towards you.");
+                    Console.ReadKey(true);
+                    Console.WriteLine("Waiting until the very last second, you grab the minotaur by the horns and somersault over the top of the beast's head!");
+                    Console.ReadKey(true);
+                    Console.WriteLine("As you land back upon your feet with the grace of a lean gymnast, you hear the minotaur's final, bloodcurdling cry as it crashes through the window and plummets to its death. \nYou permit a faint smile to slip upon your lips as the beast's yawp fades into silence.");
+                    Console.ReadKey(true);
+                    return astralPlanes;
+                }
+            }
+            else
+            {
+                Console.WriteLine($"You scramble to the {choice_door[output[0]].Name}...");
+                if (choice_door[output[0]].Attribute)
+                {
+
+                    Console.ReadKey(true);
+                    Console.WriteLine("With dawning horror your clammy hands fumble as they try to open the door! It's locked!");
+                    Console.ReadKey(true);
+                    Console.WriteLine("It's with a chill that you feel the monster's shadow fall over you. It's caught you red-handed. Feeling your stomach twist in knots, you face your foe...");
+                    Console.ReadKey(true);
+                    return room;
+
+                }
+                else if (choice_door[output[0]].CastDoor().Portal.Count == 1)
+                {
+                    Console.WriteLine("Feeling the monster closing in, you swing the door open - only to find no room on the other side. It's been bricked up!");
+                    Console.ReadKey(true);
+                    Console.WriteLine("It's with a chill that you feel the monster's shadow fall over you. It's caught you red-handed. Feeling your stomach twist in knots, you face your foe...");
+                    Console.ReadKey(true);
+                    return room;
+                }
+                return choice_door[output[0]].Passage(room);
+            }
+
         }
         /// <summary>
         /// The following function returns the Minotaur, room by room, to

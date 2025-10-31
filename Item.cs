@@ -2989,7 +2989,7 @@ namespace DungeonCrawler
         /// <param name="trialBattle"></param>
         /// <param name="monster"></param>
         /// <returns></returns>
-        public List<bool> UseItem(bool music, Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, List<Item> specialItems, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, Dictionary<Item, List<Player>> usesDictionaryItemChar = null, Player player1 = null, Combat trialBattle = null, Monster monster = null)
+        public List<bool> UseItem(List<Feature> specialFeature, List<Room> roomList, List<Door> doorList, bool music, Item item1, Item item2, Dictionary<Item, List<Item>> usesDictionary, List<Item> specialItems, Feature feature = null, Item plusItem = null, Room room = null, Player player = null, Feature addFeature = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, Dictionary<Item, List<Player>> usesDictionaryItemChar = null, Player player1 = null, Combat trialBattle = null, Monster monster = null)
         {
             List<bool> tlist = new List<bool> { false, false };
             if (usesDictionary[item1].Contains(item2))
@@ -3033,7 +3033,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         player.Inventory.Remove(item2);
                         bool fire = true;
-                        if (trialBattle.Fight(music, usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, specialItems, 1, fire))
+                        if (trialBattle.Fight(specialFeature, roomList, doorList, music, usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, specialItems, 1, fire))
                         {
                             tlist[0] = true;
                             tlist[1] = true;
@@ -3061,7 +3061,7 @@ namespace DungeonCrawler
                         Console.ReadKey(true);
                         player.Inventory.Remove(item2);
                         bool fire = true;
-                        if (trialBattle.Fight(music, usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, specialItems, 1, fire))
+                        if (trialBattle.Fight(specialFeature, roomList, doorList, music, usesDictionary, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, addFeature, specialItems, 1, fire))
                         {
                             tlist[0] = true;
                             tlist[1] = true;
