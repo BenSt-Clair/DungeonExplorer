@@ -2167,98 +2167,6 @@ namespace DungeonCrawler
                     return oceanBottom;
                 }
             }
-            else if (!monster.Fight)
-            {
-                // Issue here where these two if statements used to be one
-                // i separated them because of an issue arising when cower occurs
-                // now it bypasses the if statement below if false but isn't caught
-                // by later else if statements.
-                try
-                {
-                    if (choice_door[output[0]].Passage(room, false) == monster.Location)
-                    {
-                        Console.WriteLine($"Feeling perhaps a smidge crazy, you've the sudden overwhelming urge to face your destiny (that or a death wish...) \nYou gallantly stride up to the {choice_door[output[0]].Name} and take the fight to the monster!");
-                        Console.ReadKey(true);
-                        return choice_door[output[0]].Passage(room, false);
-                    }
-                }
-                catch { Console.WriteLine("ERROR! See line 2182, Character.cs"); }
-                return room;
-            }
-            else if (output[1] < 2 * timeLimit / 5 && !monster.Fight)
-            {
-                Console.WriteLine($"You manage to reach the {choice_door[output[0]].Name} with time to spare...");
-                Console.ReadKey(true);
-                if (choice_door[output[0]].Attribute)
-                {
-
-
-                    Console.WriteLine("With dawning horror your clammy hands fumble as they try to open a locked door!");
-                    Console.ReadKey(true);
-                    return this.minotaurApproaches(music, specialItems, specialFeatures, player1, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, monster, false, output[2], true, rage);
-
-                }
-                else if (choice_door[output[0]].CastDoor().Portal.Count == 1)
-                {
-                    Console.WriteLine("Feeling the monster closing in, you swing the door open - only to find no room on the other side. It's been bricked up!");
-                    Console.ReadKey(true);
-                    return this.minotaurApproaches(music, specialItems, specialFeatures, player1, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, monster, false, output[2], true, rage);
-                }
-                return choice_door[output[0]].Passage(room);
-            }
-            else if (output[1] < 7 * timeLimit / 10 || (monster.Fight && output[0] != cower))
-            {
-                Console.WriteLine($"You scramble to the {choice_door[output[0]].Name}...");
-                Console.ReadKey(true);
-                if (choice_door[output[0]].Attribute)
-                {
-
-
-                    Console.WriteLine("With dawning horror your clammy hands fumble as they try to open a locked door!");
-                    Console.ReadKey(true);
-                    if (!monster.Fight)
-                    {
-                        return this.minotaurApproaches(music, specialItems, specialFeatures, player1, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, monster, false, output[2], true, rage);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Before you have chance to act the minotaur gores you with its horns and slams you bodily into the far wall. \n The last thing you hear as you lay dying is its bestial roar of triumph...");
-                        Console.ReadKey(true);
-                        Console.WriteLine("Your adventure ends here...");
-                        Console.ReadKey(true);
-                        return oceanBottom;
-                    }
-                }
-                else if (choice_door[output[0]].CastDoor().Portal.Count == 1)
-                {
-                    Console.WriteLine("Feeling the monster closing in, you swing the door open - only to find no room on the other side. It's been bricked up!");
-                    Console.ReadKey(true);
-                    if (!monster.Fight)
-                    {
-                        return this.minotaurApproaches(music, specialItems, specialFeatures, player1, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, monster, false, output[2], true, rage);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Before you have chance to act the minotaur gores you with its horns and slams you bodily into the far wall. \n The last thing you hear as you lay dying is its bestial roar of triumph...");
-                        Console.ReadKey(true);
-                        Console.WriteLine("Your adventure ends here...");
-                        Console.ReadKey(true);
-                        return oceanBottom;
-                    }
-                }
-                if (monster.Fight)
-                {
-                    Room newRoom = choice_door[output[0]].Passage(room, false);
-                    Console.WriteLine($"The beast crashes into the wall, shrugs it off as debris cascades around it, then once more closes in for the kill within the {choice_door[output[0]].Passage(room, false).Name}...");
-                    Console.ReadKey(true);
-                    if (minotaurKafuffle.Fight(specialFeatures, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
-                    {
-                        return room;
-                    }
-                    return oceanBottom;
-                }
-                return choice_door[output[0]].Passage(room);
-            }
             else if (output[0] == cower)
             {
                 if (playerSkill < 9)
@@ -2350,6 +2258,93 @@ namespace DungeonCrawler
                     return astralPlanes;
                 }
             }
+            else if (!monster.Fight && choice_door[output[0]].Passage(room, false) == monster.Location)
+            {
+                // Issue here where these two if statements used to be one
+                // i separated them because of an issue arising when cower occurs
+                // now it bypasses the if statement below if false but isn't caught
+                // by later else if statements.
+                           
+                Console.WriteLine($"Feeling perhaps a smidge crazy, you've the sudden overwhelming urge to face your destiny (that or a death wish...) \nYou gallantly stride up to the {choice_door[output[0]].Name} and take the fight to the monster!");
+                Console.ReadKey(true);
+                return choice_door[output[0]].Passage(room, false);
+                            
+            }
+            else if (output[1] < 2 * timeLimit / 5 && !monster.Fight)
+            {
+                Console.WriteLine($"You manage to reach the {choice_door[output[0]].Name} with time to spare...");
+                Console.ReadKey(true);
+                if (choice_door[output[0]].Attribute)
+                {
+
+
+                    Console.WriteLine("With dawning horror your clammy hands fumble as they try to open a locked door!");
+                    Console.ReadKey(true);
+                    return this.minotaurApproaches(music, specialItems, specialFeatures, player1, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, monster, false, output[2], true, rage);
+
+                }
+                else if (choice_door[output[0]].CastDoor().Portal.Count == 1)
+                {
+                    Console.WriteLine("Feeling the monster closing in, you swing the door open - only to find no room on the other side. It's been bricked up!");
+                    Console.ReadKey(true);
+                    return this.minotaurApproaches(music, specialItems, specialFeatures, player1, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, monster, false, output[2], true, rage);
+                }
+                return choice_door[output[0]].Passage(room);
+            }
+            else if (output[1] < 7 * timeLimit / 10 || (monster.Fight && output[0] != cower))
+            {
+                Console.WriteLine($"You scramble to the {choice_door[output[0]].Name}...");
+                Console.ReadKey(true);
+                if (choice_door[output[0]].Attribute)
+                {
+
+
+                    Console.WriteLine("With dawning horror your clammy hands fumble as they try to open a locked door!");
+                    Console.ReadKey(true);
+                    if (!monster.Fight)
+                    {
+                        return this.minotaurApproaches(music, specialItems, specialFeatures, player1, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, monster, false, output[2], true, rage);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Before you have chance to act the minotaur gores you with its horns and slams you bodily into the far wall. \n The last thing you hear as you lay dying is its bestial roar of triumph...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your adventure ends here...");
+                        Console.ReadKey(true);
+                        return oceanBottom;
+                    }
+                }
+                else if (choice_door[output[0]].CastDoor().Portal.Count == 1)
+                {
+                    Console.WriteLine("Feeling the monster closing in, you swing the door open - only to find no room on the other side. It's been bricked up!");
+                    Console.ReadKey(true);
+                    if (!monster.Fight)
+                    {
+                        return this.minotaurApproaches(music, specialItems, specialFeatures, player1, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, monster, false, output[2], true, rage);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Before you have chance to act the minotaur gores you with its horns and slams you bodily into the far wall. \n The last thing you hear as you lay dying is its bestial roar of triumph...");
+                        Console.ReadKey(true);
+                        Console.WriteLine("Your adventure ends here...");
+                        Console.ReadKey(true);
+                        return oceanBottom;
+                    }
+                }
+                if (monster.Fight)
+                {
+                    Room newRoom = choice_door[output[0]].Passage(room, false);
+                    Console.WriteLine($"The beast crashes into the wall, shrugs it off as debris cascades around it, then once more closes in for the kill within the {choice_door[output[0]].Passage(room, false).Name}...");
+                    Console.ReadKey(true);
+                    if (minotaurKafuffle.Fight(specialFeatures, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
+                    {
+                        return room;
+                    }
+                    return oceanBottom;
+                }
+                return choice_door[output[0]].Passage(room);
+            }
+            
             else
             {
                 Console.WriteLine($"You scramble to the {choice_door[output[0]].Name}...");
