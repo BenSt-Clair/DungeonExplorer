@@ -1441,7 +1441,7 @@ namespace DungeonCrawler
                                     if (Monster.Fight && damageDealt > 0)
                                     {
                                         int diceyCharge = D12.Roll(D12);
-                                        if (Monster.Stamina / 10 > diceyCharge)
+                                        if (Monster.Stamina / 10 > diceyCharge && roomList.Contains(room) && room != roomList[0] && room != roomList[1])
                                         {
                                             Room newRoom = Monster.minotaurApproaches(music, specialItems, specialFeatures, player, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, Monster, false, 10000, false, true, player.Skill, this);
                                             if (newRoom == roomList[0])

@@ -2258,7 +2258,7 @@ namespace DungeonCrawler
             // because of the change in room. So perhaps place function before minotaur attacks
             // Random chance that it charges instead?
             List<Door> doorList = new List<Door> {southwestCorner, northwestCorner, northeastCorner, southeastCorner};
-            List<Room> roomList = new List<Room> {oceanBottom, astralPlanes };
+            List<Room> roomList = new List<Room> {oceanBottom, astralPlanes, northernmostCorridor, southernmostCorridor, westernmostCorridor, easternmostCorridor, corridor, antechamber, armoury, messHall, emptyCell, cellOpposite };
             List<Feature> specialFeature = new List<Feature> { window, holeInCeiling };
             Room minotaurStalks(Room newRoom1, Monster minotaur, long minotaurAlertedBy, long minotaurAlerted, Combat minotaurKafuffle, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar, List<bool> leftWhichRooms)
             {
