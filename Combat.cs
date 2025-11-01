@@ -856,6 +856,10 @@ namespace DungeonCrawler
                     else { Console.WriteLine("ERROR! Please answer 'yes' or 'no'."); }
                 }
             }
+            else
+            {
+
+            }
 
         }
         /// <summary>
@@ -1447,26 +1451,44 @@ namespace DungeonCrawler
                                         int diceyCharge = D12.Roll(D12);
                                         if ((120 - Monster.Stamina) / 10 > diceyCharge && roomList.Contains(room) && room != roomList[0] && room != roomList[1])
                                         {
-                                            Room newRoom = Monster.minotaurApproaches(music, specialItems, specialFeatures, player, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, Monster, false, 10000, false, true, player.Skill, this);
-                                            if (newRoom == roomList[0])
+                                            if (music)
                                             {
-                                                return false;
+                                                outputFile.Stop();
                                             }
-                                            else if (newRoom == roomList[1])
+                                            int randomGrunt = D5.Roll(D5);
+                                            
+                                            string tag = randomGrunt.ToString();
+
+                                         
+                                            using(var audioFile1 = new AudioFileReader($"minotaurROAR{tag}.mp3"))
                                             {
-                                                return true;
-                                            }
-                                            else
-                                            {
-                                                if (player.Stamina > 0) 
+                                                using(var outputFile1 = new WaveOutEvent())
                                                 {
-                                                    return true;
-                                                }
-                                                else
-                                                {
-                                                    return false;
+                                                    outputFile1.Init(audioFile1);
+                                                    outputFile1.Play();
+                                                    Room newRoom = Monster.minotaurApproaches(music, specialItems, specialFeatures, player, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, Monster, false, 10000, false, true, player.Skill, this);
+                                                    if (newRoom == roomList[0])
+                                                    {
+                                                        return false;
+                                                    }
+                                                    else if (newRoom == roomList[1])
+                                                    {
+                                                        return true;
+                                                    }
+                                                    else
+                                                    {
+                                                        if (player.Stamina > 0)
+                                                        {
+                                                            return true;
+                                                        }
+                                                        else
+                                                        {
+                                                            return false;
+                                                        }
+                                                    }
                                                 }
                                             }
+                                            
                                         }
                                     }
                                 }

@@ -2173,9 +2173,9 @@ namespace DungeonCrawler
                 {
                     if (player1.Traits.ContainsKey("jinxed"))
                     {
-                        Console.WriteLine("Quivering as the gargantuan beast storms towards you, flailing its great sword like carnage incarnate, you can't think of anything to do but cower behind the translucent curtains of the palladian window and hope the minotaur doesn't spot your hiding place." +
-                            "\n The attempt seems somewhat ill-fated, with your shivering boots easily exposing your position and the curtains being all too thin to offer any concealment for your pitiably tremulous form. " +
-                            "The minotaur bears down on you...");
+                        Console.WriteLine("Quivering as the gargantuan beast storms towards you, carnage incarnate, you cower behind the translucent curtains of the palladian window, praying the minotaur doesn't spot your hiding place." +
+                            "\n The attempt seems somewhat ill-fated; Your shivering boots expose your position, the curtains are all too thin to offer any concealment... And, of course, there's the fact you were in the minotaur's sights the whole time. " +
+                            "The floor quakes as the minotaur's stampede rapidly closes in...");
                         Console.ReadKey(true);
                         Console.WriteLine($"{DarkSalmon} Test Your Skill! [Roll a D12 under your jinxy skill score...]{Reset}");
                         Console.ReadKey(true);
@@ -2186,7 +2186,7 @@ namespace DungeonCrawler
                             Console.ReadKey(true);
                             Console.WriteLine("You trip on the diaphanous curtain!");
                             Console.ReadKey(true);
-                            Console.WriteLine("Just before the minotaur gores you with its horns, you oafishly fall out of the way. The minotaur trips up over your oafish leg, but before you can cry out 'Ooh... Sorry!' the beast crashes headfirst through the window!");
+                            Console.WriteLine("Just before the minotaur gores you with its horns, you oafishly fall out of the way. The minotaur trips up over your flailing leg, but before you can cry out 'Ooh... Sorry!' the beast crashes headfirst through the window!");
                             Console.ReadKey(true);
                             Console.WriteLine("You can hear it wailing 'MOOOOO!!!' all the way down, terminating in a rather messy splat.");
                             Console.ReadKey(true);
@@ -2253,9 +2253,9 @@ namespace DungeonCrawler
 
                 else
                 {
-                    Console.WriteLine("Deploying your warrior's cunning, you goad the beast into charging towards the window. \nBunching up your muscles ready to leap aside, you let the minotaur barrel towards you.");
+                    Console.WriteLine("Deploying your warrior's cunning, you goad the beast into charging towards the window. \nBunching up your muscles, you force yourself to hold until the last split-second to leap aside!");
                     Console.ReadKey(true);
-                    Console.WriteLine("Waiting until the very last second, you grab the minotaur by the horns and somersault over the top of the beast's head!");
+                    Console.WriteLine("Suddenly, grabbing the minotaur by the horns, you somersault over the top of the beast's head!");
                     Console.ReadKey(true);
                     Console.WriteLine("As you land back upon your feet with the grace of a lean gymnast, you hear the minotaur's final, bloodcurdling cry as it crashes through the window and plummets to its death. \nYou permit a faint smile to slip upon your lips as the beast's yawp fades into silence.");
                     Console.ReadKey(true);
@@ -2340,11 +2340,12 @@ namespace DungeonCrawler
                 if (monster.Fight)
                 {
                     Room newRoom = choice_door[output[0]].Passage(room, false);
+                    monster.Location = newRoom;
                     Console.WriteLine($"The beast crashes into the wall, shrugs it off as debris cascades around it, then once more closes in for the kill within the {choice_door[output[0]].Passage(room, false).Name}...");
                     Console.ReadKey(true);
                     if (minotaurKafuffle.Fight(specialFeatures, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                     {
-                        return room;
+                        return newRoom;
                     }
                     return oceanBottom;
                 }
