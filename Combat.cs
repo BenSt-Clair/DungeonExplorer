@@ -797,7 +797,7 @@ namespace DungeonCrawler
         }
         public void WonFight(Room room)
         {
-            if (room.Name != "south-facing corridor" || room.FeatureList.Any(f => f.Name == "palladian window"))
+            if ((room.Name != "south-facing corridor" && room.Name != "astral planes") || room.FeatureList.Any(f => f.Name == "palladian window"))
             {
                 Console.WriteLine($"Would you like to search the {Monster.Name} for items?");
 
@@ -1092,8 +1092,35 @@ namespace DungeonCrawler
                 "The enemy somehow stabs themselves on your weapon.",
                 "The enemy gets a spontaneous nosebleed."
                 };
+            if (Monster.Name != "minotaur")
+            {
+                Console.WriteLine(Monster.Description);
+            }
+            else if (Monster.Stamina == 120)
+            {
+                Console.WriteLine(Monster.Description);
+            }
+            else if(Monster.Stamina > 100)
+            {
+                Console.WriteLine("Looking no less formidable than when you started this battle, the minotaur closes in...");
+            }
+            else if (Monster.Stamina > 80)
+            {
+                Console.WriteLine("Shrugging off the few bruises and minor injuries it incurred fighting you, the minotaur bellows a warcry as it once more resumes the fight...");
+            }
+            else if (Monster.Stamina > 60)
+            {
+                Console.WriteLine("Roaring in rage, the minotaur at first staggers through the pain, before righting itself and once more taking up the fight...");
+            }
+            else if (Monster.Stamina > 30)
+            {
+                Console.WriteLine("The minotaur dazedly stumbles a few paces, uneasy on its feet as it bleeds profusely from its wounds. Blood spattering the ground beneath it, it nevertheless rushes forward to grimly finish killing you...");
 
-            Console.WriteLine(Monster.Description);
+            }
+            else
+            {
+                Console.WriteLine("The minotaur is on its last legs. It grunts as it trudges towards you once more...");
+            }
             if (fire)
             {
                 Console.ReadKey(true);
@@ -1102,7 +1129,16 @@ namespace DungeonCrawler
             }
             Dice D20 = new Dice(20);
             bool initiative = false;
-            using (var audioFile = new AudioFileReader("thunderstorm-in-kyoto-zac-tiessen-main-version-23958-01-30.mp3"))
+            string sound;
+            if (Monster.Stamina == 120)
+            {
+                sound = "thunderstorm-in-kyoto-zac-tiessen-main-version-23958-01-30.mp3";
+            }
+            else
+            {
+                sound = "MinotaurBattleContinues.mp3";
+            }
+            using (var audioFile = new AudioFileReader(sound))
             {
                 using (var outputFile = new WaveOutEvent())
                 {
@@ -1451,10 +1487,7 @@ namespace DungeonCrawler
                                         int diceyCharge = D12.Roll(D12);
                                         if ((120 - Monster.Stamina) / 10 > diceyCharge && roomList.Contains(room) && room != roomList[0] && room != roomList[1])
                                         {
-                                            if (music)
-                                            {
-                                                outputFile.Stop();
-                                            }
+                                            
                                             int randomGrunt = D5.Roll(D5);
                                             
                                             string tag = randomGrunt.ToString();
@@ -1466,6 +1499,10 @@ namespace DungeonCrawler
                                                 {
                                                     outputFile1.Init(audioFile1);
                                                     outputFile1.Play();
+                                                    if (music)
+                                                    {
+                                                        outputFile.Stop();
+                                                    }
                                                     Room newRoom = Monster.minotaurApproaches(music, specialItems, specialFeatures, player, roomList, doorList, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, room, Monster, false, 10000, false, true, player.Skill, this);
                                                     if (newRoom == roomList[0])
                                                     {

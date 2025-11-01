@@ -2192,7 +2192,7 @@ namespace DungeonCrawler
                             Console.ReadKey(true);
                             Console.WriteLine("Yeesh! You thank your stars you're not the one who has to clean up that mess...");
                             Console.ReadKey(true);
-                            room.FeatureList.Remove(window);
+                            roomList[3].FeatureList.Remove(window);
                             this.Location = astralPlanes;
                             this.Stamina = -1;
                             return astralPlanes;
@@ -2222,7 +2222,7 @@ namespace DungeonCrawler
                             Console.ReadKey(true);
                             Console.WriteLine("You manage to dive out of the way just before the minotaur barrels into you!\n It releases one last bloodcurdling yell as it plummets, before its body is swallowed by the encircling mists far below...");
                             Console.ReadKey(true);
-                            room.FeatureList.Remove(window);
+                            roomList[3].FeatureList.Remove(window);
                             this.Location = astralPlanes; 
                             this.Stamina = -1;
                             return astralPlanes;
@@ -2259,6 +2259,7 @@ namespace DungeonCrawler
                     Console.ReadKey(true);
                     Console.WriteLine("As you land back upon your feet with the grace of a lean gymnast, you hear the minotaur's final, bloodcurdling cry as it crashes through the window and plummets to its death. \nYou permit a faint smile to slip upon your lips as the beast's yawp fades into silence.");
                     Console.ReadKey(true);
+                    roomList[3].FeatureList.Remove(window);
                     this.Location = astralPlanes;
                     this.Stamina = -1;
                     return astralPlanes;
@@ -2341,7 +2342,15 @@ namespace DungeonCrawler
                 {
                     Room newRoom = choice_door[output[0]].Passage(room, false);
                     monster.Location = newRoom;
-                    Console.WriteLine($"The beast crashes into the wall, shrugs it off as debris cascades around it, then once more closes in for the kill within the {choice_door[output[0]].Passage(room, false).Name}...");
+                    List<string> carnage = new List<string>
+                    {
+                        $"The beast crashes into the wall, shrugs it off as debris cascades around it, then once more closes in for the kill within the {choice_door[output[0]].Passage(room, false).Name}...",
+                        $"The minotaur barrels into the {choice_door[output[0]].Passage(room, false).Name} after you! It takes a moment, before its murderous gaze once more latches upon you...",
+                        $"The looming monster thunders through the {choice_door[output[0]].Name}. The fight continues in the {choice_door[output[0]].Passage(room, false).Name}...",
+                        $"The hulking creature bellows as it storms into the {choice_door[output[0]].Passage(room, false).Name}! Catching your scent, it once again closes in for the kill..."
+                    };
+                    int line = D4.Roll(D4) - 1;
+                    Console.WriteLine(carnage[line]);
                     Console.ReadKey(true);
                     if (minotaurKafuffle.Fight(specialFeatures, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                     {

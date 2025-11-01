@@ -2177,7 +2177,7 @@ namespace DungeonCrawler
             Stopwatch minotaurTimer = new Stopwatch();
             List<Item> mageinventory = new List<Item> { dagger };
             Weapon lethalspell = new Weapon("magic missile", "", stilettoDamage, defaultCritHits, defaultGoodHits, 10);
-            Monster minotaur = new Monster("minotaur", "towering above you at eight feet, the minotaur levels its horns towards you, tenses its powerful muscles, and charges!", minotaurInventory, 120, 10, vanquisher, northernmostCorridor, minotaurPath, false, false, minotaurTimer, false);
+            Monster minotaur = new Monster("minotaur", "towering above you at eight feet, the minotaur tenses its powerful muscles, and charges towards you!", minotaurInventory, 120, 10, vanquisher, northernmostCorridor, minotaurPath, false, false, minotaurTimer, false);
             Monster goblin = new Monster("goblin", "The goblin's swarthy, pock-marked skin does little to lessen the effect of its ugly snarl.", goblinInventory, 50, 2, scimitar);
             Monster ghoul2 = new Monster("ghoul engaged to Willow", "", gnollInventory, 1, 1, bite);
             Monster ghoul1 = new Monster("ghoul with paladin garb", "", gnollInventory, 1, 1, bite);
@@ -3691,7 +3691,14 @@ namespace DungeonCrawler
                                 }
                                 if (minotaur.Stamina < 1)
                                 {
-                                    newRoom1 = minotaur.Location;
+                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
+                                    {
+                                        newRoom1 = minotaur.Location;
+                                    }
+                                    else
+                                    {
+                                        newRoom1 = southernmostCorridor;
+                                    }
                                 }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 != corridor) { continue; }
@@ -3973,7 +3980,14 @@ namespace DungeonCrawler
                                 }
                                 if (minotaur.Stamina < 1)
                                 {
-                                    newRoom1 = minotaur.Location;
+                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
+                                    {
+                                        newRoom1 = minotaur.Location;
+                                    }
+                                    else
+                                    {
+                                        newRoom1 = southernmostCorridor;
+                                    }
                                 }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             if (newRoom1 != room) { continue; }
@@ -4398,7 +4412,14 @@ namespace DungeonCrawler
                                 }
                                 if (minotaur.Stamina < 1)
                                 {
-                                    newRoom1 = minotaur.Location;
+                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
+                                    {
+                                        newRoom1 = minotaur.Location;
+                                    }
+                                    else
+                                    {
+                                        newRoom1 = southernmostCorridor;
+                                    }
                                 }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             if (newRoom1 != antechamber) { continue; }
@@ -4679,7 +4700,14 @@ namespace DungeonCrawler
                             }
                                 if (minotaur.Stamina < 1)
                                 {
-                                    newRoom1 = minotaur.Location;
+                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
+                                    {
+                                        newRoom1 = minotaur.Location;
+                                    }
+                                    else
+                                    {
+                                        newRoom1 = southernmostCorridor;
+                                    }
                                 }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             if (newRoom1 != cellOpposite) { continue; }
@@ -4874,7 +4902,14 @@ namespace DungeonCrawler
                                 }
                                 if (minotaur.Stamina < 1)
                                 {
-                                    newRoom1 = minotaur.Location;
+                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
+                                    {
+                                        newRoom1 = minotaur.Location;
+                                    }
+                                    else
+                                    {
+                                        newRoom1 = southernmostCorridor;
+                                    }
                                 }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 != armoury) { continue; }
@@ -7012,7 +7047,14 @@ namespace DungeonCrawler
                                 }
                                 if (minotaur.Stamina < 1)
                                 {
-                                    newRoom1 = minotaur.Location;
+                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
+                                    {
+                                        newRoom1 = minotaur.Location;
+                                    }
+                                    else
+                                    {
+                                        newRoom1 = southernmostCorridor;
+                                    }
                                 }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 != messHall) { continue; }
@@ -7303,7 +7345,14 @@ namespace DungeonCrawler
                                 }
                                 if (minotaur.Stamina < 1)
                                 {
-                                    newRoom1 = minotaur.Location;
+                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
+                                    {
+                                        newRoom1 = minotaur.Location;
+                                    }
+                                    else
+                                    {
+                                        newRoom1 = southernmostCorridor;
+                                    }
                                 }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 westernmostCorridor.FirstVisit = false;
@@ -7593,7 +7642,14 @@ namespace DungeonCrawler
                                 }
                                 if (minotaur.Stamina < 1)
                                 {
-                                    newRoom1 = minotaur.Location;
+                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
+                                    {
+                                        newRoom1 = minotaur.Location;
+                                    }
+                                    else
+                                    {
+                                        newRoom1 = southernmostCorridor;
+                                    }
                                 }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             if (newRoom1 != northernmostCorridor) { continue; }
@@ -7867,7 +7923,14 @@ namespace DungeonCrawler
                                 }
                                 if (minotaur.Stamina < 1)
                                 {
-                                    newRoom1 = minotaur.Location;
+                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
+                                    {
+                                        newRoom1 = minotaur.Location;
+                                    }
+                                    else
+                                    {
+                                        newRoom1 = southernmostCorridor;
+                                    }
                                 }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             if (newRoom1 != easternmostCorridor) { continue; }
@@ -8156,7 +8219,14 @@ namespace DungeonCrawler
                                 }
                                 if (minotaur.Stamina < 1)
                                 {
-                                    newRoom1 = minotaur.Location;
+                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
+                                    {
+                                        newRoom1 = minotaur.Location;
+                                    }
+                                    else
+                                    {
+                                        newRoom1 = southernmostCorridor;
+                                    }
                                 }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             if (newRoom1 != southernmostCorridor) { continue; }
@@ -8411,7 +8481,14 @@ namespace DungeonCrawler
                                 }
                                 if (minotaur.Stamina < 1)
                                 {
-                                    newRoom1 = minotaur.Location;
+                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
+                                    {
+                                        newRoom1 = minotaur.Location;
+                                    }
+                                    else
+                                    {
+                                        newRoom1 = southernmostCorridor;
+                                    }
                                 }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             if (newRoom1 != emptyCell) { continue; }
@@ -9564,7 +9641,14 @@ namespace DungeonCrawler
                                 }
                                 if (minotaur.Stamina < 1)
                                 {
-                                    newRoom1 = minotaur.Location;
+                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
+                                    {
+                                        newRoom1 = minotaur.Location;
+                                    }
+                                    else
+                                    {
+                                        newRoom1 = southernmostCorridor;
+                                    }
                                 }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             if (newRoom1 != secretChamber) { continue; }
