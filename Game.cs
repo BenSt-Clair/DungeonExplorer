@@ -2346,7 +2346,7 @@ namespace DungeonCrawler
                         }
                         if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, oldRoom, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                         {
-                            minotaurKafuffle.WonFight(newRoom1);
+                            minotaurKafuffle.WonFight(minotaur.Location);
                             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             return newRoom1;
                         }
@@ -2416,7 +2416,7 @@ namespace DungeonCrawler
                         }
                         if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, minotaur.Location, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, true, player1.Masked))
                         {
-                            minotaurKafuffle.WonFight(newRoom1);
+                            minotaurKafuffle.WonFight(minotaur.Location);
                             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             return newRoom1;
                         }

@@ -1554,7 +1554,7 @@ namespace DungeonCrawler
                             feature.Attribute = !feature.Attribute;
                             return true;
                         }
-                        else if (feature.Name == "strange mosaic")
+                        else if (feature.Name == "strange mosaic" || feature.Name == "ajar mosaic door")
                         {
                             Console.WriteLine("You approach, magnifying glass in hand, but find that having pulled too far from the source of the room's dim light, there is little you can detect further of the shadowy mosaic. It regards you placidly. In fact its expression seems implacable but (and this is a strange thought) not 'unmoveable'?");
 
@@ -1921,7 +1921,7 @@ namespace DungeonCrawler
                             feature.Attribute = !feature.Attribute;
                             return true;
                         }
-                        else if (feature.Name == "strange mosaic")
+                        else if (feature.Name == "strange mosaic" || feature.Name == "ajar mosaic door")
                         {
                             Console.WriteLine("You approach, magnifying glass in hand, but find that having pulled too far from the source of the room's dim light, there is little you can detect further of the shadowy mosaic. It regards you placidly. In fact its expression seems implacable but (and this is a strange thought) not 'unmoveable'?");
 

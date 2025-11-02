@@ -1485,7 +1485,7 @@ namespace DungeonCrawler
                                     if (Monster.Fight && damageDealt > 0)
                                     {
                                         int diceyCharge = D12.Roll(D12);
-                                        if ((120 - Monster.Stamina) / 10 > diceyCharge && roomList.Contains(room) && room != roomList[0] && room != roomList[1])
+                                        if ((120 - 60 - Monster.Stamina/2) / 10 > diceyCharge && roomList.Contains(room) && room != roomList[0] && room != roomList[1])
                                         {
                                             
                                             int randomGrunt = D5.Roll(D5);
