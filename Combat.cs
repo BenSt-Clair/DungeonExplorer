@@ -1092,39 +1092,42 @@ namespace DungeonCrawler
                 "The enemy somehow stabs themselves on your weapon.",
                 "The enemy gets a spontaneous nosebleed."
                 };
+            const string DarkSalmon = "\u001b[38;2;233;150;122m";
+            const string Moccasin = "\u001b[38;2;255;228;181m";
+            const string Reset = "\u001b[0m";
             if (Monster.Name != "minotaur")
             {
-                Console.WriteLine(Monster.Description);
+                Console.WriteLine($"\n{DarkSalmon}{Monster.Description}{Reset}");
             }
             else if (Monster.Stamina == 120)
             {
-                Console.WriteLine(Monster.Description);
+                Console.WriteLine($"\n{DarkSalmon}{Monster.Description}{Reset}");
             }
             else if(Monster.Stamina > 100)
             {
-                Console.WriteLine("Looking no less formidable than when you started this battle, the minotaur closes in...");
+                Console.WriteLine($"\n{Moccasin}Looking no less formidable than when you started this battle, the minotaur closes in...{Reset}");
             }
             else if (Monster.Stamina > 80)
             {
-                Console.WriteLine("Shrugging off the few bruises and minor injuries it incurred fighting you, the minotaur bellows a warcry as it once more resumes the fight...");
+                Console.WriteLine($"\n{Moccasin}Shrugging off the few bruises and minor injuries it incurred fighting you, the minotaur bellows a warcry as it once more resumes the fight...{Reset}");
             }
             else if (Monster.Stamina > 60)
             {
-                Console.WriteLine("Roaring in rage, the minotaur at first staggers through the pain, before righting itself and once more taking up the fight...");
+                Console.WriteLine($"\n{Moccasin}Roaring in rage, the minotaur at first staggers through the pain, before righting itself and once more taking up the fight...{Reset}");
             }
             else if (Monster.Stamina > 30)
             {
-                Console.WriteLine("The minotaur dazedly stumbles a few paces, uneasy on its feet as it bleeds profusely from its wounds. Blood spattering the ground beneath it, it nevertheless rushes forward to grimly finish killing you...");
+                Console.WriteLine($"\n{Moccasin}The minotaur dazedly stumbles a few paces, uneasy on its feet as it bleeds profusely from its wounds. Blood spattering the ground beneath it, it nevertheless rushes forward to grimly finish killing you...{Reset}");
 
             }
             else
             {
-                Console.WriteLine("The minotaur is on its last legs. It grunts as it trudges towards you once more...");
+                Console.WriteLine($"\n{Moccasin}The minotaur is on its last legs. It grunts as it lumbers towards you once more...{Reset}");
             }
             if (fire)
             {
                 Console.ReadKey(true);
-                Console.WriteLine("The goblin doesn't recoil from the heat. A veteran of many pillages and raids, the goblin is undaunted by fire and immune to the choking smoke...\nBut you aren't!\nYou'll suffer damage for each turn this fight lasts!");
+                Console.WriteLine($"{DarkSalmon}The goblin doesn't recoil from the heat. A veteran of many pillages and raids, the goblin is undaunted by fire and immune to the choking smoke...\nBut you aren't!\nYou'll suffer damage for each turn this fight lasts!{Reset}");
                 Console.ReadKey(true);
             }
             Dice D20 = new Dice(20);
