@@ -1761,6 +1761,9 @@ namespace DungeonCrawler
             List<long> output = new List<long>();
             output = m.getTimedIntResponse(options, 1);
             output.Add(timeLimit - output[1]);
+            
+            
+
             if (output[2] < timeLimit * 3 / 4 && timeLimit > 7500)
             {
 
@@ -1802,6 +1805,8 @@ namespace DungeonCrawler
                 }
 
             }
+                
+            
             return output;
         }
         public Room minotaurApproaches(bool music, List<Item> specialItems, List<Feature> specialFeatures, Player player1, List<Room> roomList, List<Door> doorList, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar, Room room, Monster monster, bool firstTime, long timeLimit, bool oops = false, bool rage = false, int playerSkill = -1, Combat minotaurKafuffle = null)
@@ -2113,6 +2118,7 @@ namespace DungeonCrawler
             int x = unchecked((int)i);
 
             List<long> output = minotaurStomp(x, timeLimit);
+
             int index2 = unchecked((int)output[0]);
             if (output[2] < 0)
             {
