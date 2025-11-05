@@ -283,7 +283,7 @@ namespace DungeonCrawler
         /// 
         /// </summary>
         /// <param name="roomItems"></param>
-        public void SearchPack( List<Item> roomItems, Room room, List<Room> threadPath, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar, List<Item> AllItems)
+        public void SearchPack(Monster goblin, List<Feature> specialFeature, List<Room> roomList, List<Door> doorList, bool music, Item binkySkull, Item musicBox, Item steelKey, Item note, Item jailorKeys, List<Item> specialItems, Feature rosewoodChest, Feature holeInCeiling, List<Item> roomItems, Room room, List<Room> threadPath, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar, List<Item> AllItems)
         {
             Dictionary<string, string> colorAnsiCodes = new Dictionary<string, string>
                         {
@@ -361,8 +361,8 @@ namespace DungeonCrawler
                             bool success = false;
                             string objName = message2.Substring(message2.IndexOf(reply1.ToString()) + 3, message2.IndexOf((reply1 + 1).ToString()) - 2 - (message2.IndexOf(reply1.ToString()) + 3)).Trim();
                             Console.WriteLine(objName);
-                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
-                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, goblin, threadPath, room, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, this.Masked, this.FieryEscape, null); success = true; break; } }
+                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, goblin, threadPath, room, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, this.Masked, this.FieryEscape, null); success = true; break; } }
                             if (!success) { Console.WriteLine($"{colorAnsiCodes["cTerrible"]}You threw your {objName} away!{Reset}"); }
 
                         }
@@ -371,8 +371,8 @@ namespace DungeonCrawler
                             bool success = false;
                             string objName = message2.Substring(message2.IndexOf((r - 1).ToString()) + 3, message2.Length - 1 - (message2.IndexOf((r - 1).ToString()) + 3)).Trim();
                             Console.WriteLine(objName);
-                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
-                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                            foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, goblin, threadPath, room, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, this.Masked, this.FieryEscape, null); success = true; break; } }
+                            foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, goblin, threadPath, room, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, this.Masked, this.FieryEscape, null); success = true; break; } }
                             if (!success) { Console.WriteLine($"{colorAnsiCodes["cTerrible"]}You threw your {objName} away!{Reset}"); }
                         }
                     }
@@ -804,11 +804,11 @@ namespace DungeonCrawler
         /// <param name="usesDictionaryItemItem"></param>
         /// <param name="usesDictionaryItemFeature"></param>
         /// <param name="usesDictionaryItemChar"></param>
-        public void SearchPack(bool music, List<Item> roomItems, Room room, List<Room> threadPath, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar)
+        public List<bool> SearchPack(Combat trialBattle, Monster goblin, List<Feature> specialFeature, List<Room> roomList, List<Door> doorList, Item binkySkull, Item musicBox, Item steelKey, Item note, Item jailorKeys, List<Item> specialItems, Feature rosewoodChest, Feature holeInCeiling, bool music, List<Item> roomItems, Room room, List<Room> threadPath, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar)
         {
             
             
-
+                    List<bool> successList = new List<bool> {false, false };
                     Console.WriteLine("Rummaging through your effects you find the following;");
                     int r = 1;
                     string message = "";
@@ -830,7 +830,7 @@ namespace DungeonCrawler
                         Console.WriteLine(message);
                         Console.ReadKey(true);
                         
-                        return ;
+                        return successList;
                     }
                     else
                     {
@@ -868,27 +868,31 @@ namespace DungeonCrawler
                                     Console.WriteLine("closing your backpack you turn your attention elsewhere...");
                                     Console.ReadKey(true);
                                     
-                                    return ;
+                                    return successList;
                                 }
                                 try
                                 {
                                     bool success = false;
                                     string objName = message2.Substring(message2.IndexOf(reply1.ToString()) + 3, message2.IndexOf((reply1 + 1).ToString()) - 2 - (message2.IndexOf(reply1.ToString()) + 3)).Trim();
                                     Console.WriteLine(objName);
-                                    foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
-                                    foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                                    foreach (Item i in Inventory) { if (i.Name == objName) { successList = i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, goblin, threadPath, room, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, this.Masked, this.FieryEscape, trialBattle); success = true; break; } }
+                                    foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { successList = w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, goblin, threadPath, room, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, this.Masked, this.FieryEscape, trialBattle); success = true; break; } }
                                     if (!success) { Console.WriteLine($"You threw your {objName} away!"); }
 
-                                }
+                                } // test for player stamina and fiery escape change pickupitem from void to bool
                                 catch
                                 {
                                     bool success = false;
                                     string objName = message2.Substring(message2.IndexOf((r - 1).ToString()) + 3, message2.Length - 1 - (message2.IndexOf((r - 1).ToString()) + 3)).Trim();
                                     Console.WriteLine(objName);
-                                    foreach (Item i in Inventory) { if (i.Name == objName) { i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
-                                    foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, null, threadPath, room); success = true; break; } }
+                                    foreach (Item i in Inventory) { if (i.Name == objName) { successList = i.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, i, null, null, roomItems, null, null, goblin, threadPath, room, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, this.Masked, this.FieryEscape, trialBattle); success = true; break; } }
+                                    foreach (Weapon w in WeaponInventory) { if (w.Name == objName) { successList = w.PickUpItem(this, CarryCapacity, Inventory, WeaponInventory, 5, 0, null, w, null, roomItems, null, null, goblin, threadPath, room, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, usesDictionaryItemFeature, this.Masked, this.FieryEscape, trialBattle); success = true; break; } }
                                     if (!success) { Console.WriteLine($"You threw your {objName} away!"); }
                                 }
+                            }
+                            if (successList[1] || goblin.Stamina < 1 || this.Inventory.Contains(jailorKeys) || room.FeatureList.Contains(holeInCeiling))
+                            {
+                                return successList;
                             }
                             Console.WriteLine("Would you like to peruse another item from your pack?");
 
@@ -1117,7 +1121,7 @@ namespace DungeonCrawler
                 
             
             
-            return;
+            return successList;
         }
         /// <summary>
         /// Essentially i first ask which item the player wishes to use from their pack.
@@ -1152,7 +1156,7 @@ namespace DungeonCrawler
         /// <param name="trialBattle"></param>
         /// <returns></returns>
 
-        public List<bool> UseItemOutsideCombat(List<Feature> specialFeature, List<Room> roomList, List<Door> doorList, bool music, Room room, Item musicBox, Item binkySkull, Item steelKey, Item note, Item jailorKeys, List<Item> specialItems, Feature rosewoodChest, Feature holeInCeiling, Dictionary<Item, List<Player>> usesDictionaryItemChar, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, bool masked, Monster monster, bool fieryEscape, Combat battle = null)
+        public List<bool> UseItemOutsideCombat(List<Feature> specialFeature, List<Room> roomList, List<Door> doorList, bool music, Room room, Item musicBox, Item binkySkull, Item steelKey, Item note, Item jailorKeys, List<Item> specialItems, Feature rosewoodChest, Feature holeInCeiling, Dictionary<Item, List<Player>> usesDictionaryItemChar, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, bool masked, Monster monster, bool fieryEscape, Combat battle = null, bool fromPack = false, Item preChosenItem = null)
         {
 
             List<bool> success = new List<bool> { false, false }; //{successful use of item, fire}
@@ -1160,82 +1164,88 @@ namespace DungeonCrawler
             ///{true, false} = item used successfully
             ///{true, true} = item used successfully to cause a fire and won fight.
             ///{false, true} = caused fire but died in battle
+            
             if (Inventory.Count > 0)
             {
-                Console.WriteLine("Which item in your pack do you wish to use?");
                 int g = 1;
-                foreach (Item item in Inventory)
+                Item chosenItem = preChosenItem;
+                if (!fromPack)
                 {
-                    Console.WriteLine($"[{g}] {item.Name}");
-                    g++;
-                }
-                foreach (Item weapon in WeaponInventory)
-                {
-                    Console.WriteLine($"[{g}] {weapon.Name}");
-                    g++;
-                }
-                
-                Item chosenItem = null;
-                while (true)
-                {
-                    string reply2 = Console.ReadLine().Trim().ToLower();
-
-                    try
+                    Console.WriteLine("Which item in your pack do you wish to use?");
+                    
+                    foreach (Item item in Inventory)
                     {
-                        int reply0 = int.Parse(reply2) - 1;
+                        Console.WriteLine($"[{g}] {item.Name}");
+                        g++;
+                    }
+                    foreach (Item weapon in WeaponInventory)
+                    {
+                        Console.WriteLine($"[{g}] {weapon.Name}");
+                        g++;
+                    }
+
+                    
+                    while (true)
+                    {
+                        string reply2 = Console.ReadLine().Trim().ToLower();
+
                         try
                         {
-                            chosenItem = Inventory[reply0];
-                            break;
-                        }
-                        catch 
-                        {
-                             
-                            
+                            int reply0 = int.Parse(reply2) - 1;
                             try
                             {
-                                chosenItem = WeaponInventory[reply0 - Inventory.Count];
+                                chosenItem = Inventory[reply0];
                                 break;
                             }
                             catch
                             {
-                                Console.WriteLine("Please enter a number corresponding to an item listed above!");
-                                continue;
-                            }
-                            
-                            
-                        }
 
-                    }
-                    catch
-                    {
-                        foreach (Item item in Inventory)
-                        {
-                            if (item.Name == reply2)
-                            {
-                                chosenItem = item;
 
-                            }
-
-                        }
-                        if (chosenItem == null)
-                        {
-                            foreach (Item weapon in WeaponInventory)
-                            {
-                                if (weapon.Name == reply2)
+                                try
                                 {
-                                    chosenItem = weapon;
+                                    chosenItem = WeaponInventory[reply0 - Inventory.Count];
+                                    break;
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("Please enter a number corresponding to an item listed above!");
+                                    continue;
+                                }
+
+
+                            }
+
+                        }
+                        catch
+                        {
+                            foreach (Item item in Inventory)
+                            {
+                                if (item.Name == reply2)
+                                {
+                                    chosenItem = item;
+
+                                }
+
+                            }
+                            if (chosenItem == null)
+                            {
+                                foreach (Item weapon in WeaponInventory)
+                                {
+                                    if (weapon.Name == reply2)
+                                    {
+                                        chosenItem = weapon;
+                                    }
                                 }
                             }
                         }
-                    }
-                    if (chosenItem == null)
-                    {
-                        Console.WriteLine($"{reply2} could not be found in your backpack. Select another item.");
-                    }
-                    else
-                    {
-                        break;
+                        if (chosenItem == null)
+                        {
+                            Console.WriteLine($"{reply2} could not be found in your backpack. Select another item.");
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                 }
                 Console.WriteLine("What or who would you like to use it on?");
@@ -1761,9 +1771,6 @@ namespace DungeonCrawler
             List<long> output = new List<long>();
             output = m.getTimedIntResponse(options, 1);
             output.Add(timeLimit - output[1]);
-            
-            
-
             if (output[2] < timeLimit * 3 / 4 && timeLimit > 7500)
             {
 
@@ -1805,8 +1812,6 @@ namespace DungeonCrawler
                 }
 
             }
-                
-            
             return output;
         }
         public Room minotaurApproaches(bool music, List<Item> specialItems, List<Feature> specialFeatures, Player player1, List<Room> roomList, List<Door> doorList, Dictionary<Item, List<Item>> usesDictionaryItemItem, Dictionary<Item, List<Feature>> usesDictionaryItemFeature, Dictionary<Item, List<Player>> usesDictionaryItemChar, Room room, Monster monster, bool firstTime, long timeLimit, bool oops = false, bool rage = false, int playerSkill = -1, Combat minotaurKafuffle = null)
@@ -2118,7 +2123,6 @@ namespace DungeonCrawler
             int x = unchecked((int)i);
 
             List<long> output = minotaurStomp(x, timeLimit);
-
             int index2 = unchecked((int)output[0]);
             if (output[2] < 0)
             {
@@ -2179,9 +2183,9 @@ namespace DungeonCrawler
                 {
                     if (player1.Traits.ContainsKey("jinxed"))
                     {
-                        Console.WriteLine("Quivering as the gargantuan beast storms towards you, carnage incarnate, you cower behind the translucent curtains of the palladian window, praying the minotaur doesn't spot your hiding place." +
-                            "\n The attempt seems somewhat ill-fated; Your shivering boots expose your position, the curtains are all too thin to offer any concealment... And, of course, there's the fact you were in the minotaur's sights the whole time. " +
-                            "The floor quakes as the minotaur's stampede rapidly closes in...");
+                        Console.WriteLine("Quivering as the gargantuan beast storms towards you, flailing its great sword like carnage incarnate, you can't think of anything to do but cower behind the translucent curtains of the palladian window and hope the minotaur doesn't spot your hiding place." +
+                            "\n The attempt seems somewhat ill-fated, with your shivering boots easily exposing your position and the curtains being all too thin to offer any concealment for your pitiably tremulous form. " +
+                            "The minotaur bears down on you...");
                         Console.ReadKey(true);
                         Console.WriteLine($"{DarkSalmon} Test Your Skill! [Roll a D12 under your jinxy skill score...]{Reset}");
                         Console.ReadKey(true);
@@ -2192,13 +2196,13 @@ namespace DungeonCrawler
                             Console.ReadKey(true);
                             Console.WriteLine("You trip on the diaphanous curtain!");
                             Console.ReadKey(true);
-                            Console.WriteLine("Just before the minotaur gores you with its horns, you oafishly fall out of the way. The minotaur trips up over your flailing leg, but before you can cry out 'Ooh... Sorry!' the beast crashes headfirst through the window!");
+                            Console.WriteLine("Just before the minotaur gores you with its horns, you oafishly fall out of the way. The minotaur trips up over your oafish leg, but before you can cry out 'Ooh... Sorry!' the beast crashes headfirst through the window!");
                             Console.ReadKey(true);
                             Console.WriteLine("You can hear it wailing 'MOOOOO!!!' all the way down, terminating in a rather messy splat.");
                             Console.ReadKey(true);
                             Console.WriteLine("Yeesh! You thank your stars you're not the one who has to clean up that mess...");
                             Console.ReadKey(true);
-                            roomList[3].FeatureList.Remove(window);
+                            room.FeatureList.Remove(window);
                             this.Location = astralPlanes;
                             this.Stamina = -1;
                             return astralPlanes;
@@ -2228,7 +2232,7 @@ namespace DungeonCrawler
                             Console.ReadKey(true);
                             Console.WriteLine("You manage to dive out of the way just before the minotaur barrels into you!\n It releases one last bloodcurdling yell as it plummets, before its body is swallowed by the encircling mists far below...");
                             Console.ReadKey(true);
-                            roomList[3].FeatureList.Remove(window);
+                            room.FeatureList.Remove(window);
                             this.Location = astralPlanes; 
                             this.Stamina = -1;
                             return astralPlanes;
@@ -2259,13 +2263,12 @@ namespace DungeonCrawler
 
                 else
                 {
-                    Console.WriteLine("Deploying your warrior's cunning, you goad the beast into charging towards the window. \nBunching up your muscles, you force yourself to hold until the last split-second to leap aside!");
+                    Console.WriteLine("Deploying your warrior's cunning, you goad the beast into charging towards the window. \nBunching up your muscles ready to leap aside, you let the minotaur barrel towards you.");
                     Console.ReadKey(true);
-                    Console.WriteLine("Suddenly, grabbing the minotaur by the horns, you somersault over the top of the beast's head!");
+                    Console.WriteLine("Waiting until the very last second, you grab the minotaur by the horns and somersault over the top of the beast's head!");
                     Console.ReadKey(true);
                     Console.WriteLine("As you land back upon your feet with the grace of a lean gymnast, you hear the minotaur's final, bloodcurdling cry as it crashes through the window and plummets to its death. \nYou permit a faint smile to slip upon your lips as the beast's yawp fades into silence.");
                     Console.ReadKey(true);
-                    roomList[3].FeatureList.Remove(window);
                     this.Location = astralPlanes;
                     this.Stamina = -1;
                     return astralPlanes;
@@ -2347,20 +2350,11 @@ namespace DungeonCrawler
                 if (monster.Fight)
                 {
                     Room newRoom = choice_door[output[0]].Passage(room, false);
-                    monster.Location = newRoom;
-                    List<string> carnage = new List<string>
-                    {
-                        $"The beast crashes into the wall, shrugs it off as debris cascades around it, then once more closes in for the kill within the {choice_door[output[0]].Passage(room, false).Name}...",
-                        $"The minotaur barrels into the {choice_door[output[0]].Passage(room, false).Name} after you! It takes a moment, before its murderous gaze once more latches upon you...",
-                        $"The looming monster thunders through the {choice_door[output[0]].Name}. The fight continues in the {choice_door[output[0]].Passage(room, false).Name}...",
-                        $"The hulking creature bellows as it storms into the {choice_door[output[0]].Passage(room, false).Name}! Catching your scent, it once again closes in for the kill..."
-                    };
-                    int line = D4.Roll(D4) - 1;
-                    Console.WriteLine(carnage[line]);
+                    Console.WriteLine($"The beast crashes into the wall, shrugs it off as debris cascades around it, then once more closes in for the kill within the {choice_door[output[0]].Passage(room, false).Name}...");
                     Console.ReadKey(true);
                     if (minotaurKafuffle.Fight(specialFeatures, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                     {
-                        return newRoom;
+                        return room;
                     }
                     return oceanBottom;
                 }

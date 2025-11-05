@@ -663,8 +663,10 @@ namespace DungeonCrawler
         /// <param name="weapon"></param>
         /// <param name="featureItems"></param>
         /// <param name="roomItems"></param>
-        public void PickUpItem( Player player, int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null, Weapon yourRustyChains = null, List<Item> stickyItems = null, Monster monster = null, List<Room> threadPath = null, Room room = null)
+        public List<bool> PickUpItem( Player player, int carryCapacity, List<Item> inventory, List<Weapon> weaponInventory, int range, int value = 0, Item item = null, Weapon weapon = null, List<Item> featureItems = null, List<Item> roomItems = null, Weapon yourRustyChains = null, List<Item> stickyItems = null, Monster monster = null, List<Room> threadPath = null, Room room = null, List<Feature> specialFeature = null, List<Room> roomList = null, List<Door> doorList = null, bool music = false, Item binkySkull = null, Item musicBox = null, Item steelKey = null, Item note = null, Item jailorKeys = null, List<Item> specialItems = null, Feature rosewoodChest = null, Feature holeInCeiling = null, Dictionary<Item,List<Player>> usesDictionaryItemChar = null, Dictionary<Item, List<Item>> usesDictionaryItemItem = null, Dictionary<Item, List<Feature>> usesDictionaryItemFeature = null, bool masked = false, bool fieryEscape = false, Combat trialBattle = null)
         {
+            //remember monster must be goblin when searching pack
+            List<bool> success = new List<bool> { false, false};
             try
             {
                 List<Item> weaponItemList = new List<Item> { this };
@@ -693,21 +695,21 @@ namespace DungeonCrawler
             }
             else if (range == 5)
             {
-                Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?");
+                Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?\n[4]use it on something else?");
             }
             if (Name == "ball of red thread" && SpecifyAttribute == "spooled")
             {
-                Console.WriteLine("[4] Begin unspooling the red thread and leave it trailing behind you from room to room?");
+                Console.WriteLine("[5] Begin unspooling the red thread and leave it trailing behind you from room to room?");
             }
             if (Name == "music box" && range == 5)
             {
                 if (Attribute)
                 {
-                    Console.WriteLine("[4] Close the music box?");
+                    Console.WriteLine("[5] Close the music box?");
                 }
                 else
                 {
-                    Console.WriteLine($"[4] Open the music box and leave it in the {room.Name} as a distraction?");
+                    Console.WriteLine($"[5] Open the music box and leave it in the {room.Name} as a distraction?");
                 }
             }
             do
@@ -717,39 +719,41 @@ namespace DungeonCrawler
                 {
                     if (Name == "ball of red thread" && SpecifyAttribute == "spooled")
                     {
-                        Console.WriteLine("Please enter '1', '2', '3' or '4'");
+                        if (range == 5) { Console.WriteLine("Please enter '1', '2', '3', '4' or '5'"); }
+                        else { Console.WriteLine("Please enter '1', '2', '3' or '4'"); }
                         if (range == 3 || range == 4 || range == 6)
                         {
                             Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it upon your person \n[3]place it back where you found it?\n[4] Take it and begin unspooling it as you proceed?");
                         }
                         else if (range == 5)
                         {
-                            Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?\n[4]Begin unspooling it as you travel from room to room?");
+                            Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?\n[4]Use it on something?\n[5]Begin unspooling it as you travel from room to room?");
                         }
                         continue;
                     }
                     else if (Name == "music box" && Attribute && range == 5)
                     {
-                        Console.WriteLine("Please enter '1', '2', '3' or '4'");
-                        Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?\n[4] Close the music box?");
+                        Console.WriteLine("Please enter '1', '2', '3', '4' or '5'");
+                        Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?\n[4]Use it on something?\n[5]Close the music box?");
                         continue;
                     }
                     else if (Name == "music box" && range == 5)
                     {
-                        Console.WriteLine("Please enter '1', '2', '3' or '4'");
-                        Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?\n[4] Open the music box and leave it in the {room.Name} as a distraction?");
+                        Console.WriteLine("Please enter '1', '2', '3', '4' or '5'");
+                        Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?\n[4]Use it on something?\n[5]Open the music box and leave it in the {room.Name} as a distraction?");
                         continue;
                     }
                     else
                     {
-                        Console.WriteLine("Please enter '1', '2', or '3'");
+                        if (range == 5) { Console.WriteLine("Please enter '1', '2', '3' or '4'"); }
+                        else { Console.WriteLine("Please enter '1', '2' or '3'"); }
                         if (range == 3 || range == 4 || range == 6)
                         {
                             Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it upon your person \n[3]place it back where you found it?");
                         }
                         else if (range == 5)
                         {
-                            Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?");
+                            Console.WriteLine($"\nWould you like to:\n [1]study the {Name} closer \n[2]stash it back in your pack \n[3]discard it?\n[4]Use it on something?");
                         }
                         continue;
                     }
@@ -762,7 +766,7 @@ namespace DungeonCrawler
                 try
                 {
                     int answerNum = int.Parse(answer);
-                    if ((answerNum < 1 || answerNum > 3)&& (Name != "ball of red thread" || SpecifyAttribute != "spooled") && (range != 5 || Name != "music box"))
+                    if ((answerNum < 1 || answerNum > 3)&& (Name != "ball of red thread" || SpecifyAttribute != "spooled") && (range != 5 ))
                     {
                         if (range != 5 || Name != "music box")
                         {
@@ -776,9 +780,14 @@ namespace DungeonCrawler
                             continue;
                         }
                     }
-                    else if (answerNum < 1 || answerNum > 4)
+                    else if ((answerNum < 1 || answerNum > 4) && (range != 5 || Name != "music box") && (range != 5 || Name != "ball of red thread" || SpecifyAttribute != "spooled"))
                     {
                         Console.WriteLine("Please choose option 1, 2, 3, or 4.");
+                        continue;
+                    }
+                    else if(answerNum < 1 || answerNum > 5)
+                    {
+                        Console.WriteLine("Please choose option 1, 2, 3, 4 or 5.");
                         continue;
                     }
                     else if (answerNum == 1)//study the item
@@ -786,7 +795,7 @@ namespace DungeonCrawler
                         if (weapon == null)//if item is not a weapon
                         {
                             StudyItem(item, player);
-                            
+
                             if (range == 3 || range == 4 || range == 6)
                             {
                                 Console.WriteLine($"\nWould you now like to:\n [1]study the {Name} again \n[2]stash it upon your person \n[3]place it back where you found it?");
@@ -795,7 +804,7 @@ namespace DungeonCrawler
                             {
                                 Console.WriteLine($"\nWould you now like to:\n [1]study the {Name} again \n[2]stash it back in your pack \n[3]discard it?");
                             }
-                            
+
                             continue;
                         }
                         else//if item is a weapon
@@ -816,7 +825,7 @@ namespace DungeonCrawler
                     {
                         if (range == 3) // monsters must always carry only things the player does not already have.
                         {
-                            
+
                             if (item == null)
                             {
                                 if (weapon != null)
@@ -852,23 +861,23 @@ namespace DungeonCrawler
                                         }
                                         Console.WriteLine($"{Name} has been stashed in inventory.");
                                     }
-                                    else 
+                                    else
                                     {
                                         if (weapon != null)
                                         {
                                             weapon.Handled = false;
                                         }
-                                        continue; 
+                                        continue;
                                     }
                                 }
                                 else
                                 {
-                                    
+
                                     StashWeapon(weapon, weaponInventory);
                                     monster.Items.Remove(weapon);
                                     Console.WriteLine($"{Name} has been stashed in inventory.");
                                 }
-                                return;
+                                return success;
                             }
                             else
                             {
@@ -877,12 +886,12 @@ namespace DungeonCrawler
                                     StashItem(item, inventory);
                                     monster.Items.Remove(item);
                                     Console.WriteLine($"{Name} has been stashed in inventory.");
-                                    return;
+                                    return success;
                                 }
                                 else
                                 {
                                     Console.WriteLine("You're already struggling to heft all the gear you have! You'll have to discard some items before you can take this one with you...");
-                                    return;
+                                    return success;
                                 }
                             }
                         }
@@ -905,7 +914,7 @@ namespace DungeonCrawler
                                 {
                                     if (weaponInventory.Count > 1)
                                     {
-                                        if(weapon != null)
+                                        if (weapon != null)
                                         {
                                             weapon.Handled = true;
                                         }
@@ -932,15 +941,15 @@ namespace DungeonCrawler
                                                 roomItems.Add(weaponInventory[0]);
                                                 weaponInventory.Remove(weaponInventory[0]);
                                             }
-                                            
+
                                         }
-                                        else 
-                                        { 
-                                            if(weapon != null)
+                                        else
+                                        {
+                                            if (weapon != null)
                                             {
                                                 weapon.Handled = false;
                                             }
-                                            continue; 
+                                            continue;
                                         }
                                     }
                                     else
@@ -952,24 +961,24 @@ namespace DungeonCrawler
                                 if (weapon.Name != "bowl fragments" && weapon.Name != "garment")
                                 {
                                     roomItems.Remove(weapon);
-                                    
+
                                 }
-                                if (weapon.Name == "rusty chains") 
-                                { 
-                                    Item rustyChains = new Item("rusty chains", "The rest of these chains crumble underfoot. They're of no use to anyone."); 
-                                    roomItems.Add(rustyChains); 
+                                if (weapon.Name == "rusty chains")
+                                {
+                                    Item rustyChains = new Item("rusty chains", "The rest of these chains crumble underfoot. They're of no use to anyone.");
+                                    roomItems.Add(rustyChains);
                                 }
                                 Console.WriteLine($"{Name} has been stashed in inventory.");
 
-                                return;
+                                return success;
                             }
                             else
                             {
                                 if (inventory.Count < carryCapacity)
                                 {
-                                    if (item.Name != "ball of red thread" && item.SpecifyAttribute != "unspooled") 
-                                    { 
-                                        StashItem(item, inventory); 
+                                    if (item.Name != "ball of red thread" && item.SpecifyAttribute != "unspooled")
+                                    {
+                                        StashItem(item, inventory);
                                     }
                                     else if (item.Name == "ball of red thread" && threadPath.Count < 3)
                                     {
@@ -979,14 +988,14 @@ namespace DungeonCrawler
                                         StashItem(item, inventory);
                                         Console.WriteLine("You quickly spin the spool, gathering up all the thread. It's lucky it's not spread out too far or it would've been too tangled to respool...");
                                         Console.ReadKey(true);
-                                        
+
                                     }
                                     else
                                     {
                                         Console.WriteLine("You don't have time to" +
                                             " pick up that tangled mess!");
                                         Console.ReadKey(true);
-                                        return;
+                                        return success;
                                     }
                                     if (item.Name != "bowl fragments" && item.Name != "rusty chains" && item.Name != "garment" && !stickyItems.Contains(item))
                                     {
@@ -994,12 +1003,12 @@ namespace DungeonCrawler
                                     }
                                     Console.WriteLine($"{Name} has been stashed in inventory.");
 
-                                    return;
+                                    return success;
                                 }
                                 else
                                 {
                                     Console.WriteLine("You're already buckling under the weight of your backpack! Discard some items before picking up anything more...");
-                                    return;
+                                    return success;
                                 }
                             }
                         }
@@ -1009,7 +1018,7 @@ namespace DungeonCrawler
                             {
                                 if (weaponInventory.Count > 1)
                                 {
-                                    if(weapon != null)
+                                    if (weapon != null)
                                     {
                                         weapon.Handled = true;
                                     }
@@ -1040,10 +1049,10 @@ namespace DungeonCrawler
                                         }
 
                                     }
-                                    else 
+                                    else
                                     {
                                         weapon.Handled = false;
-                                        continue; 
+                                        continue;
                                     }
                                 }
                                 else
@@ -1054,7 +1063,7 @@ namespace DungeonCrawler
                                 }
                                 Console.WriteLine($"{Name} has been stashed in inventory.");
 
-                                return;
+                                return success;
                             }
                             else
                             {
@@ -1064,16 +1073,16 @@ namespace DungeonCrawler
                                     featureItems.Remove(item);
                                     Console.WriteLine($"{Name} has been stashed in inventory.");
 
-                                    return;
+                                    return success;
                                 }
                                 else
                                 {
                                     Console.WriteLine("You cannot carry another item or you'll collapse under the weight! Discard some items before considering adding any more...");
-                                    return;
+                                    return success;
                                 }
                             }
                         }
-                        else { Console.WriteLine("You place the item back in your pack."); return; }
+                        else { Console.WriteLine("You place the item back in your pack."); return success; }
                     }
                     else if (answerNum == 3)
                     {
@@ -1084,13 +1093,13 @@ namespace DungeonCrawler
                                 inventory.Remove(item);
                                 roomItems.Add(item);
                                 Console.WriteLine($"You discard your {item.Name}. Who needs that old thing anyway?");
-                                return;
+                                return success;
                             }
                             else//would have to cast weapon as item to store in roomitems - possible but unnecessary given story context
                             {
-                                
+
                                 Console.WriteLine($"Erm... Upon consideration you think discarding your {weapon.Name}, or any weapon, might be a bad idea unless there's another readily available...");
-                                return;
+                                return success;
                             }
                         }
                         else
@@ -1098,14 +1107,26 @@ namespace DungeonCrawler
                             if (weapon == null)
                             {
                                 Console.WriteLine($"You place the {item.Name} back where you found it.");
-                                return;
+                                return success;
                             }
                             else
                             {
                                 Console.WriteLine($"You place the {weapon.Name} back where you found it.");
-                                return;
+                                return success;
                             }
                         }
+                    }
+                    else if (answerNum == 4 && range == 5)
+                    {
+                        success = player.UseItemOutsideCombat(specialFeature, roomList, doorList, music, room, musicBox, binkySkull, steelKey, note,
+                            jailorKeys, specialItems, rosewoodChest, holeInCeiling, usesDictionaryItemChar, usesDictionaryItemItem, 
+                            usesDictionaryItemFeature, masked, monster, fieryEscape, trialBattle, true, this);
+
+
+                        // check for fieryescape and fix bug where player continues on 0 stamina after trialBattle
+
+
+                        return success;
                     }
                     else
                     {
@@ -1120,7 +1141,7 @@ namespace DungeonCrawler
                             }
                             room.ItemList.Remove(item);
                             threadPath.Insert(0, room);
-                            return;
+                            return success;
                         }
                         else
                         {
@@ -1131,14 +1152,14 @@ namespace DungeonCrawler
                                 item.Attribute = true;
                                 room.ItemList.Add(item);
                                 inventory.Remove(item);
-                                return;
+                                return success;
                             }
                             else
                             {
                                 Console.WriteLine("You close the lovely music box. It's melody stops at once...");
                                 item.SpecifyAttribute = "unopened";
                                 item.Attribute = false;
-                                return;
+                                return success;
                             }
                         }
                     }
@@ -1554,7 +1575,7 @@ namespace DungeonCrawler
                             feature.Attribute = !feature.Attribute;
                             return true;
                         }
-                        else if (feature.Name == "strange mosaic" || feature.Name == "ajar mosaic door")
+                        else if (feature.Name == "strange mosaic")
                         {
                             Console.WriteLine("You approach, magnifying glass in hand, but find that having pulled too far from the source of the room's dim light, there is little you can detect further of the shadowy mosaic. It regards you placidly. In fact its expression seems implacable but (and this is a strange thought) not 'unmoveable'?");
 
@@ -1921,7 +1942,7 @@ namespace DungeonCrawler
                             feature.Attribute = !feature.Attribute;
                             return true;
                         }
-                        else if (feature.Name == "strange mosaic" || feature.Name == "ajar mosaic door")
+                        else if (feature.Name == "strange mosaic")
                         {
                             Console.WriteLine("You approach, magnifying glass in hand, but find that having pulled too far from the source of the room's dim light, there is little you can detect further of the shadowy mosaic. It regards you placidly. In fact its expression seems implacable but (and this is a strange thought) not 'unmoveable'?");
 

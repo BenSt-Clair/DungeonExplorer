@@ -2177,7 +2177,7 @@ namespace DungeonCrawler
             Stopwatch minotaurTimer = new Stopwatch();
             List<Item> mageinventory = new List<Item> { dagger };
             Weapon lethalspell = new Weapon("magic missile", "", stilettoDamage, defaultCritHits, defaultGoodHits, 10);
-            Monster minotaur = new Monster("minotaur", "towering above you at eight feet, the minotaur tenses its powerful muscles, and charges towards you!", minotaurInventory, 120, 10, vanquisher, northernmostCorridor, minotaurPath, false, false, minotaurTimer, false);
+            Monster minotaur = new Monster("minotaur", "towering above you at eight feet, the minotaur levels its horns towards you, tenses its powerful muscles, and charges!", minotaurInventory, 120, 10, vanquisher, northernmostCorridor, minotaurPath, false, false, minotaurTimer, false);
             Monster goblin = new Monster("goblin", "The goblin's swarthy, pock-marked skin does little to lessen the effect of its ugly snarl.", goblinInventory, 50, 2, scimitar);
             Monster ghoul2 = new Monster("ghoul engaged to Willow", "", gnollInventory, 1, 1, bite);
             Monster ghoul1 = new Monster("ghoul with paladin garb", "", gnollInventory, 1, 1, bite);
@@ -2346,7 +2346,7 @@ namespace DungeonCrawler
                         }
                         if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, oldRoom, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                         {
-                            minotaurKafuffle.WonFight(minotaur.Location);
+                            minotaurKafuffle.WonFight(newRoom1);
                             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             return newRoom1;
                         }
@@ -2416,7 +2416,7 @@ namespace DungeonCrawler
                         }
                         if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, minotaur.Location, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, true, player1.Masked))
                         {
-                            minotaurKafuffle.WonFight(minotaur.Location);
+                            minotaurKafuffle.WonFight(newRoom1);
                             leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             return newRoom1;
                         }
@@ -2693,8 +2693,63 @@ namespace DungeonCrawler
                                 else if (reply1 == 1)
                                 {
                                     
-                                    player1.SearchPack(music, room.ItemList, room, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
-                                    
+                                    List<bool> success = player1.SearchPack(trialBattle, goblin, specialFeature, roomList, doorList, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, music, room.ItemList, room, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar);
+                                    // change from void to bool list. if 1 true escapedroom1 is true and break. if 2 is false 
+                                    // player is dead
+                                    if (player1.Inventory.Contains(jailorKeys))
+                                    {
+                                        escapedThroughDoor = true;
+                                        escapedRoom1 = true;
+                                        continue;
+                                    }
+
+                                    if (!success[0] && success[1])
+                                    {
+                                        return;
+                                    }
+
+                                    else if (success[1])
+                                    {
+                                        Console.WriteLine("With the whole cell blazing around you, you snatch up the jailor's keys before you flee through the door. A fiery haze billows in your wake as you throw yourself into a corridor and slam the rosewood door shut behind you.");
+                                        if (player1.Inventory.Contains(garment)) { Console.WriteLine($"It's a moment before you realise your backpack is still smoking!\nOpening it up you scramble to save the contents, fishing out the {garment.Name} before it can burn everything, but it's too late. \nEverything inside your pack is burned and unusable!"); player1.Inventory.Clear(); Console.ReadKey(true); }
+                                        player1.Inventory.Add(jailorKeys);
+                                        escapedRoom1 = true;
+                                        escapedThroughDoor = true;
+                                        fieryEscape = true;
+                                        foreach (Item x in player1.Inventory) { while (x.Name.Contains("blazing") || x.Name.Contains("fiery") || x.Name.Contains("burning") || x.Name.Contains("smouldering") || x.Name.Contains("smoking")) { x.Name = x.Name.Substring(x.Name.IndexOf(" ")).Trim(); } }
+                                        foreach (Weapon x in player1.WeaponInventory) { while (x.Name.Contains("blazing") || x.Name.Contains("fiery") || x.Name.Contains("burning") || x.Name.Contains("smouldering") || x.Name.Contains("smoking")) { x.Name = x.Name.Substring(x.Name.IndexOf(" ")).Trim(); } }
+                                        continue;
+                                    }
+
+                                    try
+                                    {
+                                        if (player1.WeaponInventory[0].Equipped)
+                                        {
+                                            if (trialBattle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false))
+                                            {
+                                                trialBattle.WonFight(room);
+                                                escapedThroughDoor = true;
+                                                escapedRoom1 = true;
+                                                player1.Unequip(player1.WeaponInventory);
+                                                continue;
+                                            }
+                                            else
+                                            {
+                                                Console.ReadKey(true);
+                                                return;
+                                            }
+                                        }
+                                    }
+                                    catch { }
+
+                                    if (room.FeatureList.Contains(holeInCeiling))
+                                    {
+                                        Console.WriteLine("Without further delay, you scramble up the mound of debris left by the hole and up into the next room.");
+                                        Console.ReadKey(true);
+                                        escapedRoom1 = true;
+                                        escapedThroughDoor = false;
+                                        continue;
+                                    }
                                     a++;
                                 }
                                 else if (reply1 == 2)
@@ -3669,12 +3724,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, corridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(corridor);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -3688,17 +3737,6 @@ namespace DungeonCrawler
                                 if (newRoom1 == oceanBottom)
                                 {
                                     return;
-                                }
-                                if (minotaur.Stamina < 1)
-                                {
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        newRoom1 = minotaur.Location;
-                                    }
-                                    else
-                                    {
-                                        newRoom1 = southernmostCorridor;
-                                    }
                                 }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 != corridor) { continue; }
@@ -3714,12 +3752,6 @@ namespace DungeonCrawler
                             if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, corridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                             {
                                 minotaurKafuffle.WonFight(corridor);
-                                if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                {
-                                    leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                    newRoom1 = minotaur.Location;
-                                    continue;
-                                }
                             }
                             else
                             {
@@ -3771,12 +3803,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(newRoom1);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -3789,12 +3815,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(newRoom1);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -3821,7 +3841,7 @@ namespace DungeonCrawler
                         corridor.ItemList.Remove(rustyChains);
                         corridor.ItemList.Remove(bowlFragments);
                         corridor.ItemList.Remove(looseNail);
-                        player1.SearchPack(corridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                        player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, corridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
                             fireProgress = FireProgress(fireProgress, player1, corridor);
                             if (fireProgress > 999)
@@ -3958,12 +3978,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(room);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -3978,17 +3992,6 @@ namespace DungeonCrawler
                                 {
                                     return;
                                 }
-                                if (minotaur.Stamina < 1)
-                                {
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        newRoom1 = minotaur.Location;
-                                    }
-                                    else
-                                    {
-                                        newRoom1 = southernmostCorridor;
-                                    }
-                                }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             if (newRoom1 != room) { continue; }
                         }
@@ -4002,12 +4005,6 @@ namespace DungeonCrawler
                             if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, room, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                             {
                                 minotaurKafuffle.WonFight(room);
-                                if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                {
-                                    leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                    newRoom1 = minotaur.Location;
-                                    continue;
-                                }
                             }
                             else
                             {
@@ -4055,7 +4052,7 @@ namespace DungeonCrawler
                         }
                         else if (reply1 == 1)
                         {
-                            player1.SearchPack(room.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                            player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, room.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
                                 
                         }
@@ -4219,7 +4216,7 @@ namespace DungeonCrawler
                         }
                         else if (reply1 == 1)
                         {
-                            player1.SearchPack(oubliette.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                            player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, oubliette.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
 
                         }
@@ -4390,12 +4387,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, antechamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(antechamber);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -4409,17 +4400,6 @@ namespace DungeonCrawler
                                 if (newRoom1 == oceanBottom)
                                 {
                                     return;
-                                }
-                                if (minotaur.Stamina < 1)
-                                {
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        newRoom1 = minotaur.Location;
-                                    }
-                                    else
-                                    {
-                                        newRoom1 = southernmostCorridor;
-                                    }
                                 }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             if (newRoom1 != antechamber) { continue; }
@@ -4436,12 +4416,6 @@ namespace DungeonCrawler
                             if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, antechamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                             {
                                 minotaurKafuffle.WonFight(antechamber);
-                                if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                {
-                                    leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                    newRoom1 = minotaur.Location;
-                                    continue;
-                                }
                             }
                             else
                             {
@@ -4494,12 +4468,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(newRoom1);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -4512,12 +4480,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(newRoom1);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -4543,7 +4505,7 @@ namespace DungeonCrawler
                         antechamber.ItemList.Remove(breastplate);
                         antechamber.ItemList.Remove(helmet);
                         antechamber.ItemList.Remove(bracers);
-                        player1.SearchPack(antechamber.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                        player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, antechamber.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
                             fireProgress = FireProgress(fireProgress, player1, antechamber);
                             antechamber.FirstVisit = false;
@@ -4677,14 +4639,7 @@ namespace DungeonCrawler
                             if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, cellOpposite, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                             {
                                 minotaurKafuffle.WonFight(cellOpposite);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
-
-                                }
+                            }
                             else
                             {
                                 return;
@@ -4698,18 +4653,7 @@ namespace DungeonCrawler
                             {
                                 return;
                             }
-                                if (minotaur.Stamina < 1)
-                                {
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        newRoom1 = minotaur.Location;
-                                    }
-                                    else
-                                    {
-                                        newRoom1 = southernmostCorridor;
-                                    }
-                                }
-                                leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
+                            leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             if (newRoom1 != cellOpposite) { continue; }
                         }
                     }
@@ -4722,13 +4666,7 @@ namespace DungeonCrawler
                         if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, cellOpposite, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                         {
                             minotaurKafuffle.WonFight(cellOpposite);
-                                if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                {
-                                    leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                    newRoom1 = minotaur.Location;
-                                    continue;
-                                }
-                            }
+                        }
                         else
                         {
                             return;
@@ -4775,7 +4713,7 @@ namespace DungeonCrawler
                         }
                         else if (reply1 == 1)
                         {
-                            player1.SearchPack(cellOpposite.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                            player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, cellOpposite.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
 
                         }
@@ -4880,12 +4818,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(armoury);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -4900,17 +4832,6 @@ namespace DungeonCrawler
                                 {
                                     return;
                                 }
-                                if (minotaur.Stamina < 1)
-                                {
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        newRoom1 = minotaur.Location;
-                                    }
-                                    else
-                                    {
-                                        newRoom1 = southernmostCorridor;
-                                    }
-                                }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 != armoury) { continue; }
                             }
@@ -4924,12 +4845,6 @@ namespace DungeonCrawler
                             if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                             {
                                 minotaurKafuffle.WonFight(armoury);
-                                if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                {
-                                    leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                    newRoom1 = minotaur.Location;
-                                    continue;
-                                }
                             }
                             else
                             {
@@ -6905,7 +6820,7 @@ namespace DungeonCrawler
                         }
                         else if (reply1 == 1)
                         {
-                            player1.SearchPack(armoury.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                            player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, armoury.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
 
                         }
@@ -7025,12 +6940,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, messHall, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(messHall);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -7045,17 +6954,6 @@ namespace DungeonCrawler
                                 {
                                     return;
                                 }
-                                if (minotaur.Stamina < 1)
-                                {
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        newRoom1 = minotaur.Location;
-                                    }
-                                    else
-                                    {
-                                        newRoom1 = southernmostCorridor;
-                                    }
-                                }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 if (newRoom1 != messHall) { continue; }
                             }
@@ -7069,12 +6967,6 @@ namespace DungeonCrawler
                             if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, messHall, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                             {
                                 minotaurKafuffle.WonFight(messHall);
-                                if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                {
-                                    leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                    newRoom1 = minotaur.Location;
-                                    continue;
-                                }
                             }
                             else
                             {
@@ -7117,12 +7009,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(newRoom1);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -7135,12 +7021,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(newRoom1);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -7167,7 +7047,7 @@ namespace DungeonCrawler
                         }
                         else if (reply1 == 1)
                         {
-                            player1.SearchPack(messHall.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                            player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, messHall.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
                             minotaurAlertedBy = D6.Roll(D6) * 1000;
                             sw = new Stopwatch();
@@ -7323,12 +7203,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, westernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(westernmostCorridor);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -7342,17 +7216,6 @@ namespace DungeonCrawler
                                 if (newRoom1 == oceanBottom)
                                 {
                                     return;
-                                }
-                                if (minotaur.Stamina < 1)
-                                {
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        newRoom1 = minotaur.Location;
-                                    }
-                                    else
-                                    {
-                                        newRoom1 = southernmostCorridor;
-                                    }
                                 }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                                 westernmostCorridor.FirstVisit = false;
@@ -7368,12 +7231,6 @@ namespace DungeonCrawler
                             if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, westernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1,false, false, player1.Masked))
                             {
                                 minotaurKafuffle.WonFight(westernmostCorridor);
-                                if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                {
-                                    leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                    newRoom1 = minotaur.Location;
-                                    continue;
-                                }
                             }
                             else
                             {
@@ -7416,12 +7273,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(newRoom1);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -7434,12 +7285,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(newRoom1);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -7466,7 +7311,7 @@ namespace DungeonCrawler
                         }
                         else if (reply1 == 1)
                         {
-                            player1.SearchPack(westernmostCorridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                            player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, westernmostCorridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
                             minotaurAlertedBy = D6.Roll(D6) * 1000;
                             sw = new Stopwatch();
@@ -7620,12 +7465,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, northernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(northernmostCorridor);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -7640,17 +7479,6 @@ namespace DungeonCrawler
                                 {
                                     return;
                                 }
-                                if (minotaur.Stamina < 1)
-                                {
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        newRoom1 = minotaur.Location;
-                                    }
-                                    else
-                                    {
-                                        newRoom1 = southernmostCorridor;
-                                    }
-                                }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             if (newRoom1 != northernmostCorridor) { continue; }
                         }
@@ -7664,12 +7492,6 @@ namespace DungeonCrawler
                             if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, northernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                             {
                                 minotaurKafuffle.WonFight(northernmostCorridor);
-                                if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                {
-                                    leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                    newRoom1 = minotaur.Location;
-                                    continue;
-                                }
                             }
                             else
                             {
@@ -7711,12 +7533,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(newRoom1);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -7729,12 +7545,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(newRoom1);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -7761,7 +7571,7 @@ namespace DungeonCrawler
                         }
                         else if (reply1 == 1)
                         {
-                            player1.SearchPack(northernmostCorridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                            player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, northernmostCorridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
                             minotaurAlertedBy = D6.Roll(D6) * 1000;
                             sw = new Stopwatch();
@@ -7901,12 +7711,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, easternmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(easternmostCorridor);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -7921,17 +7725,6 @@ namespace DungeonCrawler
                                 {
                                     return;
                                 }
-                                if (minotaur.Stamina < 1)
-                                {
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        newRoom1 = minotaur.Location;
-                                    }
-                                    else
-                                    {
-                                        newRoom1 = southernmostCorridor;
-                                    }
-                                }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             if (newRoom1 != easternmostCorridor) { continue; }
                         }
@@ -7945,12 +7738,6 @@ namespace DungeonCrawler
                             if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, easternmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                             {
                                 minotaurKafuffle.WonFight(easternmostCorridor);
-                                if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                {
-                                    leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                    newRoom1 = minotaur.Location;
-                                    continue;
-                                }
                             }
                             else
                             {
@@ -8000,12 +7787,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(newRoom1);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -8018,12 +7799,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(newRoom1);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -8050,7 +7825,7 @@ namespace DungeonCrawler
                         }
                         else if (reply1 == 1)
                         {
-                            player1.SearchPack(easternmostCorridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                            player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, easternmostCorridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
                             minotaurAlertedBy = D6.Roll(D6) * 1000;
                             sw = new Stopwatch();
@@ -8197,12 +7972,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, southernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(southernmostCorridor);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -8217,17 +7986,6 @@ namespace DungeonCrawler
                                 {
                                     return;
                                 }
-                                if (minotaur.Stamina < 1)
-                                {
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        newRoom1 = minotaur.Location;
-                                    }
-                                    else
-                                    {
-                                        newRoom1 = southernmostCorridor;
-                                    }
-                                }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             if (newRoom1 != southernmostCorridor) { continue; }
                         }
@@ -8241,12 +7999,6 @@ namespace DungeonCrawler
                             if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, southernmostCorridor, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                             {
                                 minotaurKafuffle.WonFight(southernmostCorridor);
-                                if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                {
-                                    leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                    newRoom1 = minotaur.Location;
-                                    continue;
-                                }
                             }
                             else
                             {
@@ -8297,12 +8049,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(newRoom1);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -8315,12 +8061,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom1, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(newRoom1);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -8348,7 +8088,7 @@ namespace DungeonCrawler
                         }
                         else if (reply1 == 1)
                         {
-                            player1.SearchPack(southernmostCorridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                            player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, southernmostCorridor.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
                             minotaurAlertedBy = D6.Roll(D6) * 1000;
                             sw = new Stopwatch();
@@ -8459,12 +8199,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, emptyCell, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(emptyCell);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -8479,17 +8213,6 @@ namespace DungeonCrawler
                                 {
                                     return;
                                 }
-                                if (minotaur.Stamina < 1)
-                                {
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        newRoom1 = minotaur.Location;
-                                    }
-                                    else
-                                    {
-                                        newRoom1 = southernmostCorridor;
-                                    }
-                                }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             if (newRoom1 != emptyCell) { continue; }
                         }
@@ -8503,12 +8226,6 @@ namespace DungeonCrawler
                             if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, emptyCell, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                             {
                                 minotaurKafuffle.WonFight(emptyCell);
-                                if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                {
-                                    leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                    newRoom1 = minotaur.Location;
-                                    continue;
-                                }
                             }
                             else
                             {
@@ -8556,7 +8273,7 @@ namespace DungeonCrawler
                         }
                         else if (reply1 == 1)
                         {
-                            player1.SearchPack(emptyCell.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                            player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, emptyCell.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
 
                         }
@@ -8695,7 +8412,7 @@ namespace DungeonCrawler
                         }
                         else if (reply1 == 1)
                         {
-                            player1.SearchPack(magicalManufactory.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                            player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, magicalManufactory.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
 
                         }
@@ -8824,7 +8541,7 @@ namespace DungeonCrawler
                         }
                         else if (reply1 == 1)
                         {
-                            player1.SearchPack(broomCloset.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                            player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, broomCloset.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
 
                         }
@@ -9119,7 +8836,7 @@ namespace DungeonCrawler
                         }
                         else if (reply1 == 1)
                         {
-                            player1.SearchPack(highestParapet.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                            player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, highestParapet.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
 
                         }
@@ -9521,7 +9238,7 @@ namespace DungeonCrawler
                         }
                         else if (reply1 == 1)
                         {
-                            player1.SearchPack(dragonLair.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                            player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, dragonLair.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
 
                         }
@@ -9619,12 +9336,6 @@ namespace DungeonCrawler
                                 if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, secretChamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                                 {
                                     minotaurKafuffle.WonFight(secretChamber);
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                        newRoom1 = minotaur.Location;
-                                        continue;
-                                    }
                                 }
                                 else
                                 {
@@ -9639,17 +9350,6 @@ namespace DungeonCrawler
                                 {
                                     return;
                                 }
-                                if (minotaur.Stamina < 1)
-                                {
-                                    if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                    {
-                                        newRoom1 = minotaur.Location;
-                                    }
-                                    else
-                                    {
-                                        newRoom1 = southernmostCorridor;
-                                    }
-                                }
                                 leftWhichRooms = newRoom1.WhichRoom(leftWhichRooms);
                             if (newRoom1 != secretChamber) { continue; }
                         }
@@ -9663,12 +9363,6 @@ namespace DungeonCrawler
                             if (minotaurKafuffle.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, secretChamber, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                             {
                                 minotaurKafuffle.WonFight(secretChamber);
-                                if (minotaur.Location != astralPlanes && minotaur.Location != oceanBottom)
-                                {
-                                    leftWhichRooms = minotaur.Location.WhichRoom(leftWhichRooms);
-                                    newRoom1 = minotaur.Location;
-                                    continue;
-                                }
                             }
                             else
                             {
@@ -9716,7 +9410,7 @@ namespace DungeonCrawler
                         }
                         else if (reply1 == 1)
                         {
-                            player1.SearchPack(secretChamber.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                            player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, secretChamber.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
 
                         }
@@ -10351,7 +10045,7 @@ namespace DungeonCrawler
                         }
                         else if (reply1 == 1)
                         {
-                            player1.SearchPack(dungeonChamber.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
+                            player1.SearchPack(goblin, specialFeature, roomList, doorList, music, binkySkull, musicBox, steelKey, note, jailorKeys, specialItems, rosewoodChest, holeInCeiling, dungeonChamber.ItemList, newRoom1, threadPath, usesDictionaryItemItem, usesDictionaryItemFeature, usesDictionaryItemChar, AllItems);
                             a++;
 
                         }
