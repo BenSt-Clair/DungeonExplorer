@@ -374,10 +374,11 @@ namespace DungeonCrawler
         /// <param name="player"></param>
         public Room Investigate(bool music, Dictionary<Item, List<Player>> usesDictionaryItemChar, Stopwatch sw, long minotaurAlertedBy, bool justStalked, List<Room> threadPath, List<Item> inventory, List<Weapon> weaponInventory, int b, Player player, Weapon yourRustyChains, List<Item> stickyItems, List<Item> specialItems, Monster minotaur, Combat mageBattle, Room secretChamber, Monster goblin, Monster gnoll, List<Item> MGItems, List<Room> destinations, Door stairwayToLower, List<Room> choiceVersusDestination = null, Feature laboratory = null, List<Room> mosaicPortal = null)
         {
-            
-                
-                   
-                    Dice D20 = new Dice(20);
+
+
+            const string Slate = "\u001b[38;2;151;135;250m";
+            const string Reset = "\u001b[0m";
+            Dice D20 = new Dice(20);
                     Dice D6 = new Dice(6);
                     //string list for moving about the room
                     List<string> ministryOfSillyWalks = new List<string> {
@@ -468,7 +469,7 @@ namespace DungeonCrawler
                                 else if (reply1 == 1)
                                 {
                                     string message = Description.Substring(Description.IndexOf("\n") + 1, Description.IndexOf("\t") - Description.IndexOf("\n"));
-                                    Console.WriteLine(message);
+                                    Console.WriteLine($"{Slate}{message}{Reset}");
 
                                 }
                                 else if (reply1 == 2)
@@ -477,7 +478,7 @@ namespace DungeonCrawler
                                     message = message.Substring(message.IndexOf("\n") + 2, message.Length - 2 - message.Substring(0, message.IndexOf("\n")).Length);
                                     message = message.Substring(message.IndexOf("\n") + 1, message.Length - 2 - message.Substring(0, message.IndexOf("\n")).Length);
                                     message = message.Substring(0, message.IndexOf("\t"));
-                                    Console.WriteLine(message);
+                                    Console.WriteLine($"{Slate}{message}{Reset}");
                                 }
                                 else if (reply1 == 3)
                                 {
@@ -486,7 +487,7 @@ namespace DungeonCrawler
                                     message = message.Substring(message.IndexOf("\n") + 2, message.Length - 2 - message.Substring(0, message.IndexOf("\n")).Length);
                                     message = message.Substring(message.IndexOf("\n") + 1, message.Length - 2 - message.Substring(0, message.IndexOf("\n")).Length);
                                     message = message.Substring(0, message.IndexOf("\t"));
-                                    Console.WriteLine(message);
+                                    Console.WriteLine($"{Slate}{message}{Reset}");
                                 }
                                 else if (reply1 == 4)
                                 {
@@ -496,7 +497,7 @@ namespace DungeonCrawler
                                     message = message.Substring(message.IndexOf("\n") + 2, message.Length - 2 - message.Substring(0, message.IndexOf("\n")).Length);
                                     message = message.Substring(message.IndexOf("\n") + 1, message.Length - 2 - message.Substring(0, message.IndexOf("\n")).Length);
                                     message = message.Substring(0, message.IndexOf("\t"));
-                                    Console.WriteLine(message);
+                                    Console.WriteLine($"{Slate}{message}{Reset}");
                                 }
                             }
                             catch
@@ -574,7 +575,7 @@ namespace DungeonCrawler
                     const string Moccasin = "\u001b[38;2;255;228;181m";
                     const string BlanchedAlmond = "\u001b[38;2;255;235;205m";
                     const string BurlyWood = "\u001b[38;2;222;184;135m";
-                    const string Reset = "\u001b[0m";
+                    
             //string options = ""; 
             // BlanchedAlmond, BurlyWood = FFFFEBCD, FFDEB887
             // Convert ^ into a string builder and duplicate options. insert coloured text 

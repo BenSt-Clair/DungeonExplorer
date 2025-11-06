@@ -2269,6 +2269,7 @@ namespace DungeonCrawler
                     Console.ReadKey(true);
                     Console.WriteLine("As you land back upon your feet with the grace of a lean gymnast, you hear the minotaur's final, bloodcurdling cry as it crashes through the window and plummets to its death. \nYou permit a faint smile to slip upon your lips as the beast's yawp fades into silence.");
                     Console.ReadKey(true);
+                    room.FeatureList.Remove(window);
                     this.Location = astralPlanes;
                     this.Stamina = -1;
                     return astralPlanes;
@@ -2352,6 +2353,7 @@ namespace DungeonCrawler
                     Room newRoom = choice_door[output[0]].Passage(room, false);
                     Console.WriteLine($"The beast crashes into the wall, shrugs it off as debris cascades around it, then once more closes in for the kill within the {choice_door[output[0]].Passage(room, false).Name}...");
                     Console.ReadKey(true);
+                    this.Location = newRoom;
                     if (minotaurKafuffle.Fight(specialFeatures, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, newRoom, player1, usesDictionaryItemChar, holeInCeiling, specialItems, 1, false, false, player1.Masked))
                     {
                         return room;

@@ -3,6 +3,7 @@ using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -252,7 +253,7 @@ namespace DungeonCrawler
             const string BlanchedAlmond = "\x1b[38;2;255;255;240m";            
             const string Reset = "\u001b[0m";
             var StringBuilder = new StringBuilder();
-            StringBuilder.Append($"{Moccasin}{description}{Reset}\n\n\t");
+            StringBuilder.Append($"{BlanchedAlmond}{description}{Reset}\n\n\t");
             StringBuilder.Append($"{BlanchedAlmond}'{parlance}'{Reset}\n\n");
             StringBuilder.Append($"{Moccasin}How will you respond?{Reset}");
             Console.WriteLine(StringBuilder);
@@ -325,14 +326,19 @@ namespace DungeonCrawler
         /// <returns></returns>
         public int LinearParle(Dictionary<string, string> choice_CustomResponse, List<string>parlances, List<List<string>> playerChoices, string description, Player player = null)
         {
+            const string Moccasin = "\u001b[38;2;255;228;181m";
+            const string BlanchedAlmond = "\x1b[38;2;255;255;240m";
+            const string FireBrick = "\u001b[38;2;178;34;34m";
+            const string Reset = "\u001b[0m";
             int node = 0;
             int answer1 = 0;
-            Console.WriteLine($"{description}\n\t{parlances[0]}\nHow will you respond?");
+            Console.WriteLine($"{BlanchedAlmond}{description}\n\t{parlances[0]}{Reset}");
+            Console.WriteLine($"{Moccasin}How will you respond?{Reset}");
             while(node < playerChoices.Count -1)
             {
                 if (node > 0)
                 {
-                    Console.WriteLine("How will you respond?");
+                    Console.WriteLine($"{Moccasin}How will you respond?{Reset}");
                 }
                 int option = 0;
                 string message = "";
@@ -347,7 +353,8 @@ namespace DungeonCrawler
                 {
                     if (i > 0)
                     {
-                        Console.WriteLine($"How will you respond?\n{message}");
+                        Console.WriteLine($"{Moccasin}How will you respond?{Reset}");
+                        Console.WriteLine(message);
                         i--;
                     }
                     string answer = Console.ReadLine().ToLower().Trim();
@@ -356,31 +363,31 @@ namespace DungeonCrawler
                         answer1 = int.Parse(answer) -1;
                         if (answer1 < 0 || answer1 > playerChoices[node].Count -1)
                         {
-                            Console.WriteLine($"Please enter a number between 1 and {option}");
+                            Console.WriteLine($"{FireBrick}Please enter a number between 1 and {option}{Reset}");
                             continue;
                         }
 
                         if (choice_CustomResponse[playerChoices[node][answer1]] == "You decide to stop reading the literature for now.")
                         {
-                            Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]]);
+                            Console.WriteLine($"{BlanchedAlmond}{choice_CustomResponse[playerChoices[node][answer1]]}{Reset}");
                             Console.ReadKey(true);
                             return -1;
                         }
                         else if (choice_CustomResponse[playerChoices[node][answer1]] == "Surely there's another way...?" || choice_CustomResponse[playerChoices[node][answer1]] == "No... this can't be right...")
                         {
-                            Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]]);
+                            Console.WriteLine($"{BlanchedAlmond}{choice_CustomResponse[playerChoices[node][answer1]]}{Reset}");
                             Console.ReadKey(true);
                             return -1;
                         }
                         else if (choice_CustomResponse[playerChoices[node][answer1]] == "You tear yourself away from the vision, seemingly lurching out of a world of fog and vapours and long shadows cast by events out of place and time. You find yourself back in the secret chamber. It takes a moment of inertia and vertigo before you quite feel yourself again and you can piece together what all that you witnessed means...")
                         {
-                            Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]]);
+                            Console.WriteLine($"{BlanchedAlmond}{choice_CustomResponse[playerChoices[node][answer1]]}{Reset}");
                             Console.ReadKey(true);
                             return -1;
                         }
                         else if (choice_CustomResponse[playerChoices[node][answer1]] == "Merigold's face darkens the moment he realises you're not joking. 'I don't know who you are, stranger,' he visibly shakes with fury, 'but you're about to find out first hand why you should never cross a wizard. It's going to be your first lesson upon the subject, and I daresay your last...'\n You leer as you relish the fight to come. Oh this is going to be fun...")
                         {
-                            Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]]);
+                            Console.WriteLine($"{BlanchedAlmond}{choice_CustomResponse[playerChoices[node][answer1]]}{Reset}");
                             Console.ReadKey(true);
                             return -50;
                         }
@@ -435,13 +442,13 @@ namespace DungeonCrawler
                                 }
                             }
                         }
-                        Console.WriteLine(choice_CustomResponse[playerChoices[node][answer1]] + " " + parlances[node + 1]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_CustomResponse[playerChoices[node][answer1]]}  {parlances[node + 1]}{Reset}");
                         
                         break;
                     }
                     catch
                     {
-                        Console.WriteLine("Please enter the number corresponding to your choice of action.");
+                        Console.WriteLine($"{FireBrick}Please enter the number corresponding to your choice of action.{Reset}");
                         i++;
                     }
 
@@ -452,7 +459,7 @@ namespace DungeonCrawler
                     if (_interlocutor.Name.Contains("ghoul"))
                     {
                         _player.Stamina -= (3-node) * 4;
-                        Console.WriteLine($"You've lost {(3 - node)*4} stamina points!");
+                        Console.WriteLine($"{FireBrick}You've lost {(3 - node)*4} stamina points!{Reset}");
                         if (_player.Stamina < 1)
                         {
                             return -1000;
@@ -462,7 +469,7 @@ namespace DungeonCrawler
             }
             if (!(parlances.Count == 1))
             {
-                Console.WriteLine("How will you respond?");
+                Console.WriteLine($"{Moccasin}How will you respond?{Reset}");
             }
             int option1 = 0;
             string message1 = "";
@@ -481,14 +488,14 @@ namespace DungeonCrawler
                     answer1 = int.Parse(answer) - 1;
                     if (answer1 < 0 || answer1 > playerChoices[node].Count - 1)
                     {
-                        Console.WriteLine($"Please enter a number between 1 and {option1}");
+                        Console.WriteLine($"{FireBrick}Please enter a number between 1 and {option1}{Reset}");
                         continue;
                     }
                     return answer1;
                 }
                 catch
                 {
-                    Console.WriteLine("Please enter the number corresponding to your choice of action.");
+                    Console.WriteLine($"{FireBrick}Please enter the number corresponding to your choice of action.{Reset}");
                     j++;
                 }
             }
