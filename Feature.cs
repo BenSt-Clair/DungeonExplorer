@@ -8043,7 +8043,7 @@ namespace DungeonCrawler
                 try
                 {
                     this.Explored = true;
-                    if (message) { Console.WriteLine($"{Passing}"); }
+                    if (message) { Console.WriteLine($"{Passing}"); Console.ReadKey(true); }
                     return Portal[1];
                 }
                 catch
@@ -8060,7 +8060,7 @@ namespace DungeonCrawler
             else if (Portal[1].Name == room.Name)
             {
                 this.Explored = true;
-                if (message) { Console.WriteLine($"{Passing}"); }
+                if (message) { Console.WriteLine($"{Passing}"); Console.ReadKey(true); }
                 return Portal[0];
             }
             else

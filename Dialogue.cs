@@ -250,7 +250,7 @@ namespace DungeonCrawler
         public int Parle(string description, string parlance, List<string> responses)
         {
             const string Moccasin = "\u001b[38;2;255;228;181m";
-            const string BlanchedAlmond = "\x1b[38;2;255;255;240m";            
+            const string BlanchedAlmond = "\u001b[38;2;0;139;139m";
             const string Reset = "\u001b[0m";
             var StringBuilder = new StringBuilder();
             StringBuilder.Append($"{BlanchedAlmond}{description}{Reset}\n\n\t");
@@ -327,7 +327,7 @@ namespace DungeonCrawler
         public int LinearParle(Dictionary<string, string> choice_CustomResponse, List<string>parlances, List<List<string>> playerChoices, string description, Player player = null)
         {
             const string Moccasin = "\u001b[38;2;255;228;181m";
-            const string BlanchedAlmond = "\x1b[38;2;255;255;240m";
+            const string BlanchedAlmond = "\u001b[38;2;0;139;139m";
             const string FireBrick = "\u001b[38;2;178;34;34m";
             const string Reset = "\u001b[0m";
             int node = 0;
@@ -516,7 +516,12 @@ namespace DungeonCrawler
         /// <returns></returns>
         public int LoopParle(Dictionary<string, string> choice_answer, List<string> choices1, string description, string parlance, int y1, Player player = null)
         {
-            Console.WriteLine($"{description}\n\t{parlance}\nHow will you respond?");
+            const string Moccasin = "\u001b[38;2;255;228;181m";
+            const string BlanchedAlmond = "\u001b[38;2;0;139;139m";
+            const string FireBrick = "\u001b[38;2;178;34;34m";
+            const string Reset = "\u001b[0m";
+            Console.WriteLine($"{BlanchedAlmond}{description}\n\t{parlance}{Reset}");
+            Console.WriteLine($"{Moccasin}How will you respond?{Reset}");
 
             int y = y1;
             int i = 0;
@@ -534,7 +539,8 @@ namespace DungeonCrawler
 
                 if (i > 0)
                 {
-                    Console.WriteLine($"How will you respond?\n{message}");
+                    Console.WriteLine($"{Moccasin}How will you respond?{Reset}");
+                    Console.WriteLine(message);
                     i--;
                 }
                 else
@@ -548,12 +554,12 @@ namespace DungeonCrawler
                     int answer1 = int.Parse(answer) - 1;
                     if (answer1 < 0 || answer1 > choices.Count - 1)
                     {
-                        Console.WriteLine($"Please enter a number between 1 and {option}");
+                        Console.WriteLine($"{FireBrick}Please enter a number between 1 and {option}{Reset}");
                         continue;
                     }
                     else if (answer1 == y)
                     {
-                        Console.WriteLine(choice_answer[choices[y]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[y]]}{Reset}");
                         if (player != null)
                         {
                             for (int j = player.Inventory.Count - 1; j >= 0; j--)
@@ -571,7 +577,7 @@ namespace DungeonCrawler
                     else if (answer1 < y)
                     {
                         y--;
-                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[answer1]]}{Reset}");
                         if (player != null)
                         {
                             for (int j = player.Inventory.Count - 1; j >= 0; j--)
@@ -590,7 +596,7 @@ namespace DungeonCrawler
                     }
                     else
                     {
-                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[answer1]]}{Reset}");
                         if (player != null)
                         {
                             for (int j = player.Inventory.Count - 1; j >= 0; j--)
@@ -611,7 +617,7 @@ namespace DungeonCrawler
                 }
                 catch
                 {
-                    Console.WriteLine("Please enter the number corresponding to your choice of action.");
+                    Console.WriteLine($"{FireBrick}Please enter the number corresponding to your choice of action.{Reset}");
                     i++;
                 }
             }
@@ -619,7 +625,12 @@ namespace DungeonCrawler
         }
         public int LoopParle(Dictionary<string, string> choice_answer, List<string> choices, string description, string parlance, int y1, int x1, Player player = null)
         {
-            Console.WriteLine($"{description}\n\t{parlance}\nHow will you respond?");
+            const string Moccasin = "\u001b[38;2;255;228;181m";
+            const string BlanchedAlmond = "\u001b[38;2;0;139;139m";
+            const string FireBrick = "\u001b[38;2;178;34;34m";
+            const string Reset = "\u001b[0m";
+            Console.WriteLine($"{BlanchedAlmond}{description}\n\t{parlance}{Reset}");
+            Console.WriteLine($"{Moccasin}How will you respond?{Reset}");
             int x = x1;
             int y = y1;
             int i = 0;
@@ -636,7 +647,8 @@ namespace DungeonCrawler
 
                 if (i > 0)
                 {
-                    Console.WriteLine($"How will you respond?\n{message}");
+                    Console.WriteLine($"{Moccasin}How will you respond?{Reset}");
+                    Console.WriteLine(message);
                     i--;
                 }
                 else
@@ -658,13 +670,13 @@ namespace DungeonCrawler
                     catch { }
                     if (answer1 < 0 || answer1 > choices.Count - 1)
                     {
-                        Console.WriteLine($"Please enter a number between 1 and {option}");
+                        Console.WriteLine($"{FireBrick}Please enter a number between 1 and {option}{Reset}");
                         continue;
                     }
                     
                     else if (answer1 == y)
                     {
-                        Console.WriteLine(choice_answer[choices[y]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[y]]}{Reset}");
                         if (player != null)
                         {
                             for (int j = player.Inventory.Count - 1; j >= 0; j--)
@@ -681,7 +693,7 @@ namespace DungeonCrawler
                     }
                     else if (answer1 == x)
                     {
-                        Console.WriteLine(choice_answer[choices[x]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[x]]}{Reset}");
                         
                         return 2;
                     }
@@ -689,7 +701,7 @@ namespace DungeonCrawler
                     {
                         y--;
                         x--;
-                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[answer1]]}{Reset}");
                         if (player != null)
                         {
                             for(int j = player.Inventory.Count - 1; j>= 0; j--)
@@ -709,7 +721,7 @@ namespace DungeonCrawler
                     else if (answer1 < y)
                     {
                         y--;
-                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[answer1]]}{Reset}");
                         if (player != null)
                         {
                             for (int j = player.Inventory.Count - 1; j >= 0; j--)
@@ -729,7 +741,7 @@ namespace DungeonCrawler
                     else if (answer1 < x)
                     {
                         x--;
-                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[answer1]]}{Reset}");
                         if (player != null)
                         {
                             for (int j = player.Inventory.Count - 1; j >= 0; j--)
@@ -748,7 +760,7 @@ namespace DungeonCrawler
                     }
                     else
                     {
-                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[answer1]]}{Reset}");
                         if (player != null)
                         {
                             for (int j = player.Inventory.Count - 1; j >= 0; j--)
@@ -769,7 +781,7 @@ namespace DungeonCrawler
                 }
                 catch
                 {
-                    Console.WriteLine("Please enter the number corresponding to your choice of action.");
+                    Console.WriteLine($"{FireBrick}Please enter the number corresponding to your choice of action.{Reset}");
                     i++;
                 }
             }
@@ -777,7 +789,12 @@ namespace DungeonCrawler
         }
         public int LoopParle(bool music, Dictionary<string, string> choice_answer, List<string> choices, string description, string parlance, int y1, int x1, int z1)
         {
-            Console.WriteLine($"{description}\n\t{parlance}\nHow will you respond?");
+            const string Moccasin = "\u001b[38;2;255;228;181m";
+            const string BlanchedAlmond = "\u001b[38;2;0;139;139m";
+            const string FireBrick = "\u001b[38;2;178;34;34m";
+            const string Reset = "\u001b[0m";
+            Console.WriteLine($"{BlanchedAlmond}{description}\n\t{parlance}{Reset}");
+            Console.WriteLine($"{Moccasin}How will you respond?{Reset}");
             int x = x1;
             int y = y1;
             int z = z1;
@@ -795,7 +812,8 @@ namespace DungeonCrawler
 
                 if (i > 0)
                 {
-                    Console.WriteLine($"How will you respond?\n{message}");
+                    Console.WriteLine($"{Moccasin}How will you respond?{Reset}");
+                    Console.WriteLine(message);
                     i--;
                 }
                 else
@@ -820,7 +838,7 @@ namespace DungeonCrawler
                     }
                     if (answer1 < 0 || answer1 > choices.Count - 1)
                     {
-                        Console.WriteLine($"Please enter a number between 1 and {option}");
+                        Console.WriteLine($"{FireBrick}Please enter a number between 1 and {option}{Reset}");
                         continue;
                     }
                     else if (answer1 == y)
@@ -838,31 +856,31 @@ namespace DungeonCrawler
                                         outputDevice.Init(audioFile);
                                         outputDevice.Play();
                                     }
-                                    Console.WriteLine(choice_answer[choices[y]]);
+                                    Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[y]]}{Reset}");
                                     Console.ReadKey(true);
                                 }
                             }
                         }
                         else
                         {
-                            Console.WriteLine(choice_answer[choices[y]]);
+                            Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[y]]}{Reset}");
                         }
                         return 1;
                     }
                     else if (answer1 == x)
                     {
-                        Console.WriteLine(choice_answer[choices[x]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[x]]}{Reset}");
                         return 2;
                     }
                     else if (answer1 == z)
                     {
-                        Console.WriteLine(choice_answer[choices[z]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[z]]}{Reset}");
                         return 3;
                     }
                     else if (answer1 < x && answer1 < y && answer1 < z)
                     {
                         x-- ; y -- ; z -- ;
-                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[answer1]]}{Reset}");
                         choices.Remove(choices[answer1]);
                         i++;
                         continue;
@@ -871,7 +889,7 @@ namespace DungeonCrawler
                     {
                         y--;
                         x--;
-                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[answer1]]}{Reset}");
                         choices.Remove(choices[answer1]);
                         i++;
                         continue;
@@ -879,7 +897,7 @@ namespace DungeonCrawler
                     else if (answer1 < x && answer1 < z)
                     {
                         x--; z--;
-                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[answer1]]}{Reset}");
                         choices.Remove(choices[answer1]);
                         i++;
                         continue;
@@ -887,7 +905,7 @@ namespace DungeonCrawler
                     else if (answer1 < y && answer1 < z)
                     {
                         y--; z--;
-                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[answer1]]}{Reset}");
                         choices.Remove(choices[answer1]);
                         i++;
                         continue;
@@ -895,7 +913,7 @@ namespace DungeonCrawler
                     else if (answer1 < y)
                     {
                         y--;
-                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[answer1]]}{Reset}");
                         choices.Remove(choices[answer1]);
                         i++;
                         continue;
@@ -903,7 +921,7 @@ namespace DungeonCrawler
                     else if (answer1 < x)
                     {
                         x--;
-                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[answer1]]}{Reset}");
                         choices.Remove(choices[answer1]);
                         i++;
                         continue;
@@ -911,14 +929,14 @@ namespace DungeonCrawler
                     else if (answer1 < z)
                     {
                         z--;
-                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[answer1]]}{Reset}");
                         choices.Remove(choices[answer1]);
                         i++;
                         continue;
                     }
                     else
                     {
-                        Console.WriteLine(choice_answer[choices[answer1]]);
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[answer1]]}{Reset}");
                         choices.Remove(choices[answer1]);
                         i++;
                         continue;
@@ -927,7 +945,7 @@ namespace DungeonCrawler
                 }
                 catch
                 {
-                    Console.WriteLine("Please enter the number corresponding to your choice of action.");
+                    Console.WriteLine($"{FireBrick}Please enter the number corresponding to your choice of action.{Reset}");
                     i++;
                 }
             }
