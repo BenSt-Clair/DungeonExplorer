@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using NAudio.Wave;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace DungeonCrawler
 {
@@ -89,7 +90,8 @@ namespace DungeonCrawler
         public bool Fooled { get; set; }
         public int UncoverSecretOfMyrovia { get; set; }
         public bool Encounter {  get; set; }
-        public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits, bool masked = false, bool fieryEscape = false, bool speedy = false, Stopwatch midnightClock = null, int MGItemsDonated = 0, bool encounter = false)
+        public int Coins { get; set; }
+        public Player(string name, int skill, int stamina, List<Weapon> weaponInventory, List<Item> inventory, Dictionary<string, string> traits, bool masked = false, bool fieryEscape = false, bool speedy = false, Stopwatch midnightClock = null, int MGItemsDonated = 0, bool encounter = false, int coins = 0)
         {
             Name = name;
             Skill = skill;
@@ -107,6 +109,7 @@ namespace DungeonCrawler
             Fooled = true;
             UncoverSecretOfMyrovia = 0;
             Encounter = encounter;
+            Coins = coins;
         }
         
         public string DescribeSkill()
@@ -1617,7 +1620,8 @@ namespace DungeonCrawler
         public Stopwatch Patrol { get; set; }
         public long Time { get; set; }
         public bool Fight { get; set; }
-        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, bool rage = false, bool fight = false)
+        public int Coins { get; set; } 
+        public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, bool rage = false, bool fight = false, int coins = 20)
         {
             Name = name;
             Description = description;
@@ -1626,6 +1630,7 @@ namespace DungeonCrawler
             Skill = skill;
             Veapon = weapon;
             Fight = fight;
+            Coins = coins;
         }
         public Monster(string name, string description, List<Item> items, int stamina, int skill, Weapon weapon, Room location, List<Room> path, bool rage = false, bool suspicious = false, Stopwatch patrol = null, bool fight = false)
         {

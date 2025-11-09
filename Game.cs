@@ -156,7 +156,7 @@ namespace DungeonCrawler
                     _player.midnightClock.Stop();
                     time = _player.midnightClock.ElapsedMilliseconds;
                 }
-                tw.WriteLine($"{_player.Name}/ {_player.Skill}/ {_player.InitialStamina}/ {_player.Stamina}/ {_player.Masked}/ {_player.FieryEscape}/ {_player.Speedy}/ {_player.MGItemsDonated}/ {time} / {_player.Fooled} / {_player.UncoverSecretOfMyrovia} / {_player.Encounter}");
+                tw.WriteLine($"{_player.Name}/ {_player.Skill}/ {_player.InitialStamina}/ {_player.Stamina}/ {_player.Masked}/ {_player.FieryEscape}/ {_player.Speedy}/ {_player.MGItemsDonated}/ {time} / {_player.Fooled} / {_player.UncoverSecretOfMyrovia} / {_player.Encounter} / {_player.Coins}");
                 foreach (Weapon w in _player.WeaponInventory)
                 {
                     tw.WriteLine($" {w.Name} / boo");
@@ -678,6 +678,8 @@ namespace DungeonCrawler
                 _player.UncoverSecretOfMyrovia = number;
                 bool.TryParse(playerAspects[11].Trim(), out myBool);
                 _player.Encounter = myBool;
+                int.TryParse(playerAspects[12].Trim(), out number);
+                _player.Coins = number;
                 if (time != 0)
                 {
                     Time = time;
@@ -1664,7 +1666,7 @@ namespace DungeonCrawler
             Item throwingKnife3 = new Item("deadly throwing knife", "Despite its humble appearance, it's well made, sharp, perfectly balanced and heavy enough to, I don't know, say... knock a weapon out of an enemy's hand...?", false, "unbroken");
             Weapon rustySword = new Weapon("rusty shortsword", "A tinge of rust traces the blade around the handle. It's been recently sharpened on a grindstone, but it probably still couldn't pierce a good set of armour worthy of the name.", damage1, defaultCritHits, defaultGoodHits);
             Weapon stiletto = new Weapon("stiletto blade", "This slender blade has a needle-like point that's sharper than a drill sergeant's tongue and a fox's wits and a bag of lemons and... Well, you get the idea.", stilettoDamage, defaultCritHits, defaultGoodHits, 1, false, 1);
-            Item bagOfCoins = new Item("bag of coins", "Most of the coins are scattered all over the table, with a few mounds forming the winnings of previous games. There is, however, a lovely large leather bag to stash them all in close by...", false, "unspent");
+            Item bagOfCoins = new Item("bag of coins", "Most of the 50 coins are scattered all over the table, with a few mounds forming the winnings of previous games. There is, however, a lovely large leather bag to stash them all in close by...", false, "unspent", 50);
             List<Item> tableItems = new List<Item> { stiletto, bagOfCoins, circleDoorKey };
             List<Item> unlockedWeapons = new List<Item> { axe, estoc, bastardSword};
             List<Item> goodRackWeapons = new List<Item> { };
@@ -1693,7 +1695,8 @@ namespace DungeonCrawler
             List<Feature> cellfeatures = new List<Feature> { rosewoodDoor, rosewoodChest, bookCase, skeleton, leftbrazier, rightbrazier };
             List<Item> corridorItems = new List<Item> ();
             Item healPotionq = new Item("healing potion", "It has flecks of gold floating amidst a gel like suspension. The label reads; 'When you're feeling blue, down with the flu, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!'", true, "used", 20, "Stamina: When you're blue, and monsters are out to get you, taste this goo! Merigold's magical elixir will see you through!");
-            List<Item> trunkItems1 = new List<Item> { speedPotion, healPotionq };
+            Item smallPouch = new Item("small pouch of coins", "You find eleven rather stained and grubby looking coins 'glittering' inside the leather purse. Trey not to spend it all at once...", true, "unspent", 11);
+            List<Item> trunkItems1 = new List<Item> { speedPotion, smallPouch, healPotionq };
             Feature trunkofconfiscatedstuff = new Feature("worn old trunk", "The leather of its sides is faded and worn. Unlike the rosewood chest in your room it hasn't been looked after and there's no hidden compartment. Scrawled atop the lid in scratchy letters are the words 'confizkatedd Stoof'", false, "unlocked", trunkItems1);
             List<Feature> corridorFeatures = new List<Feature> { stairwayToLower, leftbrazier, rosewoodDoor, otherRosewoodDoor, rightbrazier, emptyCellDoor, trunkofconfiscatedstuff, stairwayToUpper };
             List<Feature> antechamberFeatures = new List<Feature> { stairwayToUpper, pillar, plaque, armouryDoor, pillar, mosaic, circleDoor};
@@ -1971,6 +1974,7 @@ namespace DungeonCrawler
             {
                 Prologue(room);
             }
+            
             bool justStalked = false;
             string pk; // not important, it's just for the console.readline at the end of the program.
 
@@ -2649,6 +2653,7 @@ namespace DungeonCrawler
                 Console.WriteLine(d.Roll(d));
             }
             */
+            
             if (!Load)
             {
                 Console.WriteLine($"You rouse yourself from your self-reflection. " +
@@ -3492,7 +3497,7 @@ namespace DungeonCrawler
                 dustBunny, penny, crumbs, merigoldBroach, merigoldMedallion, bracelet, 
                 belt, diadem, armBand, brokenFlagstone, crackedFlagstone, 
                 shatteredFlagstone, flagstoneShards, magManKey, crudeJournal, 
-                mercInsignia, rustyChains, healPotion1, healPotion2, engagementRing,
+                mercInsignia, rustyChains, healPotion1, healPotion2, engagementRing, smallPouch,
             estoc, bastardSword, sai, axe, rustySword, stiletto, flameThrower, staffMG, 
             sabre, cursedGloves, stiletto1, vanquisher, breadKnife, scimitar, bite, dagger,
              lethalspell, yourRustyChains};
@@ -5550,8 +5555,84 @@ namespace DungeonCrawler
                                         {
                                             Console.WriteLine("The goblin and gnoll seem to relax. \n\t'tell me about it,' the goblin mutters, 'They've kept the good weapons locked away behind enchanted glass for the elite squads.' The goblin's voice lowers to a conspiratorial whisper, 'One of our number, they tried to break the enchanted glass and steal one of the better weapons. The glass didn't shatter, but they did - right after he'd been frozen to a block of ice!' \nYou pay the weapons in question a wary glance through the strange glass. \n\t'Say,' the goblin perks up, 'You want to join us for a game?'");
                                             Console.ReadKey(true);
-                                            Console.WriteLine("You play a few rounds before the gnoll and goblin say they'd better get back on patrol. They give a collegial farewell before exiting the 'RmorRee' door and through the double doors beyond...");
-                                            break;
+                                            if (player1.Coins > 0)
+                                            {
+                                                Console.WriteLine("You decide to keep them sweet and play a few rounds.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("Little did you know the horrors that were in store...");
+                                                CoinGame coins = new CoinGame(goblinCaptain, gnoll, player1, D2);
+
+                                                List<int> gameEnd = coins.SimpleGame();
+                                                if (gameEnd.Count == 0)
+                                                {
+                                                    return;
+                                                }
+                                                else if (gameEnd.Count == 1 && gameEnd[0] == -1)
+                                                {
+                                                    if (dualDuel.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                    {
+                                                        dualDuel.WonFight(armoury);
+                                                        dualDuel.Monster = dualDuel.Monster2;
+                                                        dualDuel.WonFight(armoury);
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        return;
+                                                    }
+                                                }
+                                                else if (gameEnd[0] < 1)
+                                                {
+                                                    Console.WriteLine("Having lost all your money, the gnoll and goblin cheerily depart...");
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    CoinGame goodGame = new CoinGame(goblinCaptain, gnoll, player1, D4);
+                                                    gameEnd = goodGame.BetterGame(journal, musicBox, mosaic);
+                                                    if (gameEnd.Count == 1 && gameEnd[0] == -1)
+                                                    {
+                                                        if (dualDuel.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight(armoury);
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight(armoury);
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    }
+                                                    else if (gameEnd[0] < 1)
+                                                    {
+                                                        Console.WriteLine("Having lost all your money, the gnoll and goblin cheerily depart...");
+                                                        break;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Unfortunately, you claim you have no coins on you at the moment. " +
+                                                    "\n The goblin furrows its brow. 'So wot did you do with all you plundered from this place?'" +
+                                                    "");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("You attempt to bluff your way through to a satisfactory response, but its clear the goblin and gnoll already view you with more than open suspicion - suspicion that quickly congeals into hostility.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("As one, they rise from their seats to attack...");
+                                                if (dualDuel.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight(armoury);
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight(armoury);
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
                                         }
                                         else if (palaver[3] == "You adopt the role of commander-in-chief and sanctimoniously berate them for playing coins when... wait? coins? Why not cards? cards are so much better...")
                                         {
@@ -5920,8 +6001,84 @@ namespace DungeonCrawler
                                         {
                                             Console.WriteLine("The goblin and gnoll seem to relax. \n\t'tell me about it,' the goblin mutters, 'They've kept the good weapons locked away behind enchanted glass for the elite squads.' The goblin's voice lowers to a conspiratorial whisper, 'One of our number, they tried to break the enchanted glass and steal one of the better weapons. The glass didn't shatter, but they did - right after he'd been frozen to a block of ice!' \nYou pay the weapons in question a wary glance through the strange glass. \n\t'Say,' the goblin perks up, 'You want to join us for a game?'");
                                             Console.ReadKey(true);
-                                            Console.WriteLine("You play a few rounds before the gnoll and goblin say they'd better get back on patrol. They give a collegial farewell before exiting the 'RmorRee' door and through the double doors beyond...");
-                                            break;
+                                            if (player1.Coins > 0)
+                                            {
+                                                Console.WriteLine("You decide to keep them sweet and play a few rounds.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("Little did you know the horrors that were in store...");
+                                                CoinGame coins = new CoinGame(goblinCaptain, gnoll, player1, D2);
+
+                                                List<int> gameEnd = coins.SimpleGame();
+                                                if (gameEnd.Count == 0)
+                                                {
+                                                    return;
+                                                }
+                                                else if (gameEnd.Count == 1 && gameEnd[0] == -1)
+                                                {
+                                                    if (dualDuel.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                    {
+                                                        dualDuel.WonFight(armoury);
+                                                        dualDuel.Monster = dualDuel.Monster2;
+                                                        dualDuel.WonFight(armoury);
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        return;
+                                                    }
+                                                }
+                                                else if (gameEnd[0] < 1)
+                                                {
+                                                    Console.WriteLine("Having lost all your money, the gnoll and goblin cheerily depart...");
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    CoinGame goodGame = new CoinGame(goblinCaptain, gnoll, player1, D4);
+                                                    gameEnd = goodGame.BetterGame(journal, musicBox, mosaic);
+                                                    if (gameEnd.Count == 1 && gameEnd[0] == -1)
+                                                    {
+                                                        if (dualDuel.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight(armoury);
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight(armoury);
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    }
+                                                    else if (gameEnd[0] < 1)
+                                                    {
+                                                        Console.WriteLine("Having lost all your money, the gnoll and goblin cheerily depart...");
+                                                        break;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Unfortunately, you claim you have no coins on you at the moment. " +
+                                                    "\n The goblin furrows its brow. 'So wot did you do with all you plundered from this place?'" +
+                                                    "");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("You attempt to bluff your way through to a satisfactory response, but its clear the goblin and gnoll already view you with more than open suspicion - suspicion that quickly congeals into hostility.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("As one, they rise from their seats to attack...");
+                                                if (dualDuel.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight(armoury);
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight(armoury);
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
                                         }
                                         else if (palaver[4] == "You adopt the role of commander-in-chief and sanctimoniously berate them for playing coins when... wait? coins? Why not cards? cards are so much better...")
                                         {
@@ -6221,8 +6378,84 @@ namespace DungeonCrawler
                                         {
                                             Console.WriteLine("The goblin and gnoll seem to relax. \n\t'tell me about it,' the goblin mutters, 'They've kept the good weapons locked away behind enchanted glass for the elite squads.' The goblin's voice lowers to a conspiratorial whisper, 'One of our number, they tried to break the enchanted glass and steal one of the better weapons. The glass didn't shatter, but they did - right after he'd been frozen to a block of ice!' \nYou pay the weapons in question a wary glance through the strange glass. \n\t'Say,' the goblin perks up, 'You want to join us for a game?'");
                                             Console.ReadKey(true);
-                                            Console.WriteLine("You play a few rounds before the gnoll and goblin say they'd better get back on patrol. They give a collegial farewell before exiting the 'RmorRee' door and through the double doors beyond...");
-                                            break;
+                                            if (player1.Coins > 0)
+                                            {
+                                                Console.WriteLine("You decide to keep them sweet and play a few rounds.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("Little did you know the horrors that were in store...");
+                                                CoinGame coins = new CoinGame(goblinCaptain, gnoll, player1, D2);
+
+                                                List<int> gameEnd = coins.SimpleGame();
+                                                if (gameEnd.Count == 0)
+                                                {
+                                                    return;
+                                                }
+                                                else if (gameEnd.Count == 1 && gameEnd[0] == -1)
+                                                {
+                                                    if (dualDuel.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                    {
+                                                        dualDuel.WonFight(armoury);
+                                                        dualDuel.Monster = dualDuel.Monster2;
+                                                        dualDuel.WonFight(armoury);
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        return;
+                                                    }
+                                                }
+                                                else if (gameEnd[0] < 1)
+                                                {
+                                                    Console.WriteLine("Having lost all your money, the gnoll and goblin cheerily depart...");
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    CoinGame goodGame = new CoinGame(goblinCaptain, gnoll, player1, D4);
+                                                    gameEnd = goodGame.BetterGame(journal, musicBox, mosaic);
+                                                    if (gameEnd.Count == 1 && gameEnd[0] == -1)
+                                                    {
+                                                        if (dualDuel.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight(armoury);
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight(armoury);
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    }
+                                                    else if (gameEnd[0] < 1)
+                                                    {
+                                                        Console.WriteLine("Having lost all your money, the gnoll and goblin cheerily depart...");
+                                                        break;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Unfortunately, you claim you have no coins on you at the moment. " +
+                                                    "\n The goblin furrows its brow. 'So wot did you do with all you plundered from this place?'" +
+                                                    "");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("You attempt to bluff your way through to a satisfactory response, but its clear the goblin and gnoll already view you with more than open suspicion - suspicion that quickly congeals into hostility.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("As one, they rise from their seats to attack...");
+                                                if (dualDuel.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight(armoury);
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight(armoury);
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
                                         }
                                         else if (palaver[5] == "You adopt the role of commander-in-chief and sanctimoniously berate them for playing coins when... wait? coins? Why not cards? cards are so much better...")
                                         {
@@ -6521,8 +6754,84 @@ namespace DungeonCrawler
                                         {
                                             Console.WriteLine("The goblin and gnoll seem to relax. \n\t'tell me about it,' the goblin mutters, 'They've kept the good weapons locked away behind enchanted glass for the elite squads.' The goblin's voice lowers to a conspiratorial whisper, 'One of our number, they tried to break the enchanted glass and steal one of the better weapons. The glass didn't shatter, but they did - right after he'd been frozen to a block of ice!' \nYou pay the weapons in question a wary glance through the strange glass. \n\t'Say,' the goblin perks up, 'You want to join us for a game?'");
                                             Console.ReadKey(true);
-                                            Console.WriteLine("You play a few rounds before the gnoll and goblin say they'd better get back on patrol. They give a collegial farewell before exiting the 'RmorRee' door and through the double doors beyond...");
-                                            break;
+                                            if (player1.Coins > 0)
+                                            {
+                                                Console.WriteLine("You decide to keep them sweet and play a few rounds.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("Little did you know the horrors that were in store...");
+                                                CoinGame coins = new CoinGame(goblinCaptain, gnoll, player1, D2);
+
+                                                List<int> gameEnd = coins.SimpleGame();
+                                                if (gameEnd.Count == 0)
+                                                {
+                                                    return;
+                                                }
+                                                else if (gameEnd.Count == 1 && gameEnd[0] == -1)
+                                                {
+                                                    if (dualDuel.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                    {
+                                                        dualDuel.WonFight(armoury);
+                                                        dualDuel.Monster = dualDuel.Monster2;
+                                                        dualDuel.WonFight(armoury);
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        return;
+                                                    }
+                                                }
+                                                else if (gameEnd[0] < 1)
+                                                {
+                                                    Console.WriteLine("Having lost all your money, the gnoll and goblin cheerily depart...");
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    CoinGame goodGame = new CoinGame(goblinCaptain, gnoll, player1, D4);
+                                                    gameEnd = goodGame.BetterGame(journal, musicBox, mosaic);
+                                                    if (gameEnd.Count == 1 && gameEnd[0] == -1)
+                                                    {
+                                                        if (dualDuel.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight(armoury);
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight(armoury);
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    }
+                                                    else if (gameEnd[0] < 1)
+                                                    {
+                                                        Console.WriteLine("Having lost all your money, the gnoll and goblin cheerily depart...");
+                                                        break;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Unfortunately, you claim you have no coins on you at the moment. " +
+                                                    "\n The goblin furrows its brow. 'So wot did you do with all you plundered from this place?'" +
+                                                    "");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("You attempt to bluff your way through to a satisfactory response, but its clear the goblin and gnoll already view you with more than open suspicion - suspicion that quickly congeals into hostility.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("As one, they rise from their seats to attack...");
+                                                if (dualDuel.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight(armoury);
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight(armoury);
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
                                         }
                                         else if (palaver[6] == "You adopt the role of commander-in-chief and sanctimoniously berate them for playing coins when... wait? coins? Why not cards? cards are so much better...")
                                         {
@@ -6821,8 +7130,84 @@ namespace DungeonCrawler
                                         {
                                             Console.WriteLine("The goblin and gnoll seem to relax. \n\t'tell me about it,' the goblin mutters, 'They've kept the good weapons locked away behind enchanted glass for the elite squads.' The goblin's voice lowers to a conspiratorial whisper, 'One of our number, they tried to break the enchanted glass and steal one of the better weapons. The glass didn't shatter, but they did - right after he'd been frozen to a block of ice!' \nYou pay the weapons in question a wary glance through the strange glass. \n\t'Say,' the goblin perks up, 'You want to join us for a game?'");
                                             Console.ReadKey(true);
-                                            Console.WriteLine("You play a few rounds before the gnoll and goblin say they'd better get back on patrol. They give a collegial farewell before exiting the 'RmorRee' door and through the double doors beyond...");
-                                            break;
+                                            if (player1.Coins > 0)
+                                            {
+                                                Console.WriteLine("You decide to keep them sweet and play a few rounds.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("Little did you know the horrors that were in store...");
+                                                CoinGame coins = new CoinGame(goblinCaptain, gnoll, player1, D2);
+
+                                                List<int> gameEnd = coins.SimpleGame();
+                                                if (gameEnd.Count == 0)
+                                                {
+                                                    return;
+                                                }
+                                                else if (gameEnd.Count == 1 && gameEnd[0] == -1)
+                                                {
+                                                    if (dualDuel.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                    {
+                                                        dualDuel.WonFight(armoury);
+                                                        dualDuel.Monster = dualDuel.Monster2;
+                                                        dualDuel.WonFight(armoury);
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        return;
+                                                    }
+                                                }
+                                                else if (gameEnd[0] < 1)
+                                                {
+                                                    Console.WriteLine("Having lost all your money, the gnoll and goblin cheerily depart...");
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    CoinGame goodGame = new CoinGame(goblinCaptain, gnoll, player1, D4);
+                                                    gameEnd = goodGame.BetterGame(journal, musicBox, mosaic);
+                                                    if (gameEnd.Count == 1 && gameEnd[0] == -1)
+                                                    {
+                                                        if (dualDuel.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                        {
+                                                            dualDuel.WonFight(armoury);
+                                                            dualDuel.Monster = dualDuel.Monster2;
+                                                            dualDuel.WonFight(armoury);
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            return;
+                                                        }
+                                                    }
+                                                    else if (gameEnd[0] < 1)
+                                                    {
+                                                        Console.WriteLine("Having lost all your money, the gnoll and goblin cheerily depart...");
+                                                        break;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Unfortunately, you claim you have no coins on you at the moment. " +
+                                                    "\n The goblin furrows its brow. 'So wot did you do with all you plundered from this place?'" +
+                                                    "");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("You attempt to bluff your way through to a satisfactory response, but its clear the goblin and gnoll already view you with more than open suspicion - suspicion that quickly congeals into hostility.");
+                                                Console.ReadKey(true);
+                                                Console.WriteLine("As one, they rise from their seats to attack...");
+                                                if (dualDuel.Fight(specialFeature, roomList, doorList, music, usesDictionaryItemItem, usesDictionaryItemFeature, armoury, player1, usesDictionaryItemChar, true, holeInCeiling, specialItems, false, false))
+                                                {
+                                                    dualDuel.WonFight(armoury);
+                                                    dualDuel.Monster = dualDuel.Monster2;
+                                                    dualDuel.WonFight(armoury);
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    return;
+                                                }
+                                            }
                                         }
                                         else if (palaver[7] == "You adopt the role of commander-in-chief and sanctimoniously berate them for playing coins when... wait? coins? Why not cards? cards are so much better...")
                                         {

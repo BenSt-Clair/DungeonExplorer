@@ -500,6 +500,69 @@ namespace DungeonCrawler
                 }
             }
         }
+        public string LoopParle(Dictionary<string, string> choice_answer, List<string> choices1, string description, string parlance)
+        {
+            const string Moccasin = "\u001b[38;2;255;228;181m";
+            const string BlanchedAlmond = "\u001b[38;2;0;139;139m";
+            const string FireBrick = "\u001b[38;2;178;34;34m";
+            const string Reset = "\u001b[0m";
+            Console.WriteLine($"{BlanchedAlmond}{description}\n\t{parlance}{Reset}");
+            Console.WriteLine($"{Moccasin}How will you respond?{Reset}");
+
+            
+            int i = 0;
+            List<string> choices = choices1;
+            while (true)
+            {
+                string message = "";
+                int option = 0;
+                while (option < choices.Count)
+                {
+                    message += $"[{option + 1}]. {choices[option]}\n";
+                    option++;
+                }
+
+
+                if (i > 0)
+                {
+                    Console.WriteLine($"{Moccasin}How will you respond?{Reset}");
+                    Console.WriteLine(message);
+                    i--;
+                }
+                else
+                {
+                    Console.WriteLine(message);
+                }
+
+                string answer = Console.ReadLine().ToLower().Trim();
+                try
+                {
+                    int answer1 = int.Parse(answer) - 1;
+                    if (answer1 < 0 || answer1 > choices.Count - 1)
+                    {
+                        Console.WriteLine($"{FireBrick}Please enter a number between 1 and {option}{Reset}");
+                        continue;
+                    }
+                    
+                    
+                    else
+                    {
+                        Console.WriteLine($"{BlanchedAlmond}{choice_answer[choices[answer1]]}{Reset}");
+
+
+
+                        return choices[answer1];
+                    }
+
+                }
+                catch
+                {
+                    Console.WriteLine($"{FireBrick}Please enter the number corresponding to your choice of action.{Reset}");
+                    i++;
+                }
+            }
+            
+        }
         /// <summary>
         /// LoopParle essentially is for those dialogues in which the player poses
         /// questions to an interlocutor one by one and the interlocutor gives
@@ -951,7 +1014,7 @@ namespace DungeonCrawler
             }
 
         }
-        
+
         
     }
 }

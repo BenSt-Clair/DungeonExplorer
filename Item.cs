@@ -978,6 +978,10 @@ namespace DungeonCrawler
                                 {
                                     if (item.Name != "ball of red thread" && item.SpecifyAttribute != "unspooled")
                                     {
+                                        if(item.Name == "bag of coins" || item.Name == "small pouch of coins")
+                                        {
+                                            player.Coins = item.SpecialEffect;
+                                        }
                                         StashItem(item, inventory);
                                     }
                                     else if (item.Name == "ball of red thread" && threadPath.Count < 3)
@@ -1072,7 +1076,14 @@ namespace DungeonCrawler
                                     StashItem(item, inventory);
                                     featureItems.Remove(item);
                                     Console.WriteLine($"{Name} has been stashed in inventory.");
-
+                                    if(item.Name == "small pouch of coins" && item.SpecifyAttribute != "spent" && player.Coins != 11)
+                                    {
+                                        player.Coins += 11;
+                                    }
+                                    else if(item.Name == "bag of coins" && item.SpecifyAttribute != "spent" && player.Coins < 12)
+                                    {
+                                        player.Coins += 50;
+                                    }
                                     return success;
                                 }
                                 else
@@ -1092,7 +1103,53 @@ namespace DungeonCrawler
                             {
                                 inventory.Remove(item);
                                 roomItems.Add(item);
-                                Console.WriteLine($"You discard your {item.Name}. Who needs that old thing anyway?");
+                                bool rich = false;
+                                if ((item.Name != "bag of coins" && item.Name != "small pouch of coins") || item.SpecifyAttribute == "spent")
+                                {
+                                    Console.WriteLine($"You discard your {item.Name}. Who needs that old thing anyway?");
+                                }
+                                else if (item.Name == "small pouch of coins" && item.SpecifyAttribute != "spent")
+                                {
+                                    foreach (Item i in inventory)
+                                    {
+                                        if (i.Name == "bag of coins")
+                                        {
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("You tip what coins you have left in the larger bag of coins from the armoury before chucking the empty pouch over your shoulder...");
+                                            item.SpecifyAttribute = "spent";
+                                            i.Description = $"{player.Coins} clink and jostle about in the bag as you happily peruse its contents...";
+                                            item.Description = "It's completely empty and quite possibly worthless.";
+                                            item.Name = "pouch";
+                                            i.SpecialEffect += item.SpecialEffect;
+                                            item.SpecialEffect = 0;
+                                            rich = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                else if(item.Name == "bag of coins" && item.SpecifyAttribute != "spent")
+                                {
+                                    foreach (Item i in inventory)
+                                    {
+                                        if (i.Name == "small pouch of coins")
+                                        {
+                                            Console.ReadKey(true);
+                                            Console.WriteLine("You tip what coins you have left in the other bag of coins you'd purloined from the corridor's trunk of confiscated items, before chucking the empty bag over your shoulder...");
+                                            item.SpecifyAttribute = "spent";
+                                            i.Description = $"{player.Coins} clink and jostle about in the bag as you happily peruse its contents...";
+                                            item.Description = "It's completely empty and quite possibly worthless.";
+                                            item.Name = "bag";                                            
+                                            i.SpecialEffect += item.SpecialEffect;
+                                            item.SpecialEffect = 0;
+                                            rich = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (!rich)
+                                {
+                                    player.Coins = 0;
+                                }
                                 return success;
                             }
                             else//would have to cast weapon as item to store in roomitems - possible but unnecessary given story context
