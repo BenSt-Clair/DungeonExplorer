@@ -201,7 +201,7 @@ namespace DungeonCrawler
 							" over its mound of winnings. Spurred by the imminent continuation" +
 							" of this terrible game and your rising desperation to exit what" +
 							" you're increasingly convinced must be the ninth circle of hell," +
-							" you interject." +
+							" you persist." +
 							"\n  You assure them that its just like 'coins' - exactly like coins," +
 							" in fact - its just a... new and exciting variation of 'coins'." +
 							"\n  The gnoll and goblin eye you sceptically. They seem to doubt any" +
@@ -590,6 +590,7 @@ namespace DungeonCrawler
                 "You casually ponder where the CurseBreaker might happen to be...",
                 "You ask what this whole place used to be, before it was, uh... repurposed?"
             };
+			bool minotaur = false;
             if (Player.Inventory.Contains(musicBox))
             {
                 choices.Add("You airily voice your curiosity as to why the other goblin had some sort of obsessive hatred for... was it... a music box?");
@@ -616,11 +617,16 @@ namespace DungeonCrawler
 					{
 
 						playerHand = Dialogue.getIntResponse(4, true, 0);
-						if (playerHand == pastHand)
+						if (Player.Coins < playerHand)
+						{
+							Console.WriteLine($"{basic["cBad"]}Sorry, you don't have that many coins to play with.{Reset} \nPlease choose a number between 0 and {Player.Coins}...");
+						}
+						else if (playerHand == pastHand)
 						{
 							Console.WriteLine($"{basic["cBad"]}Sorry, you can't choose the same number twice in a row...{Reset}\nPlease select a different number of coins.");
 						}
-					} while (playerHand == pastHand);
+						
+					} while (playerHand == pastHand || Player.Coins < playerHand);
                     pastHand = playerHand;
                     Console.WriteLine($"{BlanchedAlmond}\nYou slyly shift around the coins behind your back before reaching out with your fist.{Reset}");
 					Console.ReadKey(true);
@@ -678,13 +684,18 @@ namespace DungeonCrawler
 								string gnollString = gnollGuess.ToString();
 								double.TryParse(gnollString, out guess);
 								guess -= average;
+								double leaning = 1;
+								if(goblinHand < 2)
+								{
+									leaning = -1;
+								}
 								if (guess > 0.5)
 								{
-									average = 4 + goblinHand - (Coin.Roll(Coin) - 1) / 2;
+									average = 4 + goblinHand + leaning*(Coin.Roll(Coin) - 1) / 2;
 								}
 								else if (guess < -0.5)
 								{
-									average = 2 + goblinHand + (Coin.Roll(Coin) - 1) / 2;
+									average = 2 + goblinHand + leaning*(Coin.Roll(Coin) - 1) / 2;
 								}
 								else
 								{
@@ -754,11 +765,11 @@ namespace DungeonCrawler
                                 guess -= average;
                                 if (guess > 0.5)
                                 {
-                                    average = 4 + goblinHand - Coin.Roll(Coin) / 2;
+                                    average = 4 + goblinHand - (Coin.Roll(Coin)- 1) / 2;
                                 }
                                 else if (guess < -0.5)
                                 {
-                                    average = 2 + goblinHand + Coin.Roll(Coin) / 2;
+                                    average = 2 + goblinHand + (Coin.Roll(Coin) - 1) / 2;
                                 }
                                 else
                                 {
@@ -789,11 +800,11 @@ namespace DungeonCrawler
 								int chance = Coin.Roll(Coin);
 								if (chance < 2)
 								{
-									average += Coin.Roll(Coin)/2;
+									average += (Coin.Roll(Coin) - 1) /2;
 								}
 								else
 								{
-									average -= Coin.Roll(Coin)/2;
+									average -= (Coin.Roll(Coin) - 1) /2;
 								}
                                 int answer = int.Parse(average.ToString());
                                 Console.ReadKey(true);
@@ -852,18 +863,18 @@ namespace DungeonCrawler
                                     }
                                     else if (average < 4)
                                     {
-                                        average = 3 + gnollHand - (Coin.Roll(Coin)) / 2;
+                                        average = 3 + gnollHand - (Coin.Roll(Coin) - 1) / 2;
                                     }
                                     else
                                     {
-                                        average = 3 + gnollHand + (Coin.Roll(Coin)) / 2;
+                                        average = 3 + gnollHand + (Coin.Roll(Coin) - 1) / 2;
                                     }
                                 }
                                 else if (guess < 0.5)
                                 {
                                     if (average > 5)
                                     {
-                                        average = 3 + gnollHand - (Coin.Roll(Coin)) / 2;
+                                        average = 3 + gnollHand - (Coin.Roll(Coin) - 1) / 2;
                                     }
                                     else if (average < 4)
                                     {
@@ -871,7 +882,7 @@ namespace DungeonCrawler
                                     }
                                     else
                                     {
-                                        average = 3 + gnollHand + (Coin.Roll(Coin)) / 2;
+                                        average = 3 + gnollHand + (Coin.Roll(Coin) - 1) / 2;
                                     }
                                 }
                                 int answer = int.Parse(average.ToString());
@@ -905,11 +916,11 @@ namespace DungeonCrawler
                                 guess -= average;
                                 if (guess > 0.5)
                                 {
-                                    average = 4 + gnollHand + Coin.Roll(Coin) / 2;
+                                    average = 4 + gnollHand + (Coin.Roll(Coin) - 1) / 2;
                                 }
                                 else if (guess < -0.5)
                                 {
-                                    average = 2 + gnollHand - Coin.Roll(Coin) / 2;
+                                    average = 2 + gnollHand - (Coin.Roll(Coin) - 1) / 2;
                                 }
                                 else
                                 {
@@ -942,11 +953,11 @@ namespace DungeonCrawler
                                 int chance = Coin.Roll(Coin);
                                 if (chance < 2)
                                 {
-                                    average += Coin.Roll(Coin) / 2 + 1;
+                                    average += Coin.Roll(Coin) / 2;
                                 }
                                 else
                                 {
-                                    average -= Coin.Roll(Coin) / 2 + 1;
+                                    average -= Coin.Roll(Coin) / 2;
                                 }
                                 int answer = int.Parse(average.ToString());
                                 Console.ReadKey(true);
@@ -1117,6 +1128,37 @@ namespace DungeonCrawler
                             "Actually, you decide to keep quiet and play the game...",
 
 							""
+                        },
+						{
+                            "You get tired of playing this game... you claim you left the music box playing somewhere around here - the 'beast' might turn up any second...",
+
+							"The goblin and gnoll suddenly give you sharp looks. 'You did wot?' the goblin blurts, all of a sudden panicky, 'I thought that damn thing had been lost.'" +
+							"\nHe turns to the gnoll. 'Oi, look sharp, we better get out of here before that minotaur shows up and flys into a rage. Come on! Clear up! Clear up!'" +
+							"\nYou lean back as they each shovel away their winnings, nervous eyes flitting to the door as though the beast might barrel in at any moment. You make a point of being slower than the other two, letting them scarper off through the door and leaving you, at last, to your own devices..."
+                        },
+						{
+                            "Wondering how best to get these two chuckleheads to leave, you decide to claim you thought you saw a minotaur around these parts - it said it was soon going to check on the armoury...",
+
+                            "The goblin and gnoll suddenly give you sharp looks. 'It said wot?' the goblin blurts, all of a sudden panicky, 'I thought it was busy somewhere below... Aw, heck!'" +
+                            "\nHe turns to the gnoll. 'Oi, look sharp, we better get out of here before that minotaur shows up and flys into a rage. Come on! Clear up! Clear up!'" +
+                            "\nYou lean back as they each shovel away their winnings, nervous eyes flitting to the door as though the beast might barrel in at any moment. You make a point of being slower than the other two, letting them scarper off through the door and leaving you, at last, to your own devices..."
+                        },
+						{
+                            "You tentatively ask how long the, uhm... Master held dominion of this tower...",
+
+							"'Since we ransacked the place a'course...' The goblin levels you a piercing look, its suspicion returning to the fore once more. " +
+							" 'Wot? were you sick on the day or summit?' he issues a chuckle that is as dry of humour as the most scorching desert and its murderous eyes are just as lethal." +
+							"You're about to clamour to correct your mistake, but the damage is done." +
+							"\n\t'Looks like we got ourselves a spy,' the goblin leers, brandishing a knife. 'It will please the master know end when we show him your head...'" +
+							"\n\n  Drat! It looks like you'll have to fight!"
+                        },
+						{
+                            "Myrovia and that innkeep must be nearby, you ask how often they receive word from the settlement...",
+
+							"The goblin and the gnoll share a sardonic snicker. 'Why, as often as one of 'em dupe adventurous come calling around...' The goblin's laugh is bark of sadistic delight that makes your blood boil. 'The silly fools don't ever know wots coming to them, and with that innkeeper, mayor what-cha-ma-call-it, working for the master, we get an endless supply of fun don' we?'" +
+							"They both laugh, not meeting their horrid gaze as you deliberately turn your focus to picking up the coins. " +
+							"\n'But you'll know all about tha' a'course. Funny thing is, by comparison to what the master has in store for 'em, we're the *merciful* ones!' The goblin and gnoll both break out into a raucous cackle that sends gooseflesh crawling up your arms. " +
+							"\n\n The game continues... "
                         }
 
 					};
@@ -1136,9 +1178,43 @@ namespace DungeonCrawler
 						{
 							return new List<int> { -1 };
 						}
-						else if(response.Contains("Actually, "))
+						else if (response.Contains("Actually, "))
 						{
-							
+
+						}
+						else if (response.Contains("music box"))
+						{
+							choices.Remove(response);
+							choices.Add("You get tired of playing this game... you claim you left the music box playing somewhere around here - the 'beast' might turn up any second...");
+
+						}
+						else if (response.Contains("better weapons"))
+						{
+							choices.Remove(response);
+							choices.Add("Wondering how best to get these two chuckleheads to leave, you decide to claim you thought you saw a minotaur around these parts - it said it was soon going to check on the armoury...");
+						}
+						else if(response.Contains("whole place used to be"))
+						{
+							choices.Remove(response);
+							choices.Add("You tentatively ask how long the, uhm... Master held dominion of this tower...");
+							if (Player.Traits.ContainsKey("diligent"))
+							{
+								choices.Add("Myrovia and that innkeep must be nearby, you ask how often they receive word from the settlement...");
+							}
+						}
+						else if (response.Contains("tentatively ask how"))
+						{
+                            return new List<int> { -1 };
+                        }
+						else if (response.Contains("two chuckleheads"))
+						{
+                            Console.ReadKey(true);
+                            return new List<int> { Player.Coins, Monster1.Coins, Monster2.Coins };
+                        }
+						else if (response.Contains("'beast'"))
+						{
+							Console.ReadKey(true);
+							return new List<int> {Player.Coins, Monster1.Coins, Monster2.Coins };
 						}
 						else
 						{
@@ -1173,9 +1249,14 @@ namespace DungeonCrawler
                 }
 				else
 				{
-					Console.WriteLine($"\n{basic["cBad"]}Nobody wins. You each play again...{Reset}");
-					Console.ReadKey(true);
-				}
+					Console.WriteLine($"\n{basic["cBad"]}Nobody wins.");
+					if (!lastGame)
+					{
+						Console.WriteLine($"You each play again...{Reset}");
+						
+					}
+                    Console.ReadKey(true);
+                }
 				if((Monster1.Coins < 10 || Monster2.Coins < 10) && !lastGame)
 				{
 					Monster monster = Monster1;
@@ -1202,7 +1283,7 @@ namespace DungeonCrawler
 				}
             }
 			
-			Console.WriteLine("Game end.");
+			Console.WriteLine($"The gnoll and goblin troop out of the armoury, leaving you with {Player.Coins} coins to your name.");
 			Console.ReadKey(true);
 			return new List<int> { Player.Coins, Monster1.Coins, Monster2.Coins };
 
