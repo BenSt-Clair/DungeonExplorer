@@ -1272,7 +1272,13 @@ namespace DungeonCrawler
 							item = i;
 						}
 					}
-					Console.WriteLine($"{BlanchedAlmond}With {monster.Name} strapped for cash, desperation sinks in. It fronts its {item.Name}. Following suit, it's partner does likewise with a similar trinket.\nIf you win this last round, you get to keep it. \n\nIt doesn't look like much, but some instincts stirs, telling you it is more than what it appears to be...");
+					Console.WriteLine($"\n{basic["cBad"]}With {monster.Name} strapped for cash, desperation sinks in.");
+					Console.ReadKey(true);
+					Console.WriteLine($"It fronts its {item.Name}. Following suit, it's partner does likewise with a similar trinket.");
+					Console.ReadKey(true);
+					Console.WriteLine($"If you win this last round, you get to keep it.");
+					Console.ReadKey(true);
+					Console.WriteLine($"It doesn't look like much, but some instincts stirs, telling you it is more than what it appears to be...{Reset}\n");
 					lastGame = true;
 					continue;
 				}
