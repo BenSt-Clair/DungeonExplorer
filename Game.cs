@@ -391,6 +391,7 @@ namespace DungeonCrawler
                     
                     while(j == 1)
                     {
+                        int doorCheck = 0;
                         foreach (Item item in AllItems)
                         {
                             if (featureAspects[0].Trim() == item.Name.Trim())
@@ -398,7 +399,13 @@ namespace DungeonCrawler
                                 AllFeatures[i - 1].ItemList.Add(item);
                                 break;
                             }
+                            doorCheck++;
+                            if(doorCheck >= AllItems.Count)
+                            {
+                                Console.WriteLine("\n\nGotcha!!!\n\n");
+                            }
                         }
+
                         featureString = sr.ReadLine();
                         featureAspects = featureString.Split('/');
                         j = featureAspects.Count();
@@ -412,10 +419,10 @@ namespace DungeonCrawler
 
                 }
                 string nextLine = sr.ReadLine();
-                if (nextLine != "DOORS")
-                {
-                    AllFeatures[i - 1].ItemList.Clear();
-                }
+                
+                // want this deleted regardless of whether doors is next or not..?
+                AllFeatures[i - 1].ItemList.Clear();
+                
                 while(nextLine.Trim() != "DOORS")
                 {
                     foreach(Item item in AllItems)
@@ -1871,7 +1878,7 @@ namespace DungeonCrawler
             //Special Items
             List<Item> throwables = new List<Item> {armBand, clunkySabaton, bracers, helmet, breastplate, knifeMG, musicBox, mops, brooms, emptyBottles, bookA1, bookA2, bookA3, bookEC1, bookEC2, bookSC1, bookSC2, bookSC3, messhallBook1, journal, binkySkull, box, belt, lantern, femur, legBone, rib, crystalBall, brassTrinket, copperTrinket, jar, plate, bowl, throwingKnife, throwingKnife2, throwingKnife3  };
             List<Item> stickyItems = new List<Item> { bowlFragments, garment, bobbyPins, clunkySabaton, breastplate, helmet, bracers, splinter, rug, looseNail, penny, crumbs, dustBunny, mops, dusters, brooms, dustpans, crumpledMissive, emptyBottles, cork, ruby, emerald, sapphire, goldDoubloon, silverBars, copperTrinket, brassTrinket, jar };
-            List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys, lockpickingSet, bookA1, journal, fists, stiletto1 };
+            List<Item> specialItems = new List<Item> { musicBox, binkySkull, steelKey, note, jailorKeys, lockpickingSet, bookA1, journal, fists, stiletto1, penny, looseNail, splinter };
             List<Item> MGItems = new List<Item> { knifeMG, staffMG, merigoldRing, pocketWatch, bracelet, merigoldMedallion, merigoldBroach, belt, diadem, armBand, box, bookA2 };
 
             ///Rooms

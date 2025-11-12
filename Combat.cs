@@ -962,9 +962,9 @@ namespace DungeonCrawler
             }
             if (room.ItemList.Count < 3)
             {
-                room.ItemList.Add(specialItems[0]);
-                room.ItemList.Add(specialItems[1]);
-                room.ItemList.Add(specialItems[2]);
+                room.ItemList.Add(specialItems[10]);
+                room.ItemList.Add(specialItems[11]);
+                room.ItemList.Add(specialItems[12]);
             }
             
             List<string> jinxedMisses = new List<string>
@@ -1560,7 +1560,12 @@ namespace DungeonCrawler
                                             {
                                                 availableWeapons.Add(h);
                                             }
+                                            else
+                                            {
+                                                j--;
+                                            }
                                         }
+                                        
                                         if (j < 1)
                                         {
                                             Console.WriteLine("You waste time frenziedly rummaging through your rucksack, but you've no new weapons to choose from!");
@@ -3054,6 +3059,10 @@ namespace DungeonCrawler
                                     if (!h.Equipped)
                                     {
                                         availableWeapons.Add(h);
+                                    }
+                                    else
+                                    {
+                                        j--;
                                     }
                                 }
                                 if (j < 1)

@@ -158,7 +158,7 @@ namespace DungeonCrawler
                     };
                     this.Attribute = true;
                     this.SpecifyAttribute = "examined";
-                    crystal.LinearParle(choice_visions, parlances, playerchoice, description);
+                    crystal.LinearParle(choice_visions, parlances, playerchoice, description, player);
                     
                 }
                 else

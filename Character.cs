@@ -260,6 +260,7 @@ namespace DungeonCrawler
                     Console.WriteLine($"\nYou have only {timeLeft} minutes until the clocks strike twelve!");
                 }
             }
+            Console.WriteLine($"Your progress to unveiling the mayor's crimes: {this.UncoverSecretOfMyrovia}");
             Console.ReadKey(true);
             return;
         }
